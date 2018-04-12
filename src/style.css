@@ -1,0 +1,20 @@
+.box-code-card .ant-card-body{
+      height:300px;
+      overflow-y:auto;
+}
+
+.table-head-row {
+    margin-bottom:10px;
+}
+
+.table-head-row .col-label{
+    line-height:32px;
+}
+
+.table-head-row .col-input{
+    width:150px;
+}
+
+.table-head-row .col-button{
+    float: right;
+}
