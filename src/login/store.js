@@ -6,43 +6,49 @@ useStrict(true);
 
 export default class AuthorityStore {
 
-    constructor(rootStore){
-        this.rootStore=rootStore;
-    }
-    @observable
-    currentUser = {};
+  constructor(rootStore){
+    this.rootStore=rootStore;
+  }
+  @observable
+  currentUser = {};
 
-    @observable
-    applyPlatformVisible = false;
-
-
-
-    @observable
-    loginVisible = !sessionStorage.getItem('access-token');
+  @observable
+  applyPlatformVisible = false;
 
 
 
+  @observable
+  loginVisible = !sessionStorage.getItem('access-token');
 
-    logout = async () => {
-        get(`${baseUrl}/logout`);
-        sessionStorage.clear();
-        this.taggreLogin();
-    };
+  @observable
+  regFormVisible=false;
 
 
-    @action
-    taggreLogin = () => {
-        this.loginVisible = !this.loginVisible;
-    };
+  logout = async () => {
+    get(`${baseUrl}/logout`);
+    sessionStorage.clear();
+    this.taggreLogin();
+  };
 
-    @action
-    loadAllbuttons = async () => {
-        const json = await get(`${baseUrl}/btn/allButtons`);
-        const allButtons = {};
-        json.forEach((b) => {
-            allButtons[b.id] = b;
-        });
-        sessionStorage.setItem('buttons', JSON.stringify(allButtons));
-    };
+
+  @action
+  taggreLogin = () => {
+    this.loginVisible = !this.loginVisible;
+  };
+
+  @action
+  loadAllbuttons = async () => {
+    const json = await get(`${baseUrl}/btn/allButtons`);
+    const allButtons = {};
+    json.forEach((b) => {
+      allButtons[b.id] = b;
+    });
+    sessionStorage.setItem('buttons', JSON.stringify(allButtons));
+  };
+
+  @action
+  toggleRegFormVisible=()=>{
+    this.regFormVisible=!this.regFormVisible;
+  };
 
 }
