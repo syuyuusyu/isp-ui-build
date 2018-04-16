@@ -43,6 +43,10 @@ export class SwiftStore{
     @observable
     uploading=false;
 
+    scheduleToken=()=>{
+        get(`${baseUrl}/swift/swiftToken`);
+    };
+
     @action
     checkContainer=async ()=>{
         runInAction(() => {

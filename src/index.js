@@ -9,6 +9,8 @@ import registerServiceWorker from './registerServiceWorker';
 import RootStore from './rootStore';
 
 const history = createHistory();
+const div=document.createElement('div');
+document.body.appendChild(div);
 
 ReactDOM.render(
   <Provider rootStore={new RootStore()} >
@@ -16,6 +18,6 @@ ReactDOM.render(
       <App />
     </Router>
   </Provider>,
-  document.body,
+  div
 );
 registerServiceWorker();

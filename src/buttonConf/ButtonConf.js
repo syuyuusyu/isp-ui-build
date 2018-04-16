@@ -27,6 +27,7 @@ class ButtonConf extends Component{
                         return '中';
                     default:  return '';
                 }
+
             }
         },
         {dataIndex:'color',title:'颜色',width:30},

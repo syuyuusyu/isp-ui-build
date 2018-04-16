@@ -16,9 +16,13 @@ class CloudApplyTable extends React.Component{
 
     componentDidMount(){
         this.props.rootStore.cloudStore.loadServerInfo();
+        // this.timeoutid=setInterval(
+        //     this.props.rootStore.cloudStore.loadServerInfo,
+        //     1000*60
+        // )
         this.timeoutid=setInterval(
-            this.props.rootStore.cloudStore.loadServerInfo,
-            1000*60
+            this.props.rootStore.cloudStore.scheduleToken,
+            1000*60*20
         )
     }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input,Row,Col,Button,} from 'antd';
 import {format,evil} from '../util';
+
 const FormItem = Form.Item;
 const {TextArea}=Input;
 
@@ -64,11 +65,12 @@ class InvokeParseForm extends React.Component{
                         </FormItem>
                     </Col>
                     <Col span={12}>
-                        <FormItem label="解析函数结果" >
+                        <FormItem label="解析函数结果111" >
                             {getFieldDecorator('parseResult',{
 
                             })(
-                                <TextArea rows={15} />
+
+                                <TextArea row={15}/>
                             )}
                         </FormItem>
 

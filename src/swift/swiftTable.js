@@ -12,13 +12,19 @@ const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 @observer
 class SwiftTable extends React.Component {
 
+    timeoutid=0;
+
     componentDidMount() {
         this.props.rootStore.swiftStore.checkContainer();
+        this.timeoutid=setInterval(
+            this.props.rootStore.swiftStore.scheduleToken,
+            1000*60*20
+        )
 
     }
 
-    componentWillMount(){
-
+    componentWillUnmount(){
+        clearInterval(this.timeoutid);
     }
 
     columns = [

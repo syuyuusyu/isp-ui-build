@@ -1,9 +1,8 @@
 import {observable, useStrict,action,runInAction,} from 'mobx';
-import {baseUrl,post} from '../util';
+import {baseUrl, get, post} from '../util';
 
 useStrict(true);
 
-const IP='10.10.50.12';
 
 export class CloudStore{
 
@@ -37,15 +36,17 @@ export class CloudStore{
         this.formVisible=!this.formVisible;
     };
 
+    scheduleToken=()=>{
+        get(`${baseUrl}/invoke/cloudToken`);
+    };
+
     @action
     loadServerInfo=async ()=>{
         runInAction(()=>{
             this.loading=true;
             this.loadingtest='获取云机状态...'
         });
-        let json=await post(`${baseUrl}/invoke/cloud_servers_info`,{
-            ip:IP
-        })
+        let json=await post(`${baseUrl}/invoke/cloud_servers_info`)
         runInAction(()=>{
             this.serverInfo=json;
             this.loading=false;
@@ -58,12 +59,11 @@ export class CloudStore{
             this.loading=true;
             this.loadingtest='正在向云平台获取表单信息...'
         });
-        let json=await post(`${baseUrl}/invoke/cloud_form`,{
-            ip:IP
-        })
+        let json=await post(`${baseUrl}/invoke/cloud_form`);
+        console.log(json);
         runInAction(()=>{
-            this.images=json.images;
-            this.networks=json.networks;
+            this.images=json.image;
+            this.networks=json.network;
             this.flavors=json.flavors;
             this.loading=false;
         });

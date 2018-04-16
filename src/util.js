@@ -66,6 +66,7 @@ export const log=(target, name, descriptor)=> {
 };
 
 export const baseUrl='http://localhost:7001';
+//export const baseUrl='';
 //export const baseUrl='http://192.168.3.11:7001';
 
 export  function request (method, url, body) {

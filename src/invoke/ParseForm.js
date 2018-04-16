@@ -1,6 +1,9 @@
 import React from 'react';
 import { Form, Input,Row,Col,Button,} from 'antd';
 import {format,evil} from '../util';
+// import {UnControlled as CodeMirror} from 'react-codemirror2';
+// import 'codemirror/lib/codemirror.css';
+// import 'codemirror/theme/material.css';
 const FormItem = Form.Item;
 const {TextArea}=Input;
 
@@ -10,6 +13,7 @@ class ParseForm extends React.Component{
         this.props.form.setFieldsValue({
             result:format(JSON.stringify(this.props.invokeResult.result)),
             parseFun:this.props.currentInvoke.parseFun,
+
             //parseResult:this.props.currentInvoke.parseFun
         });
         //this.parse();
@@ -61,12 +65,13 @@ class ParseForm extends React.Component{
                 <Row gutter={24}>
                     <Col span={12}>
                         <FormItem label="解析函数" >
-                            {getFieldDecorator('parseFun',{
+                        {getFieldDecorator('parseFun',{
 
-                            })(
-                                <TextArea rows={15} />
-                            )}
-                        </FormItem>
+                        })(
+                            <TextArea rows={15} />
+                        )}
+                    </FormItem>
+
                     </Col>
                     <Col span={12}>
                         <FormItem label="解析函数结果" >
@@ -78,6 +83,17 @@ class ParseForm extends React.Component{
                         </FormItem>
 
                     </Col>
+                </Row>
+                <Row>
+                    <CodeMirror
+                        value='<h1>I ♥ react-codemirror2</h1>'
+                        options={{
+                            mode: 'json',
+                            lineNumbers: true
+                        }}
+                        onChange={(editor, data, value) => {
+                        }}
+                    />
                 </Row>
                 <Row>
                     <Col span={24} style={{ textAlign: 'right' }}>
