@@ -1,6 +1,7 @@
 import {observable,action,runInAction,} from 'mobx';
 import {notification} from 'antd';
 import {baseUrl,get,post} from '../util';
+import {message} from "antd/lib/index";
 //import {useStrict} from "mobx/lib/mobx";
 
 //useStrict(true);
@@ -22,16 +23,28 @@ export class InterfacesLogStory{
   systemName='';
 
   @observable
+  statusName='';
+
+  @observable
   interfacesName='';
 
   @observable
   allSystems=[];
 
   @observable
+  allStatus=[];
+
+  @observable
   allInterfaces=[];
 
   @observable
   queryLog=[];
+
+  @observable
+  detailLog=false;
+
+  @observable
+  logRecord=[];
 
 
   @action
@@ -43,7 +56,6 @@ export class InterfacesLogStory{
         this.logTotal=json.length;
       }
     )
-   console.log("initAllInterfacesLog中logTotal的值为:",this.logTotal);
   };
 
   /*@action
@@ -55,29 +67,34 @@ export class InterfacesLogStory{
       console.log("logTotal的值为:",this.logTotal);
     };
 */
-    @action
-      getRefreshLog=async ()=>{
-      let json=await get(`${baseUrl}/interfacesLog/refreshLog`);
-      if(json.success){
-        notification.success({
-          message:'刷新成功'})
-      }else{
-        notification.error({
-          message:'后台错误，请联系管理员'
-        })
-      }
-      this.initAllInterfacesLog();
-};
+  @action
+  getRefreshLog=async ()=>{
+    let json=await get(`${baseUrl}/interfacesLog/refreshLog`);
+    if(json.success){
+      notification.success({
+        message:'刷新成功'})
+    }else{
+      notification.error({
+        message:'后台错误，请联系管理员'
+      })
+    }
+    this.initAllInterfacesLog();
+  };
 
-    @action
-    setSystemName=(name)=>{
-      this.systemName=name;
-    };
+  @action
+  setSystemName=(name)=>{
+    this.systemName=name;
+  };
 
-    @action
-    setInterfacesName=(name)=>{
-      this.interfacesName=name;
-    };
+  @action
+  setStatus=(name)=>{
+    this.statusName=name;
+  };
+
+  @action
+  setInterfacesName=(name)=>{
+    this.interfacesName=name;
+  };
 
 
   @action
@@ -88,24 +105,52 @@ export class InterfacesLogStory{
     })
   };
 
-   @action
-   initAllInterfaces=async ()=>{
-     let json=await get(`${baseUrl}/interfacesLog/allInterfaces`);
-     runInAction(()=>{
-       this.allInterfaces=json;
-     })
-    };
+  @action
+  initAllstatus=async ()=>{
+    let json=await get(`${baseUrl}/interfacesLog/allStatus`);
+    runInAction(()=>{
+      this.allStatus=json;
+    })
+  };
 
-   @action
-     loadQueryLog=async ()=> {
-       let json = await post(`${baseUrl}/interfacesLog/queryLog`, {
-         systemName: this.systemName,
-         interfacesName: this.interfacesName
-       });
-       //console.log("loadQueryLog中json的值为:",json);
-       runInAction(() => {
-         this.allInterfacesLog = json;
-       })
-     };
+  @action
+  initAllInterfaces=async ()=>{
+    let json=await get(`${baseUrl}/interfacesLog/allInterfaces`);
+    runInAction(()=>{
+      this.allInterfaces=json;
+    })
+  };
+
+  @action
+  loadQueryLog=async ()=> {
+    let json = await post(`${baseUrl}/interfacesLog/queryLog`, {
+      systemName: this.systemName,
+      statusName: this.statusName
+    });
+    //console.log("loadQueryLog中json的值为:",json);
+    runInAction(() => {
+      this.allInterfacesLog = json;
+    })
+  };
+
+  @action
+  loadDtailLog=(record)=>(()=>{
+    const logDate=new Date(record.invoke_date)
+    const Y=logDate.getFullYear()+'-';
+    const M=(logDate.getMonth()+1 < 10 ? '0'+(logDate.getMonth()+1) : logDate.getMonth()+1) + '-';
+    const D=logDate.getDate()+' ';
+    const h=logDate.getHours()+':';
+    const m=logDate.getMinutes()+':';
+    const s=logDate.getSeconds();
+    const date=Y+M+D+h+m+s;
+    record.invoke_date=date;
+    this.logRecord=record;
+    this.toggleDetailLog();
+  });
+
+  @action
+  toggleDetailLog=()=>{
+    this.detailLog=!this.detailLog;
+  }
 
 }

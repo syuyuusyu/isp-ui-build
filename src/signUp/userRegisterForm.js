@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Form, Row, Col, Input, Button ,Modal,Progress} from 'antd';
+import { Form, Row, Col, Input, Button ,Modal,Progress, Tooltip} from 'antd';
 import {baseUrl, get} from "../util";
 import {inject, observer} from "mobx-react/index";
 
@@ -13,11 +13,8 @@ class UserRegisterForm extends Component{
   }
 
   checkUserUnique=async(rule, value, callback)=>{
-    if(this.props.data){
-      console.log("UserRegisterForm中this.props.data的值为:",this.props.data);
-      if(this.props.data.name===value){
-        callback();
-      }
+    if(!value){
+      callback()
     }
     const url=`${baseUrl}/userRegister/uniqueUser/${value}`;
     let json=await get(url);
@@ -29,25 +26,21 @@ class UserRegisterForm extends Component{
   }
 
   checkPhoneUnique=async(rule, value, callback)=>{
-    if(this.props.data){
-      if(this.props.data.name===value){
-        callback();
-      }
+    if(!value){
+      callback();
     }
-    const url=`${baseUrl}/userRegister/uniqueUser/${value}`;
+    const url=`${baseUrl}/userRegister/uniquePhone/${value}`;
     let json=await get(url);
     if(json.total===0){
-      callback()
+      callback();
     }else{
       callback(new Error())
     }
   }
 
   checkEmailUnique=async(rule, value, callback)=>{
-    if(this.props.data){
-      if(this.props.data.name===value){
-        callback();
-      }
+    if(!value){
+      callback();
     }
     const url=`${baseUrl}/userRegister/uniqueEmail/${value}`;
     let json=await get(url);
@@ -57,6 +50,8 @@ class UserRegisterForm extends Component{
       callback(new Error())
     }
   }
+
+
   render(){
     const { getFieldDecorator } = this.props.form;
     return(
@@ -65,7 +60,9 @@ class UserRegisterForm extends Component{
           <FormItem label="用户名">
             {
               getFieldDecorator('userName',{
-                rules:[{ required:true,  validator:this.checkUserUnique,  message: '用户名已存在'}],
+                rules:[{ required:true,  message: '用户名不能为空'},
+                  {validator:this.checkUserUnique,  message: '用户名已存在'},
+                ],
                 validateTrigger:'onBlur'
               })(
                 <Input placeholder="请输入用户名" />
@@ -77,7 +74,9 @@ class UserRegisterForm extends Component{
           <FormItem label="电话号码">
             {
               getFieldDecorator('phone',{
-                rules:[{ required:true,  validator:this.checkPhoneUnique,  message: '电话号码已存在'}],
+                rules:[{ required:true,  message: '电话号码不能为空'},
+                  {validator:this.checkPhoneUnique,  message: '电话号码已存在'}
+                ],
                 validateTrigger:'onBlur'
               })(
                 <Input placeholder="请输入用户名" />
@@ -89,7 +88,10 @@ class UserRegisterForm extends Component{
           <FormItem label="邮箱">
             {
               getFieldDecorator('email',{
-                rules:[{ required:true,  validator:this.checkEmailUnique,  message: '邮箱已存在'}],
+                rules:[{type:'email',message:'请输入有效的邮箱',},
+                  { required:true,  message: '邮箱不能为空'},
+                  {validator:this.checkEmailUnique,  message: '邮箱已存在'}
+                ],
                 validateTrigger:'onBlur'
               })(
                 <Input placeholder="请输入邮箱" />
