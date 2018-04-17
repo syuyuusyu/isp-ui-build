@@ -12,6 +12,8 @@ import {OrgStore} from './orgOperation';
 import {SwiftStore} from './swift';
 import {InterfacesLogStory} from "./interfacesLog/store";
 import NotificationSotre from "./notification/store";
+import {DataUserStore} from './datauser';
+import {DataSpaceStore} from './dataspace';
 
 
 
@@ -37,6 +39,8 @@ export default class RootStore {
         this.swiftStore=new SwiftStore(this);
         this.notificationStore=new NotificationSotre(this);
         this.interfacesLog=new InterfacesLogStory(this);
+        this.dataUserStore=new DataUserStore(this);
+        this.dataSpaceStore=new DataSpaceStore(this);
 
     }
 }

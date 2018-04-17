@@ -85,17 +85,6 @@ class ParseForm extends React.Component{
                     </Col>
                 </Row>
                 <Row>
-                    <CodeMirror
-                        value='<h1>I ♥ react-codemirror2</h1>'
-                        options={{
-                            mode: 'json',
-                            lineNumbers: true
-                        }}
-                        onChange={(editor, data, value) => {
-                        }}
-                    />
-                </Row>
-                <Row>
                     <Col span={24} style={{ textAlign: 'right' }}>
                         <Button icon="play-circle" onClick={this.parse}>测试解析函数</Button>
                     </Col>

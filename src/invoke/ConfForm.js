@@ -236,7 +236,14 @@ class ConfForm extends React.Component{
                                 {getFieldDecorator('head',{
                                     rules: [{ required: this.props.invokeType==='1'?true:false, message: '此项为必填项!!' }],
                                 })(
-                                    <TextArea disabled={this.props.invokeType==='1'?false:true} rows={6} />
+                                    <TextArea disabled={this.props.invokeType==='1'?false:true} rows={6}
+                                              placeholder={`
+{
+    "Accept":"application/json",
+    "Content-Type":"application/json;charset=UTF-8"
+}
+                                              `}
+                                    />
                                 )}
                             </FormItem>
                         </Col>

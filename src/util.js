@@ -105,3 +105,19 @@ export const get = url => request('GET', url);
 export const post = (url, body) => request('POST', url, body);
 export const put = (url, body) => request('PUT', url, body);
 export const del = (url, body) => request('DELETE', url, body);
+
+export const convertGiga = (byte) => {
+    const units = ['KB','MB','GB','TB']
+    for(let i=0;i<units.length;i++){
+        byte = byte / 1024;
+        if(byte<1024)
+            return {
+                number:Math.round(byte*100)/100,
+                unit:units[i]
+            }
+    }
+    return {
+        number:Math.round(byte*100)/100,
+        unit:units[units.length-1]
+    }
+}
