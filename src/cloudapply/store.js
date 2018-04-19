@@ -1,5 +1,6 @@
 import {observable, useStrict,action,runInAction,} from 'mobx';
 import {baseUrl, get, post} from '../util';
+import {notification} from 'antd';
 
 useStrict(true);
 
@@ -48,7 +49,10 @@ export class CloudStore{
         });
         let json=await post(`${baseUrl}/invoke/cloud_servers_info`)
         runInAction(()=>{
-            if(!gitjson.status){
+            if(json.status && json.status===500){
+                this.serverInfo=[];
+                notification.error({message:'连接云平台失败',});
+            }else{
                 this.serverInfo=json;
             }
             this.loading=false;
@@ -63,13 +67,20 @@ export class CloudStore{
             this.loadingtest='正在向云平台获取表单信息...'
         });
         let json=await post(`${baseUrl}/invoke/cloud_form`);
-        console.log(json);
-        runInAction(()=>{
-            this.images=json.image;
-            this.networks=json.network;
-            this.flavors=json.flavors;
-            this.loading=false;
-        });
+        if(json.status && json.status===500){
+            notification.error({message:'连接云平台失败',});
+            runInAction(()=>{
+                this.loading=false;
+            })
+        }else{
+            runInAction(()=>{
+                this.images=json.image;
+                this.networks=json.network;
+                this.flavors=json.flavors;
+                this.loading=false;
+            });
+        }
+
     };
 
     @action
