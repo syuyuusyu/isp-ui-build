@@ -25,7 +25,6 @@ class CloudFrom extends React.Component{
                 networkId:values.networkId,
                 imageId:values.imageId
             });
-            console.log(json);
             if(json.code===200){
                 notification.success({
                     message:'新建成功'})

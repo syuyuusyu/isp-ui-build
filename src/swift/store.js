@@ -10,11 +10,16 @@ export class SwiftStore{
         this.rootStore=rootStore;
     }
 
+    tenG=10737418240;
+
     @observable
     hasContainer=false;
 
     @observable
     rootDir=[];
+
+    @observable
+    total=0;
 
     @observable
     inDowning=false;
@@ -44,6 +49,7 @@ export class SwiftStore{
     uploading=false;
 
     scheduleToken=()=>{
+        console.log('scheduleToken swift');
         get(`${baseUrl}/swift/swiftToken`);
     };
 
@@ -109,28 +115,65 @@ export class SwiftStore{
     };
 
     @action
-    handleUpload=async ()=>{
-        const formData = new FormData();
-        this.fileList.forEach((file) => {
-            formData.append('files[]', file);
-        });
+    clearFileList=()=>{
+        this.fileList=[];
+    };
+
+    @action
+    createFolder=async (values)=>{
         runInAction(()=>{
             this.uploading=true;
         });
-        let response=await fetch(`${baseUrl}/swift/upload`, {
+        const {folderName}=values;
+        const filePath=this.selectRow.name;
+        const username=JSON.parse(sessionStorage.getItem("user")).user_name;
+        let json=await post(`${baseUrl}/swift/createFolder`,{
+            filePath:filePath+folderName,username
+        });
+        runInAction(()=>{
+            this.uploading=false;
+        });
+        if(json.status===201){
+            notification.success({
+                message:'新建成功',
+            })
+        }else{
+            notification.error({
+                message:'后台错误，请联系管理员',
+            })
+        }
+        this.toggleFormVisible();
+        this.loadRootDir();
+    };
+
+    @action
+    handleUpload=async ()=>{
+
+        runInAction(()=>{
+            this.uploading=true;
+        });
+        const formData = new FormData();
+        this.fileList.filter(d=>d).forEach((file) => {
+            formData.append('files[]', file);
+        });
+        await fetch(`${baseUrl}/swift/upload`, {
             method:'POST',
             headers: {
                 //'Content-Type': 'multipart/form-data',//application/x-www-form-urlencoded
                 'User-Name':JSON.parse(sessionStorage.getItem("user")).user_name,
                 'Folder-Path':this.selectRow.name.split('/').map(p=>encodeURI(p)).join('/'),
+                //'filename': encodeURI(file.name),
                 'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
             },
             body:formData
         });
+
         runInAction(()=>{
             this.uploading=false;
         });
-        console.log(response);
+        this.toggleFileFormVisible();
+        this.loadRootDir();
+
 
     };
 
@@ -221,7 +264,7 @@ export class SwiftStore{
             this.loadingtest='请求网盘信息...';
         });
         let json=await get(`${baseUrl}/swift/getObject/${JSON.parse(sessionStorage.getItem("user")).user_name}`);
-        console.log(json);
+
         if(json.status){
             notification.error({
                 message:'云平台权限认证失败,请尝试刷新页面或联系管理员',
@@ -246,13 +289,14 @@ export class SwiftStore{
         for(let i=1;i<=maxLength;i++){
             mertix[i]=mertix[i].concat(json.filter(d=>d.hierachy===i));
         }
-        console.log(mertix);
+
         temps=mertix[1];
 
         this._compoent(temps,mertix,1,maxLength);
         runInAction(()=>{
             this.rootDir=temps;
             this.inDowning=false;
+            this.total=json.filter(d=>d).map(d=>d.bytes).reduce((a,b)=>a+b)
         });
     };
 

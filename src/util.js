@@ -120,4 +120,4 @@ export const convertGiga = (byte) => {
         number:Math.round(byte*100)/100,
         unit:units[units.length-1]
     }
-}
+};

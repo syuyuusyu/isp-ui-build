@@ -16,6 +16,10 @@ class FileForm extends React.Component{
         return e && e.fileList;
     };
 
+    componentDidMount(){
+        this.props.rootStore.swiftStore.clearFileList();
+    }
+
 
 
     render(){

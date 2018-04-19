@@ -21,23 +21,7 @@ class CreateForm extends React.Component{
     save=()=>{
         this.props.form.validateFields(async (err,values)=>{
             if(err) return;
-            const {folderName}=values;
-            const filePath=this.props.rootStore.swiftStore.selectRow.name;
-            const username=JSON.parse(sessionStorage.getItem("user")).user_name;
-            let json=await post(`${baseUrl}/swift/createFolder`,{
-                filePath:filePath+folderName,username
-                });
-            if(json.status===201){
-                notification.success({
-                    message:'新建成功',
-                })
-            }else{
-                notification.error({
-                    message:'后台错误，请联系管理员',
-                })
-            }
-            this.props.rootStore.swiftStore.toggleFormVisible();
-            this.props.rootStore.swiftStore.loadRootDir();
+            this.props.rootStore.swiftStore.createFolder(values);
         })
     };
 
@@ -58,7 +42,12 @@ class CreateForm extends React.Component{
                     </Row>
                     <Row>
                         <Col span={24} style={{ textAlign: 'right' }}>
-                            <Button icon="save" onClick={this.save}>保存</Button>
+                            <Button icon="folder-add"
+                                    onClick={this.save}
+                                    type="primary"
+                                    loading={this.props.rootStore.swiftStore.uploading}>
+                                {this.props.rootStore.swiftStore.uploading ? '新建中' : '点击新建' }
+                            </Button>
                         </Col>
                     </Row>
                 </Form>

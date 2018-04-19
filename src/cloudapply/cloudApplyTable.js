@@ -15,6 +15,7 @@ class CloudApplyTable extends React.Component{
     timeoutid=0;
 
     componentDidMount(){
+        this.props.rootStore.cloudStore.scheduleToken();
         this.props.rootStore.cloudStore.loadServerInfo();
         // this.timeoutid=setInterval(
         //     this.props.rootStore.cloudStore.loadServerInfo,
@@ -77,10 +78,7 @@ class CloudApplyTable extends React.Component{
                 <Row gutter={2} className="table-head-row">
 
                     <Col span={4} style={{ textAlign: 'right' }} className="col-button">
-
                             <Button onClick={store.toggleFormVisible} icon="plus-circle-o">新建云机</Button>
-
-
                     </Col>
 
                 </Row>

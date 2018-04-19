@@ -48,10 +48,13 @@ export class CloudStore{
         });
         let json=await post(`${baseUrl}/invoke/cloud_servers_info`)
         runInAction(()=>{
-            this.serverInfo=json;
+            if(!gitjson.status){
+                this.serverInfo=json;
+            }
             this.loading=false;
         });
-    }
+
+    };
 
     @action
     loadFormInput=async ()=>{

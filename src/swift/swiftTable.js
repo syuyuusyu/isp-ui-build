@@ -1,9 +1,10 @@
 import React from 'react';
-import {Table,Button,Divider,Popconfirm,Modal,Icon,Spin} from 'antd';
+import {Table,Button,Divider,Popconfirm,Modal,Icon,Spin,Row,Col,Progress} from 'antd';
 import {inject, observer} from 'mobx-react';
 import CreateForm from './createForm';
 import FileForm from './fileForm';
-//import {baseUrl, get} from "../util";
+import '../style.css';
+import {convertGiga} from "../util";
 
 //const Option = Select.Option;
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
@@ -15,10 +16,11 @@ class SwiftTable extends React.Component {
     timeoutid=0;
 
     componentDidMount() {
+        this.props.rootStore.swiftStore.scheduleToken();
         this.props.rootStore.swiftStore.checkContainer();
         this.timeoutid=setInterval(
             this.props.rootStore.swiftStore.scheduleToken,
-            1000*60*20
+            1000*20
         )
 
     }
@@ -51,47 +53,45 @@ class SwiftTable extends React.Component {
             title: '操作',
             width: 250,
             render: (text, record) => {
-                if(record.isRoot) return;
+                //if(record.isRoot) return;
                 if (/\/$/.test(record.name)) {
                     return (
                         <span>
-                            <Button icon="profile" onClick={this.props.rootStore.swiftStore.showForm(record,'新建文件夹')} size='small'>新建文件夹</Button>
+                            <Button icon="folder-add" onClick={this.props.rootStore.swiftStore.showForm(record,'新建文件夹')} size='small'>新建文件夹</Button>
                             <Divider type="vertical"/>
-                            <Button icon="profile" onClick={this.props.rootStore.swiftStore.showFileForm(record,'上传文件')} size='small'>上传文件</Button>
-                            {
-                                record.name!=='root/'?
-                                    <span>
-                                        <Divider type="vertical"/>
-                                        <Popconfirm onConfirm={this.props.rootStore.swiftStore.delete(record)} title="确认删除?">
-                                            <Button disabled={record.children?true:false} icon="profile" onClick={null} size='small'>删除当前文件夹</Button>
-                                        </Popconfirm>
-                                    </span>
-                                :''
-                            }
-
+                            <Button icon="upload" onClick={this.props.rootStore.swiftStore.showFileForm(record,'上传文件')} size='small'>上传文件</Button>
+                            <span>
+                                <Divider type="vertical"/>
+                                <Popconfirm onConfirm={this.props.rootStore.swiftStore.delete(record)} title="确认删除?">
+                                    <Button disabled={record.children?true:false} icon="delete" onClick={null} size='small'>删除当前文件夹</Button>
+                                </Popconfirm>
+                            </span>
                         </span>
                     );
                 } else {
                     return (
                         <span>
-                            <Button icon="profile" onClick={this.props.rootStore.swiftStore.download(record)} size='small'>下载文件</Button>
+                            <Button icon="download" onClick={this.props.rootStore.swiftStore.download(record)} size='small'>下载文件</Button>
                             <Divider type="vertical"/>
                             <Popconfirm onConfirm={this.props.rootStore.swiftStore.delete(record)} title="确认删除?">
-                                <Button icon="profile"  size='small'>删除文件</Button>
+                                <Button icon="delete"  size='small'>删除文件</Button>
                             </Popconfirm>
                         </span>
                     );
                 }
-
-
             }
         }
-
-
     ];
+
+    format=(p)=>{
+
+
+        return `${p}% `;
+    };
 
     render() {
         const store = this.props.rootStore.swiftStore;
+        let n=convertGiga(this.props.rootStore.swiftStore.total);
         if(!store.hasContainer){
             return (
                 <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.inDowning}>
@@ -122,6 +122,21 @@ class SwiftTable extends React.Component {
                 >
                     <FileForm />
                 </Modal>
+                    <Row gutter={8} className="table-head-row">
+                        <Col span={4}>
+                            <Progress percent={parseFloat((store.total/store.tenG*100).toFixed(2))}
+                                      strokeWidth={20}
+                                      format={this.format}
+                            />
+                        </Col>
+                        <Col span={6} offset={1}><span>{`共10G已使用${n.number}${n.unit}`}</span></Col>
+                        <Col span={3} style={{ textAlign: 'right' }} className="col-button">
+                            <Button onClick={store.showFileForm({name:'/'})} icon="upload" >上传文件</Button>
+                        </Col>
+                        <Col span={4} style={{ textAlign: 'right' }} className="col-button">
+                            <Button onClick={store.showForm({name:'/'})} icon="folder-add" >新建文件夹</Button>
+                        </Col>
+                    </Row>
                 <Table columns={this.columns}
                        rowKey={record => record.name}
                        dataSource={store.rootDir.filter(d => d)}
