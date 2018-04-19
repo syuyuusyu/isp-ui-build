@@ -47,7 +47,7 @@ export class CloudStore{
             this.loading=true;
             this.loadingtest='获取云机状态...'
         });
-        let json=await post(`${baseUrl}/invoke/cloud_servers_info`)
+        let json=await post(`${baseUrl}/invoke/cloud_servers_info`);
         runInAction(()=>{
             if(json.status && json.status===500){
                 this.serverInfo=[];

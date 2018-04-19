@@ -12,6 +12,8 @@ export class SwiftStore{
 
     tenG=10737418240;
 
+    uploadRef;
+
     @observable
     hasContainer=false;
 
@@ -99,6 +101,10 @@ export class SwiftStore{
 
     };
 
+    refUpload=(instance)=>{
+        this.uploadRef=instance;
+    };
+
     @action
     onRemove= (file) => {
         const index = this.fileList.indexOf(file);
@@ -110,6 +116,21 @@ export class SwiftStore{
 
     @action
     beforeUpload= (file) => {
+        console.log(file);
+        if(file.size>1024*1024*1024){
+            notification.error({
+                message:'单个文件不能大于1G'
+            });
+            this.uploadRef.props.props.onRemove();
+            return false;
+        }
+        if((this.total+file.size)>1024*1024*1024*10){
+            notification.error({
+                message:'网盘总量为10G,无法上传该文件,请先清除不必要文件'
+            });
+            this.uploadRef.props.props.onRemove();
+            return false;
+        }
         this.fileList=[...this.fileList,file];
         return false;
     };
@@ -301,7 +322,6 @@ export class SwiftStore{
     };
 
     _compoent=(temps,mertix,currentHierachy,maxLength)=>{
-        console.log(temps);
         if(currentHierachy<maxLength){
             currentHierachy++;
             for(let i=0;i< temps.length;i++){

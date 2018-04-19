@@ -5,7 +5,7 @@ import CreateForm from './createForm';
 import FileForm from './fileForm';
 import '../style.css';
 import {convertGiga} from "../util";
-
+const ButtonGroup = Button.Group;
 //const Option = Select.Option;
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
@@ -20,7 +20,7 @@ class SwiftTable extends React.Component {
         this.props.rootStore.swiftStore.checkContainer();
         this.timeoutid=setInterval(
             this.props.rootStore.swiftStore.scheduleToken,
-            1000*20
+            1000*60*20
         )
 
     }
@@ -130,11 +130,11 @@ class SwiftTable extends React.Component {
                             />
                         </Col>
                         <Col span={6} offset={1}><span>{`共10G已使用${n.number}${n.unit}`}</span></Col>
-                        <Col span={3} style={{ textAlign: 'right' }} className="col-button">
-                            <Button onClick={store.showFileForm({name:'/'})} icon="upload" >上传文件</Button>
-                        </Col>
-                        <Col span={4} style={{ textAlign: 'right' }} className="col-button">
-                            <Button onClick={store.showForm({name:'/'})} icon="folder-add" >新建文件夹</Button>
+                        <Col span={8} style={{ textAlign: 'right' }} className="col-button">
+                            <ButtonGroup>
+                                <Button onClick={store.showFileForm({name:'/'})} icon="upload" >上传文件</Button>
+                                <Button onClick={store.showForm({name:'/'})} icon="folder-add" >新建文件夹</Button>
+                            </ButtonGroup>
                         </Col>
                     </Row>
                 <Table columns={this.columns}
