@@ -16,7 +16,7 @@ class SwiftTable extends React.Component {
     timeoutid=0;
 
     componentDidMount() {
-        this.props.rootStore.swiftStore.scheduleToken();
+        //this.props.rootStore.swiftStore.scheduleToken();
         this.props.rootStore.swiftStore.checkContainer();
         this.timeoutid=setInterval(
             this.props.rootStore.swiftStore.scheduleToken,

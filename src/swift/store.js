@@ -69,10 +69,16 @@ export class SwiftStore{
             notification.error({
                 message:'云平台权限认证失败,请尝试刷新页面或联系管理员'});
         }else{
-            runInAction(() => {
-                this.hasContainer = true;
-            });
-            this.loadRootDir();
+            if(json.filter(d=>d.name===JSON.parse(sessionStorage.getItem("user")).user_name).length===1){
+                runInAction(() => {
+                    this.hasContainer = true;
+                });
+                this.loadRootDir();
+            }else{
+                notification.info({
+                    message:'当前用户未开通网盘,请点击开通'});
+            }
+
         }
     };
 
@@ -116,7 +122,6 @@ export class SwiftStore{
 
     @action
     beforeUpload= (file) => {
-        console.log(file);
         if(file.size>1024*1024*1024){
             notification.error({
                 message:'单个文件不能大于1G'
@@ -194,8 +199,6 @@ export class SwiftStore{
         });
         this.toggleFileFormVisible();
         this.loadRootDir();
-
-
     };
 
 
@@ -315,9 +318,9 @@ export class SwiftStore{
 
         this._compoent(temps,mertix,1,maxLength);
         runInAction(()=>{
-            this.rootDir=temps;
+            this.rootDir=temps?temps:[];
             this.inDowning=false;
-            this.total=json.filter(d=>d).map(d=>d.bytes).reduce((a,b)=>a+b)
+            this.total=json.length===0?0:json.filter(d=>d).map(d=>d.bytes).reduce((a,b)=>a+b)
         });
     };
 
