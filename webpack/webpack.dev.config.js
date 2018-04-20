@@ -9,7 +9,7 @@ const devConfig = {
   entry: {
     app: [
       'babel-polyfill',
-      path.join(__dirname, '../src/index.js')]
+      path.resolve(__dirname, '../src/index.js')]
   },
   output: {
     /*这里本来应该是[chunkhash]的，
@@ -18,7 +18,7 @@ const devConfig = {
   },
   devServer: {
     port: 3000,
-    contentBase: path.join(__dirname, '../dist'),
+    contentBase: path.resolve(__dirname, '../dist'),
     historyApiFallback: true,
     host: '0.0.0.0'
   },

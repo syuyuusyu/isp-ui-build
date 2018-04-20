@@ -15,14 +15,38 @@ const prodConfig = {
       new UglifyJSPlugin({
         cache: true,
         parallel: true,
-        sourceMap: true // set to true if you want JS source maps
+        sourceMap: false // set to true if you want JS source maps
       }),
       new OptimizeCSSAssetsPlugin({})
     ]
   },
   plugins: [
     new CleanWebpackPlugin(['dist/*.*'])
-  ]
+  ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        antd: {
+          chunks: "initial",
+          test: "antd",
+          name: "antd",
+          enforce: true
+        },
+        mobx: {
+          chunks: "initial",
+          test: "mobx",
+          name: "mobx",
+          enforce: true
+        },
+        react: {
+          chunks: "initial",
+          test: "react",
+          name: "react",
+          enforce: true
+        }
+      }
+    }
+  }
 };
 
 module.exports = merge(commonConfig, prodConfig);
