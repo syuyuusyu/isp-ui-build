@@ -15,7 +15,6 @@ class Login extends React.Component {
     this.store = props.rootStore.authorityStore;
   }
 
-
   login = () => {
     this.props.form.validateFields(async (err, values) => {
       if (err) return;
@@ -65,7 +64,6 @@ class Login extends React.Component {
     this.props.form.resetFields();
   };
 
-
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -94,8 +92,8 @@ class Login extends React.Component {
 
             <Row>
               <Col span={24} style={{ textAlign: 'right' }}>
-                <Button icon="login" onClick={this.login} type="primary">我要登录</Button>
-                <Button icon="reload" onClick={this.handleReset}>我要休息</Button>
+                <Button icon="login" onClick={this.login} type="primary">登录</Button>
+                {/* <Button icon="reload" onClick={this.handleReset}>重置</Button> */}
               </Col>
             </Row>
           </Form>

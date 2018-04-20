@@ -24,6 +24,9 @@ const commonConfig = {
   },
   module: {
     rules: [{
+      test: /\.html$/,
+      use: "html-loader"
+    }, {
       test: /\.css$/,
       use: [
         MiniCssExtractPlugin.loader,
@@ -48,40 +51,16 @@ const commonConfig = {
   devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
-      title: "系统综合集成"
-      // filename: 'index.html',
-      // template: path.join(__dirname, './src/index.html')
+      title: "系统综合集成",
+      filename: 'index.html',
+      template: path.resolve(__dirname, '../src/templates/index.html')
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
       chunkFilename: "[id].css"
     }),
     new webpack.HashedModuleIdsPlugin()
-  ],
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        antd: {
-          chunks: "initial",
-          test: "antd",
-          name: "antd",
-          enforce: true
-        },
-        mobx: {
-          chunks: "initial",
-          test: "mobx",
-          name: "mobx",
-          enforce: true
-        },
-        react: {
-          chunks: "initial",
-          test: "react",
-          name: "react",
-          enforce: true
-        }
-      }
-    }
-  }
+  ]
 };
 
 module.exports = commonConfig;
