@@ -20,17 +20,17 @@ const commonConfig = {
     path: path.join(__dirname, '../dist'),
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
-    publicPath: "/"
+    publicPath: '/public/'
   },
   module: {
     rules: [{
       test: /\.html$/,
-      use: "html-loader"
+      use: 'html-loader'
     }, {
       test: /\.css$/,
       use: [
         MiniCssExtractPlugin.loader,
-        "css-loader"
+        'css-loader'
       ]
     }, {
       test: /\.js$/,
