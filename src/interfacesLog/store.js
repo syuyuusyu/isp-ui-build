@@ -130,23 +130,24 @@ export class InterfacesLogStory{
     //console.log("loadQueryLog中json的值为:",json);
     runInAction(() => {
       this.allInterfacesLog = json;
+      this.logTotal=json.length;
     })
   };
 
   @action
-  loadDtailLog=(record)=>(()=>{
+  loadDtailLog=(record)=>{
     const logDate=new Date(record.invoke_date)
     const Y=logDate.getFullYear()+'-';
     const M=(logDate.getMonth()+1 < 10 ? '0'+(logDate.getMonth()+1) : logDate.getMonth()+1) + '-';
-    const D=logDate.getDate()+' ';
-    const h=logDate.getHours()+':';
-    const m=logDate.getMinutes()+':';
-    const s=logDate.getSeconds();
+    const D=(logDate.getDate()<10? '0'+(logDate.getDate()):logDate.getDate())+' ';
+    const h=(logDate.getHours()<10? '0'+(logDate.getHours()):logDate.getHours())+':';
+    const m=(logDate.getMinutes()<10? '0'+(logDate.getMinutes()):logDate.getMinutes())+':';
+    const s=(logDate.getSeconds()<10? '0'+(logDate.getSeconds()):logDate.getSeconds());
     const date=Y+M+D+h+m+s;
     record.invoke_date=date;
     this.logRecord=record;
     this.toggleDetailLog();
-  });
+  };
 
   @action
   toggleDetailLog=()=>{

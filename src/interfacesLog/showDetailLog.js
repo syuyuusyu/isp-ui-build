@@ -34,7 +34,7 @@ render(){
     </Row>
     <Row gutter={24}>
       <Col span={6}>
-        <FormItem  label='请求报文'><textarea readOnly='readOnly' style={{width:'830px',height:'80px'}}>{this.props.rootStore.interfacesLog.logRecord.reqdate_info}</textarea></FormItem>
+        <FormItem  label='请求报文'><textarea readOnly='readOnly' style={{width:'747px',height:'80px'}}>{this.props.rootStore.interfacesLog.logRecord.reqdate_info}</textarea></FormItem>
       </Col>
     </Row>
     <Row gutter={24}>

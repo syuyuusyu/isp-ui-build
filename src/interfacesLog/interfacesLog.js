@@ -31,26 +31,26 @@ class InterfacesLog extends Component{
               const localtime=time.toLocaleString();
               return localtime;*/
 
-              const logDate=new Date(invokeDate);
+             const logDate=new Date(invokeDate);
              const Y=logDate.getFullYear()+'-';
              const M=(logDate.getMonth()+1 < 10 ? '0'+(logDate.getMonth()+1) : logDate.getMonth()+1) + '-';
-             const D=logDate.getDate()+' ';
-             const h=logDate.getHours()+':';
-             const m=logDate.getMinutes()+':';
-             const s=logDate.getSeconds();
+             const D=(logDate.getDate()<10? '0'+(logDate.getDate()):logDate.getDate())+' ';
+             const h=(logDate.getHours()<10? '0'+(logDate.getHours()):logDate.getHours())+':';
+             const m=(logDate.getMinutes()<10? '0'+(logDate.getMinutes()):logDate.getMinutes())+':';
+             const s=(logDate.getSeconds()<10? '0'+(logDate.getSeconds()):logDate.getSeconds());
              const date=Y+M+D+h+m+s;
              return date;
            }
     },
-    {title:'操作' ,width:100,
+  /*  {title:'操作' ,width:100,
       render:(record)=>{
       return(
         <span>
-          <Button icon='eye-o' onClick={this.props.rootStore.interfacesLog.loadDtailLog(record)} size='small'>查看</Button>
+          <Button icon='eye-o' onClick={null} size='small'>查看</Button>
         </span>
       );
       }
-    }
+    }*/
     ];
    componentDidMount(){
 
@@ -58,6 +58,10 @@ class InterfacesLog extends Component{
     this.props.rootStore.interfacesLog.initAllsystem();
     this.props.rootStore.interfacesLog.initAllstatus();
   }
+  /*componentDidUpdate(){
+    this.props.rootStore.interfacesLog.initAllsystem();
+    this.props.rootStore.interfacesLog.initAllstatus();
+  }*/
 
   render(){
 
@@ -128,14 +132,14 @@ class InterfacesLog extends Component{
              showQuickJumper:true,
              showTotal:(total)=>`总共 ${total}条`
            }}
-/*           onRow={(record) => {
+           onRow={(record) => {
              return {
-               onClick: store.loadDtailLog,
-
-               //onClick:store.loadLogRecord,
+               onClick: ()=>{
+                store.loadDtailLog(record);
+               }
              };
            }
-           }*/
+           }
 
     >
     </Table>
