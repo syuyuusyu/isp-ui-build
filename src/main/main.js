@@ -101,12 +101,12 @@ class Main extends Component {
 
           </Header>
           <Layout>
-            <Sider width={200} style={{ background: '#fff' }}>
-              <MenuTree />
-            </Sider>
+            {/* <Sider width={200} style={{ background: '#fff' }}> */}
+            <MenuTree />
+            {/* </Sider> */}
             <Layout style={{ padding: '0 12px 12px' }}>
               <Breadcrumb style={{ margin: '16px 0' }}>
-                <Breadcrumb.Item><NavLink to="/">#</NavLink></Breadcrumb.Item>
+                <Breadcrumb.Item><NavLink to="/"><Icon type="home" /></NavLink></Breadcrumb.Item>
                 {
                   treeStore.currentRoute.map(c => {
                     if (c.path) {
