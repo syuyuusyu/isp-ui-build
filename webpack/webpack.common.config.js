@@ -10,7 +10,7 @@ const commonConfig = {
       'babel-polyfill',
       path.join(__dirname, '../src/index.js')
     ],
-    antd: ['antd'],
+    //antd: ['antd'],
     react: ['react', 'react-router-dom', 'react-dom'],
     mobx: ['mobx', 'mobx-react']
     //vendor: ['react', 'react-router-dom', 'react-dom', 'mobx', 'mobx-react', 'antd']

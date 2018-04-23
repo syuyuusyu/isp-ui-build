@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Form, Button, notification, Input, Row, Col,Modal } from 'antd';
+import { Form, Button, notification, Input, Row, Col, Modal } from 'antd';
 import { baseUrl } from '../util';
 import './login-3.css';
 import UserRegisterForm from '../signUp/userRegisterForm';
@@ -19,12 +19,12 @@ class Login extends React.Component {
     this.props.form.validateFields(async (err, values) => {
       if (err) return;
       let response = await fetch(`${baseUrl}/login`, {
-          method: 'POST',
-          headers: new Headers({
-            'Content-Type': 'application/json'
-          }),
-          body: JSON.stringify(values),
-        }
+        method: 'POST',
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        }),
+        body: JSON.stringify(values),
+      }
       );
       let json = await response.json();
       switch (json.msg) {
@@ -91,20 +91,20 @@ class Login extends React.Component {
             </Row>
             <Row >
               <Col span={25} style={{ textAlign: 'center' }} >
-                <Button icon="login" onClick={this.login} type="primary">我要登录</Button>
-                <Button icon="reload" onClick={this.handleReset}>我要休息</Button>
+                <Button icon="login" onClick={this.login}>登录</Button>
+                {/* <Button icon="reload" onClick={this.handleReset}>我要休息</Button> */}
                 <Button icon="user" onClick={this.store.toggleRegFormVisible}>注册</Button>
               </Col>
             </Row>
           </Form>
         </div>
         <Modal visible={this.store.regFormVisible}
-               width={500}
-               title="用户注册"
-               footer={null}
-               onCancel={this.store.toggleRegFormVisible}
-               maskClosable={false}
-               destroyOnClose={true}
+          width={500}
+          title="用户注册"
+          footer={null}
+          onCancel={this.store.toggleRegFormVisible}
+          maskClosable={false}
+          destroyOnClose={true}
         >
           <UserRegisterForm />
         </Modal>
