@@ -88,7 +88,8 @@ export  function request (method, url, body) {
     })
         .then((res) => {
             if (res.status === 401) {
-                //hashHistory.push('/login');
+                sessionStorage.clear();
+                window.history.go('/login');
                 return Promise.reject('Unauthorized.');
             } else {
                 const token = res.headers.get('access-token');

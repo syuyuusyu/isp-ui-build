@@ -32,6 +32,7 @@ export class TreeStore{
         let json=await get(`${baseUrl}/menu/menuTree`);
         runInAction(()=>{
           this.menuTreeData=json;
+            this.currentRoleMenu=[];
         });
         this.initMenuTreeData(json);
     };

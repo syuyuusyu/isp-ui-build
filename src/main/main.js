@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 //import LeftTree from './leftTree';
-import { Layout, Breadcrumb, Avatar, Popover, Button, Card, Modal, Badge } from 'antd';
+import { Layout, Breadcrumb, Avatar, Popover, Button, Card, Modal, Badge ,Icon} from 'antd';
 import { inject, observer } from 'mobx-react';
 //import SubContent from "./subContent";
 //import InvkeGrid3 from "../invoke";
@@ -42,12 +42,10 @@ class Main extends Component {
   }
 
 
-
   render() {
     const treeStore = this.props.rootStore.treeStore;
     const authoritySyore = this.props.rootStore.authorityStore;
     const content = (
-
       <div style={{ background: '#ECECEC', padding: '2px' }}>
         <Card bordered={false} style={{ width: 300 }}>
           <Button icon="notification" onClick={this.props.rootStore.notificationStore.toggleMessageTableVisible}>
@@ -120,7 +118,7 @@ class Main extends Component {
               </Breadcrumb>
               <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
                 <div>
-                  <Switch>
+
                     <Route exact path="/" component={SysConnect} />
                     {
                       this.props.rootStore.treeStore.currentRoleMenu
@@ -132,12 +130,13 @@ class Main extends Component {
                             component={require('../' + m.page_path)[m.page_class]} />
                         )
                     }
-                  </Switch>
+
                 </div>
               </Content>
             </Layout>
           </Layout>
         </Layout>
+
       </div>
     );
   }
