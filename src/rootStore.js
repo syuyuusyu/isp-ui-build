@@ -14,6 +14,7 @@ import {InterfacesLogStory} from "./interfacesLog/store";
 import NotificationSotre from "./notification/store";
 import {DataUserStore} from './datauser';
 import {DataSpaceStore} from './dataspace';
+import {SystemLogStore} from "./systemLog/store";
 
 
 
@@ -41,7 +42,7 @@ export default class RootStore {
         this.interfacesLog=new InterfacesLogStory(this);
         this.dataUserStore=new DataUserStore(this);
         this.dataSpaceStore=new DataSpaceStore(this);
-
+        this.systemLogStore=new SystemLogStore(this);
     }
 }
 
