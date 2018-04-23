@@ -20,7 +20,7 @@ const commonConfig = {
     path: path.join(__dirname, '../dist'),
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
-    publicPath: '/public/'
+    publicPath: ''
   },
   module: {
     rules: [{
