@@ -90,6 +90,7 @@ export class ButtonStore{
     });
 
     deleteButton=(id)=>(async ()=>{
+      console.log("dddswwq");
         let json=await del(`${baseUrl}/btn/delete/${id}`);
         if(json.success){
             notification.success({
