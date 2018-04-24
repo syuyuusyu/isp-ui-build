@@ -8,14 +8,14 @@
   "dependencies": {
     "antd": "^3.4.1",
     "codemirror": "^5.36.0",
-    "mobx": "^3.6.1",
-    "mobx-react": "^4.4.3",
     "react": "^16.3.1",
     "react-codemirror2": "^4.2.1",
     "react-dom": "^16.3.1",
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
+    "mobx": "^4.2.0",
+    "mobx-react": "^5.0.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-plugin-import": "^1.7.0",

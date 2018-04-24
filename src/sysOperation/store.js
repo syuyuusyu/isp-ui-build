@@ -1,9 +1,9 @@
-import {observable, useStrict,action,runInAction,} from 'mobx';
+import {observable, configure,action,runInAction,} from 'mobx';
 import {message,notification} from 'antd';
 import {baseUrl,get,del} from '../util';
 
 
-useStrict(true);
+configure({ enforceActions: true });
 
 export class SysOperationStore{
 

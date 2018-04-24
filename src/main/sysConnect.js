@@ -26,7 +26,7 @@ class SysConnect extends React.Component{
                                             <Col span={4} key={col.id}>
                                                 {
                                                     col.operations.filter(o=>o.type===1).length>0
-                                                    ?<a  target="_blank" href={`${col.url}${col.operations.filter(o=>o.type===1).map(o=>o.path)[0]}?token=${col.token}`} >{col.name}</a>
+                                                    ?<a  target="_blank" href={`${col.url}${col.operations.filter(o=>o.type===1).map(o=>o.path)[0]}?ispToken=${col.token}`} >{col.name}</a>
                                                     :col.name
                                                 }
 

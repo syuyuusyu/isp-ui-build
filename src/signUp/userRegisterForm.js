@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { Form, Row, Col, Input, Button ,Modal,Progress, Tooltip} from 'antd';
 import {baseUrl, get} from "../util";
-import {inject, observer} from "mobx-react/index";
+import {inject, observer} from "mobx-react";
 
 const FormItem = Form.Item;
 

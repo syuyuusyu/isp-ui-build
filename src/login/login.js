@@ -69,7 +69,7 @@ class Login extends React.Component {
     return (
       <div className="login">
         <div className="logo">
-          <img src="../../public/images/logo-big.png" alt="logo" />
+          <img src="../assets/images/logo-big.png" alt="logo" />
         </div>
         <div className="content">
           <Form className="login-form">

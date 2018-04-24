@@ -47,6 +47,7 @@ class Main extends Component {
   render() {
     const treeStore = this.props.rootStore.treeStore;
     const authoritySyore = this.props.rootStore.authorityStore;
+
     const content = (
       <div style={{ background: '#ECECEC', padding: '2px' }}>
         <Card bordered={false} style={{ width: 300 }}>
