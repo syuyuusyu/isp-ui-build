@@ -88,6 +88,7 @@ export  function request (method, url, body) {
     })
         .then((res) => {
             if (res.status === 401) {
+                console.log('token失效!!');
                 sessionStorage.clear();
                 window.history.go('/login');
                 return Promise.reject('Unauthorized.');

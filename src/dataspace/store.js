@@ -1,7 +1,7 @@
-import {observable, useStrict,action,runInAction,} from 'mobx';
+import {observable, configure,action,runInAction,} from 'mobx';
 import {baseUrl, get, post} from '../util';
 import {notification} from 'antd';
-useStrict(true);
+configure({ enforceActions: true });
 
 
 export class DataSpaceStore {

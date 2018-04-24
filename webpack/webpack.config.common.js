@@ -55,7 +55,8 @@ const commonConfig = {
     new HtmlWebpackPlugin({
       title: "系统综合集成",
       filename: 'index.html',
-      template: path.resolve(__dirname, '../src/templates/index.html')
+      template: path.resolve(__dirname, '../src/templates/index.html'),
+        mobx: path.resolve(__dirname, 'node_modules/mobx')
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",

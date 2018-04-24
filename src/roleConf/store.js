@@ -1,10 +1,10 @@
-import {observable, useStrict,action,runInAction,} from 'mobx';
+import {observable, configure,action,runInAction,} from 'mobx';
 import {notification,Divider,Popconfirm,} from 'antd';
 import {baseUrl, get, del, post} from '../util';
 import RoleButton from '../roleButton';
 import React from 'react';
 
-useStrict(true);
+configure({ enforceActions: true });
 
 export class RoleStore{
 
