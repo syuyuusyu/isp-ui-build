@@ -1,6 +1,6 @@
 const path = require('path');
 const merge = require('webpack-merge');
-const commonConfig = require('./webpack.common.config');
+const commonConfig = require('./webpack.config.common');
 
 const devConfig = {
   mode: 'development',
@@ -17,10 +17,14 @@ const devConfig = {
     filename: '[name].[hash].js'
   },
   devServer: {
+    host: '0.0.0.0',
     port: 3000,
     contentBase: path.resolve(__dirname, '../dist'),
-    historyApiFallback: true,
-    host: '0.0.0.0'
+    historyApiFallback: { index: '/public/index.html' },
+    publicPath: '/public/',
+    overlay: {
+      errors: true
+    },
   },
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Form, Button, notification, Input, Row, Col, Modal } from 'antd';
+import { Icon, Form, Button, notification, Input, Row, Col, Modal } from 'antd';
 import { baseUrl } from '../util';
 import './login-3.css';
 import UserRegisterForm from '../signUp/userRegisterForm';
@@ -79,14 +79,16 @@ class Login extends React.Component {
                 {getFieldDecorator('user_name', {
                   rules: [{ required: true, message: '用户名不能为空' }],
                   validateTrigger: 'onBlur',
-                })(<Input placeholder="请输入用户名" />)}
+                })
+                  (<Input prefix={<Icon type="user" />} placeholder="请输入用户名" />)}
               </FormItem>
             </Row>
             <Row>
               <FormItem label="密码">
                 {getFieldDecorator('passwd', {
                   rules: [{ required: true, message: '密码不能为空' }],
-                })(<Input placeholder="请输入密码" />)}
+                })
+                  (<Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />)}
               </FormItem>
             </Row>
             <Row >
