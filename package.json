@@ -41,11 +41,33 @@
     "webpack-merge": "^4.1.2",
     "xml-loader": "^1.2.1"
   },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react",
+      "stage-0"
+    ],
+    "plugins": [
+      "transform-decorators-legacy",
+      [
+        "import",
+        {
+          "libraryName": "antd",
+          "libraryDirectory": "es",
+          "style": "css"
+        }
+      ]
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@10.150.10.10:bbq191/isp-ui-build.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src --ext .js",
-    "dev-build": "webpack --mode=development --config webpack.dev.config.js",
-    "start": "webpack-dev-server --config ./webpack/webpack.dev.config.js --display-modules --sort-modules-by size --progress",
-    "build": "webpack --mode=production --config ./webpack/webpack.prod.config.js --display-modules --sort-modules-by size --progress"
+    "dev-build": "webpack --mode=development --config webpack.config.dev.js",
+    "start": "webpack-dev-server --config ./webpack/webpack.config.dev.js --display-modules",
+    "build": "webpack --mode=production --config ./webpack/webpack.config.prod.js --display-modules --sort-modules-by size --progress"
   }
 }
