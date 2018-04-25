@@ -4,7 +4,9 @@ Login page
 ***/
 /* logo page */
 .login {
-  background-color: #a0b4c9 !important;
+  /*background-color: #a0b4c9 !important;*/
+  background-image: url("../assets/images/login_bg.jpg");
+  background-size: 100% 100%;
   height: 100%; }
 
 .login .logo {
@@ -14,6 +16,7 @@ Login page
 
 .login .content {
   background-color: #fff;
+  background:rgba(255,255,255,0.9);
   width: 360px;
   margin: 0 auto;
   margin-bottom: 0px;
@@ -59,11 +62,16 @@ Login page
   display: none; }
 
 .login .content .form-title {
-  font-weight: 300;
-  margin-bottom: 25px; }
+  font-weight: bold;
+  text-align: center;
+  color:#4c96df;
+  font-size: 18px;
+  margin-top:20px;
+  margin-bottom: 10px; }
 
 .login .content .form-actions {
   background-color: #fff;
+  background:rgba(255,255,255,0.9);
   clear: both;
   border: 0px;
   border-bottom: 1px solid #eee;
@@ -100,6 +108,12 @@ Login page
   display: inline-block;
   margin-top: 5px; }
 
+/*user name margin*/
+.login .user-name{margin-bottom:10px}
+
+/*login button*/
+.login .login-button{width: 300px;margin-bottom: 30px;margin-top: 10px;}
+
 /* select2 dropdowns */
 .login .content .select2-container {
   border-left: 2px solid #44B6AE !important; }
@@ -134,7 +148,7 @@ Login page
   margin: 0 auto;
   padding: 10px;
   color: #999;
-  font-size: 13px; }
+  font-size: 12px; }
 
 @media (max-width: 480px) {
   /***

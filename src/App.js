@@ -7,7 +7,7 @@ import DevTools from 'mobx-react-devtools'
 class App extends Component {
   render() {
     return (
-        <div>
+        <div style={{ height: "100%" }}>
             <Main/>
         </div>
     );

@@ -3,7 +3,6 @@ import { inject, observer } from 'mobx-react';
 import { Icon, Form, Button, notification, Input, Row, Col, Modal } from 'antd';
 import { baseUrl } from '../util';
 import './login-3.css';
-import UserRegisterForm from '../signUp/userRegisterForm';
 
 const FormItem = Form.Item;
 
@@ -75,7 +74,7 @@ class Login extends React.Component {
           <Form className="login-form">
             <h3 className="form-title">使用账号密码登录</h3>
             <Row>
-              <FormItem label="用户名">
+              <FormItem label="用户名" className="user-name">
                 {getFieldDecorator('user_name', {
                   rules: [{ required: true, message: '用户名不能为空' }],
                   validateTrigger: 'onBlur',
@@ -92,24 +91,14 @@ class Login extends React.Component {
               </FormItem>
             </Row>
             <Row >
-              <Col span={25} style={{ textAlign: 'center' }} >
-                <Button icon="login" onClick={this.login}>登录</Button>
+              <Col span={25}  >
+                <Button icon="login" className="login-button" onClick={this.login}>登录</Button>
                 {/* <Button icon="reload" onClick={this.handleReset}>我要休息</Button> */}
-                <Button icon="user" onClick={this.store.toggleRegFormVisible}>注册</Button>
+                {/* <Button icon="user" onClick={this.store.toggleRegFormVisible}>注册</Button>*/}
               </Col>
             </Row>
           </Form>
         </div>
-        <Modal visible={this.store.regFormVisible}
-          width={500}
-          title="用户注册"
-          footer={null}
-          onCancel={this.store.toggleRegFormVisible}
-          maskClosable={false}
-          destroyOnClose={true}
-        >
-          <UserRegisterForm />
-        </Modal>
       </div>
 
     );
