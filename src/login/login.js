@@ -87,7 +87,7 @@ class Login extends React.Component {
                 {getFieldDecorator('passwd', {
                   rules: [{ required: true, message: '密码不能为空' }],
                 })
-                  (<Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />)}
+                  (<Input prefix={<Icon type="lock" />} type="password" autoComplete="password" placeholder="请输入密码" />)}
               </FormItem>
             </Row>
             <Row >

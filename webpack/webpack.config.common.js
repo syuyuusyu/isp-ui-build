@@ -11,7 +11,7 @@ const commonConfig = {
       path.resolve(__dirname, '../src/index.js')
     ],
     //antd: ['antd'],
-    react: ['react', 'react-router-dom', 'react-dom'],
+    //react: ['react', 'react-router-dom', 'react-dom'],
     //mobx: ['mobx', 'mobx-react']
     //vendor: ['react', 'react-router-dom', 'react-dom', 'mobx', 'mobx-react', 'antd']
   },
@@ -56,7 +56,7 @@ const commonConfig = {
       title: "系统综合集成",
       filename: 'index.html',
       template: path.resolve(__dirname, '../src/templates/index.html'),
-        mobx: path.resolve(__dirname, 'node_modules/mobx')
+      mobx: path.resolve(__dirname, 'node_modules/mobx')
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
