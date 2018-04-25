@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { Icon, Form, Button, notification, Input, Row, Col, Modal } from 'antd';
 import { baseUrl } from '../util';
 import './login-3.css';
+import logo from '../assets/images/logo.png';
 
 const FormItem = Form.Item;
 
@@ -68,7 +69,7 @@ class Login extends React.Component {
     return (
       <div className="login">
         <div className="logo">
-          <img src="../assets/images/logo-big.png" alt="logo" />
+          <img src={logo} alt="logo" />
         </div>
         <div className="content">
           <Form className="login-form">
@@ -92,7 +93,7 @@ class Login extends React.Component {
             </Row>
             <Row >
               <Col span={25}  >
-                <Button icon="login" className="login-button" onClick={this.login}>登录</Button>
+                <Button type="primary" icon="login" className="login-button" onClick={this.login}>登录</Button>
                 {/* <Button icon="reload" onClick={this.handleReset}>我要休息</Button> */}
                 {/* <Button icon="user" onClick={this.store.toggleRegFormVisible}>注册</Button>*/}
               </Col>
