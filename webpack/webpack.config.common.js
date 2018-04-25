@@ -12,7 +12,7 @@ const commonConfig = {
     ],
     //antd: ['antd'],
     react: ['react', 'react-router-dom', 'react-dom'],
-    mobx: ['mobx', 'mobx-react']
+    //mobx: ['mobx', 'mobx-react']
     //vendor: ['react', 'react-router-dom', 'react-dom', 'mobx', 'mobx-react', 'antd']
   },
   /*输出到dist文件夹，输出文件名字为bundle.js*/
