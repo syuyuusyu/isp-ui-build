@@ -63,7 +63,7 @@ class Main extends Component {
       return (
         <Layout style={{ height: "100%" }}>
           <Login />
-          <Footer style={{ textAlign: "center",height:"50px",padding:"0",lineHeight:"50px" }}>  © 2018 云南省地矿测绘院 - 地质大数据麒麟区建设平台 </Footer>
+          <Footer style={{ textAlign: "center",height:"50px",padding:"0",lineHeight:"50px"}}>  © 2018 云南省地矿测绘院 - 地质大数据麒麟区建设平台 </Footer>
         </Layout>
       );
     }

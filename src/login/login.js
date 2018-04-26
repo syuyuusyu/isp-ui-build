@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { Icon, Form, Button, notification, Input, Row, Col, Modal } from 'antd';
 import { baseUrl } from '../util';
 import './login-3.css';
+import Logo from  '../assets/images/logo.png'
 
 const FormItem = Form.Item;
 
@@ -67,12 +68,13 @@ class Login extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="login">
-        <div className="logo">
-          <img src="../assets/images/logo-big.png" alt="logo" />
-        </div>
+
         <div className="content">
           <Form className="login-form">
-            <h3 className="form-title">使用账号密码登录</h3>
+            <div className="logo-title">
+              <img src={Logo} />
+              <h3>系统综合集成平台</h3>
+            </div>
             <Row>
               <FormItem label="用户名" className="user-name">
                 {getFieldDecorator('user_name', {

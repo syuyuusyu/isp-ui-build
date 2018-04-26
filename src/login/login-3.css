@@ -5,21 +5,42 @@ Login page
 /* logo page */
 .login {
   /*background-color: #a0b4c9 !important;*/
-  background-image: url("../assets/images/login_bg.jpg");
-  background-size: 100% 100%;
   height: 100%; }
 
-.login .logo {
-  margin: 60px auto 20px auto;
-  padding: 15px;
-  text-align: center; }
+/*backgroundimage*/
+.ant-layout{
+  background-image: url("../assets/images/login_bg02.jpg");
+  background-size: 100% 100%;
+}
+
+.login .logo-title {
+  width:184px;
+  margin:20px auto;
+  overflow: hidden;
+  height:30px;
+
+}
+
+.logo-title img{width:30px;height:30px;float:left;}
+.logo-title h3{
+  font-weight: bold;
+  color:#4c96df;
+  font-size: 18px;
+  float:left;
+  line-height:30px;
+  margin:0;
+  margin-left:10px;
+}
 
 .login .content {
+  float:right;
   background-color: #fff;
-  background:rgba(255,255,255,0.9);
+  /*background:rgba(255,255,255,0.9);*/
   width: 360px;
-  margin: 0 auto;
-  margin-bottom: 0px;
+  position:absolute;
+  top:50%;
+  right:160px;
+  transform: translateY(-55%);
   padding: 30px;
   padding-top: 20px;
   padding-bottom: 15px;
@@ -28,9 +49,6 @@ Login page
   -ms-border-radius: 7px;
   -o-border-radius: 7px;
   border-radius: 7px; }
-
-.login .content h3 {
-  color: #000; }
 
 .login .content h4 {
   color: #555; }
@@ -60,14 +78,6 @@ Login page
 
 .login .content .register-form {
   display: none; }
-
-.login .content .form-title {
-  font-weight: bold;
-  text-align: center;
-  color:#4c96df;
-  font-size: 18px;
-  margin-top:20px;
-  margin-bottom: 10px; }
 
 .login .content .form-actions {
   background-color: #fff;
@@ -142,6 +152,12 @@ Login page
 .login .content .select2-container a span img {
   margin-left: 4px; }
 
+/*footer opacity*/
+.ant-layout-footer{
+  background-color:white;
+  /*background:rgba(255,255,255,0.8);*/
+}
+
 /* footer copyright */
 .login .copyright {
   text-align: center;
@@ -154,8 +170,6 @@ Login page
   /***
   Login page
   ***/
-  .login .logo {
-    margin-top: 10px; }
   .login .content {
     width: auto; }
   .login .content h3 {
