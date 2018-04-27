@@ -3,7 +3,9 @@ import { inject, observer } from 'mobx-react';
 import { Icon, Form, Button, notification, Input, Row, Col, Modal } from 'antd';
 import { baseUrl } from '../util';
 import './login-3.css';
+
 import Logo from  '../assets/images/logo.png'
+
 
 const FormItem = Form.Item;
 
@@ -68,7 +70,9 @@ class Login extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="login">
-
+        <div className="logo">
+          <img src={Logo} alt="logo" />
+        </div>
         <div className="content">
           <Form className="login-form">
             <div className="logo-title">
@@ -89,12 +93,12 @@ class Login extends React.Component {
                 {getFieldDecorator('passwd', {
                   rules: [{ required: true, message: '密码不能为空' }],
                 })
-                  (<Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />)}
+                  (<Input prefix={<Icon type="lock" />} type="password" autoComplete="password" placeholder="请输入密码" />)}
               </FormItem>
             </Row>
             <Row >
               <Col span={25}  >
-                <Button icon="login" className="login-button" onClick={this.login}>登录</Button>
+                <Button type="primary" icon="login" className="login-button" onClick={this.login}>登录</Button>
                 {/* <Button icon="reload" onClick={this.handleReset}>我要休息</Button> */}
                 {/* <Button icon="user" onClick={this.store.toggleRegFormVisible}>注册</Button>*/}
               </Col>
