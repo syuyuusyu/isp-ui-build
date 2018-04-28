@@ -15,7 +15,12 @@ import NotificationSotre from "./notification/store";
 import {DataUserStore} from './datauser';
 import {DataSpaceStore} from './dataspace';
 import {SystemLogStore} from "./systemLog/store";
+
 import {DashBoardStore} from './dashboard';
+
+import {DaibanLogStore} from "./daibanLog/store";
+import {SignUpStore} from "./signUp/store";
+
 
 
 
@@ -44,7 +49,12 @@ export default class RootStore {
         this.dataUserStore=new DataUserStore(this);
         this.dataSpaceStore=new DataSpaceStore(this);
         this.systemLogStore=new SystemLogStore(this);
+
         this.dashBoardStore=new DashBoardStore(this);
+
+        this.daibanLogStore=new DaibanLogStore(this);
+        this.signUpStore=new SignUpStore(this);
+
     }
 }
 

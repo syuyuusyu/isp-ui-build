@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 //import LeftTree from './leftTree';
 
-import { Layout, Breadcrumb, Avatar, Popover, Button, Card, Modal, Badge,Icon } from 'antd';
+import { Layout, Breadcrumb, Avatar, Popover, Button, Card, Modal, Badge, Icon } from 'antd';
 
 import { inject, observer } from 'mobx-react';
 //import SubContent from "./subContent";
@@ -12,6 +12,7 @@ import { Login } from '../login';
 import MenuTree from './menuTree';
 import SysConnect from './sysConnect';
 import { ApplyPlatform, MessageTable } from "../notification";
+import UserRegisterForm from '../signUp/userRegisterForm'
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -54,7 +55,7 @@ class Main extends Component {
         <Card bordered={false} style={{ width: 300 }}>
           <Button icon="notification" onClick={this.props.rootStore.notificationStore.toggleMessageTableVisible}>
             您有{this.props.rootStore.notificationStore.messages.filter(d => d).length}条代办事项,点击查看
-                    </Button>
+          </Button>
           <Button icon="unlock" onClick={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}>申请平台访问权限</Button>
           <Button icon="logout" onClick={this.props.rootStore.authorityStore.logout}>退出</Button>
         </Card>
@@ -62,9 +63,11 @@ class Main extends Component {
     );
     if (authoritySyore.loginVisible) {
       return (
-        <Layout style={{ height: "800%" }}>
-          <Login />
-          <Footer style={{ textAlign: "center" }}>  © 2018 云南省地矿测绘院 - 地质大数据麒麟区建设平台 </Footer>
+        <Layout style={{ height: "100%" }}>
+          <Route exact path="/register" component={UserRegisterForm} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/" component={Login} />
+          <Footer style={{ textAlign: "center", height: "50px", padding: "0", lineHeight: "50px" }}>  © 2018 云南地质大数据服务平台 </Footer>
         </Layout>
       );
     }
@@ -122,19 +125,17 @@ class Main extends Component {
               </Breadcrumb>
               <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
                 <div>
-
-                    <Route exact path="/" component={SysConnect} />
-                    {
-                      this.props.rootStore.treeStore.currentRoleMenu
-                        .filter(d => d)
-                        .filter(m => m.path)
-                        .map(m =>
-                          <Route key={m.id} exact
-                            path={m.path + (m.path_holder ? m.path_holder : '')}
-                            component={require('../' + m.page_path)[m.page_class]} />
-                        )
-                    }
-
+                  <Route exact path="/" component={SysConnect} />
+                  {
+                    this.props.rootStore.treeStore.currentRoleMenu
+                      .filter(d => d)
+                      .filter(m => m.path)
+                      .map(m =>
+                        <Route key={m.id} exact
+                          path={m.path + (m.path_holder ? m.path_holder : '')}
+                          component={require('../' + m.page_path)[m.page_class]} />
+                      )
+                  }
                 </div>
               </Content>
             </Layout>

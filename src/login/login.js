@@ -1,9 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
-import { Icon, Form, Button, notification, Input, Row, Col, Modal } from 'antd';
+import { Icon,Form, Button, notification, Input, Row, Col,Modal, Checkbox } from 'antd';
 import { baseUrl } from '../util';
 import './login-3.css';
-import UserRegisterForm from '../signUp/userRegisterForm';
+//import UserRegisterForm from '../signUp/userRegisterForm';
+import Logo from  '../assets/images/logo.png'
 
 const FormItem = Form.Item;
 
@@ -70,13 +72,18 @@ class Login extends React.Component {
     return (
       <div className="login">
         <div className="logo">
-          <img src={require('../assets/images/logo-big.png')} alt="logo" />
+
+          <img src={Logo} alt="logo" />
+
         </div>
         <div className="content">
           <Form className="login-form">
-            <h3 className="form-title">使用账号密码登录</h3>
+            <div className="logo-title">
+              <img src={Logo} />
+              <h3>系统综合集成平台</h3>
+            </div>
             <Row>
-              <FormItem label="用户名">
+              <FormItem label="用户名" className="user-name">
                 {getFieldDecorator('user_name', {
                   rules: [{ required: true, message: '用户名不能为空' }],
                   validateTrigger: 'onBlur',
@@ -89,28 +96,24 @@ class Login extends React.Component {
                 {getFieldDecorator('passwd', {
                   rules: [{ required: true, message: '密码不能为空' }],
                 })
-                  (<Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />)}
+                  (<Input prefix={<Icon type="lock" />} type="password" autoComplete="password" placeholder="请输入密码" />)}
               </FormItem>
+              <Row>
+                <Col span={25} style={{ textAlign: 'center' }}>
+                  <Checkbox>记住我</Checkbox>
+                </Col>
+              </Row>
             </Row>
             <Row >
-              <Col span={25} style={{ textAlign: 'center' }} >
-                <Button icon="login" onClick={this.login}>登录</Button>
+              <Col span={25}  >
+                <Button type="primary" icon="login" className="login-button" onClick={this.login}>登录</Button>
+                &nbsp;Or <Link to="/register">注册</Link>
                 {/* <Button icon="reload" onClick={this.handleReset}>我要休息</Button> */}
-                <Button icon="user" onClick={this.store.toggleRegFormVisible}>注册</Button>
+                {/* <Button icon="user" onClick={this.store.toggleRegFormVisible}>注册</Button>*/}
               </Col>
             </Row>
           </Form>
         </div>
-        <Modal visible={this.store.regFormVisible}
-          width={500}
-          title="用户注册"
-          footer={null}
-          onCancel={this.store.toggleRegFormVisible}
-          maskClosable={false}
-          destroyOnClose={true}
-        >
-          <UserRegisterForm />
-        </Modal>
       </div>
 
     );
