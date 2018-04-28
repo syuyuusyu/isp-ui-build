@@ -10,6 +10,7 @@ import { Login } from '../login';
 import MenuTree from './menuTree';
 import SysConnect from './sysConnect';
 import { ApplyPlatform, MessageTable } from "../notification";
+import UserRegisterForm from '../signUp/userRegisterForm'
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -61,7 +62,9 @@ class Main extends Component {
     if (authoritySyore.loginVisible) {
       return (
         <Layout style={{ height: "800%" }}>
-          <Login />
+          <Route exact path="/register" component={UserRegisterForm} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/" component={Login} />
           <Footer style={{ textAlign: "center" }}>  © 2018 云南省地矿测绘院 - 地质大数据麒麟区建设平台 </Footer>
         </Layout>
       );

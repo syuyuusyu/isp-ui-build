@@ -16,6 +16,7 @@ import {DataUserStore} from './datauser';
 import {DataSpaceStore} from './dataspace';
 import {SystemLogStore} from "./systemLog/store";
 import {DaibanLogStore} from "./daibanLog/store";
+import {SignUpStore} from "./signUp/store";
 
 
 
@@ -45,6 +46,7 @@ export default class RootStore {
         this.dataSpaceStore=new DataSpaceStore(this);
         this.systemLogStore=new SystemLogStore(this);
         this.daibanLogStore=new DaibanLogStore(this);
+        this.signUpStore=new SignUpStore(this);
     }
 }
 

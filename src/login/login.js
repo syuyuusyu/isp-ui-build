@@ -1,9 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
-import { Form, Button, notification, Input, Row, Col,Modal } from 'antd';
+import { Form, Button, notification, Input, Row, Col,Modal, Checkbox } from 'antd';
 import { baseUrl } from '../util';
 import './login-3.css';
-import UserRegisterForm from '../signUp/userRegisterForm';
+//import UserRegisterForm from '../signUp/userRegisterForm';
 
 const FormItem = Form.Item;
 
@@ -88,26 +89,21 @@ class Login extends React.Component {
                   rules: [{ required: true, message: '密码不能为空' }],
                 })(<Input placeholder="请输入密码" />)}
               </FormItem>
+              <Row>
+                <Col span={25} style={{ textAlign: 'center' }}>
+                  <Checkbox>记住我</Checkbox>
+                </Col>
+              </Row>
             </Row>
             <Row >
               <Col span={25} style={{ textAlign: 'center' }} >
                 <Button icon="login" onClick={this.login} type="primary">我要登录</Button>
-                <Button icon="reload" onClick={this.handleReset}>我要休息</Button>
-                <Button icon="user" onClick={this.store.toggleRegFormVisible}>注册</Button>
+                &nbsp;Or <Link to="/register">register now!</Link>
+               {/* <Button icon="reload" onClick={this.handleReset}>我要休息</Button>*/}
               </Col>
             </Row>
           </Form>
         </div>
-        <Modal visible={this.store.regFormVisible}
-               width={500}
-               title="用户注册"
-               footer={null}
-               onCancel={this.store.toggleRegFormVisible}
-               maskClosable={false}
-               destroyOnClose={true}
-        >
-          <UserRegisterForm />
-        </Modal>
       </div>
 
     );
