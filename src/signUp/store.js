@@ -1,9 +1,8 @@
-import {observable,action,runInAction,} from 'mobx';
+import {configure,observable,action,runInAction,} from 'mobx';
 import {notification} from 'antd';
 import {baseUrl,get,post} from '../util';
-import {useStrict} from "mobx/lib/mobx";
 
-useStrict(true);
+configure({ enforceActions: true });
 export class SignUpStore{
   constructor(rootStore){
     this.rootStore=rootStore;

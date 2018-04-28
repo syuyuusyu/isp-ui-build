@@ -1,8 +1,8 @@
-import {observable, useStrict, action, runInAction} from 'mobx';
+import {observable, configure, action, runInAction} from 'mobx';
 import {notification} from 'antd';
 import {baseUrl, get, post,del} from '../util';
 
-useStrict(true);
+configure({ enforceActions: true });
 
 export default class NotificationSotre {
 

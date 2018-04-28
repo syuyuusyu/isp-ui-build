@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
-import { withRouter } from 'react-router-dom';
+import { withRouter,Route } from 'react-router-dom';
 import { Main } from './main';
+import DevTools from 'mobx-react-devtools'
 
-@observer
+
 class App extends Component {
   render() {
     return (
-      <Main />
+        <div style={{ height: "100%" }}>
+            <Main/>
+        </div>
     );
   }
 }

@@ -8,24 +8,25 @@ const commonConfig = {
   entry: {
     app: [
       'babel-polyfill',
-      path.join(__dirname, '../src/index.js')
+      path.resolve(__dirname, '../src/index.js')
     ],
-    antd: ['antd'],
-    react: ['react', 'react-router-dom', 'react-dom'],
-    mobx: ['mobx', 'mobx-react']
+    //antd: ['antd'],
+    //react: ['react', 'react-router-dom', 'react-dom'],
+    //mobx: ['mobx', 'mobx-react']
     //vendor: ['react', 'react-router-dom', 'react-dom', 'mobx', 'mobx-react', 'antd']
   },
   /*输出到dist文件夹，输出文件名字为bundle.js*/
   output: {
-    path: path.join(__dirname, '../dist'),
+    path: path.resolve(__dirname, '../dist'),
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
-    publicPath: ''
+    publicPath: '/public/'
   },
   module: {
     rules: [{
       test: /\.html$/,
-      use: 'html-loader'
+      use: 'html-loader',
+      exclude: [path.resolve(__dirname, '../node_modules/')]
     }, {
       test: /\.css$/,
       use: [
@@ -36,7 +37,8 @@ const commonConfig = {
       test: /\.js$/,
       exclude: /node_modules/,
       use: ['babel-loader?cacheDirectory=true'],
-      include: path.join(__dirname, '../src')
+      //include: path.resolve(__dirname, '../src'),
+      exclude: [path.resolve(__dirname, '../node_modules/')]
     }, {
       test: /\.(png|svg|jpg|gif)$/,
       use: [{
@@ -53,13 +55,14 @@ const commonConfig = {
     new HtmlWebpackPlugin({
       title: "系统综合集成",
       filename: 'index.html',
-      template: path.resolve(__dirname, '../src/templates/index.html')
+      template: path.resolve(__dirname, '../src/templates/index.html'),
+      mobx: path.resolve(__dirname, 'node_modules/mobx')
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
       chunkFilename: "[id].css"
     }),
-    new webpack.HashedModuleIdsPlugin()
+    new webpack.HashedModuleIdsPlugin(),
   ]
 };
 

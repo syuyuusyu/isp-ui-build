@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { Form, Row, Col, Input, Button ,Select,notification} from 'antd';
 import {baseUrl, get} from "../util";
-import {inject, observer} from "mobx-react/index";
+import {inject, observer} from "mobx-react";
 
 const FormItem = Form.Item;
 const Option = Select.Option;

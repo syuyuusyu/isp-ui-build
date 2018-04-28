@@ -1,8 +1,8 @@
-import {observable, useStrict, action,} from 'mobx';
+import {observable, configure, action,} from 'mobx';
 //import {notification} from 'antd';
 import {baseUrl, get} from '../util';
 
-useStrict(true);
+configure({ enforceActions: true });
 
 export default class AuthorityStore {
 

@@ -1,7 +1,7 @@
-import {observable, useStrict,action,runInAction,} from 'mobx';
+import {observable, configure,action,runInAction,computed} from 'mobx';
 import {baseUrl,get} from '../util';
 
-useStrict(true);
+configure({ enforceActions: true });
 
 export class TreeStore{
 
@@ -12,8 +12,6 @@ export class TreeStore{
     @observable
     treeData=[];
 
-    @observable
-    currentRoute=[];
 
     @observable
     currentRoleMenu=[];
@@ -24,14 +22,14 @@ export class TreeStore{
     @observable
     currentRoleSys=[];
 
-    @observable
-    sysMartix=[];
+
 
     @action
     loadMenuTree=async()=>{
         let json=await get(`${baseUrl}/menu/menuTree`);
         runInAction(()=>{
           this.menuTreeData=json;
+            this.currentRoleMenu=[];
         });
         this.initMenuTreeData(json);
     };
@@ -80,6 +78,11 @@ export class TreeStore{
         })
     };
 
+    @observable
+    currentRoute=[];
+
+    // @computed
+    // get currentRoute
 
     @action
     onSelect=(key,e)=>{
@@ -96,9 +99,11 @@ export class TreeStore{
     @action
     onMenuClick=(e)=>{
         this.rootStore.notificationStore.loadMessage();
-        this.menuTreeData.filter(d=>d).forEach(data=>{
-          getPathById(e.key,Object.create(data),(result)=>{
+        let clone=this.menuTreeData.filter(d=>d);
+        clone.forEach(data=>{
+          getPathById(e.key,data,(result)=>{
             runInAction(()=>{
+                console.log(result);
               this.currentRoute=result;
             });
           })
@@ -106,33 +111,51 @@ export class TreeStore{
 
     };
 
+
     onMenuSelect=(a,b,c)=>{
         console.log(a,b,c);
     };
 
+    // @observable
+    // sysMartix=[];
+
+    @computed
+    get sysMartix(){
+        let temp=[];
+        let index=0;
+        for(let i=0;i<this.currentRoleSys.filter(d=>d).length;i++){
+            if(i%4===0){
+                temp[index]=[];
+                index++;
+            }
+            temp[index-1].push(this.currentRoleSys[i]);
+        }
+        return temp;
+    }
+
     @action
     loadCurrentRoleSys=async ()=>{
         let json=await get(`${baseUrl}/sys/currentRoleSys`);
+        console.log(json);
+        // if(!json.length) return;
+        // let temp=[];
+        // let index=0;
+        // for(let i=0;i<this.json.length;i++){
+        //     if(i%4===0){
+        //         temp[index]=[];
+        //         index++;
+        //     }
+        //     temp[index-1].push(json[i]);
+        // }
         runInAction(()=>{
             this.currentRoleSys=json;
+            //this.sysMartix=temp;
         });
-        this.setMartix();
+        //this.setMartix();
     };
 
-    @action
-    setMartix=()=>{
 
-        let index=0;
-        for(let i=0;i<this.currentRoleSys.length;i++){
-            if(i%4===0){
-                this.sysMartix[index]=[];
-                index++;
-            }
-            this.sysMartix[index-1].push(Object.create(this.currentRoleSys[i]));
 
-        }
-        console.log(this.sysMartix.filter(d=>d))
-    };
 
 
 }

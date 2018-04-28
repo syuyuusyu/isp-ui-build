@@ -1,9 +1,9 @@
-import {observable, useStrict,action,runInAction,} from 'mobx';
+import {observable, configure,action,runInAction,} from 'mobx';
 import {notification} from 'antd';
 import {baseUrl,get,del} from '../util';
 import {message} from "antd/lib/index";
 
-useStrict(true);
+configure({ enforceActions: true });
 
 export class OrgStore{
   @observable

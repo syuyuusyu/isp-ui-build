@@ -1,8 +1,8 @@
-import {observable, useStrict,action,runInAction,} from 'mobx';
+import {observable, configure,action,runInAction,} from 'mobx';
 import {baseUrl, get, post} from '../util';
 import {notification} from 'antd';
 
-useStrict(true);
+configure({ enforceActions: true });
 
 
 export class CloudStore{
@@ -48,6 +48,7 @@ export class CloudStore{
             this.loadingtest='获取云机状态...'
         });
         let json=await post(`${baseUrl}/invoke/cloud_servers_info`);
+        console.log(json);
         runInAction(()=>{
             if(json.status && json.status===500){
                 this.serverInfo=[];

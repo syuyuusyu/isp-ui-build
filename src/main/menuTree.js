@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import { inject, observer, } from 'mobx-react';
-import { useStrict } from 'mobx';
+import { configure } from 'mobx';
 import { Link, } from 'react-router-dom';
 const SubMenu = Menu.SubMenu;
 //const MenuItemGroup = Menu.ItemGroup;
 
-useStrict(true);
+configure({ enforceActions: true });
 
 @inject('rootStore')
 @observer

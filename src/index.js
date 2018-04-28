@@ -8,6 +8,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import RootStore from './rootStore';
 
+
 const history = createHistory();
 // const div = document.createElement('div');
 // document.body.appendChild(div);
@@ -17,7 +18,9 @@ ReactDOM.render(
     <Router history={history}>
       <App />
     </Router>
-  </Provider>,
-  document.getElementById('root')
+   </Provider>,
+    document.getElementById('root')
 );
 registerServiceWorker();
+
+

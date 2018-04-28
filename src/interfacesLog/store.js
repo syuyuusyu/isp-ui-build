@@ -1,10 +1,11 @@
-import {observable,action,runInAction,} from 'mobx';
+import {observable,action,runInAction,configure} from 'mobx';
 import {notification} from 'antd';
 import {baseUrl,get,post} from '../util';
 import {message} from "antd/lib/index";
-//import {useStrict} from "mobx/lib/mobx";
+//import {configure} from "mobx/lib/mobx";
 
-//useStrict(true);
+configure({ enforceActions: true });
+
 export class InterfacesLogStory{
   constructor(rootStore){
     this.rootStore=rootStore;

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
-import { Form, Button, notification, Input, Row, Col,Modal, Checkbox } from 'antd';
+import { Icon,Form, Button, notification, Input, Row, Col,Modal, Checkbox } from 'antd';
 import { baseUrl } from '../util';
 import './login-3.css';
 //import UserRegisterForm from '../signUp/userRegisterForm';
+import Logo from  '../assets/images/logo.png'
 
 const FormItem = Form.Item;
 
@@ -20,12 +21,12 @@ class Login extends React.Component {
     this.props.form.validateFields(async (err, values) => {
       if (err) return;
       let response = await fetch(`${baseUrl}/login`, {
-          method: 'POST',
-          headers: new Headers({
-            'Content-Type': 'application/json'
-          }),
-          body: JSON.stringify(values),
-        }
+        method: 'POST',
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        }),
+        body: JSON.stringify(values),
+      }
       );
       let json = await response.json();
       switch (json.msg) {
@@ -70,24 +71,29 @@ class Login extends React.Component {
     return (
       <div className="login">
         <div className="logo">
-          <img src="../../public/images/logo-big.png" alt="logo" />
+          <img src={Logo} alt="logo" />
         </div>
         <div className="content">
           <Form className="login-form">
-            <h3 className="form-title">使用账号密码登录</h3>
+            <div className="logo-title">
+              <img src={Logo} />
+              <h3>系统综合集成平台</h3>
+            </div>
             <Row>
-              <FormItem label="用户名">
+              <FormItem label="用户名" className="user-name">
                 {getFieldDecorator('user_name', {
                   rules: [{ required: true, message: '用户名不能为空' }],
                   validateTrigger: 'onBlur',
-                })(<Input placeholder="请输入用户名" />)}
+                })
+                  (<Input prefix={<Icon type="user" />} placeholder="请输入用户名" />)}
               </FormItem>
             </Row>
             <Row>
               <FormItem label="密码">
                 {getFieldDecorator('passwd', {
                   rules: [{ required: true, message: '密码不能为空' }],
-                })(<Input placeholder="请输入密码" />)}
+                })
+                  (<Input prefix={<Icon type="lock" />} type="password" autoComplete="password" placeholder="请输入密码" />)}
               </FormItem>
               <Row>
                 <Col span={25} style={{ textAlign: 'center' }}>
@@ -96,10 +102,11 @@ class Login extends React.Component {
               </Row>
             </Row>
             <Row >
-              <Col span={25} style={{ textAlign: 'center' }} >
-                <Button icon="login" onClick={this.login} type="primary">我要登录</Button>
-                &nbsp;Or <Link to="/register">register now!</Link>
-               {/* <Button icon="reload" onClick={this.handleReset}>我要休息</Button>*/}
+              <Col span={25}  >
+                <Button type="primary" icon="login" className="login-button" onClick={this.login}>登录</Button>
+                &nbsp;Or <Link to="/register">注册</Link>
+                {/* <Button icon="reload" onClick={this.handleReset}>我要休息</Button> */}
+                {/* <Button icon="user" onClick={this.store.toggleRegFormVisible}>注册</Button>*/}
               </Col>
             </Row>
           </Form>
