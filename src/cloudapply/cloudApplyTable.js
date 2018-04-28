@@ -63,6 +63,7 @@ class CloudApplyTable extends React.Component{
 
     render(){
         const store=this.props.rootStore.cloudStore;
+        console.log(store.serverInfo);
         return (<div>
             <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
                 <Modal visible={store.formVisible}

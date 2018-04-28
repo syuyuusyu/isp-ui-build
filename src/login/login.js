@@ -36,8 +36,9 @@ class Login extends React.Component {
           sessionStorage.setItem('currentUserName', json.user.name);
           sessionStorage.setItem('user', JSON.stringify(json.user));
           await Promise.all([
-            this.props.rootStore.authorityStore.loadAllbuttons(),
-            this.props.rootStore.treeStore.initRoot()
+                this.props.rootStore.authorityStore.loadAllbuttons(),
+                this.props.rootStore.treeStore.initRoot(),
+                this.props.rootStore.notificationStore.loadSystemAccess()
           ]);
           this.store.taggreLogin();
           break;
@@ -69,7 +70,7 @@ class Login extends React.Component {
     return (
       <div className="login">
         <div className="logo">
-          <img src="../assets/images/logo-big.png" alt="logo" />
+          <img src={require('../assets/images/logo-big.png')} alt="logo" />
         </div>
         <div className="content">
           <Form className="login-form">

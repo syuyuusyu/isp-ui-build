@@ -50,7 +50,7 @@ export class CloudStore{
         let json=await post(`${baseUrl}/invoke/cloud_servers_info`);
         console.log(json);
         runInAction(()=>{
-            if(json.status && json.status===500){
+            if(json.code && json.code===500){
                 this.serverInfo=[];
                 notification.error({message:'连接云平台失败',});
             }else{

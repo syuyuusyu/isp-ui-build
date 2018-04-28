@@ -15,6 +15,7 @@ import NotificationSotre from "./notification/store";
 import {DataUserStore} from './datauser';
 import {DataSpaceStore} from './dataspace';
 import {SystemLogStore} from "./systemLog/store";
+import {DashBoardStore} from './dashboard';
 
 
 
@@ -43,6 +44,7 @@ export default class RootStore {
         this.dataUserStore=new DataUserStore(this);
         this.dataSpaceStore=new DataSpaceStore(this);
         this.systemLogStore=new SystemLogStore(this);
+        this.dashBoardStore=new DashBoardStore(this);
     }
 }
 

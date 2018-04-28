@@ -136,7 +136,6 @@ export class TreeStore{
     @action
     loadCurrentRoleSys=async ()=>{
         let json=await get(`${baseUrl}/sys/currentRoleSys`);
-        console.log(json);
         // if(!json.length) return;
         // let temp=[];
         // let index=0;

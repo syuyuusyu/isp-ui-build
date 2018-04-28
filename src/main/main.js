@@ -25,7 +25,8 @@ class Main extends Component {
       Promise.all([
         this.props.rootStore.authorityStore.loadAllbuttons(),
         //this.props.rootStore.treeStore.initCurrentRoleMenu(),
-        this.props.rootStore.treeStore.initRoot()
+        this.props.rootStore.treeStore.initRoot(),
+          this.props.rootStore.notificationStore.loadSystemAccess()
       ]);
     }
 
