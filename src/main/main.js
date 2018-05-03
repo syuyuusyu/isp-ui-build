@@ -6,7 +6,7 @@ import { Layout, Breadcrumb, Avatar, Popover, Button, Card, Modal, Badge, Icon }
 import { inject, observer } from 'mobx-react';
 //import SubContent from "./subContent";
 //import InvkeGrid3 from "../invoke";
-import { NavLink, Switch, Route, withRouter } from 'react-router-dom';
+import { NavLink, Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { Login } from '../login';
 //import {get,baseUrl} from '../util';
 import MenuTree from './menuTree';
@@ -64,9 +64,11 @@ class Main extends Component {
     if (authoritySyore.loginVisible) {
       return (
         <Layout style={{ height: "100%" }}>
-          <Route exact path="/register" component={UserRegisterForm} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/" component={Login} />
+          <Switch>
+            <Route path="/register" component={UserRegisterForm} />
+            <Route path="/login" component={Login} />
+            <Redirect path="/" to="/login" />
+          </Switch>
           <Footer style={{ textAlign: "center", height: "50px", padding: "0", lineHeight: "50px" }}>  © 2018 云南地质大数据服务平台 </Footer>
         </Layout>
       );
@@ -125,17 +127,20 @@ class Main extends Component {
               </Breadcrumb>
               <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
                 <div>
-                  <Route exact path="/" component={SysConnect} />
-                  {
-                    this.props.rootStore.treeStore.currentRoleMenu
-                      .filter(d => d)
-                      .filter(m => m.path)
-                      .map(m =>
-                        <Route key={m.id} exact
-                          path={m.path + (m.path_holder ? m.path_holder : '')}
-                          component={require('../' + m.page_path)[m.page_class]} />
-                      )
-                  }
+                  <Switch>
+                    <Route exact path="/" component={SysConnect} />
+                    {
+                      this.props.rootStore.treeStore.currentRoleMenu
+                        .filter(d => d)
+                        .filter(m => m.path)
+                        .map(m =>
+                          <Route key={m.id} exact
+                                 path={m.path + (m.path_holder ? m.path_holder : '')}
+                                 component={require('../' + m.page_path)[m.page_class]} />
+                        )
+                    }
+                    <Redirect path="/" to="/" />
+                  </Switch>
                 </div>
               </Content>
             </Layout>

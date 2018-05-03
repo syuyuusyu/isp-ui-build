@@ -34,6 +34,13 @@ const commonConfig = {
         'css-loader'
       ]
     }, {
+      test: /\.less$/,
+      use: [
+        { loader: MiniCssExtractPlugin.loader },
+        { loader: 'css-loader' },
+        { loader: 'less-loader', options: { javascriptEnabled: true } }
+      ]
+    }, {
       test: /\.js$/,
       exclude: /node_modules/,
       use: ['babel-loader?cacheDirectory=true'],
@@ -63,7 +70,14 @@ const commonConfig = {
       chunkFilename: "[id].css"
     }),
     new webpack.HashedModuleIdsPlugin(),
-  ]
+  ],
+  resolve: {
+    alias: {
+      modules: path.resolve(__dirname, '../node_modules')
+    }
+  }
 };
+
+console.log(path.resolve(__dirname, '../node_modules'));
 
 module.exports = commonConfig;
