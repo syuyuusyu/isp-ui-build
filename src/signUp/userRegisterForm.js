@@ -11,9 +11,6 @@ const crypto = require('crypto');
 @inject('rootStore')
 @observer
 class UserRegisterForm extends Component {
-  componentDidMount() {
-    const store = this.props.rootStore.authorityStore
-  }
 
   checkUserUnique = async (rule, value, callback) => {
     if (!value) {
@@ -41,7 +38,7 @@ class UserRegisterForm extends Component {
     }
   }
 
-  checkIDnumberUnique = async (rule, value, callback) => {
+  /*checkIDnumberUnique = async (rule, value, callback) => {
     if (!value) {
       callback()
     }
@@ -52,17 +49,45 @@ class UserRegisterForm extends Component {
     }else{
       callback(new Error())
     }
-  }
+  }*/
 
-    checkIdValid=async (rule, value, callback) => {
-     let regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-     if(!regIdNo.test(value)){
-       callback('身份证号填写有误');
-     }else{
-       callback(new Error())
-     }
+  checkIDnumberUnique = async (rule, value, callback) => {
+    if (!value) {
+      callback()
     }
-
+    const url = `${baseUrl}/userRegister/uniqueIDnumber/${value}`;
+    let json = await get(url);
+    if (json.total !== 0) {
+      callback("身份证编号已存在");
+    }
+    const format = /^(([1][1-5])|([2][1-3])|([3][1-7])|([4][1-6])|([5][0-4])|([6][1-5])|([7][1])|([8][1-2]))\d{4}(([1][9]\d{2})|([2]\d{3}))(([0][1-9])|([1][0-2]))(([0][1-9])|([1-2][0-9])|([3][0-1]))\d{3}[0-9xX]$/;
+    //号码规则校验
+    if(!format.test(value)){
+      callback("身份证号码不合规");
+    }
+    //区位码校验
+    // 出生年月日校验  前正则限制起始年份为1900;
+    const year = value.substr(6,4);//身份证年
+    const month = value.substr(10,2);//身份证月
+    const date = value.substr(12,2);//身份证日
+    const time = Date.parse(month+'-'+date+'-'+year);//身份证日期时间戳date
+    const now_time = Date.parse(new Date());//当前时间戳
+    const dates = (new Date(year,month,0)).getDate();//身份证当月天数
+    if(time>now_time||date>dates){
+      callback("出生日期不合规");
+    }
+    //校验码判断
+    const c = [7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2];  //系数
+    const b = ['1','0','X','9','8','7','6','5','4','3','2']; //校验码对照表
+    let  id_array = value.split("");
+    let sum = 0;
+    for(let k=0;k<17;k++){
+      sum+=parseInt(id_array[k])*parseInt(c[k]);
+    }
+    if(id_array[17].toUpperCase() != b[sum%11].toUpperCase()){
+      callback("身份证校验码不合规");
+    }else(callback());
+  }
 
   checkPhoneUnique = async (rule, value, callback) => {
     if (!value) {
@@ -89,6 +114,7 @@ class UserRegisterForm extends Component {
       callback(new Error())
     }
   };
+
 
   validateToNextPassword = (rule, value, callback) => {
     const form = this.props.form;
@@ -207,8 +233,7 @@ class UserRegisterForm extends Component {
               {
                 getFieldDecorator('IDnumber', {
                   rules: [{required: true, message: '身份证编号不能为空'},
-                           {pattern:'(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)',message:'身份证编号输入有误'},
-                           {validator: this.checkIDnumberUnique,message: '身份证编号已存在'}
+                           {validator: this.checkIDnumberUnique}
 
                   ],
                   validateTrigger: 'onBlur'
