@@ -43,15 +43,15 @@ class CloudTopology extends React.Component {
                     },
                     nodeLabel : true,
                     event : {
-                        nodeClick : function nodeClick(node, e) {
-                            console.log(node, e);
-                        },
-                        nodeHoverIn : function nodeHoverIn(node) {
-                            console.log('hoverIn', node);
-                        },
-                        nodeHoverOut : function nodeHoverOut(node) {
-                            console.log('hoverOut', node);
-                        }
+                        // nodeClick : function nodeClick(node, e) {
+                        //     console.log(node, e);
+                        // },
+                        // nodeHoverIn : function nodeHoverIn(node) {
+                        //     console.log('hoverIn', node);
+                        // },
+                        // nodeHoverOut : function nodeHoverOut(node) {
+                        //     console.log('hoverOut', node);
+                        // }
                     }
                 });
             });

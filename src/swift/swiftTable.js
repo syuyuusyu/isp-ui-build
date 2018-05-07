@@ -133,7 +133,7 @@ class SwiftTable extends React.Component {
                         <Col span={8} style={{ textAlign: 'right' }} className="col-button">
                             <ButtonGroup>
                                 <Button onClick={store.showFileForm({name:'/'})} icon="upload" >上传文件</Button>
-                                <Button onClick={store.showForm({name:'/'})} icon="folder-add" >新建文件夹</Button>
+                                <Button onClick={store.showForm({name:''})} icon="folder-add" >新建文件夹</Button>
                             </ButtonGroup>
                         </Col>
                     </Row>

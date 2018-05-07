@@ -14,7 +14,6 @@ class SysConnect extends React.Component{
 
     render(){
         const store=this.props.rootStore.treeStore;
-        console.log(this.props.rootStore.notificationStore.systemAccess);
         return (
             <div>
                 <div style={{height:200}}>

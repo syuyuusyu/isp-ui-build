@@ -288,7 +288,7 @@ export class SwiftStore{
             this.loadingtest='请求网盘信息...';
         });
         let json=await get(`${baseUrl}/swift/getObject/${JSON.parse(sessionStorage.getItem("user")).user_name}`);
-
+        console.log(json);
         if(json.status){
             notification.error({
                 message:'云平台权限认证失败,请尝试刷新页面或联系管理员',
@@ -315,7 +315,7 @@ export class SwiftStore{
         }
 
         temps=mertix[1];
-
+        console.log(temps);
         this._compoent(temps,mertix,1,maxLength);
         runInAction(()=>{
             this.rootDir=temps?temps:[];
