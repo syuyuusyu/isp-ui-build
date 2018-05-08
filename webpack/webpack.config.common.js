@@ -44,8 +44,6 @@ const commonConfig = {
       test: /\.js$/,
       exclude: /node_modules/,
       use: ['babel-loader?cacheDirectory=true'],
-      //include: path.resolve(__dirname, '../src'),
-      exclude: [path.resolve(__dirname, '../node_modules/')]
     }, {
       test: /\.(png|svg|jpg|gif)$/,
       use: [{
@@ -77,7 +75,5 @@ const commonConfig = {
     }
   }
 };
-
-console.log(path.resolve(__dirname, '../node_modules'));
 
 module.exports = commonConfig;

@@ -9,6 +9,7 @@
     "antd": "^3.4.1",
     "codemirror": "^5.36.0",
     "echarts": "^4.0.4",
+    "echarts-for-react": "^2.0.8",
     "event": "^1.0.0",
     "mobx": "^4.2.0",
     "mobx-react": "^5.0.0",

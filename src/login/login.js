@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
-import { Icon,Form, Button, notification, Input, Row, Col,Modal, Checkbox } from 'antd';
+import { Layout, Icon,Form, Button, notification, Input, Row, Col,Modal, Checkbox } from 'antd';
 import { baseUrl } from '../util';
 import './login-3.css';
 //import UserRegisterForm from '../signUp/userRegisterForm';
 import Logo from  '../assets/images/logo.png'
 
 const FormItem = Form.Item;
+const { Content } = Layout;
 
 @inject('rootStore')
 @observer
@@ -70,11 +71,9 @@ class Login extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <div className="login">
+      <Content className="login">
         <div className="logo">
-
           <img src={Logo} alt="logo" />
-
         </div>
         <div className="content">
           <Form className="login-form">
@@ -114,8 +113,7 @@ class Login extends React.Component {
             </Row>
           </Form>
         </div>
-      </div>
-
+      </Content>
     );
   }
 }

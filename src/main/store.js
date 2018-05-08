@@ -22,6 +22,11 @@ export class TreeStore{
     @observable
     currentRoleSys=[];
 
+    @observable
+    winWidth=0;
+
+    @observable
+    winHeight=0;
 
 
     @action
@@ -153,7 +158,15 @@ export class TreeStore{
         //this.setMartix();
     };
 
-
+    @action
+    updateWinSize = ({ width, height }) => {
+      if (width !== undefined) {
+        this.winWidth = width
+      }
+      if (height !== undefined) {
+        this.winHeight = height
+      }
+    };
 
 
 
