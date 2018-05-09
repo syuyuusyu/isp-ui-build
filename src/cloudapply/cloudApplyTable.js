@@ -32,14 +32,14 @@ class CloudApplyTable extends React.Component{
     }
     columns=[
         {dataIndex:'id',title:'实列ID',width:200},
-        {dataIndex:'name',title:'实列名称',width:180},
+        {dataIndex:'name',title:'实列名称',width:150},
         {dataIndex:'status',title:'状态',width:100,
             render:(text)=>{
                 switch (text){
                     case 'active':
                         return '运行中';
-                    case '2':
-                        return '创建成功';
+                    case 'shutoff':
+                        return '停止运行';
                     case '3':
                         return '创建失败';
                     default :
@@ -47,23 +47,27 @@ class CloudApplyTable extends React.Component{
                 }
             }
         },
-        {
-            title:'操作',width:100,
-            render:(text,record)=>{
+        {dataIndex:'flavorName',title:'虚拟机配置',width:120},
+        {dataIndex:'netName',title:'网络名称',width:100},
+        {dataIndex:'netWork',title:'网络',width:200,
+            render:(text)=> {
                 return (
-                    <span>
-                        <Button onClick={this.props.rootStore.cloudStore.detail(record)} icon="desktop">查看详细信息</Button>
-                    </span>
-                );
+                    <div>{
+                    text.filter(d=>d).map(d=>
+                        <p>type:{d.type}&nbsp;id:{d.ip}</p>
+                    )}
+                    </div>
+                )
             }
-        }
+
+        },
 
 
     ];
 
     render(){
         const store=this.props.rootStore.cloudStore;
-        console.log(store.serverInfo);
+        console.log(store.serverInfo.filter(d=>d));
         return (<div>
             <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
                 <Modal visible={store.formVisible}
