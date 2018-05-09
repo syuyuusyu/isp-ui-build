@@ -128,7 +128,7 @@ class UserRegisterForm extends Component {
       values.confirmPassword= hmac.update(values.confirmPassword).digest('hex');
       values.randomNumber=randomNumber;
 
-      let response=await fetch(`${baseUrl}/userRegister/svae` , {
+      let response=await fetch(`${baseUrl}/userRegister/save` , {
           method: 'POST',
           headers: new Headers({
             'Content-Type': 'application/json',

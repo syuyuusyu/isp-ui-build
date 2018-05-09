@@ -57,6 +57,7 @@ class Main extends Component {
             您有{this.props.rootStore.notificationStore.messages.filter(d => d).length}条代办事项,点击查看
           </Button>
           <Button icon="unlock" onClick={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}>申请平台访问权限</Button>
+          <Button icon="logout" onClick={this.props.rootStore.authorityStore.logout}>修改用户信息</Button>
           <Button icon="logout" onClick={this.props.rootStore.authorityStore.logout}>退出</Button>
         </Card>
       </div>

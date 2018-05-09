@@ -29,6 +29,7 @@ class Login extends React.Component {
       }
       );
       let json = await response.json();
+      console.log("json的值为:",json);
       switch (json.msg) {
         case '1':
           notification.success({
