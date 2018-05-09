@@ -34,11 +34,16 @@ const commonConfig = {
         'css-loader'
       ]
     }, {
+      test: /\.less$/,
+      use: [
+        { loader: MiniCssExtractPlugin.loader },
+        { loader: 'css-loader' },
+        { loader: 'less-loader', options: { javascriptEnabled: true } }
+      ]
+    }, {
       test: /\.js$/,
       exclude: /node_modules/,
       use: ['babel-loader?cacheDirectory=true'],
-      //include: path.resolve(__dirname, '../src'),
-      exclude: [path.resolve(__dirname, '../node_modules/')]
     }, {
       test: /\.(png|svg|jpg|gif)$/,
       use: [{
@@ -63,7 +68,12 @@ const commonConfig = {
       chunkFilename: "[id].css"
     }),
     new webpack.HashedModuleIdsPlugin(),
-  ]
+  ],
+  resolve: {
+    alias: {
+      modules: path.resolve(__dirname, '../node_modules')
+    }
+  }
 };
 
 module.exports = commonConfig;

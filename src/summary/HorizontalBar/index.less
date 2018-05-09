@@ -1,0 +1,34 @@
+div.my-horizontal-bar{
+  @nameWidth: 72px;
+  @textWidth: 60px;
+  position: relative;
+  div.name,
+  div.bar-bg,
+  div.text{
+    float: left;
+  }
+  div.name{
+    width: @nameWidth;
+    margin-right: 8px;
+    text-align: right;
+    font-size: 14px;
+  }
+  div.bar-bg{
+    height: 100%;
+    border-radius: 4px;
+    background-color: #e8e8e8;
+  }
+  div.bar{
+    position: absolute;
+    top: 0;
+    left: @nameWidth + 8px;
+    height: 100%;
+    border-radius: 4px;
+    transition: width .2s ease;
+  }
+  div.text{
+    width: @textWidth;
+    text-align: center;
+    font-size: 14px;
+  }
+}
