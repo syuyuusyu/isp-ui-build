@@ -399,7 +399,10 @@ export default class Topology {
     ctx.fillStyle = '#fff';
     ctx.rect(0, 0, this.viewWidth, this.viewHeight);
     ctx.fill();
-    ctx.drawImage(this.offScreenCanvas, this.translateX, this.translateY, this.contentWidth * this.scale, this.contentHeight * this.scale);
+    // 若离屏画布宽高为0，则不绘制
+    if (this.contentWidth !== 0 && this.contentHeight !== 0) {
+      ctx.drawImage(this.offScreenCanvas, this.translateX, this.translateY, this.contentWidth * this.scale, this.contentHeight * this.scale);
+    }
     ctx.restore();
   }
   updateData (sourceData) {
