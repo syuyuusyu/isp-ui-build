@@ -28,6 +28,14 @@ export class TreeStore{
     @observable
     winHeight=0;
 
+    @observable
+    headerHeight = 60;
+
+    @observable
+    menuHeight = 60;
+
+    @observable
+    footerHeight = 40;
 
     @action
     loadMenuTree=async()=>{

@@ -20,10 +20,7 @@ class Home extends Component{
 
   }
   render () {
-    const { winWidth, winHeight } = this.props.rootStore.treeStore;
-    const headerHeight = 60;
-    const menuHeight = 60;
-    const footerHeight = 40;
+    const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = this.props.rootStore.treeStore;
     const linksHeight = winHeight < 700 ? 100 : 180;
     const marginOut = 16;
     const marginInner = 16;

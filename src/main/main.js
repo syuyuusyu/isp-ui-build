@@ -13,6 +13,7 @@ import { Login } from '../login';
 //import {get,baseUrl} from '../util';
 import MenuTree from './menuTree';
 import { Home } from '../home';
+import { Summary } from '../summary';
 import SysConnect from './sysConnect';
 import { ApplyPlatform, MessageTable } from "../notification";
 import UserRegisterForm from '../signUp/userRegisterForm'
@@ -119,6 +120,7 @@ class Main extends Component {
           <Redirect exact path="/" to="/home" />
           <Redirect exact path="/login" to="/home" />
           <Route exact path="/home" component={Home} />
+          <Route exact path="/summary" component={Summary} />
           <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - 200 }}>
             {
               this.props.rootStore.treeStore.currentRoleMenu
