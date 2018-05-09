@@ -15,11 +15,13 @@ class Home extends Component{
 
   componentDidMount () {
     this.props.rootStore.homeStore.initHomeData();
+    this.props.rootStore.treeStore.loadCurrentRoleSys();
   }
   componentWillUpdate () {
 
   }
   render () {
+      console.log(this.props.rootStore.treeStore.currentRoleSys.filter(d=>d));
     const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = this.props.rootStore.treeStore;
     const linksHeight = winHeight < 700 ? 100 : 180;
     const marginOut = 16;
@@ -41,6 +43,7 @@ class Home extends Component{
           <div className="bg-box" />
           <div className="title">基础支撑平台</div>
           <div className="links">
+
             <div className="link ygl">
               <span className="text">云管理平台</span>
             </div>
@@ -53,6 +56,7 @@ class Home extends Component{
             <div className="link yw">
               <span className="text">运维平台</span>
             </div>
+
           </div>
         </div>
         <div className="home-content">
