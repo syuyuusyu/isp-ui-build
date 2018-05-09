@@ -1,24 +1,21 @@
-/* Cubic Bezier Transition */
-/***
-Login page
-***/
 /* logo page */
 .login {
-  /*background-color: #a0b4c9 !important;*/
-  height: 100%; }
-
-/*backgroundimage*/
-.ant-layout{
   background-image: url("../assets/images/login_bg02.jpg");
   background-size: 100% 100%;
+  height: 100%;
 }
+
+/*backgroundimage*/
+/* .ant-layout{
+  background-image: url("../assets/images/login_bg02.jpg");
+  background-size: 100% 100%;
+} */
 
 .login .logo-title {
   width:184px;
   margin:20px auto;
   overflow: hidden;
   height:30px;
-
 }
 
 .logo-title img{width:30px;height:30px;float:left;}

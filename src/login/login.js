@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
-import { Icon,Form, Button, notification, Input, Row, Col,Modal, Checkbox } from 'antd';
+import { Icon, Form, Button, notification, Input, Row, Col, Modal, Checkbox } from 'antd';
 import { baseUrl } from '../util';
 import './login-3.css';
 //import UserRegisterForm from '../signUp/userRegisterForm';
-import Logo from  '../assets/images/logo.png'
+import Logo from '../assets/images/logo.png'
 
 const FormItem = Form.Item;
 
@@ -38,9 +38,9 @@ class Login extends React.Component {
           sessionStorage.setItem('currentUserName', json.user.name);
           sessionStorage.setItem('user', JSON.stringify(json.user));
           await Promise.all([
-                this.props.rootStore.authorityStore.loadAllbuttons(),
-                this.props.rootStore.treeStore.initRoot(),
-                this.props.rootStore.notificationStore.loadSystemAccess()
+            this.props.rootStore.authorityStore.loadAllbuttons(),
+            this.props.rootStore.treeStore.initRoot(),
+            this.props.rootStore.notificationStore.loadSystemAccess()
           ]);
           this.store.taggreLogin();
           break;
@@ -71,15 +71,10 @@ class Login extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="login">
-        <div className="logo">
-
-          <img src={Logo} alt="logo" />
-
-        </div>
         <div className="content">
           <Form className="login-form">
             <div className="logo-title">
-              <img src={Logo} />
+              <img src={Logo} alt="logo" />
               <h3>系统综合集成平台</h3>
             </div>
             <Row>
