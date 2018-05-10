@@ -8,6 +8,7 @@ import 'echarts/lib/chart/bar';
 import 'echarts/lib/component/title';
 import { getPieOption, getBarOption } from './tools';
 import './index.less';
+import {convertGigaFormat} from '../util';
 
 @inject('rootStore')
 @observer
@@ -15,11 +16,20 @@ class Home extends Component{
 
   componentDidMount () {
     this.props.rootStore.homeStore.initHomeData();
+    this.props.rootStore.homeStore.loadCloud();
     this.props.rootStore.treeStore.loadCurrentRoleSys();
   }
   componentWillUpdate () {
 
   }
+
+  targrt=(url)=>(()=>{
+      if(url){
+          console.log(url);
+          window.open(url);
+      }
+  });
+
   render () {
       console.log(this.props.rootStore.treeStore.currentRoleSys.filter(d=>d));
     const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = this.props.rootStore.treeStore;
@@ -43,19 +53,21 @@ class Home extends Component{
           <div className="bg-box" />
           <div className="title">基础支撑平台</div>
           <div className="links">
-
-            <div className="link ygl">
-              <span className="text">云管理平台</span>
-            </div>
-            <div className="link dsj">
-              <span className="text">大数据平台</span>
-            </div>
-            <div className="link yaq">
-              <span className="text">云安全平台</span>
-            </div>
-            <div className="link yw">
-              <span className="text">运维平台</span>
-            </div>
+              {
+                  this.props.rootStore.treeStore.currentRoleSys.filter(d=>d).map(sys=>{
+                        return (
+                            <div className={`link ${sys.icon}`} key={sys.id}>
+                                <span className="text" onClick={this.targrt(sys.operations.filter(o=>o.type===1).length>0
+                                    ?`${sys.url}${sys.operations.filter(o=>o.type===1).map(o=>o.path)[0]}?ispToken=${sys.token}`
+                                    :null)}>
+                                    {
+                                        sys.name
+                                    }
+                                </span>
+                            </div>
+                        );
+                  })
+              }
 
           </div>
         </div>
@@ -71,7 +83,7 @@ class Home extends Component{
               />
               <div className="info-box">
                 <div className="name">实例</div>
-                <div className="num">使用5个，共10个</div>
+                <div className="num">使用{instance.used}个，共{instance.total}个</div>
               </div>
             </div>
             <div className="pie-container">
@@ -81,8 +93,8 @@ class Home extends Component{
                 style={pieSize}
               />
               <div className="info-box">
-                <div className="name">实例</div>
-                <div className="num">使用5个，共10个</div>
+                <div className="name">CPU</div>
+                <div className="num">使用{cpu.used}个，共{cpu.total}个</div>
               </div>
             </div>
             <div className="pie-container left bottom">
@@ -92,8 +104,8 @@ class Home extends Component{
                 style={pieSize}
               />
               <div className="info-box">
-                <div className="name">实例</div>
-                <div className="num">使用5个，共10个</div>
+                <div className="name">内存</div>
+                <div className="num">使用{convertGigaFormat(ram.used * 1024)},共{convertGigaFormat(ram.total * 1024)}</div>
               </div>
             </div>
             <div className="pie-container bottom">
@@ -103,8 +115,8 @@ class Home extends Component{
                 style={pieSize}
               />
               <div className="info-box">
-                <div className="name">实例</div>
-                <div className="num">使用5个，共10个</div>
+                <div className="name">硬盘</div>
+                <div className="num">使用{convertGigaFormat(storage.used * 1024)},共{convertGigaFormat(storage.total * 1024)}</div>
               </div>
             </div>
           </div>
