@@ -44,7 +44,8 @@ class MenuTree extends Component {
     const store = this.props.rootStore.treeStore;
     return (
       <Menu id="mainMenu" onClick={store.onMenuClick} mode="horizontal">
-        {this.renderTree(store.menuTreeData)}
+          <Menu.Item key='home'><Link to='/home'><Icon type="home" style={{ fontSize: 20, color: '#08c' }} /></Link></Menu.Item>
+            {this.renderTree(store.menuTreeData)}
       </Menu>);
   }
 }

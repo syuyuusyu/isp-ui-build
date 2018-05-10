@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import {
   Layout, Dropdown, Menu, Avatar, Popover, Button, Card, Modal, Badge, Icon, Input
 } from 'antd';
+import { Link, } from 'react-router-dom';
 
 import { inject, observer } from 'mobx-react';
 //import SubContent from "./subContent";
@@ -43,9 +44,9 @@ class Main extends Component {
     //角色权限变动以后需要刷新的数据
     if (!this.props.rootStore.authorityStore.loginVisible) {
       Promise.all([
-        this.props.rootStore.authorityStore.loadAllbuttons(),
+          this.props.rootStore.authorityStore.loadAllbuttons(),
         //this.props.rootStore.treeStore.initCurrentRoleMenu(),
-        this.props.rootStore.treeStore.initRoot(),
+          this.props.rootStore.treeStore.initRoot(),
           this.props.rootStore.notificationStore.loadSystemAccess()
       ]);
     }
@@ -94,7 +95,7 @@ class Main extends Component {
         <header>
           <div id="headerBox">
             <div id="logoBox">
-              <span className="text">系统综合集成平台</span>
+                <span className="text">综合集成平台</span>
             </div>
             <div id="searchBox">
               <Input type="text" />
