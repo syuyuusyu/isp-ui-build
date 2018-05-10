@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { Form, Row, Col, Input, Button ,Select, Modal,notification} from 'antd';
-import {baseUrl, get} from "../util";
+import {baseUrl, get,post} from "../util";
 import {inject, observer} from "mobx-react";
 import {Link} from 'react-router-dom';
 
@@ -128,16 +128,7 @@ class UserRegisterForm extends Component {
       values.confirmPassword= hmac.update(values.confirmPassword).digest('hex');
       values.randomNumber=randomNumber;
 
-      let response=await fetch(`${baseUrl}/userRegister/save` , {
-          method: 'POST',
-          headers: new Headers({
-            'Content-Type': 'application/json',
-            'Access-Token': sessionStorage.getItem('access-token') || ''
-          }),
-          body: JSON.stringify(values),
-        }
-      );
-      let json=await response.json();
+      let json=await post(`${baseUrl}/userRegister/save` , JSON.stringify(values));
      if(json.success){
         Modal.success({
           title: '注册成功！',
@@ -151,11 +142,11 @@ class UserRegisterForm extends Component {
        })
      }
     })
-  }
+  };
 
   reset=()=>{
     this.props.form.resetFields();
-  }
+  };
 
 
   render()

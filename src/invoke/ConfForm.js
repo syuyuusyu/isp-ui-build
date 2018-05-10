@@ -47,16 +47,7 @@ class ConfForm extends React.Component{
 }`
             });
         }
-        let response=await fetch(`${baseUrl}/invokeInfo/invokes` , {
-                method: 'POST',
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    'Access-Token': sessionStorage.getItem('access-token') || ''
-                }),
-                body: JSON.stringify({}),
-            }
-        );
-        let json=await response.json();
+        let json=await post(`${baseUrl}/invokeInfo/invokes` ,JSON.stringify({}));
         json=json.map(o=>({
             id:o.id,name:o.name
         }));
@@ -107,17 +98,8 @@ class ConfForm extends React.Component{
                 values.next=values.next.reduce((a,b)=>a+','+b);
             }
             this.setState({saveVisible:true});
-            let response=await fetch(`${baseUrl}/invokeInfo/save` , {
-                    method: 'POST',
-                    headers: new Headers({
-                        'Content-Type': 'application/json',
-                        'Access-Token': sessionStorage.getItem('access-token') || ''
-                    }),
-                    body: JSON.stringify(values),
-                }
-            );
+            let json=await post(`${baseUrl}/invokeInfo/save` , JSON.stringify(values));
             this.setState({savePercent:75});
-            let json=await response.json();
             if(json.success){
                 this.setState({savePercent:100,saveStatus:'success'});
             }else{

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {inject,observer} from 'mobx-react';
 import { Form, Input,Row,Col,Button,notification} from 'antd';
-import {baseUrl} from "../util";
+import {baseUrl,post} from "../util";
 const FormItem = Form.Item;
 
 @inject('rootStore')
@@ -26,16 +26,7 @@ class AddOrgForm extends Component{
         values.parent_name=store.currentOrgName;
         values.path=store.currrentPath;
       }
-      let response=await fetch(`${baseUrl}/org/saveAdd` , {
-          method: 'POST',
-          headers: new Headers({
-            'Content-Type': 'application/json',
-            'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
-          }),
-          body: JSON.stringify(values),
-        }
-      );
-      let json=await response.json();
+      let json=await post(`${baseUrl}/org/saveAdd` ,  JSON.stringify(values));
       if(json.success){
         notification.success({
           message:'保存成功',

@@ -4,7 +4,7 @@ import lodash from 'lodash';
 import {format} from '../util';
 import ParseForm from './ParseForm';
 import InvokeParseForm from './invokeParesForm';
-import {baseUrl} from '../util';
+import {baseUrl,post} from '../util';
 const FormItem = Form.Item;
 const {TextArea}=Input;
 
@@ -40,15 +40,10 @@ class ParamsForm extends React.Component{
                 queryData.queryMap=queryMap;
                 this.setState({invokeing:true});
                 console.log(JSON.stringify(queryData));
-                let response=await fetch(`${baseUrl}/invokeInfo/test` , {
-                        method: 'POST',
-                        headers: new Headers({
-                            'Content-Type': 'application/json',
-                        }),
-                        body: JSON.stringify(queryData),
-                    }
-                );
-                let json=await response.json();
+                let json=await post(`${baseUrl}/invokeInfo/test` , JSON.stringify(queryData));
+
+
+
                 if(json.success){
                     // delete json.success;
                     // delete json.msg;
@@ -73,15 +68,7 @@ class ParamsForm extends React.Component{
                 queryData.queryMap=queryMap;
                 this.setState({invokeing:true});
                 console.log(JSON.stringify(queryData.body));
-                let response=await fetch(`${baseUrl}/invoke/${queryData.name}` , {
-                        method: 'POST',
-                        headers: new Headers({
-                            'Content-Type': 'application/json',
-                        }),
-                        body: queryData.body,
-                    }
-                );
-                let json=await response.json();
+                let json=await post(`${baseUrl}/invoke/${queryData.name}`, queryData.body);
                 if(json){
                     // delete json.success;
                     // delete json.msg;

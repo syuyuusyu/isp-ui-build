@@ -221,16 +221,8 @@ export class RoleMenuStore{
 
 
     save=async ()=>{
-        let response=await fetch(`${baseUrl}/role/saveRoleMenu` , {
-                method: 'POST',
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
-                }),
-                body: JSON.stringify({roleId:this.currentRoleid,menuIds:this.roleCheckedKeys.filter(d=>d)}),
-            }
-        );
-        let json=await response.json();
+        let json=await post(`${baseUrl}/role/saveRoleMenu` ,
+            JSON.stringify({roleId:this.currentRoleid,menuIds:this.roleCheckedKeys.filter(d=>d)}));
         if(json.success){
             notification.success({
                 message:'保存成功',
@@ -304,16 +296,7 @@ export class RoleButtonStore{
     };
 
     save=async ()=>{
-        let response=await fetch(`${baseUrl}/btn/saveButtonRole` , {
-                method: 'POST',
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
-                }),
-                body: JSON.stringify({roleId:this.selectRow.id,buttonIds:this.checkedKeys}),
-            }
-        );
-        let json=await response.json();
+        let json=await post(`${baseUrl}/btn/saveButtonRole` ,  JSON.stringify({roleId:this.selectRow.id,buttonIds:this.checkedKeys}));
         if(json.success){
             notification.success({
                 message:'保存成功',

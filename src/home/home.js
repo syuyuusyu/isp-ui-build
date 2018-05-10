@@ -25,13 +25,12 @@ class Home extends Component{
 
   targrt=(url)=>(()=>{
       if(url){
-          console.log(url);
           window.open(url);
       }
   });
 
   render () {
-      console.log(this.props.rootStore.treeStore.currentRoleSys.filter(d=>d));
+     // console.log(this.props.rootStore.treeStore.currentRoleSys.filter(d=>d));
     const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = this.props.rootStore.treeStore;
     const linksHeight = winHeight < 700 ? 100 : 180;
     const marginOut = 16;

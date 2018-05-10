@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Row, Col, Input, Button ,Select,notification} from 'antd';
-import {baseUrl,} from "../util";
+import {baseUrl,post} from "../util";
 import {inject, observer} from 'mobx-react';
 
 const FormItem = Form.Item;
@@ -34,16 +34,7 @@ class InvokeForm extends React.Component{
             }
             values.type='3';
             values.system_id=this.props.rootStore.invokeOpStore.currentSys.id;
-            let response=await fetch(`${baseUrl}/op/save` , {
-                    method: 'POST',
-                    headers: new Headers({
-                        'Content-Type': 'application/json',
-                        'Access-Token': sessionStorage.getItem('access-token') || ''
-                    }),
-                    body: JSON.stringify(values),
-                }
-            );
-            let json=await response.json();
+            let json=await post(`${baseUrl}/op/save` ,JSON.stringify(values));
             if(json.success){
                 notification.success({
                     message:'保存成功',
