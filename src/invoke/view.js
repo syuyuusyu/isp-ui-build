@@ -150,7 +150,7 @@ class InvkeGrid extends React.Component{
     loadData=async (page, start, limit,invokeName=this.state.selectInvokeName,groupName=this.state.selectgroupname)=>{
         this.setState({loading:true});
         const url=`${baseUrl}/invokeInfo/infos`;
-        let json=await post(url,JSON.stringify({start:start,limit:limit,invokeName:invokeName,groupName}));
+        let json=await post(url,{start:start,limit:limit,invokeName:invokeName,groupName});
         if(json){
             this.setState({dataSource:json.content});
             this.setState({pagination:{

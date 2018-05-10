@@ -255,19 +255,19 @@ export class SwiftStore{
     });
 
     @action
-    download=(record)=>(async ()=>{
+    download2=(record)=>(async ()=>{
         runInAction(()=>{
             this.inDowning=true;
             this.loadingtest='正在向服务器请求下载';
         });
-        let response=await fetch({url:`${baseUrl}/swift/download`,
+        let response=await fetch(`${baseUrl}/swift/download`,{
             method:'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
             },
-            data:JSON.stringify({...record,username:JSON.parse(sessionStorage.getItem("user")).user_name})
+            body:JSON.stringify({...record,username:JSON.parse(sessionStorage.getItem("user")).user_name})
         });
         //console.log(response);
         let blob=await response.blob();
@@ -282,6 +282,34 @@ export class SwiftStore{
         window.URL.revokeObjectURL(url);
     });
 
+    @action
+    download=(record)=>(async ()=>{
+        runInAction(()=>{
+            this.inDowning=true;
+            this.loadingtest='正在向服务器请求下载';
+        });
+        let response=await axios({url:`${baseUrl}/swift/download`,
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
+            },
+            data:JSON.stringify({...record,username:JSON.parse(sessionStorage.getItem("user")).user_name}),
+            responseType: 'blob'
+        });
+        let blob= response.data;
+        let a = document.createElement('a');
+        let url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
+        a.href = url;
+        a.download = record.filename;
+        runInAction(()=>{
+            this.inDowning=false;
+        });
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+    });
 
     @action
     loadRootDir=async ()=>{
