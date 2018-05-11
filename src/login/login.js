@@ -86,7 +86,7 @@ class Login extends React.Component {
                   rules: [{ required: true, message: '用户名不能为空' }],
                   validateTrigger: 'onBlur',
                 })
-                  (<Input prefix={<Icon type="user" />} placeholder="请输入用户名" />)}
+                  (<Input onPressEnter={this.login} prefix={<Icon type="user" />} placeholder="请输入用户名" />)}
               </FormItem>
             </Row>
             <Row>
@@ -94,7 +94,7 @@ class Login extends React.Component {
                 {getFieldDecorator('passwd', {
                   rules: [{ required: true, message: '密码不能为空' }],
                 })
-                  (<Input prefix={<Icon type="lock" />} type="password" autoComplete="password" placeholder="请输入密码" />)}
+                  (<Input onPressEnter={this.login} prefix={<Icon type="lock" />} type="password" autoComplete="password" placeholder="请输入密码" />)}
               </FormItem>
               <Row>
                 <Col span={25} style={{ textAlign: 'center' }}>
