@@ -9,6 +9,4 @@ export class ModifyUserStore{
     this.rootStore=rootStore;
   }
 
-  @observable
-  loginUser=sessionStorage.getItem('user');
 }
