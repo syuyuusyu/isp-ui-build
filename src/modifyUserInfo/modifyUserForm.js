@@ -135,7 +135,7 @@ class ModifyUserForm extends Component {
     return (
       <div>
         <Form>
-         {/* <Row>
+          <Row>
             <FormItem label='账号'>
               {
                 getFieldDecorator('userName', {
@@ -145,11 +145,11 @@ class ModifyUserForm extends Component {
                 )
               }
             </FormItem>
-          </Row>*/}
+          </Row>
           <Row>
-            <FormItem label="用户名称">
+            <FormItem label="用户姓名">
               {
-                getFieldDecorator('nickName', {rules: [{required: true, message: '用户名称不能为空'},
+                getFieldDecorator('nickName', {rules: [{required: true, message: '用户姓名不能为空'},
                   ],
                   initialValue: JSON.parse(sessionStorage.getItem('user')).name,
                 })(
@@ -201,7 +201,7 @@ class ModifyUserForm extends Component {
               </Row>
             </Row>
           </div>
-          {/*<Row>
+          <Row>
             <FormItem label="电话号码">
               {
                 getFieldDecorator('phone', {
@@ -211,7 +211,7 @@ class ModifyUserForm extends Component {
                 )
               }
             </FormItem>
-          </Row>*/}
+          </Row>
           <Row>
             <FormItem label="身份证编号">
               {

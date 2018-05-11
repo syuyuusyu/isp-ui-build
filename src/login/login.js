@@ -94,11 +94,11 @@ class Login extends React.Component {
                 })
                   (<Input prefix={<Icon type="lock" />} type="password" autoComplete="password" placeholder="请输入密码" />)}
               </FormItem>
-              <Row>
+      {/*        <Row>
                 <Col span={25} style={{ textAlign: 'center' }}>
                   <Checkbox>记住我</Checkbox>
                 </Col>
-              </Row>
+              </Row>*/}
             </Row>
             <Row >
               <Col span={25}  >
