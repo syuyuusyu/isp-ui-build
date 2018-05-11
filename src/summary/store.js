@@ -1,4 +1,5 @@
 import {observable,action,runInAction,configure} from 'mobx';
+import { Message } from 'antd';
 import {baseUrl,get,post} from '../util';
 
 const topologyData = [
@@ -116,16 +117,31 @@ export class SummaryStore{
   currentActiveTable = 0;
 
   @observable
-  personalSource = [];
+  personalSource = [
+    { type: 'CPU', values: [1, 0], unit: '个' },
+    { type: '内存', values: [1, 0], unit: 'MB' },
+    { type: '存储', values: [1, 0], unit: 'GB' },
+    { type: '实例', values: [1, 0], unit: '个' },
+  ];
 
   @observable
-  totalSource = [];
+  totalSource = [
+    { type: 'CPU', values: [1, 0], unit: '个' },
+    { type: '内存', values: [1, 0], unit: 'GB' },
+    { type: '存储', values: [1, 0], unit: 'TB' },
+  ];
 
   @observable
   cpuState = [];
 
   @observable
-  cloudServer = [];
+  cloudServer = [
+    { type: '网络代理', total: 1, used: 0, unit: '个' },
+    { type: '块存储', total: 1, used: 0, unit: '个' },
+    { type: '镜像服务', total: 1, used: 0, unit: '个' },
+    { type: '网络服务', total: 1, used: 0, unit: '个' },
+    { type: '计算服务', total: 1, used: 0, unit: '个' },
+  ];
 
   @observable
   topologyData = [];
@@ -135,47 +151,59 @@ export class SummaryStore{
 
   @action
   initSummaryData = async ()=>{
-    let json = await new Promise((resolve => {
-      setTimeout(() => {
-        // 首页数据
-        resolve({
-          success: true,
-          personalSource: [
-            { type: '实例', values: [7, 5], unit: '个' },
-            { type: 'CPU', values: [100, 60], unit: '%' },
-            { type: '内存', values: [16, 8], unit: 'GB' },
-            { type: '存储卷', values: [10240, 3456], unit: 'GB' },
-          ],
-          totalSource: [
-            { type: '实例', values: [14, 7], unit: '个' },
-            { type: 'CPU', values: [100, 34], unit: '%' },
-            { type: '内存', values: [64, 23], unit: 'GB' },
-            { type: '存储卷', values: [102400, 24560], unit: 'GB' },
-          ],
-          cpuState: [
-            { type: 'CPU1', values: [['2018-05-06', 30], ['2018-05-07', 43], ['2018-05-08', 54], ['2018-05-09', 47]] },
-            { type: 'CPU2', values: [['2018-05-06', 10], ['2018-05-07', 15], ['2018-05-08', 76], ['2018-05-09', 23]] },
-            { type: 'CPU3', values: [['2018-05-06', 43], ['2018-05-07', 2], ['2018-05-08', 53], ['2018-05-09', 22]] },
-            { type: 'CPU4', values: [['2018-05-06', 3], ['2018-05-07', 32], ['2018-05-08', 23], ['2018-05-09', 46]] },
-          ],
-          cloudServer: [
-            { type: '网络代理', total: 10, used: 6, unit: '个' },
-            { type: '块存储', total: 10, used: 2, unit: '个' },
-            { type: '镜像服务', total: 10, used: 3, unit: '个' },
-            { type: '网络服务', total: 10, used: 7, unit: '个' },
-            { type: '计算服务', total: 10, used: 4, unit: '个' },
-          ],
-        })
-      }, 1000);
-    }));
+    const { UserSourceMsg, CloudSource, getCpuInfo, getTopology, getSysMsg } = await post(`${baseUrl}/invoke/cloud_monitor`);
     runInAction(()=>{
-      this.personalSource = json.personalSource;
-      this.totalSource = json.totalSource;
-      this.cpuState = json.cpuState;
-      this.topologyData = topologyData;
+      if (UserSourceMsg && UserSourceMsg.ok !== false) {
+        this.personalSource = [
+          { type: 'CPU', values: [UserSourceMsg.totalCores, UserSourceMsg.coreUsed], unit: '个' },
+          { type: '内存', values: [UserSourceMsg.totalRAMSize, UserSourceMsg.ramused], unit: 'MB' },
+          { type: '存储', values: [UserSourceMsg.totalVolumeStorage, UserSourceMsg.volumeStorageUsed], unit: 'GB' },
+          { type: '实例', values: [UserSourceMsg.totalInstances, UserSourceMsg.instanceUsed], unit: '个' },
+        ];
+      }
+      if (CloudSource && CloudSource.ok !== false) {
+        this.totalSource = [
+          { type: 'CPU', values: [CloudSource.vcpus, CloudSource.vcpus_used], unit: '个' },
+          { type: '内存', values: [Math.round(CloudSource.memory_mb / 1024), Math.round(CloudSource.memory_mb_used / 1024)], unit: 'GB' },
+          { type: '存储', values: [(CloudSource.local_gb / 1024).toFixed(2), (CloudSource.local_gb_used / 1024).toFixed(2)], unit: 'TB' },
+        ];
+      }
+      if (getCpuInfo && getCpuInfo.ok !== false) {
+        this.cpuState = (() => {
+          let result = [];
+          getCpuInfo.forEach((item) => {
+            result.push({
+              type: item.name,
+              values: (({ data, time }) => {
+                let values = [];
+                data.forEach((value, index) => {
+                  if (value !== 'NaN') {
+                    values.push([time[index], value]);
+                  }
+                });
+                return values
+              })(item),
+            })
+          });
+          return result
+        })();
+      }
+      if (getTopology && getTopology.entity !== undefined) {
+        this.topologyData = getTopology.entity
+      }
+      if (getSysMsg && getSysMsg.ok !== false) {
+        const { agent, blockStorage, compute, image, network } = getSysMsg;
+        const total = agent + blockStorage + compute + image + network;
+        this.cloudServer = [
+          { type: '网络代理', total, used: agent, unit: '个' },
+          { type: '块存储', total, used: blockStorage, unit: '个' },
+          { type: '镜像服务', total, used: image, unit: '个' },
+          { type: '网络服务', total, used: network, unit: '个' },
+          { type: '计算服务', total, used: compute, unit: '个' },
+        ];
+      }
       this.tpUpdateMark += 1;
-      this.cloudServer = json.cloudServer;
-    })
+    });
   };
 
   @action

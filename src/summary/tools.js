@@ -142,9 +142,9 @@ const getLineOption = (sourceData, colors) => {
       formatter: (params) => {
         let strs = [];
         let date = new Date(params[0].data[0]);
-        strs.push(date.toLocaleDateString());
+        strs.push(date.toLocaleString());
         params.forEach((item, index) => {
-          strs.push(`${item.seriesName}: ${item.data[1]}`);
+          strs.push(`${item.seriesName}: ${item.data[1].toFixed(2)}%`);
         });
         return strs.join('<br />')
       },
