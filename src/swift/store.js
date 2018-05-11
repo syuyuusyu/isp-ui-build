@@ -369,3 +369,21 @@ export class SwiftStore{
 
 
 }
+
+
+function sdsd(obj){
+    let result={};
+    for(let o of obj){
+        for(let key in o){
+            if( o[key].status && o[key].status===40101 ){
+                return { ok: false, msg: '无效Token！', status: 40101 };
+            }
+            key.replace(/data_monitor_(\w+)-\d+/,(w,p)=>{
+                result[p]=o[key]['page_data'];
+            }) ;
+        }
+    }
+    return result;
+}
+
+

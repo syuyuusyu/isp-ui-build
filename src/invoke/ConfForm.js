@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Row, Col, Input, Button ,Select,Modal,Progress} from 'antd';
 import ParamsForm from './ParamsForm';
-import {baseUrl, get,} from "../util";
+import {baseUrl, get,post} from "../util";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -98,7 +98,7 @@ class ConfForm extends React.Component{
                 values.next=values.next.reduce((a,b)=>a+','+b);
             }
             this.setState({saveVisible:true});
-            let json=await post(`${baseUrl}/invokeInfo/save` , JSON.stringify(values));
+            let json=await post(`${baseUrl}/invokeInfo/save` , values);
             this.setState({savePercent:75});
             if(json.success){
                 this.setState({savePercent:100,saveStatus:'success'});
