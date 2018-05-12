@@ -29,7 +29,7 @@ class OpForm extends React.Component{
                 values.id=store.currentOperation.id;
             }
             console.log(values);
-            let json=await post(`${baseUrl}/op/save` , JSON.stringify(values));
+            let json=await post(`${baseUrl}/op/save` , values);
             if(json.success){
                 notification.success({
                     message:'保存成功',

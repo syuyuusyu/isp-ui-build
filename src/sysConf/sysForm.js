@@ -28,7 +28,7 @@ class SysForm extends React.Component{
             if(store.currentSys){
                 values.id=store.currentSys.id;
             }
-            let json=await post(`${baseUrl}/sys/save`, JSON.stringify(values));
+            let json=await post(`${baseUrl}/sys/save`, values);
             if(json.success){
                 notification.success({
                     message:'保存成功',

@@ -39,11 +39,9 @@ class ParamsForm extends React.Component{
                 }
                 queryData.queryMap=queryMap;
                 this.setState({invokeing:true});
-                console.log(JSON.stringify(queryData));
-                let json=await post(`${baseUrl}/invokeInfo/test` , JSON.stringify(queryData));
-
-
-
+                console.log(queryData);
+                let json=await post(`${baseUrl}/invokeInfo/test` , queryData);
+                console.log(json);
                 if(json.success){
                     // delete json.success;
                     // delete json.msg;
