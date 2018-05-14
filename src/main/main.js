@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import {
   Layout, Dropdown, Menu, Avatar, Popover, Button, Card, Modal, Badge, Icon, Input
 } from 'antd';
-import { Link, } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 
 import { inject, observer } from 'mobx-react';
 //import SubContent from "./subContent";
@@ -18,7 +18,8 @@ import { Summary } from '../summary';
 import SysConnect from './sysConnect';
 import { ApplyPlatform, MessageTable } from "../notification";
 import UserRegisterForm from '../signUp/userRegisterForm'
-
+import ModifyUserForm from '../modifyUserInfo/modifyUserForm'
+import {Link} from 'react-router-dom';
 const { Header, Content, Sider, Footer } = Layout;
 
 @inject('rootStore')
@@ -73,6 +74,7 @@ class Main extends Component {
     const userOperations = (
       <ul className="popover-list">
           <li onClick={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}>申请平台访问权限</li>
+          <li><NavLink to="/modifyUser">修改用户信息</NavLink></li>
           <li onClick={this.props.rootStore.authorityStore.logout}>退出</li>
       </ul>
     );
@@ -122,6 +124,7 @@ class Main extends Component {
           <Redirect exact path="/login" to="/home" />
           <Route exact path="/home" component={Home} />
           <Route exact path="/summary" component={Summary} />
+          <Route path="/modifyUser" component={ModifyUserForm} />
           <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - 200 }}>
             {
               this.props.rootStore.treeStore.currentRoleMenu
