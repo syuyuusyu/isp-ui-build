@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import {
   Layout, Dropdown, Menu, Avatar, Popover, Button, Card, Modal, Badge, Icon, Input
 } from 'antd';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { inject, observer } from 'mobx-react';
 //import SubContent from "./subContent";
@@ -25,7 +25,7 @@ const { Header, Content, Sider, Footer } = Layout;
 @observer
 class Main extends Component {
 
-  componentWillMount () {
+  componentWillMount() {
     const winWidth = document.documentElement.clientWidth;
     const winHeight = document.documentElement.clientHeight;
     this.props.rootStore.treeStore.updateWinSize({ width: winWidth, height: winHeight });
@@ -37,17 +37,17 @@ class Main extends Component {
     };
     window.addEventListener('resize', this.winResize, false);
   }
-  componentWillUnMount () {
+  componentWillUnMount() {
     window.removeEventListener('resize', this.winResize, false);
   }
   componentDidMount() {
     //角色权限变动以后需要刷新的数据
     if (!this.props.rootStore.authorityStore.loginVisible) {
       Promise.all([
-          this.props.rootStore.authorityStore.loadAllbuttons(),
+        this.props.rootStore.authorityStore.loadAllbuttons(),
         //this.props.rootStore.treeStore.initCurrentRoleMenu(),
-          this.props.rootStore.treeStore.initRoot(),
-          this.props.rootStore.notificationStore.loadSystemAccess()
+        this.props.rootStore.treeStore.initRoot(),
+        this.props.rootStore.notificationStore.loadSystemAccess()
       ]);
     }
 
@@ -71,12 +71,18 @@ class Main extends Component {
     //const authoritySyore = this.props.rootStore.authorityStore;
 
     const { winWidth, winHeight } = this.props.rootStore.treeStore;
-    const {loginVisible}=this.props.rootStore.authorityStore;
+    const { loginVisible } = this.props.rootStore.authorityStore;
     const userOperations = (
       <ul className="popover-list">
-          <li onClick={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}>申请平台访问权限</li>
-          <li><Link to="/modifyUser">修改用户信息</Link></li>
-          <li onClick={this.props.rootStore.authorityStore.logout}>退出</li>
+        <li onClick={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}>
+          <Icon type="eye-o" />&nbsp;&nbsp; 申请平台访问权限
+        </li>
+        <li>
+          <Icon type="profile" />&nbsp;&nbsp; <Link to="/modifyUser">修改用户信息</Link>
+        </li>
+        <li onClick={this.props.rootStore.authorityStore.logout}>
+          <Icon type="poweroff" />&nbsp;&nbsp; 退出
+        </li>
       </ul>
     );
     // 未登录
@@ -93,17 +99,17 @@ class Main extends Component {
       );
     }
     // 已登录
-      //console.log( this.props.rootStore.treeStore.menuTreeData.filter(d=>d));
+    //console.log( this.props.rootStore.treeStore.menuTreeData.filter(d=>d));
     return (
       <div id="mainBox">
         <header>
           <div id="headerBox">
             <div id="logoBox">
-                <span className="text">综合集成平台</span>
+              <span className="text">综合集成平台</span>
             </div>
             {/*<div id="searchBox">*/}
-              {/*<Input type="text" />*/}
-              {/*<Icon type="search" />*/}
+            {/*<Input type="text" />*/}
+            {/*<Icon type="search" />*/}
             {/*</div>*/}
             <Popover placement="bottom" trigger="hover" content={userOperations}>
               <div id="userBox">
@@ -132,28 +138,28 @@ class Main extends Component {
               this.props.rootStore.treeStore.currentRoleMenu
                 .filter(d => d)
                 .filter(m => m.path)
-                .map(m =>{
-                      //let Com=require('../' + m.page_path)[m.page_class];
-                      //  const Comp=(
-                      //         <div id="contentBox"  style={{ width: winWidth - 32, height: winHeight - 200 }}>
-                      //             <Com/>
-                      //         </div>
-                      //  );
+                .map(m => {
+                  //let Com=require('../' + m.page_path)[m.page_class];
+                  //  const Comp=(
+                  //         <div id="contentBox"  style={{ width: winWidth - 32, height: winHeight - 200 }}>
+                  //             <Com/>
+                  //         </div>
+                  //  );
 
-                      return (
-                      <Route
-                        key={m.id}
-                        exact
-                        path={m.path + (m.path_holder ? m.path_holder : '')}
-                        component={
-                            require('../' + m.page_path)[m.page_class]
-                        }
-                      >
-                          {/*<div id="contentBox"  style={{ width: winWidth - 32, height: winHeight - 200 }}>*/}
-                              {/*<Com/>*/}
-                          {/*</div>*/}
-                      </Route>
-                        );
+                  return (
+                    <Route
+                      key={m.id}
+                      exact
+                      path={m.path + (m.path_holder ? m.path_holder : '')}
+                      component={
+                        require('../' + m.page_path)[m.page_class]
+                      }
+                    >
+                      {/*<div id="contentBox"  style={{ width: winWidth - 32, height: winHeight - 200 }}>*/}
+                      {/*<Com/>*/}
+                      {/*</div>*/}
+                    </Route>
+                  );
                 }
                 )
             }
@@ -162,22 +168,22 @@ class Main extends Component {
         </Switch>
         <footer>CopyRight © 云南地矿测绘院</footer>
         <Modal visible={this.props.rootStore.notificationStore.applyPlatformVisible}
-               width={600}
-               title={`申请平台访问权限`}
-               footer={null}
-               onCancel={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}
-               maskClosable={false}
-               destroyOnClose={true}
+          width={600}
+          title={`申请平台访问权限`}
+          footer={null}
+          onCancel={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}
+          maskClosable={false}
+          destroyOnClose={true}
         >
           <ApplyPlatform />
         </Modal>
         <Modal visible={this.props.rootStore.notificationStore.messageTableVisible}
-               width={1000}
-               title={`代办事项`}
-               footer={null}
-               onCancel={this.props.rootStore.notificationStore.toggleMessageTableVisible}
-               maskClosable={false}
-               destroyOnClose={true}
+          width={1000}
+          title={`代办事项`}
+          footer={null}
+          onCancel={this.props.rootStore.notificationStore.toggleMessageTableVisible}
+          maskClosable={false}
+          destroyOnClose={true}
         >
           <MessageTable />
         </Modal>
