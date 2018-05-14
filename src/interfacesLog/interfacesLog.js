@@ -70,7 +70,7 @@ class InterfacesLog extends Component{
       <div>
         <Row gutter={25}>
         <Col span={2}  offset={0} style={{ textAlign: 'right' }}>
-          <Button icon="plus-circle" onClick={this.props.rootStore.interfacesLog.getRefreshLog}>刷新</Button>
+          <Button icon="reload" onClick={this.props.rootStore.interfacesLog.getRefreshLog}>刷新</Button>
         </Col>
           <Col span={2} offset={2} style={{lineHeight:'32px'}}>系统平台:</Col>
           <Col span={2}>
