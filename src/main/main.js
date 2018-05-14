@@ -14,7 +14,7 @@ import { Login } from '../login';
 //import {get,baseUrl} from '../util';
 import MenuTree from './menuTree';
 import { Home } from '../home';
-import { Summary } from '../summary';
+import { SummaryCM, SummaryBD } from '../summary';
 import SysConnect from './sysConnect';
 import { ApplyPlatform, MessageTable } from "../notification";
 import UserRegisterForm from '../signUp/userRegisterForm'
@@ -37,7 +37,7 @@ class Main extends Component {
     };
     window.addEventListener('resize', this.winResize, false);
   }
-  componentWillUnMount () {
+  componentWillUnmount () {
     window.removeEventListener('resize', this.winResize, false);
   }
   componentDidMount() {
@@ -69,7 +69,7 @@ class Main extends Component {
   render() {
     const treeStore = this.props.rootStore.treeStore;
     const authoritySyore = this.props.rootStore.authorityStore;
-    const { winWidth, winHeight } = treeStore;
+    const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = treeStore;
     const userOperations = (
       <ul className="popover-list">
           <li onClick={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}>申请平台访问权限</li>
@@ -117,27 +117,27 @@ class Main extends Component {
           </div>
           <MenuTree />
         </header>
-        <Switch>
-          <Redirect exact path="/" to="/home" />
-          <Redirect exact path="/login" to="/home" />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/summary" component={Summary} />
-          <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - 200 }}>
-            {
-              this.props.rootStore.treeStore.currentRoleMenu
-                .filter(d => d)
-                .filter(m => m.path)
-                .map(m =>
-                  <Route
-                    key={m.id}
-                    exact
-                    path={m.path + (m.path_holder ? m.path_holder : '')}
-                    component={require('../' + m.page_path)[m.page_class]}
-                  />
-                )
-            }
-          </div>
-        </Switch>
+        <Route exact path="/" render={() => <Redirect to="/home" />} />
+        <Route exact path="/login" render={() => <Redirect to="/home" />} />
+        <Route exact path="/home" component={Home} />
+        <Route exact path="/summary-cm" component={SummaryCM} />
+        <Route exact path="/summary-bd" component={SummaryBD} />
+        <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - headerHeight - menuHeight - footerHeight }}>
+          {
+            this.props.rootStore.treeStore.currentRoleMenu
+              .filter(d => d)
+              .filter(m => m.path)
+              .filter(m => m.path !== 'summary')
+              .map(m =>
+                <Route
+                  key={m.id}
+                  exact
+                  path={m.path + (m.path_holder ? m.path_holder : '')}
+                  component={require('../' + m.page_path)[m.page_class]}
+                />
+              )
+          }
+        </div>
         <footer>CopyRight © 云南地矿测绘院</footer>
         <Modal visible={this.props.rootStore.notificationStore.applyPlatformVisible}
                width={600}

@@ -1,6 +1,6 @@
 import {TreeStore} from "./main";
 import { HomeStore } from "./home";
-import { SummaryStore } from './summary';
+import { SummaryStoreCM, SummaryStoreBD } from './summary';
 import {RoleStore, RoleMenuStore, RoleButtonStore, RoleSysStore} from "./roleConf";
 import {AuthorityStore} from './login';
 import {UserRoleStore} from './userRole';
@@ -33,7 +33,8 @@ export default class RootStore {
     constructor() {
         this.treeStore = new TreeStore(this);
         this.homeStore = new HomeStore(this);
-        this.summaryStore = new SummaryStore(this);
+        this.summaryStoreCM = new SummaryStoreCM(this);
+        this.summaryStoreBD = new SummaryStoreBD(this);
         this.roleStore = new RoleStore(this);
         this.roleMenuStore = new RoleMenuStore(this);
         this.authorityStore = new AuthorityStore(this);
