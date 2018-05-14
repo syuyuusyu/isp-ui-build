@@ -134,7 +134,14 @@ export function request(method, url, body) {
                 //console.log(res.json());
                 return res.data;
             }
-        });
+        }).catch((err)=>{
+            if(err.response.status===401){
+                console.log('token失效!!');
+                sessionStorage.clear();
+                window.history.go('/login');
+                return Promise.reject('Unauthorized.');
+            }
+    });
 }
 
 export const get = url => request('GET', url);

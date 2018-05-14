@@ -1,21 +1,30 @@
 import React from 'react';
 import { Form, Input,Row,Col,Button,} from 'antd';
 import {format,evil} from '../util';
-// import {UnControlled as CodeMirror} from 'react-codemirror2';
-// import 'codemirror/lib/codemirror.css';
-// import 'codemirror/theme/material.css';
+import {UnControlled as CodeMirror} from 'react-codemirror2'
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/addon/hint/show-hint.css';
+import 'codemirror/addon/hint/show-hint.js';
+import 'codemirror/addon/hint/javascript-hint.js';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/material.css';
+import 'codemirror/theme/ambiance.css';
+import '../style.css';
 const FormItem = Form.Item;
 const {TextArea}=Input;
 
 class ParseForm extends React.Component{
 
+    funMirrValue;//e0bf6e64d41a45bbbd1a41a6ae0e99b6
+
     componentDidMount(){
+        console.log(this.props.form.setFieldsValue);
         this.props.form.setFieldsValue({
             result:format(JSON.stringify(this.props.invokeResult.result)),
-            parseFun:this.props.currentInvoke.parseFun,
-
+            //parseFun:this.props.currentInvoke.parseFun,
             //parseResult:this.props.currentInvoke.parseFun
         });
+        this.funMirrValue=this.props.currentInvoke.parseFun;
         //this.parse();
     };
 
@@ -25,7 +34,7 @@ class ParseForm extends React.Component{
             let {parseFun,result}=values;
             result=JSON.parse(result);
             this.props.form.setFieldsValue({
-                parseResult:format(JSON.stringify(this._parse(parseFun,result)))
+                parseResult:format(JSON.stringify(this._parse(this.funMirrValue,result)))
             });
         });
     };
@@ -64,13 +73,25 @@ class ParseForm extends React.Component{
                 </Row>
                 <Row gutter={24}>
                     <Col span={12}>
-                        <FormItem label="解析函数" >
-                        {getFieldDecorator('parseFun',{
-
-                        })(
-                            <TextArea rows={15} />
-                        )}
-                    </FormItem>
+                        <div>
+                            <div style={{marginBottom:'5px',marginTop:'10px'}}>解析函数</div>
+                            <CodeMirror
+                                ref="editorFun"
+                                value={this.funMirrValue}
+                                options={
+                                    {
+                                        mode:'javascript',
+                                        theme: 'material',
+                                        lineNumbers: true,
+                                        extraKeys: {"Ctrl": "autocomplete"},
+                                    }
+                                }
+                                onChange={(editor, data, value) => {
+                                    console.log('onChange fun');
+                                    this.funMirrValue=value;
+                                }}
+                            />
+                        </div>
 
                     </Col>
                     <Col span={12}>

@@ -1,31 +1,38 @@
 import React from 'react';
 import { Form, Input,Row,Col,Button,} from 'antd';
 import {format,evil} from '../util';
+import {UnControlled as CodeMirror} from 'react-codemirror2'
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/addon/hint/show-hint.css';
+import 'codemirror/addon/hint/show-hint.js';
+import 'codemirror/addon/hint/javascript-hint.js';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/material.css';
+import 'codemirror/theme/ambiance.css';
+import '../style.css';
 
-const FormItem = Form.Item;
-const {TextArea}=Input;
 
 class InvokeParseForm extends React.Component{
 
+    resultMirrValue;
+    funMirrValue;
+    funResultMirrValue;
+
+    state={
+        funResult:''
+    };
+
     componentDidMount(){
-        this.props.form.setFieldsValue({
-            result:format(JSON.stringify(this.props.result)),
-            parseFun:this.props.parseFun,
-            //parseResult:this.props.currentInvoke.parseFun
-        });
+        this.resultMirrValue=format(JSON.stringify(this.props.result));
+        this.funMirrValue=this.props.parseFun;
         //this.parse();
     };
 
     parse=()=>{
-        this.props.form.validateFields((err,values)=>{
-            if(err) return;
-            let {parseFun,result}=values;
-            console.log(result);
-            result=JSON.parse(result);
-            this.props.form.setFieldsValue({
-                parseResult:format(JSON.stringify(this._parse(parseFun,result)))
-            });
-        });
+        let result=JSON.parse(this.resultMirrValue);
+        this.funResultMirrValue=format(JSON.stringify(this._parse(this.funMirrValue,result)));
+        this.setState({funResult:this.funResultMirrValue});
+
     };
 
     _parse(parseFun,obj){
@@ -38,41 +45,66 @@ class InvokeParseForm extends React.Component{
     }
 
     render(){
-        const { getFieldDecorator, } = this.props.form;
         //const result=this.props.invokeResult;
         return(
-            <Form >
+            <div >
                 <Row gutter={24}>
 
                     <Col span={24}>
-                        <FormItem label="请求结果" >
-                            {getFieldDecorator('result',{
-
-                            })(
-                                <TextArea rows={10} />
-                            )}
-                        </FormItem>
+                        <div>
+                            <div style={{marginBottom:'5px',marginTop:'10px'}}>请求结果</div>
+                            <CodeMirror
+                                value={this.resultMirrValue}
+                                options={
+                                    {
+                                        mode:'json',
+                                        theme: 'material',
+                                        lineNumbers: true
+                                    }
+                                }
+                                onChange={(editor, data, value) => {
+                                    this.resultMirrValue=value;
+                                }}
+                            />
+                        </div>
                     </Col>
                 </Row>
                 <Row gutter={24}>
                     <Col span={12}>
-                        <FormItem label="解析函数" >
-                            {getFieldDecorator('parseFun',{
-
-                            })(
-                                <TextArea rows={15} />
-                            )}
-                        </FormItem>
+                        <div>
+                            <div style={{marginBottom:'5px',marginTop:'10px'}}>解析函数</div>
+                            <CodeMirror
+                                value={this.funMirrValue}
+                                options={
+                                    {
+                                        mode:'javascript',
+                                        theme: 'material',
+                                        lineNumbers: true
+                                    }
+                                }
+                                onChange={(editor, data, value) => {
+                                    this.funMirrValue=value;
+                                }}
+                            />
+                        </div>
                     </Col>
                     <Col span={12}>
-                        <FormItem label="解析函数结果111" >
-                            {getFieldDecorator('parseResult',{
-
-                            })(
-
-                                <TextArea row={15}/>
-                            )}
-                        </FormItem>
+                        <div>
+                            <div style={{marginBottom:'5px',marginTop:'10px'}}>解析函数结果</div>
+                            <CodeMirror
+                                value={this.state.funResult}
+                                options={
+                                    {
+                                        mode:'json',
+                                        theme: 'material',
+                                        lineNumbers: true
+                                    }
+                                }
+                                onChange={(editor, data, value) => {
+                                    this.funResultMirrValue=value;
+                                }}
+                            />
+                        </div>
 
                     </Col>
                 </Row>
@@ -81,9 +113,9 @@ class InvokeParseForm extends React.Component{
                         <Button icon="play-circle" onClick={this.parse}>测试解析函数</Button>
                     </Col>
                 </Row>
-            </Form>
+            </div>
         );
     }
 }
 
-export default  Form.create()(InvokeParseForm);
+export default  InvokeParseForm;
