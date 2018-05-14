@@ -145,7 +145,11 @@ class Main extends Component {
                   //             <Com/>
                   //         </div>
                   //  );
-
+                  //       let Com=require('../' + m.page_path)[m.page_class];
+                  //       console.log(m.page_path,m.page_class);
+                  //       if(m.page_path==='summary'){
+                  //           console.log(Com);
+                  //       }
                   return (
                     <Route
                       key={m.id}
