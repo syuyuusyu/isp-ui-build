@@ -109,7 +109,7 @@ export function request(method, url, body) {
         // fetch的GET不允许有body，参数只能放在url中
         body = undefined;
     } else {
-        body = body && JSON.stringify(body);
+        body = body //&& JSON.stringify(body);
     }
     return axios({
         url:url,
@@ -121,7 +121,6 @@ export function request(method, url, body) {
         },
         data:body
     }).then((res) => {
-            console.log(res);
             if (res.status === 401) {
                 console.log('token失效!!');
                 sessionStorage.clear();

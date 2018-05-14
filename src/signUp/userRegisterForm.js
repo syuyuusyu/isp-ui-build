@@ -129,7 +129,7 @@ class UserRegisterForm extends Component {
       values.confirmPassword= hmac.update(values.confirmPassword).digest('hex');
       values.randomNumber=randomNumber;
 
-      let json=await post(`${baseUrl}/userRegister/save` , JSON.stringify(values));
+      let json=await post(`${baseUrl}/userRegister/save`,values);
      if(json.success){
         Modal.success({
           title: '注册成功！',

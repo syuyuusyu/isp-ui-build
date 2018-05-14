@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import {
   Layout, Dropdown, Menu, Avatar, Popover, Button, Card, Modal, Badge, Icon, Input
 } from 'antd';
-import { NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 import { inject, observer } from 'mobx-react';
 //import SubContent from "./subContent";
@@ -15,11 +15,10 @@ import { Login } from '../login';
 import MenuTree from './menuTree';
 import { Home } from '../home';
 import { Summary } from '../summary';
-import SysConnect from './sysConnect';
+//import SysConnect from './sysConnect';
 import { ApplyPlatform, MessageTable } from "../notification";
 import UserRegisterForm from '../signUp/userRegisterForm'
 import ModifyUserForm from '../modifyUserInfo/modifyUserForm'
-import {Link} from 'react-router-dom';
 const { Header, Content, Sider, Footer } = Layout;
 
 @inject('rootStore')
@@ -68,18 +67,20 @@ class Main extends Component {
 
 
   render() {
-    const treeStore = this.props.rootStore.treeStore;
-    const authoritySyore = this.props.rootStore.authorityStore;
-    const { winWidth, winHeight } = treeStore;
+    //const treeStore = this.props.rootStore.treeStore;
+    //const authoritySyore = this.props.rootStore.authorityStore;
+
+    const { winWidth, winHeight } = this.props.rootStore.treeStore;
+    const {loginVisible}=this.props.rootStore.authorityStore;
     const userOperations = (
       <ul className="popover-list">
           <li onClick={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}>申请平台访问权限</li>
-          <li><NavLink to="/modifyUser">修改用户信息</NavLink></li>
+          <li><Link to="/modifyUser">修改用户信息</Link></li>
           <li onClick={this.props.rootStore.authorityStore.logout}>退出</li>
       </ul>
     );
     // 未登录
-    if (authoritySyore.loginVisible) {
+    if (loginVisible) {
       return (
         <div className="extend-layout" style={{ height: "100%" }}>
           <Switch>
@@ -92,6 +93,7 @@ class Main extends Component {
       );
     }
     // 已登录
+      //console.log( this.props.rootStore.treeStore.menuTreeData.filter(d=>d));
     return (
       <div id="mainBox">
         <header>
@@ -99,10 +101,10 @@ class Main extends Component {
             <div id="logoBox">
                 <span className="text">综合集成平台</span>
             </div>
-            <div id="searchBox">
-              <Input type="text" />
-              <Icon type="search" />
-            </div>
+            {/*<div id="searchBox">*/}
+              {/*<Input type="text" />*/}
+              {/*<Icon type="search" />*/}
+            {/*</div>*/}
             <Popover placement="bottom" trigger="hover" content={userOperations}>
               <div id="userBox">
                 <Icon type="user" />
@@ -130,16 +132,33 @@ class Main extends Component {
               this.props.rootStore.treeStore.currentRoleMenu
                 .filter(d => d)
                 .filter(m => m.path)
-                .map(m =>
-                  <Route
-                    key={m.id}
-                    exact
-                    path={m.path + (m.path_holder ? m.path_holder : '')}
-                    component={require('../' + m.page_path)[m.page_class]}
-                  />
+                .map(m =>{
+                      //let Com=require('../' + m.page_path)[m.page_class];
+                      //  const Comp=(
+                      //         <div id="contentBox"  style={{ width: winWidth - 32, height: winHeight - 200 }}>
+                      //             <Com/>
+                      //         </div>
+                      //  );
+
+                      return (
+                      <Route
+                        key={m.id}
+                        exact
+                        path={m.path + (m.path_holder ? m.path_holder : '')}
+                        component={
+                            require('../' + m.page_path)[m.page_class]
+                        }
+                      >
+                          {/*<div id="contentBox"  style={{ width: winWidth - 32, height: winHeight - 200 }}>*/}
+                              {/*<Com/>*/}
+                          {/*</div>*/}
+                      </Route>
+                        );
+                }
                 )
             }
           </div>
+
         </Switch>
         <footer>CopyRight © 云南地矿测绘院</footer>
         <Modal visible={this.props.rootStore.notificationStore.applyPlatformVisible}

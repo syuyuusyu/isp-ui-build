@@ -107,7 +107,7 @@ class InvkeGrid extends React.Component{
     );
 
     loadInvokeName=async()=>{
-        let json=await post(`${baseUrl}/invokeInfo/invokes` , );
+        let json=await post(`${baseUrl}/invokeInfo/invokes` ,{} );
         //let json=await response.json();
         const invokeNames=json.map(o=>({id:o.id,name:o.name}));
         invokeNames.unshift({id:null,name:null});

@@ -19,7 +19,6 @@ class InvokeTable extends Component{
             title: '操作',
             width: 200,
             render: (text, record) => {
-                console.log(this.props.rootStore.invokeOpStore.currentSys);
                 return (
                     <span>
                         {/*<Button icon="edit" onClick={this.props.rootStore.sysOperationStore.showOpForm(record)} size='small'>修改</Button>*/}

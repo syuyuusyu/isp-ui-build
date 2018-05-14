@@ -47,7 +47,7 @@ class ConfForm extends React.Component{
 }`
             });
         }
-        let json=await post(`${baseUrl}/invokeInfo/invokes` ,JSON.stringify({}));
+        let json=await post(`${baseUrl}/invokeInfo/invokes` ,{});
         json=json.map(o=>({
             id:o.id,name:o.name
         }));
