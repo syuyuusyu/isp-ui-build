@@ -1,74 +1,41 @@
-const colorIndex = ['#2ee62e', '#e6c62e', '#2eace6', '#e67c2e', '#9ae62e', '#e5e52e', '#2e89e6'];
-
-const getBarOption = (sourceData) => {
-  let dataTotal = [];
-  let dataSuccess = [];
-  let dataUsed = [];
-  let xData = [];
-  sourceData.forEach(({ type, total, success, used  }, index) => {
-    dataTotal.push({
-      value: total,
+const getSingleBarOption = (sourceData, colors) => {
+  let data = [];
+  sourceData.forEach(({ name, value }, index) => {
+    data.push({
+      value: [name, value],
+      itemStyle: { color: colors[index] },
     });
-    dataSuccess.push({
-      value: success !== undefined ? success : 0,
-    });
-    dataUsed.push({
-      value: used !== undefined ? used : 0,
-    });
-    xData.push(type)
   });
   return {
     backgroundColor: '#fff',
     xAxis: {
-      data: xData,
+      type: 'category',
+      axisLine: { show: false },
       axisTick: { show: false },
     },
     yAxis: {
-      show: true,
+      show: false,
     },
     grid: {
-      top: 'center',
-      right: 0,
-    },
-    label: {
-      show: true,
-      position: 'top',
-      formatter: '{c}个',
-    },
-    legend: {
-      data: ['总量', '成功', '占用'],
+      top: 8,
+      left: 'center',
+      width: '100%',
     },
     series: [
       {
-        name: '总量',
+        name: '统计图',
         type: 'bar',
         barMaxWidth: 32,
         markLine: {
           label: { show: false },
         },
-        itemStyle: { color: '#4c96df' },
-        data: dataTotal,
-      },
-      {
-        name: '成功',
-        type: 'bar',
-        barMaxWidth: 32,
-        markLine: {
-          label: { show: false },
+        label: {
+          show: true,
+          position: 'top',
+          formatter: '{@[1]}',
         },
-        itemStyle: { color: '#2deb7d' },
-        data: dataSuccess,
-      },
-      {
-        name: '占用',
-        type: 'bar',
-        barMaxWidth: 32,
-        markLine: {
-          label: { show: false },
-        },
-        itemStyle: { color: '#f8c32f' },
-        data: dataUsed,
-      },
+        data,
+      }
     ],
   }
 };
@@ -108,6 +75,52 @@ const getPieOption = (sourceData, colors) => {
         radius: ['65%', '80%'],
         hoverAnimation: false,
         label: { show: false },
+        data: data,
+      },
+    ],
+  }
+};
+
+const getItemsPieOption = (sourceData, size, colors) => {
+  let data = [];
+  sourceData.forEach(({ name, value }, index) => {
+    data.push({
+      name,
+      value,
+      itemStyle: { color: colors[index] },
+    });
+  });
+  const maxRadius = Math.min(size.width - 104, size.height) / 2;
+  return {
+    backgroundColor: '#fff',
+    legend: {
+      left: 0,
+      top: 0,
+      orient: 'vertical',
+      itemHeight: 8,
+      itemWidth: 8,
+      formatter: (name) => {
+        if (name.length > 10) {
+          return `${name.slice(0, 10)}...`
+        }
+        return name
+      },
+    },
+    tooltip: {
+      formatter: '{b}：{c}',
+      axisPointer: {
+        animation: false,
+      },
+    },
+    series: [
+      {
+        type: 'pie',
+        center: [ size.width / 2 + 52, '50%'],
+        radius: [maxRadius - 24, maxRadius],
+        hoverAnimation: false,
+        label: {
+          show: false,
+        },
         data: data,
       },
     ],
@@ -173,8 +186,35 @@ const getLineOption = (sourceData, colors) => {
   }
 };
 
+const getSankeyOption = (sourceData, links, colors) => {
+  let data = [];
+  sourceData.forEach(({ name, type }) => {
+    data.push({
+      name,
+      itemStyle: { color: colors[type] },
+    })
+  });
+  return {
+    backgroundColor: '#fff',
+    series: [
+      {
+        type: 'sankey',
+        left: 16,
+        right: 124,
+        lineStyle: {
+          color: '#bbb',
+        },
+        data,
+        links,
+      },
+    ],
+  }
+};
+
 export {
-  getBarOption,
+  getSingleBarOption,
   getPieOption,
+  getItemsPieOption,
   getLineOption,
+  getSankeyOption,
 }

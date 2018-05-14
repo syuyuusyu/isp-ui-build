@@ -7,7 +7,7 @@ import 'echarts/lib/chart/pie';
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/title';
-import { getPieOption, getBarOption, getLineOption } from './tools';
+import { getPieOption, getLineOption } from './tools';
 import Topology from './Topology';
 import HorizontalBar from './HorizontalBar';
 import './index.less';
@@ -17,18 +17,27 @@ const colorGray = '#e8e8e8';
 
 @inject('rootStore')
 @observer
-class Summary extends Component{
+class SummaryCM extends Component{
   componentWillMount () {
     this.tpUpdateMark = 0;
   }
   componentDidMount () {
-    this.props.rootStore.summaryStore.initSummaryData({ tpUpdateMark: 0 });
+    const autoRefresh = () => {
+      this.timerAutoRefresh = setTimeout(() => {
+        autoRefresh();
+      }, 15000);
+      this.props.rootStore.summaryStoreCM.initSummaryData();
+    };
+    autoRefresh();
   }
   componentWillUpdate () {
-    if (this.tpUpdateMark !== this.props.rootStore.summaryStore.tpUpdateMark) {
-      this.tpUpdateMark = this.props.rootStore.summaryStore.tpUpdateMark;
-      this.refs.topology.updateTopology(this.props.rootStore.summaryStore.topologyData);
+    if (this.tpUpdateMark !== this.props.rootStore.summaryStoreCM.tpUpdateMark) {
+      this.tpUpdateMark = this.props.rootStore.summaryStoreCM.tpUpdateMark;
+      this.refs.topology.updateTopology(this.props.rootStore.summaryStoreCM.topologyData);
     }
+  }
+  componentWillUnmount () {
+    clearTimeout(this.timerAutoRefresh);
   }
   render () {
     const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = this.props.rootStore.treeStore;
@@ -66,7 +75,7 @@ class Summary extends Component{
       width: blockDSize.width - 2 * marginInner,
       height: Math.floor((blockDSize.height - marginInner * 2 - blockTitleHeight - 32) / 5),
     };
-    const { currentActiveTable, personalSource, totalSource, cpuState, topologyData, cloudServer } = this.props.rootStore.summaryStore;
+    const { currentActiveTable, personalSource, totalSource, cpuState, topologyData, cloudServer } = this.props.rootStore.summaryStoreCM;
     const sourceDataShow = currentActiveTable === 0 ? personalSource : totalSource;
     return (
       <div id="summaryBox">
@@ -74,11 +83,11 @@ class Summary extends Component{
           <div className="tab-title">
             <div
               className={`title${currentActiveTable === 0 ? ' active' : ''}`}
-              onClick={() => this.props.rootStore.summaryStore.toggleTable(0)}
+              onClick={() => this.props.rootStore.summaryStoreCM.toggleTable(0)}
             >个人资源</div>
             <div
               className={`title${currentActiveTable === 1 ? ' active' : ''}`}
-              onClick={() => this.props.rootStore.summaryStore.toggleTable(1)}
+              onClick={() => this.props.rootStore.summaryStoreCM.toggleTable(1)}
             >云区总资源</div>
           </div>
           <div className="tab-content">
@@ -140,4 +149,4 @@ class Summary extends Component{
     );
   }
 }
-export default Summary;
+export default SummaryCM;

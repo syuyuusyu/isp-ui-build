@@ -1,25 +1,16 @@
 import React, { Component } from 'react';
-//import LeftTree from './leftTree';
-
 import {
   Layout, Dropdown, Menu, Avatar, Popover, Button, Card, Modal, Badge, Icon, Input
 } from 'antd';
 import { Link } from 'react-router-dom';
-
 import { inject, observer } from 'mobx-react';
-//import SubContent from "./subContent";
-//import InvkeGrid3 from "../invoke";
 import { NavLink, Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { Login } from '../login';
-//import {get,baseUrl} from '../util';
 import MenuTree from './menuTree';
 import { Home } from '../home';
-import { Summary } from '../summary';
-//import SysConnect from './sysConnect';
+import { SummaryCM, SummaryBD } from '../summary';
 import { ApplyPlatform, MessageTable } from "../notification";
 import UserRegisterForm from '../signUp/userRegisterForm'
-import ModifyUserForm from '../modifyUserInfo/modifyUserForm'
-const { Header, Content, Sider, Footer } = Layout;
 
 @inject('rootStore')
 @observer
@@ -37,7 +28,7 @@ class Main extends Component {
     };
     window.addEventListener('resize', this.winResize, false);
   }
-  componentWillUnMount() {
+  componentWillUnmount () {
     window.removeEventListener('resize', this.winResize, false);
   }
   componentDidMount() {
@@ -53,25 +44,11 @@ class Main extends Component {
 
 
   }
-
-  // componentWillUpdate(){
-  //     if(!this.props.rootStore.authorityStore.loginVisible){
-  //         this.props.rootStore.treeStore.initRoot();
-  //         this.props.rootStore.treeStore.initCurrentRoleMenu();
-  //     }
-  // }
-
-  componentWillUpdate() {
-    //console.log('componentWillUpdate:'+this.constructor.name);
-  }
-
-
   render() {
-    //const treeStore = this.props.rootStore.treeStore;
-    //const authoritySyore = this.props.rootStore.authorityStore;
-
-    const { winWidth, winHeight } = this.props.rootStore.treeStore;
     const { loginVisible } = this.props.rootStore.authorityStore;
+    const treeStore = this.props.rootStore.treeStore;
+    const authoritySyore = this.props.rootStore.authorityStore;
+    const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = treeStore;
     const userOperations = (
       <ul className="popover-list">
         <li onClick={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}>
@@ -127,45 +104,27 @@ class Main extends Component {
           </div>
           <MenuTree />
         </header>
-        <Switch>
-          <Redirect exact path="/" to="/home" />
-          <Redirect exact path="/login" to="/home" />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/summary" component={Summary} />
-          <Route path="/modifyUser" component={ModifyUserForm} />
-          <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - 200 }}>
-            {
-              this.props.rootStore.treeStore.currentRoleMenu
-                .filter(d => d)
-                .filter(m => m.path)
-                .map(m => {
-                  //let Com=require('../' + m.page_path)[m.page_class];
-                  //  const Comp=(
-                  //         <div id="contentBox"  style={{ width: winWidth - 32, height: winHeight - 200 }}>
-                  //             <Com/>
-                  //         </div>
-                  //  );
-
-                  return (
-                    <Route
-                      key={m.id}
-                      exact
-                      path={m.path + (m.path_holder ? m.path_holder : '')}
-                      component={
-                        require('../' + m.page_path)[m.page_class]
-                      }
-                    >
-                      {/*<div id="contentBox"  style={{ width: winWidth - 32, height: winHeight - 200 }}>*/}
-                      {/*<Com/>*/}
-                      {/*</div>*/}
-                    </Route>
-                  );
-                }
-                )
-            }
-          </div>
-
-        </Switch>
+        <Route exact path="/" render={() => <Redirect to="/home" />} />
+        <Route exact path="/login" render={() => <Redirect to="/home" />} />
+        <Route exact path="/home" component={Home} />
+        <Route exact path="/summary-cm" component={SummaryCM} />
+        <Route exact path="/summary-bd" component={SummaryBD} />
+        <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - headerHeight - menuHeight - footerHeight }}>
+          {
+            this.props.rootStore.treeStore.currentRoleMenu
+              .filter(d => d)
+              .filter(m => m.path)
+              .filter(m => m.path !== 'summary')
+              .map(m =>
+                <Route
+                  key={m.id}
+                  exact
+                  path={m.path + (m.path_holder ? m.path_holder : '')}
+                  component={require('../' + m.page_path)[m.page_class]}
+                />
+              )
+          }
+        </div>
         <footer>CopyRight © 云南地矿测绘院</footer>
         <Modal visible={this.props.rootStore.notificationStore.applyPlatformVisible}
           width={600}
