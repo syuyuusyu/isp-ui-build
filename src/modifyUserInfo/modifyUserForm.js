@@ -136,10 +136,10 @@ class ModifyUserForm extends Component {
       <div>
         <Form>
           <Row>
-            <FormItem label='账号'>
+            <FormItem label='账号(禁止修改)'>
               {
                 getFieldDecorator('userName', {
-                  initialValue: JSON.parse(sessionStorage.getItem('user')).user_name + '(禁止修改)',
+                  initialValue: JSON.parse(sessionStorage.getItem('user')).user_name,
                 })(
                   <Input readOnly='readOnly'/>
                 )
@@ -202,10 +202,10 @@ class ModifyUserForm extends Component {
             </Row>
           </div>
           <Row>
-            <FormItem label="电话号码">
+            <FormItem label="电话号码(禁止修改)">
               {
                 getFieldDecorator('phone', {
-                  initialValue: JSON.parse(sessionStorage.getItem('user')).phone + '(禁止修改)',
+                  initialValue: JSON.parse(sessionStorage.getItem('user')).phone,
                 })(
                   <Input readOnly='readOnly'/>
                 )
