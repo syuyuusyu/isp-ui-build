@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Row, Col, Input, Button ,notification,} from 'antd';
 import {inject,observer} from 'mobx-react';
-import {baseUrl} from '../util';
+import {baseUrl,post} from '../util';
 //const Option=Select.Option;
 const FormItem = Form.Item;
 
@@ -28,16 +28,7 @@ class SysForm extends React.Component{
             if(store.currentSys){
                 values.id=store.currentSys.id;
             }
-            let response=await fetch(`${baseUrl}/sys/save` , {
-                    method: 'POST',
-                    headers: new Headers({
-                        'Content-Type': 'application/json',
-                        'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
-                    }),
-                    body: JSON.stringify(values),
-                }
-            );
-            let json=await response.json();
+            let json=await post(`${baseUrl}/sys/save`, values);
             if(json.success){
                 notification.success({
                     message:'保存成功',

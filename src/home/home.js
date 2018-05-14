@@ -25,13 +25,12 @@ class Home extends Component{
 
   targrt=(url)=>(()=>{
       if(url){
-          console.log(url);
           window.open(url);
       }
   });
 
   render () {
-      console.log(this.props.rootStore.treeStore.currentRoleSys.filter(d=>d));
+     // console.log(this.props.rootStore.treeStore.currentRoleSys.filter(d=>d));
     const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = this.props.rootStore.treeStore;
     const linksHeight = winHeight < 700 ? 100 : 180;
     const marginOut = 16;
@@ -74,7 +73,7 @@ class Home extends Component{
         <div className="home-content">
           <div className="block left" style={blockSize}>
             <div className="title">云管理平台概况</div>
-            <div className="more">查看详情 ></div>
+            {/*<div className="more">查看详情 ></div>*/}
             <div className="pie-container left">
               <ReactEchartsCore
                 echarts={echarts}
@@ -105,7 +104,7 @@ class Home extends Component{
               />
               <div className="info-box">
                 <div className="name">内存</div>
-                <div className="num">使用{convertGigaFormat(ram.used * 1024)},共{convertGigaFormat(ram.total * 1024)}</div>
+                <div className="num">使用{convertGigaFormat(ram.used * 1024*1024)},共{convertGigaFormat(ram.total * 1024*1024)}</div>
               </div>
             </div>
             <div className="pie-container bottom">
@@ -116,13 +115,13 @@ class Home extends Component{
               />
               <div className="info-box">
                 <div className="name">硬盘</div>
-                <div className="num">使用{convertGigaFormat(storage.used * 1024)},共{convertGigaFormat(storage.total * 1024)}</div>
+                <div className="num">使用{convertGigaFormat(storage.used * 1024*1024*1024)},共{convertGigaFormat(storage.total * 1024*1024*1024)}</div>
               </div>
             </div>
           </div>
           <div className="block right" style={blockSize}>
             <div className="title">大数据平台概况</div>
-            <div className="more">查看详情 ></div>
+            {/*<div className="more">查看详情 ></div>*/}
             <ReactEchartsCore
               echarts={echarts}
               option={((option) => {

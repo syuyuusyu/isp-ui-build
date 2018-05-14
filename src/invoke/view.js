@@ -107,7 +107,7 @@ class InvkeGrid extends React.Component{
     );
 
     loadInvokeName=async()=>{
-        let json=await post(`${baseUrl}/invokeInfo/invokes` , );
+        let json=await post(`${baseUrl}/invokeInfo/invokes` ,{} );
         //let json=await response.json();
         const invokeNames=json.map(o=>({id:o.id,name:o.name}));
         invokeNames.unshift({id:null,name:null});
@@ -147,36 +147,22 @@ class InvkeGrid extends React.Component{
         this.setState({selectgroupname:e.target.value});
     };
 
-    loadData=(page, start, limit,invokeName=this.state.selectInvokeName,groupName=this.state.selectgroupname)=>{
+    loadData=async (page, start, limit,invokeName=this.state.selectInvokeName,groupName=this.state.selectgroupname)=>{
         this.setState({loading:true});
         const url=`${baseUrl}/invokeInfo/infos`;
-        fetch(url , {
-                method: 'POST',
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    'Access-Token': sessionStorage.getItem('access-token') || ''
-                }),
-                body: JSON.stringify({start:start,limit:limit,invokeName:invokeName,groupName}),
-            }
-        ).then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-            }
-        ).then((json) => {
-                this.setState({dataSource:json.content});
-                this.setState({pagination:{
-                        ...this.state.pagination,
-                        total:json.totalElements,
-                        current:page
-                    }});
-                this.setState({loading:false});
-            }
-        ).catch((error) => {
-                console.error(error);
-                this.setState({loading:false});
-            }
-        );
+        let json=await post(url,{start:start,limit:limit,invokeName:invokeName,groupName});
+        if(json){
+            this.setState({dataSource:json.content});
+            this.setState({pagination:{
+                    ...this.state.pagination,
+                    total:json.totalElements,
+                    current:page
+                }});
+            this.setState({loading:false});
+        }else{
+            this.setState({loading:false});
+        }
+
         this.loadInvokeName();
     };
 

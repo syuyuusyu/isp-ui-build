@@ -22,16 +22,7 @@ export class SignUpStore{
       values.confirmPassword= hmac.update(values.confirmPassword).digest('hex');
       values.randomNumber=randomNumber;
 
-      let response=await fetch(`${baseUrl}/userRegister/svae` , {
-          method: 'POST',
-          headers: new Headers({
-            'Content-Type': 'application/json',
-            'Access-Token': sessionStorage.getItem('access-token') || ''
-          }),
-          body: JSON.stringify(values),
-        }
-      );
-      let json=await response.json()
+      let json=await post(`${baseUrl}/userRegister/svae` ,JSON.stringify(values));
       if(json.success){
         notification.success({
           message:'保存成功'})

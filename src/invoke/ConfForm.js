@@ -1,11 +1,20 @@
 import React from 'react';
 import { Form, Row, Col, Input, Button ,Select,Modal,Progress} from 'antd';
 import ParamsForm from './ParamsForm';
-import {baseUrl, get,} from "../util";
-
+import {baseUrl, get,post} from "../util";
+import {UnControlled as CodeMirror} from 'react-codemirror2'
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/addon/hint/show-hint.css';
+import 'codemirror/addon/hint/show-hint.js';
+import 'codemirror/addon/hint/javascript-hint.js';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/material.css';
+import 'codemirror/theme/ambiance.css';
+import '../style.css';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const {TextArea}=Input;
+
 
 
 class ConfForm extends React.Component{
@@ -16,7 +25,7 @@ class ConfForm extends React.Component{
         saveStatus:'active',
         paramVisible:false,
         queryStr:[],
-        currentInvoke:{}
+        currentInvoke:{},
     };
 
     componentWillUnmount(){
@@ -26,37 +35,24 @@ class ConfForm extends React.Component{
         if(this.props.data){
             const data=this.props.data;
             this.props.form.setFieldsValue({
-                head:data.head,
                 method:data.method,
                 next:data.next?data.next.split(','):[],
-                parseFun:data.parseFun,
                 descrption:data.descrption,
                 url:data.url,
-                body:data.body,
                 name:data.name,
                 groupName:data.groupName
             });
+            this.funMirrValue=data.parseFun;
+            this.bodyMirrValue=data.body;
+            this.headMirrValue=data.head;
+
         }
         if(this.props.invokeType==='2'){
             this.props.form.setFieldsValue({
                 method:'post',
-                head:
-`{
-    "Accept":"application/json",
-    "Content-Type":"application/json;charset=UTF-8",
-}`
             });
         }
-        let response=await fetch(`${baseUrl}/invokeInfo/invokes` , {
-                method: 'POST',
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    'Access-Token': sessionStorage.getItem('access-token') || ''
-                }),
-                body: JSON.stringify({}),
-            }
-        );
-        let json=await response.json();
+        let json=await post(`${baseUrl}/invokeInfo/invokes` ,{});
         json=json.map(o=>({
             id:o.id,name:o.name
         }));
@@ -74,6 +70,10 @@ class ConfForm extends React.Component{
     test=()=>{
         this.props.form.validateFields((err,values)=>{
             if(err) return;
+            if(!this.headMirrValue || !this.bodyMirrValue) return;
+            values.head=this.headMirrValue;
+            values.body=this.bodyMirrValue;
+            values.parseFun=this.funMirrValue;
             if(values.next && values.next.length===0){
                 delete values.next;
             }else if(values.next && values.next.length>0){
@@ -96,6 +96,11 @@ class ConfForm extends React.Component{
     save=()=>{
         this.props.form.validateFields(async (err,values)=>{
             if(err) return;
+            if(!this.headMirrValue || !this.bodyMirrValue) return;
+
+            values.head=this.headMirrValue;
+            values.body=this.bodyMirrValue;
+            values.parseFun=this.funMirrValue;
             if(this.props.data){
                 values.id=this.props.data.id;
             }
@@ -106,18 +111,10 @@ class ConfForm extends React.Component{
             }else{
                 values.next=values.next.reduce((a,b)=>a+','+b);
             }
+            console.log(values);
             this.setState({saveVisible:true});
-            let response=await fetch(`${baseUrl}/invokeInfo/save` , {
-                    method: 'POST',
-                    headers: new Headers({
-                        'Content-Type': 'application/json',
-                        'Access-Token': sessionStorage.getItem('access-token') || ''
-                    }),
-                    body: JSON.stringify(values),
-                }
-            );
+            let json=await post(`${baseUrl}/invokeInfo/save` , values);
             this.setState({savePercent:75});
-            let json=await response.json();
             if(json.success){
                 this.setState({savePercent:100,saveStatus:'success'});
             }else{
@@ -144,6 +141,13 @@ class ConfForm extends React.Component{
         }
 
     };
+
+    funMirrValue;
+    headMirrValue=`{
+    "Accept":"application/json",
+    "Content-Type":"application/json;charset=UTF-8"
+}`;
+    bodyMirrValue=`{}`;
 
 
 
@@ -232,39 +236,66 @@ class ConfForm extends React.Component{
                     </Row>
                     <Row gutter={24}>
                         <Col span={12}>
-                            <FormItem label="请求头">
-                                {getFieldDecorator('head',{
-                                    rules: [{ required: this.props.invokeType==='1'?true:false, message: '此项为必填项!!' }],
-                                })(
-                                    <TextArea disabled={this.props.invokeType==='1'?false:true} rows={6}
-                                              placeholder={`
-{
-    "Accept":"application/json",
-    "Content-Type":"application/json;charset=UTF-8"
-}
-                                              `}
-                                    />
-                                )}
-                            </FormItem>
+                            <div>
+                                <div style={{marginBottom:'5px',marginTop:'10px'}}>请求头</div>
+                                <CodeMirror
+                                    value={this.headMirrValue}
+                                    options={
+                                        {
+                                            mode:'json',
+                                            theme: 'material',
+                                            lineNumbers: true
+                                        }
+                                    }
+                                    onChange={(editor, data, value) => {
+                                        console.log('onChange head');
+                                        this.headMirrValue=value;
+                                    }}
+                                />
+                            </div>
                         </Col>
                         <Col span={12}>
-                            <FormItem label="请求体">
-                                {getFieldDecorator('body',{
-                                    rules: [{ required: true, message: '此项为必填项!!' }],
-                                })(
-                                    <TextArea  rows={6} />
-                                )}
-                            </FormItem>
+                            <div>
+                                <div style={{marginBottom:'5px',marginTop:'10px'}}>请求体</div>
+                                <CodeMirror
+                                    value={this.bodyMirrValue}
+                                    options={
+                                        {
+                                            mode:'json',
+                                            theme: 'material',
+                                            lineNumbers: true
+                                        }
+                                    }
+                                    onChange={(editor, data, value) => {
+                                        console.log('onChange body');
+                                        this.bodyMirrValue=value;
+                                    }}
+                                />
+                            </div>
                         </Col>
                     </Row>
                     <Row>
-                        <FormItem label="解析函数">
-                            {getFieldDecorator('parseFun',{
-
-                            })(
-                                <TextArea rows={8} placeholder="解析函数回调参数:response,responsehead,responsestatus,requesthead,requestdata,url"/>
-                            )}
-                        </FormItem>
+                        <Col span={24}>
+                            <div>
+                                <div style={{marginBottom:'5px',marginTop:'10px'}}>解析函数</div>
+                                <CodeMirror
+                                    ref="editorFun"
+                                    value={this.funMirrValue}
+                                    options={
+                                        {
+                                            mode:'javascript',
+                                            theme: 'material',
+                                            lineNumbers: true,
+                                            extraKeys: {"Ctrl": "autocomplete"},
+                                        }
+                                    }
+                                    onChange={(editor, data, value) => {
+                                        console.log('onChange fun');
+                                        this.funMirrValue=value;
+                                    }}
+                                />
+                            </div>
+                        </Col>
                     </Row>
                     <Row>
                         <Col span={24} style={{ textAlign: 'right' }}>

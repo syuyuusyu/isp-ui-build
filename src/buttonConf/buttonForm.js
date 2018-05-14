@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {inject, observer} from 'mobx-react';
 import {Form, Input, Row, Col, Button, notification, Select, Icon} from 'antd';
-import {baseUrl} from "../util";
+import {baseUrl,post} from "../util";
 
 const FormItem = Form.Item;
 //const {TextArea}=Input;
@@ -36,16 +36,7 @@ class ButtonForm extends Component {
             if (store.selectedButton) {
                 values.id = store.selectedButton.id;
             }
-            let response = await fetch(`${baseUrl}/btn/save`, {
-                    method: 'POST',
-                    headers: new Headers({
-                        'Content-Type': 'application/json',
-                        'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
-                    }),
-                    body: JSON.stringify(values),
-                }
-            );
-            let json = await response.json();
+            let json = await post(`${baseUrl}/btn/save`,  JSON.stringify(values));
             if (json.success) {
                 notification.success({
                     message: '保存成功',

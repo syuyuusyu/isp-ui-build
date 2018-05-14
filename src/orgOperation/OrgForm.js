@@ -27,16 +27,7 @@ save=()=>{
     //console.log("value的值为：");
     //console.log(values);
     //console.log("value:"+value);
-    let response=await fetch(`${baseUrl}/org/save` , {
-        method: 'POST',
-        headers: new Headers({
-          'Content-Type': 'application/json',
-          'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
-        }),
-        body: JSON.stringify(values),
-      }
-    );
-    let json=await response.json();
+    let json=await post(`${baseUrl}/org/save` ,  JSON.stringify(values));
     if(json.success){
       notification.success({
         message:'保存成功',

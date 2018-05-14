@@ -4,7 +4,7 @@ import lodash from 'lodash';
 import {format} from '../util';
 import ParseForm from './ParseForm';
 import InvokeParseForm from './invokeParesForm';
-import {baseUrl} from '../util';
+import {baseUrl,post} from '../util';
 const FormItem = Form.Item;
 const {TextArea}=Input;
 
@@ -39,17 +39,10 @@ class ParamsForm extends React.Component{
                 }
                 queryData.queryMap=queryMap;
                 this.setState({invokeing:true});
-                console.log(JSON.stringify(queryData));
-                let response=await fetch(`${baseUrl}/invokeInfo/test` , {
-                        method: 'POST',
-                        headers: new Headers({
-                            'Content-Type': 'application/json',
-                        }),
-                        body: JSON.stringify(queryData),
-                    }
-                );
-                let json=await response.json();
-                if(json.success){
+                console.log(queryMap);
+                let json=await post(`${baseUrl}/invokeInfo/test` , queryData);
+                console.log(json);
+                if(json){
                     // delete json.success;
                     // delete json.msg;
                     this.setState({invokeResult:json});
@@ -62,7 +55,7 @@ class ParamsForm extends React.Component{
                 }else{
                     notification.error({
                         message: '后台服务错误',
-                        description: json.errInfo,
+                        description: json,
                     });
                 }
                 this.setState({invokeing:false});
@@ -72,16 +65,9 @@ class ParamsForm extends React.Component{
                 let queryData=lodash.cloneDeep(this.props.currentInvoke);
                 queryData.queryMap=queryMap;
                 this.setState({invokeing:true});
-                console.log(JSON.stringify(queryData.body));
-                let response=await fetch(`${baseUrl}/invoke/${queryData.name}` , {
-                        method: 'POST',
-                        headers: new Headers({
-                            'Content-Type': 'application/json',
-                        }),
-                        body: queryData.body,
-                    }
-                );
-                let json=await response.json();
+                //测试可调用接口
+                console.log(queryData.body);
+                let json=await post(`${baseUrl}/invoke/${queryData.name}`, {...queryData.body,doNotParse:true});
                 if(json){
                     // delete json.success;
                     // delete json.msg;
@@ -105,9 +91,6 @@ class ParamsForm extends React.Component{
         const items=[];
         //const { getFieldDecorator, } = this.props.form;
         const result=this.state.invokeResult;
-        if(!result.success){
-            return items;
-        }
         for(let key in result){
             if(key==='success' || key==='msg') {
                 continue;
@@ -129,6 +112,7 @@ class ParamsForm extends React.Component{
                 </div>
             );
         }
+        console.log(items);
         return items;
 
     }
@@ -148,7 +132,6 @@ class ParamsForm extends React.Component{
 
     render(){
         const { getFieldDecorator, } = this.props.form;
-        console.log(this.props.invokeType);
         return(
             <div>
                 <Modal key="from1" width={1200} visible={this.state.from1Visible} footer={null}  onCancel={this.targgleForm1}

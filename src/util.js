@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const format = (txt, compress) => {
 
   var indentChar = '    ';
@@ -67,7 +69,7 @@ export const log = (target, name, descriptor) => {
 //export const baseUrl='';
 export const baseUrl = 'http://10.10.50.21:7001';
 
-export function request(method, url, body) {
+export function request2(method, url, body) {
   method = method.toUpperCase();
   if (method === 'GET') {
     // fetch的GET不允许有body，参数只能放在url中
@@ -98,6 +100,47 @@ export function request(method, url, body) {
         //console.log(res.json());
         return res.json();
       }
+    });
+}
+
+export function request(method, url, body) {
+    method = method.toUpperCase();
+    if (method === 'GET') {
+        // fetch的GET不允许有body，参数只能放在url中
+        body = undefined;
+    } else {
+        body = body //&& JSON.stringify(body);
+    }
+    return axios({
+        url:url,
+        method:method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
+        },
+        data:body
+    }).then((res) => {
+            if (res.status === 401) {
+                console.log('token失效!!');
+                sessionStorage.clear();
+                window.history.go('/login');
+                return Promise.reject('Unauthorized.');
+            } else {
+                const token = res.headers['access-token'];
+                if (token) {
+                    sessionStorage.setItem('access_token', token);
+                }
+                //console.log(res.json());
+                return res.data;
+            }
+        }).catch((err)=>{
+            if(err.response.status===401){
+                console.log('token失效!!');
+                sessionStorage.clear();
+                window.history.go('/login');
+                return Promise.reject('Unauthorized.');
+            }
     });
 }
 

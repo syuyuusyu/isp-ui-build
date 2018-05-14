@@ -1,6 +1,7 @@
 import {observable, configure,action,runInAction,} from 'mobx';
 import {baseUrl,post,get} from '../util';
 import {notification} from 'antd';
+import axios from 'axios';
 
 configure({ enforceActions: true });
 
@@ -182,7 +183,7 @@ export class SwiftStore{
         this.fileList.filter(d=>d).forEach((file) => {
             formData.append('files[]', file);
         });
-        await fetch(`${baseUrl}/swift/upload`, {
+        await axios({url:`${baseUrl}/swift/upload`,
             method:'POST',
             headers: {
                 //'Content-Type': 'multipart/form-data',//application/x-www-form-urlencoded
@@ -191,7 +192,7 @@ export class SwiftStore{
                 //'filename': encodeURI(file.name),
                 'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
             },
-            body:formData
+            data:formData
         });
 
         runInAction(()=>{
@@ -254,7 +255,7 @@ export class SwiftStore{
     });
 
     @action
-    download=(record)=>(async ()=>{
+    download2=(record)=>(async ()=>{
         runInAction(()=>{
             this.inDowning=true;
             this.loadingtest='正在向服务器请求下载';
@@ -268,6 +269,7 @@ export class SwiftStore{
             },
             body:JSON.stringify({...record,username:JSON.parse(sessionStorage.getItem("user")).user_name})
         });
+        //console.log(response);
         let blob=await response.blob();
         let a = document.createElement('a');
         let url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
@@ -280,6 +282,34 @@ export class SwiftStore{
         window.URL.revokeObjectURL(url);
     });
 
+    @action
+    download=(record)=>(async ()=>{
+        runInAction(()=>{
+            this.inDowning=true;
+            this.loadingtest='正在向服务器请求下载';
+        });
+        let response=await axios({url:`${baseUrl}/swift/download`,
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
+            },
+            data:JSON.stringify({...record,username:JSON.parse(sessionStorage.getItem("user")).user_name}),
+            responseType: 'blob'
+        });
+        let blob= response.data;
+        let a = document.createElement('a');
+        let url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
+        a.href = url;
+        a.download = record.filename;
+        runInAction(()=>{
+            this.inDowning=false;
+        });
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+    });
 
     @action
     loadRootDir=async ()=>{
@@ -339,3 +369,21 @@ export class SwiftStore{
 
 
 }
+
+
+function sdsd(obj){
+    let result={};
+    for(let o of obj){
+        for(let key in o){
+            if( o[key].status && o[key].status===40101 ){
+                return { ok: false, msg: '无效Token！', status: 40101 };
+            }
+            key.replace(/data_monitor_(\w+)-\d+/,(w,p)=>{
+                result[p]=o[key]['page_data'];
+            }) ;
+        }
+    }
+    return result;
+}
+
+

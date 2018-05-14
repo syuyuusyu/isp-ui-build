@@ -24,8 +24,8 @@ export class HomeStore{
   @action
   loadCloud=async()=>{
       let json=await post(`${baseUrl}/invoke/cloud_monitor`);
-      if(json.CloudSource && json.CloudSource.vcpus){
-          let a=json.CloudSource;
+      if(json.UserSourceMsg && json.UserSourceMsg.totalInstances){
+          let a=json.UserSourceMsg;
           runInAction(()=>{
               this.cloudManage={
                   instance: { total: a.totalInstances, used: a.instanceUsed },

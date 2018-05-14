@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { Form, Row, Col, Input, Button ,Select, Modal,notification} from 'antd';
-import {baseUrl, get} from "../util";
+import {baseUrl, get,post} from "../util";
 import {inject, observer} from "mobx-react";
 import {Link} from 'react-router-dom';
 
@@ -17,19 +17,6 @@ class UserRegisterForm extends Component {
     if (!value) {
       callback()
     }
-    const url = `${baseUrl}/userRegister/uniqueNickName/${value}`;
-    let json = await get(url);
-    if (json.total === 0) {
-      callback()
-    } else {
-      callback(new Error())
-    }
-  }
-
-   checkNickNameUnique = async (rule, value, callback) => {
-    if (!value) {
-      callback()
-    }
     const url = `${baseUrl}/userRegister/uniqueUser/${value}`;
     let json = await get(url);
     if (json.total === 0) {
@@ -38,6 +25,19 @@ class UserRegisterForm extends Component {
       callback(new Error())
     }
   }
+
+   /*checkNickNameUnique = async (rule, value, callback) => {
+    if (!value) {
+      callback()
+    }
+    const url = `${baseUrl}/userRegister/uniqueNickName/${value}`;
+    let json = await get(url);
+    if (json.total === 0) {
+      callback()
+    } else {
+      callback(new Error())
+    }
+  }*/
   checkIDnumberUnique = async (rule, value, callback) => {
     if (!value) {
       callback()
@@ -64,14 +64,14 @@ class UserRegisterForm extends Component {
       callback("出生日期不合规");
     }
     //校验码判断
-    const c = [7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2];  //系数
-    const b = ['1','0','X','9','8','7','6','5','4','3','2']; //校验码对照表
+    const coefficient = [7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2];  //系数
+    const checkCode = ['1','0','X','9','8','7','6','5','4','3','2']; //校验码对照表
     let  id_array = value.split("");
     let sum = 0;
     for(let k=0;k<17;k++){
-      sum+=parseInt(id_array[k])*parseInt(c[k]);
+      sum+=parseInt(id_array[k])*parseInt(coefficient[k]);
     }
-    if(id_array[17].toUpperCase() != b[sum%11].toUpperCase()){
+    if(id_array[17].toUpperCase() != checkCode[sum%11].toUpperCase()){
       callback("身份证校验码不合规");
     }else(callback());
   }
@@ -122,22 +122,14 @@ class UserRegisterForm extends Component {
     this.props.form.validateFields(async (err, values) => {
       if(err) return;
       //console.log("values的值为:",values);
+      //对输入的密码和确认密码就行加密
       const randomNumber=Math.random().toString().substr(2,10);
       const hmac = crypto.createHmac('sha256', randomNumber);
       values.password= hmac.update(values.password).digest('hex');
       values.confirmPassword= hmac.update(values.confirmPassword).digest('hex');
       values.randomNumber=randomNumber;
 
-      let response=await fetch(`${baseUrl}/userRegister/save` , {
-          method: 'POST',
-          headers: new Headers({
-            'Content-Type': 'application/json',
-            'Access-Token': sessionStorage.getItem('access-token') || ''
-          }),
-          body: JSON.stringify(values),
-        }
-      );
-      let json=await response.json();
+      let json=await post(`${baseUrl}/userRegister/save`,values);
      if(json.success){
         Modal.success({
           title: '注册成功！',
@@ -151,11 +143,11 @@ class UserRegisterForm extends Component {
        })
      }
     })
-  }
+  };
 
   reset=()=>{
     this.props.form.resetFields();
-  }
+  };
 
 
   render()
@@ -184,7 +176,6 @@ class UserRegisterForm extends Component {
               {
                 getFieldDecorator('nickName', {
                   rules: [{required: true, message: '用户名称不能为空'},
-                           {validator: this.checkNickNameUnique, message: '用户名称已存在'}
                   ],
                   validateTrigger: 'onBlur'
                 })(
@@ -271,7 +262,7 @@ class UserRegisterForm extends Component {
           <Row>
             <Col>
               <FormItem>
-                <Button type="primary" htmlType="submit" onClick={this.save}>Register</Button>&nbsp;&nbsp;&nbsp;
+                <Button type="primary" htmlType="submit" onClick={this.save}>注册</Button>&nbsp;&nbsp;&nbsp;
                 <Button type="primary" htmlType="submit" onClick={this.reset}>重置</Button>&nbsp;&nbsp;&nbsp;
                 <Link to="/login">返回</Link>
               </FormItem>

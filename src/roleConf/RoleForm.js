@@ -56,16 +56,7 @@ class RoleForm extends React.Component{
             if(this.store.selectRow){
                 values.id=this.store.selectRow.id;
             }
-            let response=await fetch(`${baseUrl}/role/save` , {
-                    method: 'POST',
-                    headers: new Headers({
-                        'Content-Type': 'application/json',
-                        'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
-                    }),
-                    body: JSON.stringify(values),
-                }
-            );
-            let json=await response.json();
+            let json=await post(`${baseUrl}/role/save` ,JSON.stringify(values));
             if(json.success){
                 notification.success({
                     message:'保存成功',

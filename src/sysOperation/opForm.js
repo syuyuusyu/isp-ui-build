@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Row, Col, Input, Button ,notification,Select} from 'antd';
 import {inject,observer} from 'mobx-react';
-import {baseUrl,} from '../util';
+import {baseUrl,post} from '../util';
 const Option=Select.Option;
 const FormItem = Form.Item;
 
@@ -29,16 +29,7 @@ class OpForm extends React.Component{
                 values.id=store.currentOperation.id;
             }
             console.log(values);
-            let response=await fetch(`${baseUrl}/op/save` , {
-                    method: 'POST',
-                    headers: new Headers({
-                        'Content-Type': 'application/json',
-                        'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
-                    }),
-                    body: JSON.stringify(values),
-                }
-            );
-            let json=await response.json();
+            let json=await post(`${baseUrl}/op/save` , values);
             if(json.success){
                 notification.success({
                     message:'保存成功',

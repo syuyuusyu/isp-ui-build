@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
 import { Icon, Form, Button, notification, Input, Row, Col, Modal, Checkbox } from 'antd';
 import { baseUrl } from '../util';
+import axios from 'axios';
 import './login-3.css';
 //import UserRegisterForm from '../signUp/userRegisterForm';
 import Logo from '../assets/images/logo.png'
@@ -20,15 +21,16 @@ class Login extends React.Component {
   login = () => {
     this.props.form.validateFields(async (err, values) => {
       if (err) return;
-      let response = await fetch(`${baseUrl}/login`, {
+      let response = await axios({
+              url:`${baseUrl}/login`,
         method: 'POST',
-        headers: new Headers({
+        headers: {
           'Content-Type': 'application/json'
-        }),
-        body: JSON.stringify(values),
+        },
+        data: JSON.stringify(values),
       }
       );
-      let json = await response.json();
+      let json =  response.data;
       console.log("json的值为:",json);
       switch (json.msg) {
         case '1':
@@ -94,11 +96,11 @@ class Login extends React.Component {
                 })
                   (<Input onPressEnter={this.login} prefix={<Icon type="lock" />} type="password" autoComplete="password" placeholder="请输入密码" />)}
               </FormItem>
-              <Row>
+      {/*        <Row>
                 <Col span={25} style={{ textAlign: 'center' }}>
                   <Checkbox>记住我</Checkbox>
                 </Col>
-              </Row>
+              </Row>*/}
             </Row>
             <Row >
               <Col span={25}  >

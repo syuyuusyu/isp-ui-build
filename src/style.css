@@ -18,3 +18,14 @@
 .table-head-row .col-button{
     float: right;
 }
+
+.CodeMirror {
+    border: 1px solid #eee;
+    height: auto;
+}
+
+.CodeMirror-scroll {
+    height: auto;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
