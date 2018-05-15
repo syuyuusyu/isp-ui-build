@@ -128,7 +128,7 @@ class Main extends Component {
                     path={m.path + (m.path_holder ? m.path_holder : '')}
                     render={() => (
                       <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - headerHeight - menuHeight - footerHeight - 16 }}>
-                        {require('../' + m.page_path)[m.page_class]()}
+                        <Route component={require('../' + m.page_path)[m.page_class]} />
                       </div>
                     )}
                   />
