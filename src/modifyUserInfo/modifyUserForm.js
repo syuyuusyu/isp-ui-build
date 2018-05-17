@@ -100,14 +100,12 @@ class ModifyUserForm extends Component {
       if(err) return;
       //将当前登录的用户加入到values中，作为后台更新数据时的条件
       values.userName=JSON.parse(sessionStorage.getItem('user')).user_name;
-      //如果只输入了初始密码，而没有输入修改密码或确认密码，将初始密码置空（为安全考虑）
+      //如果只输入了初始密码，而没有输入修改密码或确认密码，将初始密码置空
       if(values.originalPassword!==''&&(values.newPassword===''||values.confirmNewPassword==='')){
         values.originalPassword='';
       }
       //如果原始密码，新密码，确认密码不为空的话对新密码和确认密码进行加密并将随机生成的数字（salt）加入values传到后台
       if(values.originalPassword!==''&&values.newPassword!==''&&values.confirmNewPassword!==''){
-        //将初始密码置空
-        values.originalPassword='';
         const randomNumber=Math.random().toString().substr(2,10);
         const hmac = crypto.createHmac('sha256', randomNumber);
         values.newPassword=hmac.update(values.newPassword).digest('hex');
@@ -115,7 +113,11 @@ class ModifyUserForm extends Component {
         values.salt=randomNumber;
       }
       let json=await post(`${baseUrl}/modifyUser/save` , values);
-      if(json.success){
+      if(json.success==='初始密码错误'){
+        notification.error({
+          message:'初始密码错误！'
+        })
+      } else if(json.success){
         Modal.success({
           title: '修改成功！',
           onOk: () => {
@@ -162,9 +164,9 @@ class ModifyUserForm extends Component {
             <Row>
               <FormItem label='原始密码'>
                 {getFieldDecorator('originalPassword', {
-                  rules: [{
+                  /*rules: [{
                     validator: this.checkOriginalPw,
-                  }],
+                  }],*/
                   initialValue:'',
                   validateTrigger: 'onBlur'
                 })(
