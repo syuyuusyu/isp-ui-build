@@ -1,9 +1,10 @@
 import {observable, configure,action,runInAction,} from 'mobx';
-import {notification} from 'antd';
+import {notification,Button,Popconfirm} from 'antd';
 import {baseUrl,get,post} from '../util';
 import React from 'react';
 import RoleButton from '../roleButton';
 import {Divider,} from 'antd';
+
 
 configure({ enforceActions: true });
 
@@ -50,6 +51,10 @@ export class UserRoleStore{
                         {/*<Button icon="profile" onClick={this.props.rootStore.userRoleStore.userRoleConf(record)} size='small'>用户角色配置</Button>*/}
                         <RoleButton buttonId={12} onClick={this.userRoleConf(record)}/>
                         <Divider type="vertical"/>
+                      <Popconfirm onConfirm={this.resetPassword(record)} title="确认重置?">
+                        <RoleButton icon="reload" buttonId={30} onClick={null} size='small'>重置密码</RoleButton>
+                      </Popconfirm>
+
                         {/*<Popconfirm onConfirm={null} title="确认删除?">*/}
                             {/*/!*<Button icon="delete" onClick={null} size='small'>删除</Button>*!/*/}
                             {/*<RoleButton buttonId={13}/>*/}
@@ -154,6 +159,21 @@ export class UserRoleStore{
         this.loadAllUsers();
 
     };
+
+    @action
+    resetPassword= (record)=>(async ()=>{
+      const userName=record.user_name;
+      let json=await get(`${baseUrl}/resetPassword/${userName}`) ;
+      if(json.success){
+        notification.success({
+          message:'保存成功',
+        })
+      }else{
+        notification.error({
+          message:'后台错误，请联系管理员',
+        })
+      }
+    })
 
 
 }

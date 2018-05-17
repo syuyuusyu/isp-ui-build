@@ -197,7 +197,8 @@ class UserRegisterForm extends Component {
                 <Input type="password" placeholder="请输入密码"/>
               )}
             </FormItem>
-            <Row>
+          </Row>
+          <Row>
               <FormItem
                 label="确认密码"
               >
@@ -213,7 +214,6 @@ class UserRegisterForm extends Component {
                 )}
               </FormItem>
             </Row>
-          </Row>
           <Row>
             <FormItem label="身份证编号">
               {

@@ -6,7 +6,7 @@ const FormItem = Form.Item;
 
 @inject('rootStore')
 @observer
-class OrgForm extends Component{
+class ModifyOrgForm extends Component{
   componentDidMount(){
     const store=this.props.rootStore.orgOperationStore;
     if(store.selectedOrg){
@@ -66,4 +66,4 @@ save=()=>{
     );
   }
 }
-export default Form.create()(OrgForm);
+export default Form.create()(ModifyOrgForm);

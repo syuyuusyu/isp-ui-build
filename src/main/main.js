@@ -9,7 +9,8 @@ import { Login } from '../login';
 import MenuTree from './menuTree';
 import { Home } from '../home';
 import { ApplyPlatform, MessageTable } from "../notification";
-import UserRegisterForm from '../signUp/userRegisterForm'
+import UserRegisterForm from '../signUp/userRegisterForm';
+import ModifyUserForm from '../modifyUserInfo/modifyUserForm'
 
 @inject('rootStore')
 @observer
@@ -106,6 +107,7 @@ class Main extends Component {
                     <Route exact path="/" render={() => <Redirect to="/home" />} />
                     <Route exact path="/login" render={() => <Redirect to="/home" />} />
                     <Route exact path="/home" component={Home} />
+                    <Route exact path="/modifyUser" component={ModifyUserForm} />
                     {
                         this.props.rootStore.treeStore.currentRoleMenu
                             .filter(d => d)
