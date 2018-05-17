@@ -10,7 +10,7 @@ const crypto = require('crypto');
 @inject('rootStore')
 @observer
 class ModifyUserForm extends Component {
-  checkOriginalPw = async (rule, value, callback) => {
+  /*checkOriginalPw = async (rule, value, callback) => {
     if (!value) {
       value = null;
       callback();
@@ -20,7 +20,7 @@ class ModifyUserForm extends Component {
     if (!response.success) {
       callback('原始密码错误');
     }
-  }
+  }*/
   validateToNextPassword = (rule, value, callback) => {
     const form = this.props.form;
     /*   if(typeof(form.getFieldValue('originalPassword'))==="undefined"){
