@@ -25,6 +25,9 @@ export class OrgStore{
   orgFormVisible=false;
 
   @observable
+  orgUserFormVisible=false;
+
+  @observable
   selectOrgid=-1;
 
   @observable
@@ -107,6 +110,16 @@ export class OrgStore{
   });
 
   @action
+  showOrgUserForm=(record)=>(()=>{
+    if(this.currentOrgId===-1){
+      message.error('清先选择一个机构！');
+      return;
+    }
+    this.selectedOrg=record;
+    this.toggleOrgUserFormVisible();
+  })
+
+  @action
   showAddOrgForm=(record)=>(()=>{
     //let result=(this.currentOrgId===-1);
     if(this.currentOrgId===-1){
@@ -121,6 +134,11 @@ export class OrgStore{
   toggleOrgFormVisible=()=>{
     this.orgFormVisible=!this.orgFormVisible;
   };
+
+  @action
+  toggleOrgUserFormVisible=()=>{
+    this.orgUserFormVisible=!this.orgUserFormVisible;
+  }
 
   @action
   deleteOrgDetailed=(id)=>(async ()=>{

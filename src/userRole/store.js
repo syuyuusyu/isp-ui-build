@@ -52,7 +52,7 @@ export class UserRoleStore{
                         <RoleButton buttonId={12} onClick={this.userRoleConf(record)}/>
                         <Divider type="vertical"/>
                       <Popconfirm onConfirm={this.resetPassword(record)} title="确认重置?">
-                        <Button icon="reload" onClick={null} size='small'>重置密码</Button>
+                        <RoleButton icon="reload" buttonId={30} onClick={null} size='small'>重置密码</RoleButton>
                       </Popconfirm>
 
                         {/*<Popconfirm onConfirm={null} title="确认删除?">*/}

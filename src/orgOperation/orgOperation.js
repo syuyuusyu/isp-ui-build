@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Tree ,Button,Popconfirm,Table,Modal,Row,Col} from 'antd';
 import {inject,observer} from 'mobx-react';
-import OrgForm from './OrgForm';
+import OrgForm from './modifyOrgForm';
 import AddOrgForm from './addOrgForm';
 
 
@@ -22,6 +22,7 @@ class OrganizationConf extends Component{
       return(
         <span>
           <Button icon="edit" onClick={this.props.rootStore.orgOperationStore.showOrgForm(record)} size='small'>修改</Button>
+          <Button icon="edit" onClick={this.props.rootStore.orgOperationStore.showOrgUserForm(record)} size='small'>关联用户</Button>
           <Popconfirm onConfirm={this.props.rootStore.orgOperationStore.deleteOrgDetailed(record.id)} title="确认删除?">
           <Button icon="delete" onClick={null} size='small'>删除</Button>
           </Popconfirm>
