@@ -153,11 +153,14 @@ class UserRegisterForm extends Component {
   render()
   {
     const {getFieldDecorator} = this.props.form;
+    const formItemLayout = {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 },
+    };
     return (
       <div>
-        <Form>
-          <Row>
-            <FormItem label="账号">
+        <Form layout="horizontal">
+            <FormItem label="账号" {...formItemLayout} >
               {
                 getFieldDecorator('userName', {
                   rules: [{required: true, message: '账号不能为空'},
@@ -170,9 +173,7 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
-          </Row>
-          <Row>
-            <FormItem label="用户名称">
+            <FormItem label="用户名称" {...formItemLayout}>
               {
                 getFieldDecorator('nickName', {
                   rules: [{required: true, message: '用户名称不能为空'},
@@ -183,9 +184,7 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
-          </Row>
-          <Row>
-            <FormItem label="密码">
+            <FormItem label="密码" {...formItemLayout}>
               {getFieldDecorator('password', {
                 rules: [{
                   required: true, message: '密码不能为空',
@@ -197,11 +196,7 @@ class UserRegisterForm extends Component {
                 <Input type="password" placeholder="请输入密码"/>
               )}
             </FormItem>
-          </Row>
-          <Row>
-              <FormItem
-                label="确认密码"
-              >
+              <FormItem label="确认密码" {...formItemLayout}>
                 {getFieldDecorator('confirmPassword', {
                   rules: [{
                     required: true, message: '确认密码不能为空',
@@ -213,9 +208,7 @@ class UserRegisterForm extends Component {
                   <Input type="password" placeholder="请输入确认密码" />
                 )}
               </FormItem>
-            </Row>
-          <Row>
-            <FormItem label="身份证编号">
+            <FormItem label="身份证编号" {...formItemLayout}>
               {
                 getFieldDecorator('IDnumber', {
                   rules: [
@@ -228,9 +221,7 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
-          </Row>
-          <Row>
-            <FormItem label="电话号码">
+            <FormItem label="电话号码" {...formItemLayout}>
               {
                 getFieldDecorator('phone', {
                   rules: [{required: true, message: '电话号码不能为空'},
@@ -243,9 +234,7 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
-          </Row>
-          <Row>
-            <FormItem label="邮箱">
+            <FormItem label="邮箱" {...formItemLayout}>
               {
                 getFieldDecorator('email', {
                   rules: [{type: 'email', message: '请输入有效的邮箱'},
@@ -258,7 +247,6 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
-          </Row>
           <Row>
             <Col>
               <FormItem>
