@@ -3,6 +3,7 @@ import { Layout, Tree ,Button,Popconfirm,Table,Modal,Row,Col} from 'antd';
 import {inject,observer} from 'mobx-react';
 import OrgForm from './modifyOrgForm';
 import AddOrgForm from './addOrgForm';
+import OrgUserForm from './orgUserForm';
 
 
 const TreeNode = Tree.TreeNode;
@@ -86,6 +87,16 @@ class OrganizationConf extends Component{
                  destroyOnClose={true}
           >
             <OrgForm/>
+          </Modal>
+          <Modal visible={this.props.rootStore.orgOperationStore.orgUserFormVisible}
+                 width={800}
+                 title="关联用户"
+                 footer={null}
+                 onCancel={this.props.rootStore.orgOperationStore.toggleOrgUserFormVisible}
+                 maskClosable={false}
+                 destroyOnClose={true}
+          >
+            <OrgUserForm/>
           </Modal>
         <Table columns={this.columns}
                 rowKey={record => record.id}

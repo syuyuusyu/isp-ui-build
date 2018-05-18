@@ -133,12 +133,18 @@ class ModifyUserForm extends Component {
   }
 
   render() {
-    const {getFieldDecorator} = this.props.form;
+    {
+      const {getFieldDecorator} = this.props.form;
+      const formItemLayout = {
+        labelCol: { span: 4 },
+        wrapperCol: { span: 20 },
+      };
     return (
       <div>
         <Form>
           <Row>
-            <FormItem label='账号(禁止修改)'>
+            <br/>
+            <FormItem label='账号(禁止修改)' {...formItemLayout}>
               {
                 getFieldDecorator('userName', {
                   initialValue: JSON.parse(sessionStorage.getItem('user')).user_name,
@@ -149,7 +155,7 @@ class ModifyUserForm extends Component {
             </FormItem>
           </Row>
           <Row>
-            <FormItem label="用户姓名">
+            <FormItem label="用户姓名" {...formItemLayout}>
               {
                 getFieldDecorator('nickName', {rules: [{required: true, message: '用户姓名不能为空'},
                   ],
@@ -162,7 +168,7 @@ class ModifyUserForm extends Component {
           </Row>
           <div>
             <Row>
-              <FormItem label='原始密码'>
+              <FormItem label='原始密码' {...formItemLayout}>
                 {getFieldDecorator('originalPassword', {
                   /*rules: [{
                     validator: this.checkOriginalPw,
@@ -175,7 +181,7 @@ class ModifyUserForm extends Component {
               </FormItem>
             </Row>
             <Row>
-              <FormItem label="修改密码">
+              <FormItem label="修改密码" {...formItemLayout}>
                 {getFieldDecorator('newPassword', {
                   rules: [{
                     validator: this.validateToNextPassword,
@@ -187,9 +193,7 @@ class ModifyUserForm extends Component {
                 )}
               </FormItem>
               <Row>
-                <FormItem
-                  label="确认密码"
-                >
+                <FormItem label="确认密码" {...formItemLayout}>
                   {getFieldDecorator('confirmNewPassword', {
                     rules: [{
                       validator: this.compareToFirstPassword,
@@ -204,7 +208,7 @@ class ModifyUserForm extends Component {
             </Row>
           </div>
           <Row>
-            <FormItem label="电话号码(禁止修改)">
+            <FormItem label="电话号码(禁止修改)" {...formItemLayout}>
               {
                 getFieldDecorator('phone', {
                   initialValue: JSON.parse(sessionStorage.getItem('user')).phone,
@@ -215,7 +219,7 @@ class ModifyUserForm extends Component {
             </FormItem>
           </Row>
           <Row>
-            <FormItem label="身份证编号">
+            <FormItem label="身份证编号" {...formItemLayout}>
               {
                 getFieldDecorator('IDnumber', {rules: [{validator: this.checkIDnumber}],
                   initialValue: JSON.parse(sessionStorage.getItem('user')).ID_number,
@@ -227,7 +231,7 @@ class ModifyUserForm extends Component {
             </FormItem>
           </Row>
           <Row>
-            <FormItem label="邮箱">
+            <FormItem label="邮箱" {...formItemLayout}>
               {
                 getFieldDecorator('email', {rules: [{validator: this.checkEmail}],
                   initialValue: JSON.parse(sessionStorage.getItem('user')).email,
@@ -251,6 +255,6 @@ class ModifyUserForm extends Component {
       </div>
     );
   }
-}
+}}
 
 export default Form.create()(ModifyUserForm);
