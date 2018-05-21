@@ -46,11 +46,16 @@ export class OrgStore{
   currentTable=[];
 
   @observable
+  allUser=[];
+
+  @observable
   iconType=["edit",'delete',"question","question-circle-o","question-circle",'play-circle','play-circle-o',"plus","plus-circle-o",
     "plus-circle","pause","minus", "minus-circle-o",'profile',
     "solution","info","info-circle-o","exclamation-circle-o","close","close-circle-o","check","check-circle-o","save"
   ];
 
+  @observable
+  selectedRowKeys=[];
 
   @action
   onLoadData=async(treeNode)=>{
@@ -87,14 +92,14 @@ export class OrgStore{
         this.currentMenuOrgs=json;
       })
     }
-  }
+  };
 
   @action
   initRoot=async ()=>{
     let json=await get(`${baseUrl}/org/orgMenu/0`);
     //let json=await response.json();
     runInAction(()=>{
-      this.treeData=json;;
+      this.treeData=json;
       //this.currentTable=json;
     })
   };
@@ -117,7 +122,7 @@ export class OrgStore{
     }
     this.selectedOrg=record;
     this.toggleOrgUserFormVisible();
-  })
+  });
 
   @action
   showAddOrgForm=(record)=>(()=>{
@@ -138,7 +143,7 @@ export class OrgStore{
   @action
   toggleOrgUserFormVisible=()=>{
     this.orgUserFormVisible=!this.orgUserFormVisible;
-  }
+  };
 
   @action
   deleteOrgDetailed=(id)=>(async ()=>{
@@ -152,13 +157,32 @@ export class OrgStore{
       })
     }
     this.loadCurrentOrg();
-  })
+  });
 
   @action
   toggleOrgAddVisible=()=>{
     this.orgAddVisiblef=!this.orgAddVisiblef;
-  }
+  };
 
+  @action
+  getAllUser=async ()=>{
+    let json=await get(`${baseUrl}/org/allUser`);
+    runInAction(
+      ()=>{this.allUser=json}
+    );
+  };
+
+  @action
+  getQueryUser=async (value)=>{
+    if(value!==''){
+    let json=await get(`${baseUrl}/org/QueryUser/${value}`);
+    runInAction(
+      ()=>{this.allUser=json}
+    );
+      notification.success({
+        message:'查询成功'})
+    }
+  };
 }
 
 

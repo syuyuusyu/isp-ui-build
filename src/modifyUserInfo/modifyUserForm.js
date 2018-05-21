@@ -142,8 +142,9 @@ class ModifyUserForm extends Component {
     return (
       <div className="user-inform">
         <Form >
+          <br/>
           <Row>
-            <br/>
+            <Col span={6}>
             <FormItem label='账号(禁止修改)' {...formItemLayout}>
               {
                 getFieldDecorator('userName', {
@@ -153,6 +154,18 @@ class ModifyUserForm extends Component {
                 )
               }
             </FormItem>
+            </Col>
+            <Col span={6} offset={3}>
+              <FormItem label="电话号码(禁止修改)" {...formItemLayout}>
+                {
+                  getFieldDecorator('phone', {
+                    initialValue: JSON.parse(sessionStorage.getItem('user')).phone,
+                  })(
+                    <Input readOnly='readOnly'/>
+                  )
+                }
+              </FormItem>
+            </Col>
           </Row>
           <Row>
             <FormItem label="用户姓名" {...formItemLayout}>
@@ -207,7 +220,7 @@ class ModifyUserForm extends Component {
               </Row>
             </Row>
           </div>
-          <Row>
+          {/*<Row>
             <FormItem label="电话号码(禁止修改)" {...formItemLayout}>
               {
                 getFieldDecorator('phone', {
@@ -217,7 +230,7 @@ class ModifyUserForm extends Component {
                 )
               }
             </FormItem>
-          </Row>
+          </Row>*/}
           <Row>
             <FormItem label="身份证编号" {...formItemLayout}>
               {
