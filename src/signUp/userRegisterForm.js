@@ -154,12 +154,13 @@ class UserRegisterForm extends Component {
   {
     const {getFieldDecorator} = this.props.form;
     const formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 20 },
+      labelCol: { span: 7 },
+      wrapperCol: { span: 14},
     };
     return (
-      <div>
-        <Form layout="horizontal">
+      <div className="sign">
+        <Form layout="horizontal" className="sign-content">
+            <h2 className="sign-title">注册</h2>
             <FormItem label="账号" {...formItemLayout} >
               {
                 getFieldDecorator('userName', {
@@ -247,15 +248,11 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
-          <Row>
-            <Col>
-              <FormItem>
+            <div className="sign-button">
                 <Button type="primary" htmlType="submit" onClick={this.save}>注册</Button>&nbsp;&nbsp;&nbsp;
                 <Button type="primary" htmlType="submit" onClick={this.reset}>重置</Button>&nbsp;&nbsp;&nbsp;
                 <Link to="/login">返回</Link>
-              </FormItem>
-            </Col>
-          </Row>
+            </div>
         </Form>
       </div>
     );

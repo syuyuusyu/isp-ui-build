@@ -1,0 +1,17 @@
+
+.user-inform{
+	height:1024px; 
+}
+
+.user-inform .ant-input{
+	width: 400px;
+}
+
+.userinform-button{
+	text-align: center;
+	margin: 30px 0;
+}
+
+.userinform-button button{
+	width: 160px;
+}

@@ -136,12 +136,12 @@ class ModifyUserForm extends Component {
     {
       const {getFieldDecorator} = this.props.form;
       const formItemLayout = {
-        labelCol: { span: 4 },
-        wrapperCol: { span: 20 },
+        labelCol: { span: 9 },
+        wrapperCol: { span: 30 },
       };
     return (
-      <div>
-        <Form>
+      <div className="user-inform">
+        <Form >
           <Row>
             <br/>
             <FormItem label='账号(禁止修改)' {...formItemLayout}>
@@ -242,15 +242,11 @@ class ModifyUserForm extends Component {
               }
             </FormItem>
           </Row>
-          <Row>
-            <Col>
-              <FormItem>
-                <Button type="primary" htmlType="submit" onClick={this.save}>保存</Button>&nbsp;&nbsp;&nbsp;
-                <Button type="primary" htmlType="submit" onClick={this.reset}>重置</Button>&nbsp;&nbsp;&nbsp;
-                <Link to="/home">返回</Link>
-              </FormItem>
-            </Col>
-          </Row>
+          <div className="userinform-button">
+            <Button type="primary" htmlType="submit" onClick={this.save}>保存</Button>&nbsp;&nbsp;&nbsp;
+            <Button type="primary" htmlType="submit" onClick={this.reset}>重置</Button>&nbsp;&nbsp;&nbsp;
+            <Link to="/home">返回</Link>
+          </div>
         </Form>
       </div>
     );
