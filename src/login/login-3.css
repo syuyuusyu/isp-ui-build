@@ -65,9 +65,6 @@
   padding: 0px;
   margin: 0px; }
 
-.login input{
-  border-radius: 16px;
-}
 
 .login .content .input-icon {
   border-left: 2px solid #44B6AE !important; }
@@ -134,7 +131,6 @@
   width: 300px;
   margin-bottom: 30px;
   margin-top: 10px;
-  border-radius: 16px;
 }
 
 /* select2 dropdowns */

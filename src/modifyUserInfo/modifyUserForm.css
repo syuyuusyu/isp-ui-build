@@ -1,10 +1,22 @@
 
+
+
 .user-inform{
-	height:1024px;
+	margin-top: 16px;
+	margin-left: 16px;
+	margin-right: 16px;
+	background-color: white;
+	border-radius: 4px;
 }
 
-.user-inform .ant-input{
-	width: 200px;
+
+.userinform-button button{
+	width: 160px;
+}
+
+.user-inform .ant-col-12{
+	margin-bottom: -10px;
+
 }
 
 .userinform-button{
@@ -12,6 +24,11 @@
 	margin: 30px 0;
 }
 
-.userinform-button button{
-	width: 160px;
+.userinform-button01{
+	margin: 0 20px;
+}
+
+/*forbid modifying*/
+.inform-user label,.inform-phone label{
+	color: #b3b3b3;
 }
