@@ -23,7 +23,7 @@ class OrganizationConf extends Component{
       return(
         <span>
           <Button icon="edit" onClick={this.props.rootStore.orgOperationStore.showOrgForm(record)} size='small'>修改</Button>
-          <Button icon="edit" onClick={this.props.rootStore.orgOperationStore.showOrgUserForm(record)} size='small'>关联用户</Button>
+          <Button icon="edit" onClick={this.props.rootStore.orgOperationStore.showOrgUserForm(record)} size='small'>分配用户</Button>
           <Popconfirm onConfirm={this.props.rootStore.orgOperationStore.deleteOrgDetailed(record.id)} title="确认删除?">
           <Button icon="delete" onClick={null} size='small'>删除</Button>
           </Popconfirm>
@@ -90,11 +90,12 @@ class OrganizationConf extends Component{
           </Modal>
           <Modal visible={this.props.rootStore.orgOperationStore.orgUserFormVisible}
                  width={800}
-                 title="关联用户"
+                 title="分配用户"
                  footer={null}
                  onCancel={this.props.rootStore.orgOperationStore.toggleOrgUserFormVisible}
                  maskClosable={false}
                  destroyOnClose={true}
+                 afterClose={this.props.rootStore.orgOperationStore.afterClose}
           >
             <OrgUserForm/>
           </Modal>
