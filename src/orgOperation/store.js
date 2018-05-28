@@ -1,7 +1,7 @@
 import {observable, configure,action,runInAction,} from 'mobx';
 import {notification} from 'antd';
-import {baseUrl,get,del} from '../util';
-import {message} from "antd/lib/index";
+import {baseUrl,get,del,post} from '../util';
+import {message, Modal} from "antd/lib/index";
 
 configure({ enforceActions: true });
 
@@ -115,12 +115,18 @@ export class OrgStore{
   });
 
   @action
-  showOrgUserForm=(record)=>(()=>{
-    if(this.currentOrgId===-1){
-      message.error('清先选择一个机构！');
-      return;
-    }
+  showOrgUserForm=(record)=>(async ()=>{
     this.selectedOrg=record;
+    this.selectOrgid=record.id;
+    let json=await get(`${baseUrl}/org/SelectedRowKeys/${record.id}`);
+    const orgUser=json[0].orgUser;
+    if(orgUser!==null&&orgUser!==''){
+      runInAction(()=>{
+        this.selectedRowKeys=orgUser.split(',');
+      })
+
+
+    }
     this.toggleOrgUserFormVisible();
   });
 
@@ -183,6 +189,36 @@ export class OrgStore{
         message:'查询成功'})
     }
   };
+
+  @action
+  getSelectedRowKeys=(selectedRowKeys)=>{
+    this.selectedRowKeys=selectedRowKeys;
+  }
+
+  @action
+  closeModal=()=>{
+    this.selectedRowKeys=[];
+    this.toggleOrgUserFormVisible();
+  }
+
+  @action
+  afterClose=()=>{
+    this.selectedRowKeys=[];
+  }
+
+  @action
+  saveOrgUser=async ()=>{
+    let json=await post(`${baseUrl}/org/saveOrgUser`,{selectedRowKeys:this.selectedRowKeys,selectOrgid:this. selectOrgid});
+    if(json.success){
+      Modal.success({
+        title: '保存成功！',
+        onOk: () => {
+          this.toggleOrgUserFormVisible();
+        },
+      });
+    }
+  }
+
 }
 
 
