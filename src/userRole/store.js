@@ -40,8 +40,9 @@ export class UserRoleStore{
         // {dataIndex:'belong',title:'所属系统',width:100},
         {dataIndex:'user_name',title:'登录名称',width:100},
         {dataIndex:'name',title:'用户名称',width:100},
-        {dataIndex:'phone',title:'电话',width:150},
-        {dataIndex:'email',title:'EAIL',width:150},
+        {dataIndex:'phone',title:'电话',width:100},
+        {dataIndex:'email',title:'EAIL',width:100},
+        {dataIndex:'organization_name',title:'所属机构',width:150},
         {
             title: '操作',
             width: 200,
