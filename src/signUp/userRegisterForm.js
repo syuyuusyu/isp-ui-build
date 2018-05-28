@@ -249,8 +249,8 @@ class UserRegisterForm extends Component {
               }
             </FormItem>
             <div className="sign-button">
-                <Button type="primary" htmlType="submit" onClick={this.save}>注册</Button>&nbsp;&nbsp;&nbsp;
-                <Button type="primary" htmlType="submit" onClick={this.reset}>重置</Button>&nbsp;&nbsp;&nbsp;
+                <Button type="primary" htmlType="submit" onClick={this.save}>注册</Button>
+                <Button className="sign-button01" onClick={this.reset}>重置</Button>
                 <Link to="/login">返回</Link>
             </div>
         </Form>
