@@ -70,6 +70,7 @@ export const log = (target, name, descriptor) => {
 export const baseUrl = 'http://10.10.50.21:7001';
 //export const baseUrl = 'http://127.0.0.1:7001';
 
+
 export function request2(method, url, body) {
   method = method.toUpperCase();
   if (method === 'GET') {

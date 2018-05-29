@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {inject,observer} from 'mobx-react';
 import { Form, Input,Row,Col,Button,notification} from 'antd';
-import {baseUrl} from "../util";
+import {baseUrl,post} from "../util";
 const FormItem = Form.Item;
 
 @inject('rootStore')
