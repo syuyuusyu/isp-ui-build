@@ -4,6 +4,7 @@ import {inject,observer} from 'mobx-react';
 import OrgForm from './modifyOrgForm';
 import AddOrgForm from './addOrgForm';
 import OrgUserForm from './orgUserForm';
+import './orgOperatation.less';
 
 
 const TreeNode = Tree.TreeNode;
@@ -53,21 +54,19 @@ class OrganizationConf extends Component{
     const { winWidth, winHeight } = this.props.rootStore.treeStore;
     return(
       <Layout>
-        <Sider width={winWidth - 1170} style={{ background: '#fff' }}>
+        <Sider width={winWidth - 1300} style={{ paddingRight: '16px', background: '#fff' }}>
           <Tree loadData={this.props.rootStore.orgOperationStore.onLoadData} onSelect={this.props.rootStore.orgOperationStore.treeSelect}
           >
             {this.renderTreeNodes(this.props.rootStore.orgOperationStore.treeData)}
           </Tree>
         </Sider>
         <Content>
-          <div>
             <Row gutter={24}>
               <Col span={20}><span>当前机构名称:{this.props.rootStore.orgOperationStore.currentOrgName}</span></Col>
               <Col span={4} style={{ textAlign: 'right' }}>
                 <Button icon="plus-circle" onClick={this.props.rootStore.orgOperationStore.showAddOrgForm(null)}>新建</Button>
               </Col>
             </Row>
-          </div>
           <Modal visible={this.props.rootStore.orgOperationStore.orgAddVisiblef}
                  width={900}
                  title="新增机构"

@@ -44,7 +44,7 @@ export class ButtonStore{
 
     @action
     loadAllRoles=async ()=>{
-        console.log('loadAllRoles');
+        //console.log('loadAllRoles');
         let json=await get(`${baseUrl}/btn/allRoles`);
         runInAction(()=>{
             this.allRoles=json;
