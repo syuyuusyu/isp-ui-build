@@ -66,7 +66,6 @@ export class OrgStore{
       treeNode.props.dataRef.children=json;
       this.treeData=[...this.treeData];
     })
-
   };
 
   @action

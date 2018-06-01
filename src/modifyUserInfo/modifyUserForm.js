@@ -115,7 +115,7 @@ class ModifyUserForm extends Component {
       let json=await post(`${baseUrl}/modifyUser/save` , values);
       if(json.success==='初始密码错误'){
         notification.error({
-          message:'初始密码错误！'
+          message:'原始密码错误！'
         })
       } else if(json.success){
         Modal.success({
@@ -219,7 +219,7 @@ class ModifyUserForm extends Component {
                       )}
                     </FormItem>
                   </Col>
-              
+
           {/*<Row>
             <FormItem label="电话号码(禁止修改)" {...formItemLayout}>
               {
@@ -262,7 +262,7 @@ class ModifyUserForm extends Component {
                   </Col>
                 </Row>
               </Col>
-            </Row>  
+            </Row>
         </Form>
       </div>
     );

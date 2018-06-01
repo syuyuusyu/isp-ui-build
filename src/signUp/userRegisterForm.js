@@ -13,7 +13,7 @@ const crypto = require('crypto');
 @observer
 class UserRegisterForm extends Component {
 
-  checkUserUnique = async (rule, value, callback) => {
+ /* checkUserUnique = async (rule, value, callback) => {
     if (!value) {
       callback()
     }
@@ -24,7 +24,7 @@ class UserRegisterForm extends Component {
     } else {
       callback(new Error())
     }
-  }
+  }*/
 
    /*checkNickNameUnique = async (rule, value, callback) => {
     if (!value) {
@@ -130,7 +130,12 @@ class UserRegisterForm extends Component {
       values.randomNumber=randomNumber;
 
       let json=await post(`${baseUrl}/userRegister/save`,values);
-     if(json.success){
+     if(json.success==='账号已经存在'){
+       notification.error({
+         message:'账号已经存在！'
+       })
+       this.reset();
+     }else if(json.success){
         Modal.success({
           title: '注册成功！',
           onOk: () => {
@@ -166,7 +171,6 @@ class UserRegisterForm extends Component {
                 getFieldDecorator('userName', {
                   rules: [{required: true, message: '账号不能为空'},
                     {pattern:'^[a-zA-Z0-9_]{1,}$',message:'账号只能包含字母数字下划线'},
-                    {validator: this.checkUserUnique, message: '账号已存在'},
                   ],
                   validateTrigger: 'onBlur'
                 })(

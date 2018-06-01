@@ -65,12 +65,12 @@ export const log = (target, name, descriptor) => {
   return descriptor;
 };
 
-//export const baseUrl='http://localhost:7001';
-//export const baseUrl='';
+
 export const activitiUrl='http://10.10.50.21:5002';
 export const baseUrl = 'http://10.10.50.21:7001';
 //export const baseUrl = 'http://127.0.0.1:7001';
 //export const activitiUrl='http://127.0.0.1:5002';
+
 
 
 export function request2(method, url, body) {

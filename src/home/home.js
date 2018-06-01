@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'antd';
-import {inject,observer} from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import ReactEchartsCore from 'echarts-for-react/lib/core';
 import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/pie';
@@ -8,29 +8,29 @@ import 'echarts/lib/chart/bar';
 import 'echarts/lib/component/title';
 import { getPieOption, getBarOption } from './tools';
 import './index.less';
-import {convertGigaFormat} from '../util';
+import { convertGigaFormat } from '../util';
 
 @inject('rootStore')
 @observer
-class Home extends Component{
+class Home extends Component {
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.rootStore.homeStore.initHomeData();
     this.props.rootStore.homeStore.loadCloud();
     this.props.rootStore.treeStore.loadCurrentRoleSys();
   }
-  componentWillUpdate () {
+  componentWillUpdate() {
 
   }
 
-  targrt=(url)=>(()=>{
-      if(url){
-          window.open(url);
-      }
+  targrt = (url) => (() => {
+    if (url) {
+      window.open(url);
+    }
   });
 
-  render () {
-     // console.log(this.props.rootStore.treeStore.currentRoleSys.filter(d=>d));
+  render() {
+    // console.log(this.props.rootStore.treeStore.currentRoleSys.filter(d=>d));
     const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = this.props.rootStore.treeStore;
     const linksHeight = winHeight < 700 ? 100 : 180;
     const marginOut = 16;
@@ -52,21 +52,21 @@ class Home extends Component{
           <div className="bg-box" />
           <div className="title">基础支撑平台</div>
           <div className="links">
-              {
-                  this.props.rootStore.treeStore.currentRoleSys.filter(d=>d).map(sys=>{
-                        return (
-                            <div className={`link ${sys.icon}`} key={sys.id}>
-                                <span className="text" onClick={this.targrt(sys.operations.filter(o=>o.type===1).length>0
-                                    ?`${sys.url}${sys.operations.filter(o=>o.type===1).map(o=>o.path)[0]}?ispToken=${sys.token}`
-                                    :null)}>
-                                    {
-                                        sys.name
-                                    }
-                                </span>
-                            </div>
-                        );
-                  })
-              }
+            {
+              this.props.rootStore.treeStore.currentRoleSys.filter(d => d).map(sys => {
+                return (
+                  <div className={`link ${sys.icon}`} key={sys.id}>
+                    <span className="text" onClick={this.targrt(sys.operations.filter(o => o.type === 1).length > 0
+                      ? `${sys.url}${sys.operations.filter(o => o.type === 1).map(o => o.path)[0]}?ispToken=${sys.token}`
+                      : null)}>
+                      {
+                        sys.name
+                      }
+                    </span>
+                  </div>
+                );
+              })
+            }
 
           </div>
         </div>
@@ -104,7 +104,7 @@ class Home extends Component{
               />
               <div className="info-box">
                 <div className="name">内存</div>
-                <div className="num">使用{convertGigaFormat(ram.used * 1024*1024)},共{convertGigaFormat(ram.total * 1024*1024)}</div>
+                <div className="num">使用{convertGigaFormat(ram.used * 1024 * 1024)},共{convertGigaFormat(ram.total * 1024 * 1024)}</div>
               </div>
             </div>
             <div className="pie-container bottom">
@@ -115,7 +115,7 @@ class Home extends Component{
               />
               <div className="info-box">
                 <div className="name">硬盘</div>
-                <div className="num">使用{convertGigaFormat(storage.used * 1024*1024*1024)},共{convertGigaFormat(storage.total * 1024*1024*1024)}</div>
+                <div className="num">使用{convertGigaFormat(storage.used * 1024 * 1024 * 1024)},共{convertGigaFormat(storage.total * 1024 * 1024 * 1024)}</div>
               </div>
             </div>
           </div>
