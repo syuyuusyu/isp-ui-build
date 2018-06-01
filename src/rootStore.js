@@ -22,6 +22,8 @@ import {DashBoardStore} from './dashboard';
 
 import {BacklogLogStore} from "./backlogLog/store";
 import {SignUpStore} from "./signUp/store";
+import {ActivitiStore} from "./activiti";
+
 
 
 
@@ -59,6 +61,7 @@ export default class RootStore {
 
         this.backlogLogStore=new BacklogLogStore(this);
         this.signUpStore=new SignUpStore(this);
+        this.activitiStore=new ActivitiStore(this);
 
     }
 }
