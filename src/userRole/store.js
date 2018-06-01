@@ -54,7 +54,6 @@ export class UserRoleStore {
           }
         }
         //let orgNameString=newOrgNameArray.join('');
-        console.log("newOrgNameArray的值为:",newOrgNameArray,newOrgNameArray.length);
         return  newOrgNameArray;
       }
     },
