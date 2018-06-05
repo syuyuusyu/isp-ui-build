@@ -22,7 +22,7 @@ class Login extends React.Component {
     this.props.form.validateFields(async (err, values) => {
       if (err) return;
       let response = await axios({
-              url:`${baseUrl}/login`,
+        url: `${baseUrl}/login`,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -30,8 +30,8 @@ class Login extends React.Component {
         data: JSON.stringify(values),
       }
       );
-      let json =  response.data;
-      console.log("json的值为:",json);
+      let json = response.data;
+      //console.log("json的值为:",json);
       switch (json.msg) {
         case '1':
           notification.success({
@@ -78,7 +78,7 @@ class Login extends React.Component {
           <Form className="login-form">
             <div className="logo-title">
               <img src={Logo} alt="logo" />
-              <h3>系统综合集成平台</h3>
+              <h3>云南地质大数据平台综合集成门户</h3>
             </div>
             <Row>
               <FormItem label="用户名" className="user-name">
@@ -96,7 +96,7 @@ class Login extends React.Component {
                 })
                   (<Input onPressEnter={this.login} prefix={<Icon type="lock" />} type="password" autoComplete="password" placeholder="请输入密码" />)}
               </FormItem>
-      {/*        <Row>
+              {/*        <Row>
                 <Col span={25} style={{ textAlign: 'center' }}>
                   <Checkbox>记住我</Checkbox>
                 </Col>
@@ -105,7 +105,7 @@ class Login extends React.Component {
             <Row >
               <Col span={25}  >
                 <Button type="primary" icon="login" className="login-button" onClick={this.login}>登录</Button>
-                &nbsp;Or <Link to="/register">注册</Link>
+                &nbsp; 没有账号，请先<Link to="/register">注册</Link>
                 {/* <Button icon="reload" onClick={this.handleReset}>我要休息</Button> */}
                 {/* <Button icon="user" onClick={this.store.toggleRegFormVisible}>注册</Button>*/}
               </Col>

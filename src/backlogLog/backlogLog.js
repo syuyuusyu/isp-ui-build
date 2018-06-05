@@ -7,12 +7,12 @@ const Option = Select.Option;
 
 @inject('rootStore')
 @observer
-class DaibanLog extends Component{
+class BacklogLog extends Component{
   columns=[
     {dataIndex:'operate_user',title:'登录用户',width:25},
     {dataIndex:'operate_ip',title:'登录的ip',width:25},
-    {dataIndex:'daiban_info',title:'待办信息',width:25},
-    {dataIndex:'daiban_status',title:'待办状态',width:25},
+    {dataIndex:'backlog_info',title:'待办信息',width:25},
+    {dataIndex:'backlog_status',title:'待办状态',width:25},
     {dataIndex:'create_time',title:'操作时间',width:25,
       render:(operateDate)=>{
         const logDate=new Date(operateDate);
@@ -29,17 +29,17 @@ class DaibanLog extends Component{
   ];
 
   componentDidMount(){
-    this.props.rootStore.daibanLogStore.initAllDaibanLog();
-    this.props.rootStore.daibanLogStore.initAllLoginName();
-    this.props.rootStore.daibanLogStore.initDaibanStatus();
+    this.props.rootStore.backlogLogStore.initAllBacklogLog();
+    this.props.rootStore.backlogLogStore.initAllLoginName();
+    this.props.rootStore.backlogLogStore.initBacklogStatus();
   }
   render(){
-    const store=this.props.rootStore.daibanLogStore;
+    const store=this.props.rootStore.backlogLogStore;
     return(
      <div>
        <Row gutter={25}>
          <Col span={2}  offset={0} style={{ textAlign: 'right' }}>
-           <Button icon="plus-circle" onClick={store.getRefreshDaibanLog}>刷新</Button>
+           <Button icon="plus-circle" onClick={store.getRefreshBacklogLog}>刷新</Button>
          </Col>
          <Col span={2} offset={2} style={{lineHeight:'32px'}}>登录用户:</Col>
          <Col span={2}>
@@ -53,11 +53,11 @@ class DaibanLog extends Component{
          </Col>
          <Col span={2} offset={2} style={{lineHeight:'32px'}}>待办状态:</Col>
          <Col span={2}>
-           <Select style={{width:150}}  onChange={store.setDaibanStatus}>
+           <Select style={{width:150}}  onChange={store.setBacklogStatus}>
              <Option  value={''} style={{color:'white'}}>&nbsp;</Option>
              {
-               store.allDaibanStatus.filter(d=>d).map(s=>
-                 <Option key={s.daiban_status} value={s.daiban_status}>{s.daiban_status}</Option>)
+               store.allBacklogStatus.filter(d=>d).map(s=>
+                 <Option key={s.backlog_status} value={s.backlog_status}>{s.backlog_status}</Option>)
              }
            </Select>
          </Col>
@@ -65,7 +65,7 @@ class DaibanLog extends Component{
            <Button icon="search" onClick={store.loadQuerySystemLog}>查询</Button>
          </Col>
        </Row>
-       <Modal visible={store.detailDaibanLog}
+       <Modal visible={store.detailBacklogLog}
               width={850}
               title="日志详情"
               footer={null}
@@ -78,7 +78,7 @@ class DaibanLog extends Component{
       <Table
         columns={this.columns}
         rowKey={record => record.id}
-        dataSource={store.allDaibanLog.filter(d=>d)}
+        dataSource={store.allBacklogLog.filter(d=>d)}
         rowSelection={null}
         size="small"
         pagination={{
@@ -91,7 +91,7 @@ class DaibanLog extends Component{
         onRow={(record) => {
           return {
             onClick: ()=>{
-              store.loadDetailDaibanLog(record);
+              store.loadDetailBacklogLog(record);
             }
           };
         }
@@ -102,4 +102,4 @@ class DaibanLog extends Component{
     );
   }
 }
-export default DaibanLog;
+export default BacklogLog;

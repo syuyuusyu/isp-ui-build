@@ -9,7 +9,8 @@ import { Login } from '../login';
 import MenuTree from './menuTree';
 import { Home } from '../home';
 import { ApplyPlatform, MessageTable } from "../notification";
-import UserRegisterForm from '../signUp/userRegisterForm'
+import UserRegisterForm from '../signUp/userRegisterForm';
+import ModifyUserForm from '../modifyUserInfo/modifyUserForm'
 
 @inject('rootStore')
 @observer
@@ -27,7 +28,7 @@ class Main extends Component {
     };
     window.addEventListener('resize', this.winResize, false);
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('resize', this.winResize, false);
   }
   componentDidMount() {
@@ -50,14 +51,14 @@ class Main extends Component {
     const userOperations = (
       <ul className="popover-list">
         <li onClick={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}>
-          <Icon type="eye-o" />&nbsp;&nbsp; 申请平台访问权限
-        </li>
+          <Icon type="eye-o" />&nbsp;&nbsp; 申请平台访问权限(拆分为申请和注销)
+                </li>
         <li>
           <Icon type="profile" />&nbsp;&nbsp; <Link to="/modifyUser">修改用户信息</Link>
         </li>
         <li onClick={this.props.rootStore.authorityStore.logout}>
           <Icon type="poweroff" />&nbsp;&nbsp; 退出
-        </li>
+                </li>
       </ul>
     );
     // 未登录
@@ -80,7 +81,7 @@ class Main extends Component {
         <header>
           <div id="headerBox">
             <div id="logoBox">
-              <span className="text">综合集成平台</span>
+              <span className="text">云南地质大数据平台综合集成门户</span>
             </div>
             {/*<div id="searchBox">*/}
             {/*<Input type="text" />*/}
@@ -106,6 +107,7 @@ class Main extends Component {
           <Route exact path="/" render={() => <Redirect to="/home" />} />
           <Route exact path="/login" render={() => <Redirect to="/home" />} />
           <Route exact path="/home" component={Home} />
+          <Route exact path="/modifyUser" component={ModifyUserForm} />
           {
             this.props.rootStore.treeStore.currentRoleMenu
               .filter(d => d)
@@ -128,7 +130,7 @@ class Main extends Component {
                     path={m.path + (m.path_holder ? m.path_holder : '')}
                     render={() => (
                       <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - headerHeight - menuHeight - footerHeight - 16 }}>
-                        {require('../' + m.page_path)[m.page_class]()}
+                        <Route component={require('../' + m.page_path)[m.page_class]} />
                       </div>
                     )}
                   />

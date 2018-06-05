@@ -10,7 +10,7 @@ const crypto = require('crypto');
 @inject('rootStore')
 @observer
 class ModifyUserForm extends Component {
-  checkOriginalPw = async (rule, value, callback) => {
+  /*checkOriginalPw = async (rule, value, callback) => {
     if (!value) {
       value = null;
       callback();
@@ -20,7 +20,7 @@ class ModifyUserForm extends Component {
     if (!response.success) {
       callback('原始密码错误');
     }
-  }
+  }*/
   validateToNextPassword = (rule, value, callback) => {
     const form = this.props.form;
     /*   if(typeof(form.getFieldValue('originalPassword'))==="undefined"){
@@ -100,14 +100,12 @@ class ModifyUserForm extends Component {
       if(err) return;
       //将当前登录的用户加入到values中，作为后台更新数据时的条件
       values.userName=JSON.parse(sessionStorage.getItem('user')).user_name;
-      //如果只输入了初始密码，而没有输入修改密码或确认密码，将初始密码置空（为安全考虑）
+      //如果只输入了初始密码，而没有输入修改密码或确认密码，将初始密码置空
       if(values.originalPassword!==''&&(values.newPassword===''||values.confirmNewPassword==='')){
         values.originalPassword='';
       }
       //如果原始密码，新密码，确认密码不为空的话对新密码和确认密码进行加密并将随机生成的数字（salt）加入values传到后台
       if(values.originalPassword!==''&&values.newPassword!==''&&values.confirmNewPassword!==''){
-        //将初始密码置空
-        values.originalPassword='';
         const randomNumber=Math.random().toString().substr(2,10);
         const hmac = crypto.createHmac('sha256', randomNumber);
         values.newPassword=hmac.update(values.newPassword).digest('hex');
@@ -115,7 +113,17 @@ class ModifyUserForm extends Component {
         values.salt=randomNumber;
       }
       let json=await post(`${baseUrl}/modifyUser/save` , values);
-      if(json.success){
+        if(json.success==='初始密码错误'){
+        notification.error({
+          message:'原始密码错误！'
+        })
+        this.reset();
+      } else if(json.success==='修改用户信息及密码成功'){
+          Modal.success({
+            title: '修改成功!将跳转至登录页面重新登录',
+            onOk: this.props.rootStore.authorityStore.logout
+          });
+        }else if(json.success){
         Modal.success({
           title: '修改成功！',
           onOk: () => {
@@ -131,78 +139,95 @@ class ModifyUserForm extends Component {
   }
 
   render() {
-    const {getFieldDecorator} = this.props.form;
+    {
+      const {getFieldDecorator} = this.props.form;
+      const formItemLayout = {
+        labelCol: { span: 4 },
+        wrapperCol: { span: 20}
+      };
     return (
-      <div>
-        <Form>
-          <Row>
-            <FormItem label='账号(禁止修改)'>
-              {
-                getFieldDecorator('userName', {
-                  initialValue: JSON.parse(sessionStorage.getItem('user')).user_name,
-                })(
-                  <Input readOnly='readOnly'/>
-                )
-              }
-            </FormItem>
-          </Row>
-          <Row>
-            <FormItem label="用户姓名">
-              {
-                getFieldDecorator('nickName', {rules: [{required: true, message: '用户姓名不能为空'},
-                  ],
-                  initialValue: JSON.parse(sessionStorage.getItem('user')).name,
-                })(
-                  <Input/>
-                )
-              }
-            </FormItem>
-          </Row>
-          <div>
+      <div className="user-inform" >
+        <Form >
+          <br/>
             <Row>
-              <FormItem label='原始密码'>
-                {getFieldDecorator('originalPassword', {
-                  rules: [{
-                    validator: this.checkOriginalPw,
-                  }],
-                  initialValue:'',
-                  validateTrigger: 'onBlur'
-                })(
-                  <Input type="password" placeholder="请输入原始密码"/>
-                )}
-              </FormItem>
-            </Row>
-            <Row>
-              <FormItem label="修改密码">
-                {getFieldDecorator('newPassword', {
-                  rules: [{
-                    validator: this.validateToNextPassword,
-                  }],
-                  initialValue:'',
-                  validateTrigger: 'onBlur'
-                })(
-                  <Input type="password" placeholder="请输入修改密码"/>
-                )}
-              </FormItem>
-              <Row>
-                <FormItem
-                  label="确认密码"
-                >
-                  {getFieldDecorator('confirmNewPassword', {
-                    rules: [{
-                      validator: this.compareToFirstPassword,
-                    }],
-                    initialValue:'',
-                    validateTrigger: 'onBlur'
-                  })(
-                    <Input type="password" placeholder="请输入确认密码"/>
-                  )}
-                </FormItem>
-              </Row>
-            </Row>
-          </div>
-          <Row>
-            <FormItem label="电话号码(禁止修改)">
+              <Col span={14} offset={5}>
+                <Row  gutter={60}>
+                  <Col span={12} >
+                    <FormItem label='个人账号（不可修改）' className="inform-user">
+                      {
+                        getFieldDecorator('userName', {
+                          initialValue: JSON.parse(sessionStorage.getItem('user')).user_name,
+                        })(
+                          <Input readOnly='readOnly'/>
+                        )
+                      }
+                    </FormItem>
+                  </Col>
+                  <Col span={12} >
+                    <FormItem label="电话号码（不可修改）" className="inform-phone">
+                      {
+                        getFieldDecorator('phone', {
+                          initialValue: JSON.parse(sessionStorage.getItem('user')).phone,
+                        })(
+                          <Input readOnly='readOnly'/>
+                        )
+                      }
+                    </FormItem>
+                  </Col>
+                  <Col span={12}>
+                    <FormItem label="用户姓名">
+                      {
+                        getFieldDecorator('nickName', {rules: [{required: true, message: '用户姓名不能为空'},
+                          ],
+                          initialValue: JSON.parse(sessionStorage.getItem('user')).name,
+                        })(
+                          <Input/>
+                        )
+                      }
+                    </FormItem>
+                  </Col>
+                  <Col span={12}>
+                    <FormItem label='原始密码'>
+                      {getFieldDecorator('originalPassword', {
+                        /*rules: [{
+                          validator: this.checkOriginalPw,
+                        }],*/
+                        initialValue:'',
+                        validateTrigger: 'onBlur'
+                      })(
+                        <Input type="password" placeholder="请输入原始密码"/>
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={12}>
+                    <FormItem label="修改密码">
+                      {getFieldDecorator('newPassword', {
+                        rules: [{
+                          validator: this.validateToNextPassword,
+                        }],
+                        initialValue:'',
+                        validateTrigger: 'onBlur'
+                      })(
+                        <Input type="password" placeholder="请输入修改密码"/>
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Col span={12}>
+                    <FormItem label="确认密码">
+                      {getFieldDecorator('confirmNewPassword', {
+                        rules: [{
+                          validator: this.compareToFirstPassword,
+                        }],
+                        initialValue:'',
+                        validateTrigger: 'onBlur'
+                      })(
+                        <Input type="password" placeholder="请输入确认密码"/>
+                      )}
+                    </FormItem>
+                  </Col>
+
+          {/*<Row>
+            <FormItem label="电话号码(禁止修改)" {...formItemLayout}>
               {
                 getFieldDecorator('phone', {
                   initialValue: JSON.parse(sessionStorage.getItem('user')).phone,
@@ -211,44 +236,43 @@ class ModifyUserForm extends Component {
                 )
               }
             </FormItem>
-          </Row>
-          <Row>
-            <FormItem label="身份证编号">
-              {
-                getFieldDecorator('IDnumber', {rules: [{validator: this.checkIDnumber}],
-                  initialValue: JSON.parse(sessionStorage.getItem('user')).ID_number,
-                  validateTrigger: 'onBlur'
-                })(
-                  <Input placeholder="请输入身份证编号(选填)"/>
-                )
-              }
-            </FormItem>
-          </Row>
-          <Row>
-            <FormItem label="邮箱">
-              {
-                getFieldDecorator('email', {rules: [{validator: this.checkEmail}],
-                  initialValue: JSON.parse(sessionStorage.getItem('user')).email,
-                  validateTrigger: 'onBlur'
-                })(
-                  <Input placeholder="请输入邮箱(选填)"/>
-                )
-              }
-            </FormItem>
-          </Row>
-          <Row>
-            <Col>
-              <FormItem>
-                <Button type="primary" htmlType="submit" onClick={this.save}>保存</Button>&nbsp;&nbsp;&nbsp;
-                <Button type="primary" htmlType="submit" onClick={this.reset}>重置</Button>&nbsp;&nbsp;&nbsp;
-                <Link to="/home">返回</Link>
-              </FormItem>
-            </Col>
-          </Row>
+          </Row>*/}
+                  <Col span={12}>
+                    <FormItem label="身份证号">
+                      {
+                        getFieldDecorator('IDnumber', {rules: [{validator: this.checkIDnumber}],
+                          initialValue: JSON.parse(sessionStorage.getItem('user')).ID_number,
+                          validateTrigger: 'onBlur'
+                        })(
+                          <Input placeholder="请输入身份证编号(选填)"/>
+                        )
+                      }
+                    </FormItem>
+                  </Col>
+                  <Col span={12}>
+                    <FormItem label="邮箱地址">
+                      {
+                        getFieldDecorator('email', {rules: [{validator: this.checkEmail}],
+                          initialValue: JSON.parse(sessionStorage.getItem('user')).email,
+                          validateTrigger: 'onBlur'
+                        })(
+                          <Input placeholder="请输入邮箱(选填)"/>
+                        )
+                      }
+                    </FormItem>
+                  </Col>
+                  <Col span={24} className="userinform-button">
+                    <Button type="primary" htmlType="submit" onClick={this.save}>保存</Button>
+                    <Button className="userinform-button01"  onClick={this.reset}>重置</Button>
+                    <Link to="/home">返回</Link>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
         </Form>
       </div>
     );
   }
-}
+}}
 
 export default Form.create()(ModifyUserForm);

@@ -42,7 +42,6 @@ class MenuButtonTree extends Component{
                     <Col span={24} style={{ textAlign: 'right' }}>
                         <Button icon="save" onClick={store.save}>保存</Button>
                         <Button icon="reload" onClick={store.handleReset}>重置</Button>
-
                     </Col>
                 </Row>
             </div>

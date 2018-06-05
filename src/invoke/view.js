@@ -276,7 +276,7 @@ class InvkeGrid extends React.Component{
                 </Row>
                 <Modal visible={this.state.confFormvisible}
                        width={1200}
-                       title="接口配置"
+                       title="原生接口配置"
                        footer={null}
                        onCancel={this.taggleConfForm}
                        maskClosable={false}
@@ -286,7 +286,7 @@ class InvkeGrid extends React.Component{
                 </Modal>
                 <Modal visible={this.state.invokeFormvisibele}
                        width={1200}
-                       title="可调用接口"
+                       title="封装接口配置"
                        footer={null}
                        onCancel={this.toggleinvokeFormvisibele}
                        maskClosable={false}

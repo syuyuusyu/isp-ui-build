@@ -2,12 +2,12 @@ import {observable,action,runInAction,} from 'mobx';
 import {notification} from 'antd';
 import {baseUrl,get,post} from '../util';
 
-export class DaibanLogStore{
+export class BacklogLogStore{
   constructor(rootStore){
     this.rootStore=rootStore;
   }
   @observable
-  allDaibanLog=[];
+  allBacklogLog=[];
 
   @observable
   logTotal='';
@@ -16,33 +16,33 @@ export class DaibanLogStore{
   loginName='';
 
   @observable
-  daibanStatus='';
+  backlogStatus='';
 
   @observable
   allLoginName=[];
 
   @observable
-  allDaibanStatus=[];
+  allBacklogStatus=[];
 
   @observable
-  detailDaibanLog=false;
+  detailBacklogLog=false;
 
   @observable
   logRecord=[];
 
   @action
-  initAllDaibanLog=async ()=>{
-    let json=await get(`${baseUrl}/daibanLog/getAllDaibanLog`);
+  initAllBacklogLog=async ()=>{
+    let json=await get(`${baseUrl}/backlogLog/getAllBacklogLog`);
     runInAction(()=>{
-        this.allDaibanLog=json;
+        this.allBacklogLog=json;
         this.logTotal=json.length;
       }
     )
   }
 
   @action
-  getRefreshDaibanLog=async ()=>{
-    this.initAllDaibanLog();
+  getRefreshBacklogLog=async ()=>{
+    this.initAllBacklogLog();
     notification.success({
       message:'刷新成功'})
   }
@@ -53,13 +53,13 @@ export class DaibanLogStore{
   }
 
   @action
-  setDaibanStatus=(daibanStatus)=>{
-    this.daibanStatus=daibanStatus;
+  setBacklogStatus=(BacklogStatus)=>{
+    this.backlogStatus=BacklogStatus;
   }
 
   @action
   initAllLoginName=async ()=>{
-    let json=await get(`${baseUrl}/daibanLog/getAllLoginName`);
+    let json=await get(`${baseUrl}/backlogLog/getAllLoginName`);
     runInAction(()=>{
         this.allLoginName=json;
       }
@@ -67,34 +67,34 @@ export class DaibanLogStore{
   }
 
   @action
-  initDaibanStatus=async ()=>{
-    let json=await get(`${baseUrl}/daibanLog/getDaibanStatus`);
+  initBacklogStatus=async ()=>{
+    let json=await get(`${baseUrl}/backlogLog/getBacklogStatus`);
     runInAction(()=>{
-        this.allDaibanStatus=json;
+        this.allBacklogStatus=json;
       }
     );
   }
 
   @action
   loadQuerySystemLog=async ()=>{
-    let json=await post(`${baseUrl}/daibanLog/queryDaibanLog`,{
+    let json=await post(`${baseUrl}/backlogLog/queryBacklogLog`,{
       loginName:this.loginName,
-      daibanStatus:this.daibanStatus
+      backlogStatus:this.backlogStatus
     });
     runInAction(()=>{
-        this.allDaibanLog=json;
+        this.allBacklogLog=json;
         this.logTotal=json.length;
       }
     );
   }
 
   @action
-  toggleDetailSystemLog=()=>{
-    this.detailDaibanLog=!this.detailDaibanLog;
+  toggleBacklogSystemLog=()=>{
+    this.detailBacklogLog=!this.detailBacklogLog;
   }
 
   @action
-  loadDetailDaibanLog=(record)=>{
+  loadDetailBacklogLog=(record)=>{
     const logDate=new Date(record.create_time);
     const Y=logDate.getFullYear()+'-';
     const M=(logDate.getMonth()+1 < 10 ? '0'+(logDate.getMonth()+1) : logDate.getMonth()+1) + '-';

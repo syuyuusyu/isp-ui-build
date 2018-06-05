@@ -66,8 +66,8 @@ class ParamsForm extends React.Component{
                 queryData.queryMap=queryMap;
                 this.setState({invokeing:true});
                 //测试可调用接口
-                console.log(queryData.body);
-                let json=await post(`${baseUrl}/invoke/${queryData.name}`, {...queryData.body,doNotParse:true});
+                console.log({...JSON.parse(queryData.body),doNotParse:true});
+                let json=await post(`${baseUrl}/invoke/${queryData.name}`, {...JSON.parse(queryData.body),doNotParse:true});
                 if(json){
                     // delete json.success;
                     // delete json.msg;

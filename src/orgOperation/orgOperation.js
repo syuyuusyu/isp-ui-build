@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Layout, Tree ,Button,Popconfirm,Table,Modal,Row,Col} from 'antd';
 import {inject,observer} from 'mobx-react';
-import OrgForm from './OrgForm';
+import OrgForm from './modifyOrgForm';
 import AddOrgForm from './addOrgForm';
+import OrgUserForm from './orgUserForm';
+import './orgOperatation.less';
 
 
 const TreeNode = Tree.TreeNode;
@@ -16,15 +18,15 @@ class OrganizationConf extends Component{
   }
 
   columns=[
-    {dataIndex:'id',title:'Id',width:100},
-    {dataIndex:'name',title:'机构名称',width:100},
-    {title:'操作',width:100,
+    {dataIndex:'name',title:'机构名称',width:260},
+    {title:'操作',width:90,
       render:(record)=>{
       return(
         <span>
           <Button icon="edit" onClick={this.props.rootStore.orgOperationStore.showOrgForm(record)} size='small'>修改</Button>
+          <Button icon="edit" onClick={this.props.rootStore.orgOperationStore.showOrgUserForm(record)} size='small'>分配用户</Button>
           <Popconfirm onConfirm={this.props.rootStore.orgOperationStore.deleteOrgDetailed(record.id)} title="确认删除?">
-            <Button icon="delete" onClick={null} size='small'>删除</Button>
+          <Button icon="delete" onClick={null} size='small'>删除</Button>
           </Popconfirm>
         </span>
       )
@@ -49,23 +51,22 @@ class OrganizationConf extends Component{
 
 
   render(){
+    const { winWidth, winHeight } = this.props.rootStore.treeStore;
     return(
       <Layout>
-        <Sider  width={200} style={{ background: '#fff' }}>
+        <Sider width={winWidth - 1300} style={{ paddingRight: '16px', background: '#fff' }}>
           <Tree loadData={this.props.rootStore.orgOperationStore.onLoadData} onSelect={this.props.rootStore.orgOperationStore.treeSelect}
           >
             {this.renderTreeNodes(this.props.rootStore.orgOperationStore.treeData)}
           </Tree>
         </Sider>
         <Content>
-          <div>
             <Row gutter={24}>
               <Col span={20}><span>当前机构名称:{this.props.rootStore.orgOperationStore.currentOrgName}</span></Col>
               <Col span={4} style={{ textAlign: 'right' }}>
                 <Button icon="plus-circle" onClick={this.props.rootStore.orgOperationStore.showAddOrgForm(null)}>新建</Button>
               </Col>
             </Row>
-          </div>
           <Modal visible={this.props.rootStore.orgOperationStore.orgAddVisiblef}
                  width={900}
                  title="新增机构"
@@ -85,6 +86,17 @@ class OrganizationConf extends Component{
                  destroyOnClose={true}
           >
             <OrgForm/>
+          </Modal>
+          <Modal visible={this.props.rootStore.orgOperationStore.orgUserFormVisible}
+                 width={800}
+                 title="分配用户"
+                 footer={null}
+                 onCancel={this.props.rootStore.orgOperationStore.toggleOrgUserFormVisible}
+                 maskClosable={false}
+                 destroyOnClose={true}
+                 afterClose={this.props.rootStore.orgOperationStore.afterClose}
+          >
+            <OrgUserForm/>
           </Modal>
         <Table columns={this.columns}
                 rowKey={record => record.id}

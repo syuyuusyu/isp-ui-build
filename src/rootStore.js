@@ -20,8 +20,11 @@ import {SystemLogStore} from "./systemLog/store";
 
 import {DashBoardStore} from './dashboard';
 
-import {DaibanLogStore} from "./daibanLog/store";
+import {BacklogLogStore} from "./backlogLog/store";
 import {SignUpStore} from "./signUp/store";
+import {ActivitiStore} from "./activiti";
+import {MenuManageStore} from "./menuManage";
+
 
 
 
@@ -57,8 +60,13 @@ export default class RootStore {
 
         this.dashBoardStore=new DashBoardStore(this);
 
-        this.daibanLogStore=new DaibanLogStore(this);
+        this.backlogLogStore=new BacklogLogStore(this);
+
         this.signUpStore=new SignUpStore(this);
+        this.activitiStore=new ActivitiStore(this);
+
+
+        this.menuManageStore=new MenuManageStore(this);
 
     }
 }

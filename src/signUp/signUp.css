@@ -1,0 +1,56 @@
+
+/*sign page*/
+.sign{
+  background-image: url("../assets/images/sign-bg.jpg");
+  height:100%; 
+  width:100%; 
+  background-repeat: no-repeat; 
+  background-attachment:fixed; 
+  background-size: cover; 
+  -webkit-background-size: cover;/* 兼容Webkit内核浏览器如Chrome和Safari */ 
+  -o-background-size: cover;/* 兼容Opera */ 
+}
+
+
+.sign-content{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 50%;
+  margin-left: -250px;
+  width: 470px;
+  background-color: #fff;
+  border-radius: 7px;
+  padding: 20px 0;
+}
+
+.sign-box{
+  width: 400px;
+}
+
+.sign-title{
+  font-size: 20px;
+  font-weight: bold;
+  color: #4c96df;
+  line-height:40px;
+ text-align: center;
+}
+
+
+.sign-content .sign-button{
+  text-align: center;
+  margin-top: 30px;
+}
+
+.sign-content .sign-button button{
+  width: 120px;
+}
+
+.sign-button .sign-button01{
+  margin:0 20px 10px 20px;
+}
+
+.sign-content .ant-form-item{
+  margin-bottom: 16px;
+}
+

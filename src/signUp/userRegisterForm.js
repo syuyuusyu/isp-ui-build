@@ -13,7 +13,7 @@ const crypto = require('crypto');
 @observer
 class UserRegisterForm extends Component {
 
-  checkUserUnique = async (rule, value, callback) => {
+ /* checkUserUnique = async (rule, value, callback) => {
     if (!value) {
       callback()
     }
@@ -24,7 +24,7 @@ class UserRegisterForm extends Component {
     } else {
       callback(new Error())
     }
-  }
+  }*/
 
    /*checkNickNameUnique = async (rule, value, callback) => {
     if (!value) {
@@ -130,7 +130,12 @@ class UserRegisterForm extends Component {
       values.randomNumber=randomNumber;
 
       let json=await post(`${baseUrl}/userRegister/save`,values);
-     if(json.success){
+     if(json.success==='账号已经存在'){
+       notification.error({
+         message:'账号已经存在！'
+       })
+       this.reset();
+     }else if(json.success){
         Modal.success({
           title: '注册成功！',
           onOk: () => {
@@ -153,16 +158,19 @@ class UserRegisterForm extends Component {
   render()
   {
     const {getFieldDecorator} = this.props.form;
+    const formItemLayout = {
+      labelCol: { span: 7 },
+      wrapperCol: { span: 14},
+    };
     return (
-      <div>
-        <Form>
-          <Row>
-            <FormItem label="账号">
+      <div className="sign">
+        <Form layout="horizontal" className="sign-content">
+            <h2 className="sign-title">注册</h2>
+            <FormItem label="账号" {...formItemLayout} >
               {
                 getFieldDecorator('userName', {
                   rules: [{required: true, message: '账号不能为空'},
                     {pattern:'^[a-zA-Z0-9_]{1,}$',message:'账号只能包含字母数字下划线'},
-                    {validator: this.checkUserUnique, message: '账号已存在'},
                   ],
                   validateTrigger: 'onBlur'
                 })(
@@ -170,9 +178,7 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
-          </Row>
-          <Row>
-            <FormItem label="用户名称">
+            <FormItem label="用户名称" {...formItemLayout}>
               {
                 getFieldDecorator('nickName', {
                   rules: [{required: true, message: '用户名称不能为空'},
@@ -183,9 +189,7 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
-          </Row>
-          <Row>
-            <FormItem label="密码">
+            <FormItem label="密码" {...formItemLayout}>
               {getFieldDecorator('password', {
                 rules: [{
                   required: true, message: '密码不能为空',
@@ -197,10 +201,7 @@ class UserRegisterForm extends Component {
                 <Input type="password" placeholder="请输入密码"/>
               )}
             </FormItem>
-            <Row>
-              <FormItem
-                label="确认密码"
-              >
+              <FormItem label="确认密码" {...formItemLayout}>
                 {getFieldDecorator('confirmPassword', {
                   rules: [{
                     required: true, message: '确认密码不能为空',
@@ -212,10 +213,7 @@ class UserRegisterForm extends Component {
                   <Input type="password" placeholder="请输入确认密码" />
                 )}
               </FormItem>
-            </Row>
-          </Row>
-          <Row>
-            <FormItem label="身份证编号">
+            <FormItem label="身份证编号" {...formItemLayout}>
               {
                 getFieldDecorator('IDnumber', {
                   rules: [
@@ -228,9 +226,7 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
-          </Row>
-          <Row>
-            <FormItem label="电话号码">
+            <FormItem label="电话号码" {...formItemLayout}>
               {
                 getFieldDecorator('phone', {
                   rules: [{required: true, message: '电话号码不能为空'},
@@ -243,9 +239,7 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
-          </Row>
-          <Row>
-            <FormItem label="邮箱">
+            <FormItem label="邮箱" {...formItemLayout}>
               {
                 getFieldDecorator('email', {
                   rules: [{type: 'email', message: '请输入有效的邮箱'},
@@ -258,16 +252,11 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
-          </Row>
-          <Row>
-            <Col>
-              <FormItem>
-                <Button type="primary" htmlType="submit" onClick={this.save}>注册</Button>&nbsp;&nbsp;&nbsp;
-                <Button type="primary" htmlType="submit" onClick={this.reset}>重置</Button>&nbsp;&nbsp;&nbsp;
+            <div className="sign-button">
+                <Button type="primary" htmlType="submit" onClick={this.save}>注册</Button>
+                <Button className="sign-button01" onClick={this.reset}>重置</Button>
                 <Link to="/login">返回</Link>
-              </FormItem>
-            </Col>
-          </Row>
+            </div>
         </Form>
       </div>
     );

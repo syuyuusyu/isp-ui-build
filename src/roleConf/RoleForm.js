@@ -18,14 +18,8 @@ class RoleForm extends React.Component{
 
     componentDidMount(){
         const store=this.store;
-        this.props.form.setFieldsValue({
-            system_id:this.systemId?this.systemId:1,
-            //type:this.props.roleType
-        });
         if(store.selectRow){
-            this.systemId=store.selectRow.system_id;
             this.props.form.setFieldsValue({
-                system_id:store.selectRow.system_id,
                 code:store.selectRow.code,
                 name:store.selectRow.name,
                 description:store.selectRow.description,
@@ -82,7 +76,6 @@ class RoleForm extends React.Component{
 
     render(){
         const { getFieldDecorator, } = this.props.form;
-        console.log(this.props.roleType);
         return (
             <Form>
                 {
