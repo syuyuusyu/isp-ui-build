@@ -66,10 +66,10 @@ export const log = (target, name, descriptor) => {
 };
 
 
-//export const activitiUrl='http://10.10.50.21:5002';
-//export const baseUrl = 'http://10.10.50.21:7001';
-export const baseUrl = 'http://127.0.0.1:7001';
-export const activitiUrl='http://127.0.0.1:5002';
+export const activitiUrl='http://10.10.50.21:5002';
+export const baseUrl = 'http://10.10.50.21:7001';
+// export const baseUrl = 'http://127.0.0.1:7001';
+// export const activitiUrl='http://127.0.0.1:5002';
 
 
 
