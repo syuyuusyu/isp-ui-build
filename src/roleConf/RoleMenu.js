@@ -34,10 +34,11 @@ class RoleMenu extends React.Component{
                   loadData={store.onLoadData}
                   onCheck={store.onCheck}
                   checkedKeys={store.roleCheckedKeys.filter(d=>d)}
-                  checkStrictly
+                  checkStrictly={true}
                   defaultExpandAll={false}
                   defaultCheckedKeys={store.roleCheckedKeys.filter(d=>d)}
-
+                  onSelect={store.onSelect}
+                  selectedKeys={store.selectedKeys}
                   >
                 {this.renderTreeNodes(store.treeData)}
             </Tree>
