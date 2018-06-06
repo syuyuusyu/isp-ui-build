@@ -88,6 +88,7 @@ export class UserRoleStore {
     runInAction(() => {
       this.userRoleConfRoles = json;
     });
+    console.log("loadUserRoleConfRoles中userRoleConfRoles的值为:",this.userRoleConfRoles.filter(d=>d));
   };
 
 
@@ -105,6 +106,7 @@ export class UserRoleStore {
     runInAction(() => {
       this.targetKeys = json.map(r => r.id);
     });
+    console.log("loadCurrentUserRole中targetKeys的值为:",this.targetKeys.filter(d=>d));
   };
 
 
@@ -189,5 +191,9 @@ export class UserRoleStore {
     }
   })
 
+  @action
+  afterClose=()=>{
+    this.selectedKeys=[];
+  }
 
 }
