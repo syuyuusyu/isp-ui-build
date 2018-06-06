@@ -36,7 +36,9 @@ class SwiftTable extends React.Component {
         {
             dataIndex: 'bytes', title: '大小', width: 50,
             render: (text) => {
-                return `${(text/1024/1024).toFixed(2)}M`
+              const result=convertGiga(text)
+              return result.number+result.unit;
+              // return `${(text/1024/1024).toFixed(2)}M`
             }
         },
         {
