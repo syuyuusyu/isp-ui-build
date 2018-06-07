@@ -17,15 +17,17 @@ class InterfacesLog extends Component{
 
   columns=[
     /*{dataIndex:'id',title:'id',width:20},*/
-    {dataIndex:'system',title:'系统编号',width:25},
-    {dataIndex:'system_cn',title:'系统名称',width:50},
-    {dataIndex:'ip',title:'调用接口的ip',width:50},
-    {dataIndex:'interfaces_name',title:'调用接口名',width:50},
+    {dataIndex:'initiativeSystem',title:'调用方系统编号',width:40},
+    {dataIndex:'initiativeSystem_CN',title:'调用方系统名称',width:60},
+    {dataIndex:'initiative_ip',title:'调用方地址',width:60},
+    {dataIndex:'system',title:'被调用方系统编号',width:40},
+    {dataIndex:'system_cn',title:'被调用方系统名称',width:60},
+    {dataIndex:'ip',title:'被调用方地址',width:50},
     /*{dataIndex:'reqdate_info',title:'请求体信息',width:50},*/
     /*{dataIndex:'response_info',title:'响应信息',width:40},*/
     {dataIndex:'response_status',title:'响应状态',width:30},
     {dataIndex:'message',title:'响应状态信息',width:50},
-    {dataIndex:'invoke_date',title:'调用时间',width:90,
+    {dataIndex:'invoke_date',title:'调用时间',width:60,
            render:(invokeDate)=>{
               /*const time=new Date(invokeDate);
               const localtime=time.toLocaleString();
