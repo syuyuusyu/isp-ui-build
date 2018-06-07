@@ -78,7 +78,7 @@ class Login extends React.Component {
           <Form className="login-form">
             <div className="logo-title">
               <img src={Logo} alt="logo" />
-              <h3>云南地质大数据平台综合集成门户</h3>
+              <h3>云南地质大数据服务平台统一门户</h3>
             </div>
             <Row>
               <FormItem label="用户名" className="user-name">
