@@ -51,7 +51,7 @@ class ProcessConf extends React.Component {
 
         {
             title: '操作',
-            width: 350,
+            width: 440,
             render: (text, record) => {
                 return (
                     <span>
@@ -61,7 +61,7 @@ class ProcessConf extends React.Component {
                             }
                             </Button>
                         <Divider type="vertical"/>
-                        {/*<Button icon="upload" onClick={this.props.rootStore.activitiStore.modelExport(record)} size='small'>转化为模型</Button>*/}
+                        <Button icon="upload" onClick={this.props.rootStore.activitiStore.toModel(record)} size='small'>转化为模型</Button>
                          <Divider type="vertical"/>
                         <Button icon="upload" href={`${activitiUrl}/process/resource/read?procDefId=${record.id}&resType=xml`} target='_blank' size='small'>查看流程XML</Button>
                          <Divider type="vertical"/>

@@ -11,6 +11,7 @@ import { Home } from '../home';
 import { ApplyPlatform, MessageTable } from "../notification";
 import UserRegisterForm from '../signUp/userRegisterForm';
 import ModifyUserForm from '../modifyUserInfo/modifyUserForm'
+import {UserTaskTable} from '../activiti';
 
 @inject('rootStore')
 @observer
@@ -38,7 +39,8 @@ class Main extends Component {
         this.props.rootStore.authorityStore.loadAllbuttons(),
         //this.props.rootStore.treeStore.initCurrentRoleMenu(),
         this.props.rootStore.treeStore.initRoot(),
-        this.props.rootStore.notificationStore.loadSystemAccess()
+        this.props.rootStore.notificationStore.loadSystemAccess(),
+          this.props.rootStore.activitiStore.loadCurrentTask()
       ]);
     }
 
@@ -50,15 +52,16 @@ class Main extends Component {
     const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = treeStore;
     const userOperations = (
       <ul className="popover-list">
-        <li onClick={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}>
+        {/*<li onClick={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}>*/}
+        <li onClick={this.props.rootStore.activitiStore.startProcess('platform_apply')}>
           <Icon type="eye-o" />&nbsp;&nbsp; 申请平台访问权限(拆分为申请和注销)
-                </li>
+        </li>
         <li>
           <Icon type="profile" />&nbsp;&nbsp; <Link to="/modifyUser">修改用户信息</Link>
         </li>
         <li onClick={this.props.rootStore.authorityStore.logout}>
           <Icon type="poweroff" />&nbsp;&nbsp; 退出
-                </li>
+        </li>
       </ul>
     );
     // 未登录
@@ -94,12 +97,18 @@ class Main extends Component {
                 <Icon type="down" style={{ fontSize: '12px' }} />
               </div>
             </Popover>
-            <Badge id="messageBox" dot={true} count={this.props.rootStore.notificationStore.messages.filter(d => d).length}>
-              <Icon
-                type="message"
-                onClick={this.props.rootStore.notificationStore.toggleMessageTableVisible}
-              />
-            </Badge>
+            {/*<Badge id="messageBox" dot={true} count={this.props.rootStore.notificationStore.messages.filter(d => d).length}>*/}
+              {/*<Icon*/}
+                {/*type="message"*/}
+                {/*onClick={this.props.rootStore.notificationStore.toggleMessageTableVisible}*/}
+              {/*/>*/}
+            {/*</Badge>*/}
+              <Badge id="messageBox" dot={true} count={this.props.rootStore.activitiStore.currentTask.filter(d => d).length}>
+                  <Icon
+                      type="message"
+                      onClick={this.props.rootStore.activitiStore.showUserTaskTableVisible}
+                  />
+              </Badge>
           </div>
           <MenuTree />
         </header>
@@ -149,16 +158,26 @@ class Main extends Component {
         >
           <ApplyPlatform />
         </Modal>
-        <Modal visible={this.props.rootStore.notificationStore.messageTableVisible}
-          width={1000}
-          title={`代办事项`}
-          footer={null}
-          onCancel={this.props.rootStore.notificationStore.toggleMessageTableVisible}
-          maskClosable={false}
-          destroyOnClose={true}
-        >
-          <MessageTable />
-        </Modal>
+        {/*<Modal visible={this.props.rootStore.notificationStore.messageTableVisible}*/}
+          {/*width={1000}*/}
+          {/*title={`代办事项`}*/}
+          {/*footer={null}*/}
+          {/*onCancel={this.props.rootStore.notificationStore.toggleMessageTableVisible}*/}
+          {/*maskClosable={false}*/}
+          {/*destroyOnClose={true}*/}
+        {/*>*/}
+          {/*<MessageTable />*/}
+        {/*</Modal>*/}
+          <Modal visible={this.props.rootStore.activitiStore.userTaskTableVisible}
+                 width={1000}
+                 title={`代办事项`}
+                 footer={null}
+                 onCancel={this.props.rootStore.activitiStore.toggleUserTaskTableVisible}
+                 maskClosable={false}
+                 destroyOnClose={true}
+          >
+              <UserTaskTable />
+          </Modal>
       </div>
     );
   }

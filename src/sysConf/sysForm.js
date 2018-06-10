@@ -87,7 +87,6 @@ class SysForm extends React.Component{
                 <Col span={24} style={{ textAlign: 'right' }}>
                     <Button icon="save" onClick={this.save}>保存</Button>
                     <Button icon="reload" onClick={this.handleReset}>重置</Button>
-
                 </Col>
             </Row>
         </Form>

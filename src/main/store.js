@@ -111,12 +111,13 @@ export class TreeStore{
 
     @action
     onMenuClick=(e)=>{
-        this.rootStore.notificationStore.loadMessage();
+        //this.rootStore.notificationStore.loadMessage();
+        this.rootStore.activitiStore.loadCurrentTask();
         let clone=this.menuTreeData.filter(d=>d);
         clone.forEach(data=>{
           getPathById(e.key,data,(result)=>{
             runInAction(()=>{
-                console.log(result);
+                //console.log(result);
               this.currentRoute=result;
             });
           })
