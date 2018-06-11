@@ -52,6 +52,10 @@ class ButtonForm extends Component {
         })
     };
 
+  handleReset = () => {
+    this.props.form.resetFields();
+  };
+
     render() {
         const {getFieldDecorator,} = this.props.form;
         return (

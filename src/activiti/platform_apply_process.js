@@ -4,7 +4,7 @@ import {notification} from 'antd';
 
 //用户申请访问权限后提交的信息
 const applyVariable=(values,formData)=>{
-    let username = JSON.parse(sessionStorage.getItem("user")).user_name;
+    let username = JSON.parse(sessionStorage.getItem("user")).name;
     let msg=username+'申请:';
     let applySystemCode=[];
     formData.forEach(data=>{
@@ -18,7 +18,7 @@ const applyVariable=(values,formData)=>{
         notification.info({
             message: '至少选择一个当前没有权限的平台'
         });
-        return null;
+        return false;
     }
     return {
         message:msg,
@@ -32,6 +32,20 @@ const applyVariable=(values,formData)=>{
 
 //平台访问权限角色审批后提交的信息
 const approval=(values)=>{
+    if(values.approval===true){
+        return {
+            approval:true,
+            message:null,
+            nextForm:[]
+        }
+    }else{
+        let username = JSON.parse(sessionStorage.getItem("user")).name;
+        return {
+            approval:false,
+            message:username+'拒绝了你的申请,原因:'+values.message,
+            nextForm:[]
+        }
+    }
     return values;
 };
 
@@ -41,6 +55,11 @@ export const paltfromApplyProcess=(taskName,values,formData)=>{
     }
     if(taskName==='平台访问权限角色审批'){
         return approval(values);
+    }
+    if(taskName==='申请结果'){
+        return {
+            message:'complete'
+        }
     }
 };
 

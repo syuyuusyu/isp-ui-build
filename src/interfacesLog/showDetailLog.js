@@ -19,18 +19,26 @@ render(){
   return(
     <Form>
       <Row gutter={24}>
-      <Col span={3}>
-        <FormItem  label='系统编号'><Input  readOnly='readOnly'  value={this.props.rootStore.interfacesLog.logRecord.system}/></FormItem>
-      </Col>
-      <Col span={6}>
-        <FormItem  label='系统名称'><Input  readOnly='readOnly'  value={this.props.rootStore.interfacesLog.logRecord.system_cn}/></FormItem>
-      </Col>
-      <Col span={6}>
-        <FormItem  label='调用接口的ip'><Input  readOnly='readOnly'  value={this.props.rootStore.interfacesLog.logRecord.ip}/></FormItem>
-      </Col>
-        <Col span={6}>
-          <FormItem  label='接口名'><Input  readOnly='readOnly'  value={this.props.rootStore.interfacesLog.logRecord.interfaces_name}/></FormItem>
+        <Col span={8}>
+          <FormItem  label='调用方系统编号'><Input  readOnly='readOnly'  value={this.props.rootStore.interfacesLog.logRecord.initiativeSystem}/></FormItem>
         </Col>
+        <Col span={8}>
+          <FormItem  label='调用方系统名称'><Input  readOnly='readOnly'  value={this.props.rootStore.interfacesLog.logRecord.initiativeSystem_CN}/></FormItem>
+        </Col>
+        <Col span={8}>
+          <FormItem  label='调用方地址'><Input  readOnly='readOnly'  value={this.props.rootStore.interfacesLog.logRecord.initiative_ip}/></FormItem>
+        </Col>
+      </Row>
+      <Row gutter={24}>
+      <Col span={8}>
+        <FormItem  label='被调用方系统编号'><Input  readOnly='readOnly'  value={this.props.rootStore.interfacesLog.logRecord.system}/></FormItem>
+      </Col>
+      <Col span={8}>
+        <FormItem  label='被调用方系统名称'><Input  readOnly='readOnly'  value={this.props.rootStore.interfacesLog.logRecord.system_cn}/></FormItem>
+      </Col>
+      <Col span={8}>
+        <FormItem  label='被调用方地址'><Input  readOnly='readOnly'  value={this.props.rootStore.interfacesLog.logRecord.ip}/></FormItem>
+      </Col>
     </Row>
     <Row gutter={24}>
       <Col span={6}>

@@ -154,14 +154,14 @@ export const put = (url, body) => request('PUT', url, body);
 export const del = (url, body) => request('DELETE', url, body);
 
 export const convertGiga = (byte) => {
-  const units = ['KB', 'MB', 'GB', 'TB']
+  const units = ['byte','KB', 'MB', 'GB', 'TB']
   for (let i = 0; i < units.length; i++) {
-    byte = byte / 1024;
-    if (byte < 1024)
+    if (byte < 1024){
       return {
         number: Math.round(byte * 100) / 100,
         unit: units[i]
-      }
+      }}
+      byte=byte/1024;
   }
   return {
     number: Math.round(byte * 100) / 100,

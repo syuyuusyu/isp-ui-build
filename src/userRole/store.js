@@ -1,10 +1,10 @@
 import {observable, configure, action, runInAction,} from 'mobx';
-import {notification, Button, Popconfirm} from 'antd';
+import {notification, Button, Popconfirm, Alert} from 'antd';
 import {baseUrl, get, post} from '../util';
 import React from 'react';
 import RoleButton from '../roleButton';
 import {Divider,} from 'antd';
-
+import {Modal} from "antd/lib/index";
 
 configure({enforceActions: true});
 
@@ -88,6 +88,7 @@ export class UserRoleStore {
     runInAction(() => {
       this.userRoleConfRoles = json;
     });
+    console.log("loadUserRoleConfRoles中userRoleConfRoles的值为:",this.userRoleConfRoles.filter(d=>d));
   };
 
 
@@ -105,6 +106,7 @@ export class UserRoleStore {
     runInAction(() => {
       this.targetKeys = json.map(r => r.id);
     });
+    console.log("loadCurrentUserRole中targetKeys的值为:",this.targetKeys.filter(d=>d));
   };
 
 
@@ -178,9 +180,10 @@ export class UserRoleStore {
     const userName = record.user_name;
     let json = await get(`${baseUrl}/resetPassword/${userName}`);
     if (json.success) {
-      notification.success({
-        message: '保存成功',
-      })
+     Modal.success({
+       title:'密码重置成功',
+       content:`用户${userName}的密码被重置为123456`}
+     );
     } else {
       notification.error({
         message: '后台错误，请联系管理员',
@@ -188,5 +191,9 @@ export class UserRoleStore {
     }
   })
 
+  @action
+  afterClose=()=>{
+    this.selectedKeys=[];
+  }
 
 }

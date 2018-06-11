@@ -36,11 +36,11 @@ class Main extends Component {
     //角色权限变动以后需要刷新的数据
     if (!this.props.rootStore.authorityStore.loginVisible) {
       Promise.all([
-        this.props.rootStore.authorityStore.loadAllbuttons(),
-        //this.props.rootStore.treeStore.initCurrentRoleMenu(),
-        this.props.rootStore.treeStore.initRoot(),
-        this.props.rootStore.notificationStore.loadSystemAccess(),
-          this.props.rootStore.activitiStore.loadCurrentTask()
+            this.props.rootStore.authorityStore.loadAllbuttons(),
+            //this.props.rootStore.treeStore.initCurrentRoleMenu(),
+            this.props.rootStore.treeStore.initRoot(),
+            this.props.rootStore.notificationStore.loadSystemAccess(),
+            this.props.rootStore.activitiStore.loadCurrentTask()
       ]);
     }
 

@@ -113,11 +113,17 @@ class ModifyUserForm extends Component {
         values.salt=randomNumber;
       }
       let json=await post(`${baseUrl}/modifyUser/save` , values);
-      if(json.success==='初始密码错误'){
+        if(json.success==='初始密码错误'){
         notification.error({
           message:'原始密码错误！'
         })
-      } else if(json.success){
+        this.reset();
+      } else if(json.success==='修改用户信息及密码成功'){
+          Modal.success({
+            title: '修改成功!将跳转至登录页面重新登录',
+            onOk: this.props.rootStore.authorityStore.logout
+          });
+        }else if(json.success){
         Modal.success({
           title: '修改成功！',
           onOk: () => {

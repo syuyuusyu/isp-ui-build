@@ -22,11 +22,12 @@ class UserTable extends React.Component{
             <div>
                 <Modal visible={store.userRoleConfVisible}
                        width={900}
-                       title="用户角色配置"
+                       title="关联角色"
                        footer={null}
                        onCancel={store.taggreUserRoleConf}
                        maskClosable={false}
                        destroyOnClose={true}
+                       afterClose={store.afterClose()}
                 >
                     <UserRoleConf/>
                 </Modal>

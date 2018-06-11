@@ -40,19 +40,23 @@ class UserTaskForm extends React.Component{
         this.props.form.validateFields(async (err,values)=>{
             if(err) return;
             let processDefinitionKey=await get(`${activitiUrl}/userTask/processDefinitionKey/${store.selectedTask.id}`);
-            let nextJson;
+            let nextJson='default';
 
             if(processDefinitionKey.key==='platform_apply'){
                 //平台权限申请流程
                 nextJson=paltfromApplyProcess(store.selectedTask.name,values,store.formData.filter(d=>d));
             }
-
-            if(!nextJson){
+            console.log(nextJson);
+            if(nextJson==='default'){
                 notification.error({
                     message: `当前流程:${store.selectedTask.name}没有对应的处理程序,请联系管理员`
                 });
                 return;
             };
+            if(!nextJson){
+                return;
+            };
+
             let submitResult=await post(`${activitiUrl}/userTask/submit/${store.selectedTask.id}`,nextJson);
             if(submitResult.success){
                 notification.info({
@@ -143,8 +147,6 @@ class UserTaskForm extends React.Component{
     render(){
         const store=this.props.rootStore.activitiStore;
         const { getFieldDecorator, } = this.props.form;
-        console.log(store.formData.filter(d=>d));
-        let form=store.formData[1];
         return (
             <Form>
                 <div>{store.message}</div>
