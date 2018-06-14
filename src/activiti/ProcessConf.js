@@ -39,7 +39,7 @@ class ProcessConf extends React.Component {
             render: (text, record) => {
                 return (
                     <span>
-                        <Button icon={record.suspended?'play-circle-0':'pause'} onClick={this.props.rootStore.activitiStore.changeState(record.id,record.suspended)} size='small'>
+                        <Button icon={record.suspended?'play-circle-o':'pause'} onClick={this.props.rootStore.activitiStore.changeState(record.id,record.suspended)} size='small'>
                             {
                                 record.suspended?'激活':'挂起'
                             }

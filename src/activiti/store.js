@@ -158,6 +158,7 @@ export class ActivitiStore {
         let json = await get(`${activitiUrl}/process/update/${suspended ? 'active' : 'suspend'}?procDefId=${id}`);
         notification.info({
             message: json.msg
+            //'play-circle-0':'pause'
         });
         this.loadProcess();
     });
