@@ -11,6 +11,7 @@ import { Home } from '../home';
 import { ApplyPlatform, MessageTable } from "../notification";
 import UserRegisterForm from '../signUp/userRegisterForm';
 import ModifyUserForm from '../modifyUserInfo/modifyUserForm'
+import CloudForm from '../cloudapply/cloudForm';
 
 @inject('rootStore')
 @observer
@@ -108,6 +109,7 @@ class Main extends Component {
           <Route exact path="/login" render={() => <Redirect to="/home" />} />
           <Route exact path="/home" component={Home} />
           <Route exact path="/modifyUser" component={ModifyUserForm} />
+          <Route exact path="/applyCloud" component={CloudForm} />
           {
             this.props.rootStore.treeStore.currentRoleMenu
               .filter(d => d)
