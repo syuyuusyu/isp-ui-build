@@ -2,6 +2,7 @@ import React from 'react';
 import {Table,Icon,Spin,Modal,Row,Col,Button} from 'antd';
 import {inject,observer} from 'mobx-react';
 import CloudForm from './cloudForm';
+import { Link } from 'react-router-dom';
 //import {baseUrl, get} from "../util";
 import '../style.css';
 
@@ -83,7 +84,8 @@ class CloudApplyTable extends React.Component{
                 <Row gutter={2} className="table-head-row">
 
                     <Col span={4} style={{ textAlign: 'right' }} className="col-button">
-                            <Button onClick={store.toggleFormVisible} icon="plus-circle-o">新建云机</Button>
+                      <Icon type="profile" />&nbsp;&nbsp; <Link to="/applyCloud">新建云机</Link>
+                            {/*<Button onClick={store.toggleFormVisible} icon="plus-circle-o">新建云机</Button>*/}
                     </Col>
 
                 </Row>
