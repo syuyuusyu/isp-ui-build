@@ -63,7 +63,7 @@ class OpForm extends React.Component{
                                 <Option  value={1}>登录</Option>
                                 <Option  value={2}>退出</Option>
                                 <Option  value={5}>推送用户信息</Option>
-                                <Option  value={4}>页面引用</Option>
+                                <Option  value={6}>注销平台用户</Option>
                             </Select>
                         )}
                     </FormItem>

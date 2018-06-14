@@ -27,6 +27,8 @@ class SysOperation extends Component {
                         return '页面引用';
                     case 5:
                         return '推送用户';
+                    case 6:
+                        return '注销平台用户';
                     default:
                         return '';
                 }

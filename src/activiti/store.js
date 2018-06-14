@@ -6,6 +6,10 @@ import axios from 'axios';
 
 configure({enforceActions: true});
 
+notification.config({
+    placement: 'topLeft',
+});
+
 export class ActivitiStore {
 
     constructor(rootStore) {
@@ -54,7 +58,7 @@ export class ActivitiStore {
             this.loadCurrentTask();
         } else {
             notification.error({
-                message: `启动流程事变,请联系管理员!!!`
+                message: `启动流程失败,请联系管理员!!!`
             });
         }
     });

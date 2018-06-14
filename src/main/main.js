@@ -54,8 +54,11 @@ class Main extends Component {
       <ul className="popover-list">
         {/*<li onClick={this.props.rootStore.notificationStore.toggleApplyPlatformVisible}>*/}
         <li onClick={this.props.rootStore.activitiStore.startProcess('platform_apply')}>
-          <Icon type="eye-o" />&nbsp;&nbsp; 申请平台访问权限(拆分为申请和注销)
+          <Icon type="eye-o" />&nbsp;&nbsp; 申请平台访问权限
         </li>
+          <li onClick={this.props.rootStore.activitiStore.startProcess('platform_cancel')}>
+              <Icon type="eye-o" />&nbsp;&nbsp; 注销平台访问权限
+          </li>
         <li>
           <Icon type="profile" />&nbsp;&nbsp; <Link to="/modifyUser">修改用户信息</Link>
         </li>

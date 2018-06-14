@@ -5,7 +5,7 @@ import {notification} from 'antd';
 //用户申请访问权限后提交的信息
 const applyVariable=(values,formData)=>{
     let username = JSON.parse(sessionStorage.getItem("user")).name;
-    let msg=username+'申请:';
+    let msg=username+'注销:';
     let applySystemCode=[];
     formData.forEach(data=>{
         if(values[data.key] && data.editable){
@@ -13,10 +13,10 @@ const applyVariable=(values,formData)=>{
             applySystemCode.push(data.key);
         }
     });
-    msg=msg+'访问权限';
+    msg=msg+'权限';
     if(applySystemCode.length===0){
         notification.info({
-            message: '至少选择一个当前没有权限的平台'
+            message: '至少选择一个当前有权限的平台'
         });
         return false;
     }
@@ -25,7 +25,7 @@ const applyVariable=(values,formData)=>{
         nextForm:[
             {"editable":true,"key":"message","label":"拒绝原因","type":"string","value":''},
             {"editable":true,"key":"approval","label":"是否同意","type":"switch","value":false},
-            ],
+        ],
         applySystemCode:applySystemCode.join(',')
     }
 };
@@ -37,7 +37,7 @@ const approval=(values)=>{
             approval:true,
             message:'',
             nextForm:[],
-            opType:'apply',
+            opType:'cancel',
         }
     }else{
         let username = JSON.parse(sessionStorage.getItem("user")).name;
@@ -50,14 +50,14 @@ const approval=(values)=>{
     return values;
 };
 
-export const paltfromApplyProcess=(taskName,values,formData)=>{
-    if(taskName==='用户申请平台访问权限'){
+export const paltfromCancelProcess=(taskName,values,formData)=>{
+    if(taskName==='用户申请注销平台权限'){
         return applyVariable(values,formData);
     }
-    if(taskName==='审批申请平台权限'){
+    if(taskName==='审批注销平台权限'){
         return approval(values);
     }
-    if(taskName==='申请平台权限结果'){
+    if(taskName==='注销权限结果'){
         return {
             isLast:true
         }

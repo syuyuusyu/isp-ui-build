@@ -5,9 +5,13 @@ import { Form, Row, Col, Input, Button ,notification,Select,Switch,DatePicker} f
 import {inject,observer} from 'mobx-react';
 import {activitiUrl, baseUrl, post,get} from '../util';
 import {paltfromApplyProcess} from './platform_apply_process';
+import {paltfromCancelProcess} from './platform_cancel_process';
 const Option=Select.Option;
 const FormItem = Form.Item;
 
+notification.config({
+    placement: 'topLeft',
+});
 
 @inject('rootStore')
 @observer
@@ -30,7 +34,6 @@ class UserTaskForm extends React.Component{
                     valueobj[data.key]=data.value;
             }
         });
-        console.log(valueobj);
         this.props.form.setFieldsValue(valueobj);
     }
 
@@ -46,6 +49,11 @@ class UserTaskForm extends React.Component{
                 //平台权限申请流程
                 nextJson=paltfromApplyProcess(store.selectedTask.name,values,store.formData.filter(d=>d));
             }
+            if(processDefinitionKey.key==='platform_cancel'){
+                //注销平台权限流程
+                nextJson=paltfromCancelProcess(store.selectedTask.name,values,store.formData.filter(d=>d));
+            }
+
             console.log(nextJson);
             if(nextJson==='default'){
                 notification.error({
@@ -69,6 +77,7 @@ class UserTaskForm extends React.Component{
             }
             store.loadCurrentTask();
             store.toggleUserTaskFormVisible();
+            store.toggleUserTaskTableVisible();
 
         })
     };
@@ -169,8 +178,7 @@ class UserTaskForm extends React.Component{
                 }
                 <Row>
                     <Col span={24} style={{ textAlign: 'right' }}>
-                        <Button icon="save" onClick={this.submit}>保存</Button>
-                        <Button icon="reload" onClick={this.handleReset}>重置</Button>
+                        <Button icon="save" onClick={this.submit}>提交</Button>
                     </Col>
                 </Row>
             </Form>
