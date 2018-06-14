@@ -17,22 +17,6 @@ class ProcessConf extends React.Component {
         this.props.rootStore.activitiStore.loadProcess();
     }
 
-    // "id": "process:1:25010",
-    // "url": "http://localhost:5002/repository/process-definitions/process:1:25010",
-    // "key": "process",
-    // "version": 1,
-    // "name": null,
-    // "description": null,
-    // "tenantId": "",
-    // "deploymentId": "25001",
-    // "deploymentUrl": "http://localhost:5002/repository/deployments/25001",
-    // "resource": "http://localhost:5002/repository/deployments/25001/resources//Users/syu/project/bzworkspace/activiti-server/target/classes/processes/test.bpmn20.xml",
-    // "diagramResource": "http://localhost:5002/repository/deployments/25001/resources//Users/syu/project/bzworkspace/activiti-server/target/classes/processes/test.process.png",
-    // "category": "http://www.activiti.org/processdef",
-    // "graphicalNotationDefined": true,
-    // "suspended": false,
-    // "startFormDefined": false
-
 
     columns=[
         {dataIndex: 'id', title: 'ID', width: 120},
@@ -51,21 +35,21 @@ class ProcessConf extends React.Component {
 
         {
             title: '操作',
-            width: 440,
+            width: 400,
             render: (text, record) => {
                 return (
                     <span>
-                        <Button icon="upload" onClick={this.props.rootStore.activitiStore.changeState(record.id,record.suspended)} size='small'>
+                        <Button icon={record.suspended?'play-circle-0':'pause'} onClick={this.props.rootStore.activitiStore.changeState(record.id,record.suspended)} size='small'>
                             {
                                 record.suspended?'激活':'挂起'
                             }
                             </Button>
-                        <Divider type="vertical"/>
-                        <Button icon="upload" onClick={this.props.rootStore.activitiStore.toModel(record)} size='small'>转化为模型</Button>
+                        {/*<Divider type="vertical"/>*/}
+                        {/*<Button icon="upload" onClick={this.props.rootStore.activitiStore.toModel(record)} size='small'>转化为模型</Button>*/}
                          <Divider type="vertical"/>
-                        <Button icon="upload" href={`${activitiUrl}/process/resource/read?procDefId=${record.id}&resType=xml`} target='_blank' size='small'>查看流程XML</Button>
+                        <Button icon="file-excel" href={`${activitiUrl}/process/resource/read?procDefId=${record.id}&resType=xml`} target='_blank' size='small'>查看流程XML</Button>
                          <Divider type="vertical"/>
-                        <Button icon="upload" href={`${activitiUrl}/process/resource/read?procDefId=${record.id}&resType=image`} target='_blank' size='small'>查看流程图片</Button>
+                        <Button icon="picture" href={`${activitiUrl}/process/resource/read?procDefId=${record.id}&resType=image`} target='_blank' size='small'>查看流程图片</Button>
                         <span>
                             <Divider type="vertical"/>
                             <Popconfirm onConfirm={this.props.rootStore.activitiStore.deleteProcess(record.deploymentId)} title="确认删除?">

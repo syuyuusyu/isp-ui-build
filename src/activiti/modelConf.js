@@ -31,11 +31,11 @@ class ModelConf extends React.Component {
             render: (text, record) => {
                 return (
                     <span>
-                        <Button icon="folder-add" href={`${activitiUrl}/modelPage?modelId=${record.id}`} target='_blank' size='small'>编辑</Button>
+                        <Button icon="code-o" href={`${activitiUrl}/modelPage?modelId=${record.id}`} target='_blank' size='small'>编辑</Button>
                         <Divider type="vertical"/>
-                        <Button icon="upload" onClick={this.props.rootStore.activitiStore.modelDeploy(record.id)} size='small'>部署</Button>
+                        <Button icon="rocket" onClick={this.props.rootStore.activitiStore.modelDeploy(record.id)} size='small'>部署</Button>
                         <Divider type="vertical"/>
-                        <Button icon="upload" onClick={this.props.rootStore.activitiStore.modelExport(record)} size='small'>导出</Button>
+                        <Button icon="export" onClick={this.props.rootStore.activitiStore.modelExport(record)} size='small'>导出</Button>
                         <span>
                             <Divider type="vertical"/>
                             <Popconfirm onConfirm={this.props.rootStore.activitiStore.deleteMdel(record.id)} title="确认删除?">

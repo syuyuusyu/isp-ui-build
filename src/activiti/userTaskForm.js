@@ -178,7 +178,7 @@ class UserTaskForm extends React.Component{
                 }
                 <Row>
                     <Col span={24} style={{ textAlign: 'right' }}>
-                        <Button icon="save" onClick={this.submit}>提交</Button>
+                        <Button icon="play-circle-o" onClick={this.submit}>提交</Button>
                     </Col>
                 </Row>
             </Form>

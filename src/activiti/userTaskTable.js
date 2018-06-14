@@ -22,7 +22,7 @@ class UserTaskTable extends Component {
             render: (text, record) => {
                 return (
                     <span>
-                        <Button icon="upload" onClick={this.props.rootStore.activitiStore.showUserTaskForm(record)} size='small'>办理</Button>
+                        <Button icon="pushpin-o" onClick={this.props.rootStore.activitiStore.showUserTaskForm(record)} size='small'>办理</Button>
                     </span>
                 );
             }
