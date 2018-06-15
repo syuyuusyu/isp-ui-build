@@ -82,11 +82,12 @@ class InvokeTable extends Component{
             <div>
                 <div>
                     <Row gutter={24}>
-                        <Col span={20}><span>当前平台:{store.currentSys.name}-url:{store.currentSys.url}</span></Col>
+                        <Col span={20}><span style={{fontSize: '16px'}}>当前平台:{store.currentSys.name}-url:{store.currentSys.url}</span></Col>
                         <Col span={4} style={{textAlign: 'right'}}>
                             <RoleButton buttonId={22} onClick={store.showForm(null)}/>
                         </Col>
                     </Row>
+                  <br/>
                 </div>
                 <Modal visible={store.fromVisible}
                        width={1200}

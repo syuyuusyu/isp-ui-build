@@ -62,13 +62,15 @@ class MenuManage extends Component {
           </Tree>
         </Sider>
         <Content>
+          <div style={{paddingBottom:"12px"}}>
           <Row gutter={24}>
-            <Col span={20}><span>当前菜单名称:{this.props.rootStore.menuManageStore.currentMenuName}</span></Col>
+            <Col span={20}><span style={{fontSize: '16px'}}>当前菜单名称:{this.props.rootStore.menuManageStore.currentMenuName}</span></Col>
             <Col span={4} style={{textAlign: 'right'}}>
               <RoleButton icon="plus-circle" buttonId={32}
                           onClick={this.props.rootStore.menuManageStore.showAddMenuForm(null)}>新建</RoleButton>
             </Col>
           </Row>
+          </div>
           <Modal visible={this.props.rootStore.menuManageStore.menuAddVisiblef}
                  width={800}
                  title="新增菜单"

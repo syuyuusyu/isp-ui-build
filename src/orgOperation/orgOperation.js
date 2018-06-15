@@ -5,6 +5,7 @@ import OrgForm from './modifyOrgForm';
 import AddOrgForm from './addOrgForm';
 import OrgUserForm from './orgUserForm';
 import './orgOperatation.less';
+import RoleButton from '../roleButton';
 
 
 const TreeNode = Tree.TreeNode;
@@ -23,10 +24,10 @@ class OrganizationConf extends Component{
       render:(record)=>{
       return(
         <span>
-          <Button icon="edit" onClick={this.props.rootStore.orgOperationStore.showOrgForm(record)} size='small'>修改</Button>
-          <Button icon="edit" onClick={this.props.rootStore.orgOperationStore.showOrgUserForm(record)} size='small'>分配用户</Button>
-          <Popconfirm onConfirm={this.props.rootStore.orgOperationStore.deleteOrgDetailed(record.id)} title="确认删除?">
-          <Button icon="delete" onClick={null} size='small'>删除</Button>
+          <RoleButton buttonId={36} icon="edit" onClick={this.props.rootStore.orgOperationStore.showOrgForm(record)} size='small'>修改</RoleButton>
+          <RoleButton buttonId={37} icon="edit" onClick={this.props.rootStore.orgOperationStore.showOrgUserForm(record)} size='small'>分配用户</RoleButton>
+          <Popconfirm buttonId={4} onConfirm={this.props.rootStore.orgOperationStore.deleteOrgDetailed(record.id)} title="确认删除?">
+          <RoleButton buttonId={38} icon="delete" onClick={null} size='small'>删除</RoleButton>
           </Popconfirm>
         </span>
       )
@@ -61,12 +62,14 @@ class OrganizationConf extends Component{
           </Tree>
         </Sider>
         <Content>
+          <div style={{paddingBottom:"12px"}}>
             <Row gutter={24}>
-              <Col span={20}><span>当前机构名称:{this.props.rootStore.orgOperationStore.currentOrgName}</span></Col>
+              <Col span={20}><span style={{fontSize: '16px'}}>当前机构名称:{this.props.rootStore.orgOperationStore.currentOrgName}</span></Col>
               <Col span={4} style={{ textAlign: 'right' }}>
-                <Button icon="plus-circle" onClick={this.props.rootStore.orgOperationStore.showAddOrgForm(null)}>新建</Button>
+                <RoleButton buttonId={35} icon="plus-circle" onClick={this.props.rootStore.orgOperationStore.showAddOrgForm(null)}>新建</RoleButton>
               </Col>
             </Row>
+          </div>
           <Modal visible={this.props.rootStore.orgOperationStore.orgAddVisiblef}
                  width={900}
                  title="新增机构"

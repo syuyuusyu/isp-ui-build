@@ -82,9 +82,9 @@ class SysOperation extends Component {
         const store = this.props.rootStore.sysOperationStore;
         return (
             <div>
-                <div>
+                <div style={{paddingBottom:"12px"}}>
                     <Row gutter={24}>
-                        <Col span={20}><span>当前系统名称:{store.currentSys.name}</span></Col>
+                        <Col span={20}><span style={{fontSize: '16px'}}>当前系统名称:{store.currentSys.name}</span></Col>
                         <Col span={4} style={{textAlign: 'right'}}>
                             {/*<Button icon="plus-circle" onClick={this.props.rootStore.sysOperationStore.showOpForm()}>新建</Button>*/}
                             <RoleButton buttonId={17} onClick={this.props.rootStore.sysOperationStore.showOpForm()}/>

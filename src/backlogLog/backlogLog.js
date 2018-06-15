@@ -37,12 +37,13 @@ class BacklogLog extends Component{
     const store=this.props.rootStore.backlogLogStore;
     return(
      <div>
+       <div style={{paddingBottom:"12px"}}>
        <Row gutter={25}>
-         <Col span={2}  offset={0} style={{ textAlign: 'right' }}>
+         {/*<Col span={2}  offset={0} style={{ textAlign: 'right' }}>
            <Button icon="plus-circle" onClick={store.getRefreshBacklogLog}>刷新</Button>
-         </Col>
-         <Col span={2} offset={2} style={{lineHeight:'32px'}}>登录用户:</Col>
-         <Col span={2}>
+         </Col>*/}
+         <Col span={2} offset={0} style={{lineHeight:'32px'}}>登录用户:</Col>
+         <Col span={3} offset={1}>
            <Select style={{width:150}}  onChange={store.setLoginName}>
              <Option  value={''} style={{color:'white'}}>&nbsp;</Option>
              {
@@ -65,11 +66,12 @@ class BacklogLog extends Component{
            <Button icon="search" onClick={store.loadQuerySystemLog}>查询</Button>
          </Col>
        </Row>
+       </div>
        <Modal visible={store.detailBacklogLog}
               width={850}
               title="日志详情"
               footer={null}
-              onCancel={store.toggleDetailSystemLog}
+              onCancel={store. toggleBacklogSystemLog}
               maskClosable={false}
               destroyOnClose={true}
        >

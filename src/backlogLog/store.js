@@ -105,6 +105,6 @@ export class BacklogLogStore{
     const date=Y+M+D+h+m+s;
     record.create_time=date;
     this.logRecord=record;
-    this.toggleDetailSystemLog();
+    this. toggleBacklogSystemLog();
   }
 }

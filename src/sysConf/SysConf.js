@@ -60,12 +60,14 @@ class SysConf extends React.Component{
                 >
                     <RoleSysConf/>
                 </Modal>
+              <div style={{paddingBottom:"12px"}}>
                 <Row gutter={24}>
                     <Col span={20}></Col>
                     <Col span={4} style={{ textAlign: 'right' }}>
                         <RoleButton buttonId={14} onClick={store.showForm()}/>
                     </Col>
                 </Row>
+              </div>
                 <Table columns={this.columns}
                        rowKey={record => record.id}
                        dataSource={store.allSystem.filter(d=>d)}
