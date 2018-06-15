@@ -70,6 +70,7 @@ class InterfacesLog extends Component{
     const store=this.props.rootStore.interfacesLog;
     return(
       <div>
+        <div style={{paddingBottom:"12px"}}>
         <Row gutter={25}>
         <Col span={2}  offset={0} style={{ textAlign: 'right' }}>
           <Button icon="reload" onClick={this.props.rootStore.interfacesLog.getRefreshLog}>刷新</Button>
@@ -108,7 +109,7 @@ class InterfacesLog extends Component{
             <Button icon="search" onClick={store.loadQueryLog}>查询</Button>
           </Col>
         </Row>
-
+        </div>
         <Modal visible={store.detailLog}
                width={900}
                title="日志详情"

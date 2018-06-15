@@ -26,27 +26,46 @@ export class DataUserStore {
     formVisible=false;
 
     @observable
-    selectedAccId;
+    selectedAccId='';
 
     @observable
     firstPwd;
+
+    @observable
+    selectInstanceVisible=false;
+
+    @observable
+    formDisplay='none';
+
+    @observable
+    testData=[{"id":"test1","name":"drt1"},{"id":"test2","name":"drt2"},{"id":"test3","name":"drt3"}];
 
     @action
     toggleFormVisible=()=>{
         this.formVisible=!this.formVisible;
     };
 
+    @action
+    toggleSelectInstanceVisible=()=>{
+      this.selectInstanceVisible=!this.selectInstanceVisible;
+    };
+
     showForm=()=>{
-        if(!this.selectedAccId){
+       /* if(!this.selectedAccId){
             notification.error({
                 message:'请先选择数据库实列'});
             return;
-        }
+        }*/
         this.toggleFormVisible();
     };
 
     scheduleToken=()=>{
         get(`${baseUrl}/invoke/dataToken`);
+    };
+
+    @action
+    showSelectInstance=()=>{
+      this.toggleSelectInstanceVisible();
     };
 
     @action
@@ -82,8 +101,16 @@ export class DataUserStore {
     @action
     selectedAcc=(e)=>{
         this.selectedAccId=e;
-        this.loadDataUsers(e);
+      if(this.selectedAccId!==''){
+        this.formDisplay='';
+      }
+        //this.loadDataUsers(e);
     };
+
+    @action
+    afterClose=()=>{
+      this.formDisplay='none';
+    }
 
     @action
     loadDataUsers=async (id)=>{

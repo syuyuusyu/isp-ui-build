@@ -86,8 +86,8 @@ export class CloudStore {
       this.loading = true;
       this.loadingtest = '正在向云平台获取表单信息...'
     });
-    let json=await post(`${baseUrl}/invoke/cloud_form`);
-/*    let json = {
+    //let json=await post(`${baseUrl}/invoke/cloud_form`);
+    let json = {
       "flavors": [
         {
           "id": "1bc6dfe0-48a4-4e1b-988d-1987b956d340",
@@ -718,7 +718,7 @@ export class CloudStore {
           "protected": true
         }
       ]
-    }*/
+    }
     if (json.status && json.status === 500) {
       notification.error({message: '连接云平台失败',});
       runInAction(() => {
@@ -733,15 +733,15 @@ export class CloudStore {
       });
       for (let i = 0; i < this.flavors.length; i++) {
         const id = this.flavors[i].id;
-        this.flavorsColor[id] = 'orange';
+        this.flavorsColor[id] = '#006699';
       }
       for (let i = 0; i < this.images.length; i++) {
         const id = this.images[i].id;
-        this.imagesColor[id] = 'orange';
+        this.imagesColor[id] = '#006699';
       }
       for (let i = 0; i < this.networks.length; i++) {
         const id = this.networks[i].id;
-        this.networksColor[id] = 'orange';
+        this.networksColor[id] = '#006699';
       }
     }
 
@@ -755,7 +755,7 @@ export class CloudStore {
   @action
   onClickFlavors = (value) => {
     for (let i in this.flavorsColor) {
-      this.flavorsColor[i] = 'orange';
+      this.flavorsColor[i] = '#006699';
     }
     this.flavorsColor = {...this.flavorsColor, [value]: 'gray'};
     this.flavorId = value;
@@ -764,7 +764,7 @@ export class CloudStore {
   @action
   onClickImages = (value) => {
     for (let i in this.imagesColor) {
-      this.imagesColor[i] = 'orange';
+      this.imagesColor[i] = '#006699';
     }
     this.imagesColor = {...this.imagesColor, [value]: 'gray'};
     this.imageId = value;
@@ -773,7 +773,7 @@ export class CloudStore {
   @action
   onClickNetworks = (value) => {
     for (let i in this.networksColor) {
-      this.networksColor[i] = 'orange';
+      this.networksColor[i] = '#006699';
     }
     this.networksColor = {...this.networksColor, [value]: 'gray'};
     this.networkId = value;

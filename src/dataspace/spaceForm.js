@@ -31,7 +31,13 @@ class SpaceForm extends React.Component{
         return (
             <div>
                 <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
-                    <Form>
+                  <p>请选择数据库实例:</p>
+                  <Select style={{ width: 300 }} onChange={store.selectedAcc}>
+                    {store.testData.map(d =>
+                      <Option key={d.id} value={d.name}>{d.name}</Option>
+                    )}
+                  </Select>
+                    <Form style={{display:store.formDisplay}}>
                         <Row>
                             <FormItem label="表空间名称">
                                 {getFieldDecorator('name',{

@@ -15,7 +15,7 @@ class DataUserTable extends React.Component{
     timeoutid=0;
 
     componentDidMount(){
-        this.props.rootStore.dataUserStore.loadDataAcc();
+        //this.props.rootStore.dataUserStore.loadDataAcc();
         this.timeoutid=setInterval(
             this.props.rootStore.cloudStore.scheduleToken,
             1000*60*20
@@ -54,11 +54,12 @@ class DataUserTable extends React.Component{
                        onCancel={store.toggleFormVisible}
                        maskClosable={false}
                        destroyOnClose={true}
+                       afterClose={this.props.rootStore.dataUserStore.afterClose}
                 >
                     <UserForm/>
                 </Modal>
                 <Row gutter={2} className="table-head-row">
-                    <Col span={2} className="col-label">数据库实列:</Col>
+                    {/*<Col span={2} className="col-label">数据库实列:</Col>
                     <Col span={4} >
                         <Select className="col-input"  onChange={store.selectedAcc}>
                             {
@@ -66,7 +67,7 @@ class DataUserTable extends React.Component{
                                     <Option key={s.id} value={s.id}>{s.name}</Option>)
                             }
                         </Select>
-                    </Col>
+                    </Col>*/}
                     <Col span={4} style={{ textAlign: 'right' }} className="col-button">
                         <Button onClick={store.showForm} icon="plus-circle-o">新建用户</Button>
                     </Col>

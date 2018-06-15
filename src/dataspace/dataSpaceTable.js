@@ -15,7 +15,7 @@ class DataSpaceTable extends React.Component{
     timeoutid=0;
 
     componentDidMount(){
-        this.props.rootStore.dataSpaceStore.loadDataAcc();
+        //this.props.rootStore.dataSpaceStore.loadDataAcc();
         this.timeoutid=setInterval(
             this.props.rootStore.dataSpaceStore.scheduleToken,
             1000*60*20
@@ -50,6 +50,7 @@ class DataSpaceTable extends React.Component{
                        onCancel={store.toggleFormVisible}
                        maskClosable={false}
                        destroyOnClose={true}
+                       afterClose={this.props.rootStore.dataSpaceStore.afterClose}
                 >
                     <SpaceForm/>
                 </Modal>
