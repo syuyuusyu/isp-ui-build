@@ -15,7 +15,7 @@ class DataUserTable extends React.Component{
     timeoutid=0;
 
     componentDidMount(){
-        //this.props.rootStore.dataUserStore.loadDataAcc();
+        this.props.rootStore.dataUserStore.loadDataAcc();
         this.timeoutid=setInterval(
             this.props.rootStore.cloudStore.scheduleToken,
             1000*60*20

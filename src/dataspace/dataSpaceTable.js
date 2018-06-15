@@ -15,7 +15,7 @@ class DataSpaceTable extends React.Component{
     timeoutid=0;
 
     componentDidMount(){
-        //this.props.rootStore.dataSpaceStore.loadDataAcc();
+        this.props.rootStore.dataSpaceStore.loadDataAcc();
         this.timeoutid=setInterval(
             this.props.rootStore.dataSpaceStore.scheduleToken,
             1000*60*20
@@ -55,7 +55,7 @@ class DataSpaceTable extends React.Component{
                     <SpaceForm/>
                 </Modal>
                 <Row gutter={2} className="table-head-row">
-                    <Col span={2} className="col-label">数据库实列:</Col>
+                    {/*<Col span={2} className="col-label">数据库实列:</Col>
                     <Col span={4} >
                         <Select className="col-input"  onChange={store.selectedAcc}>
                             {
@@ -63,7 +63,7 @@ class DataSpaceTable extends React.Component{
                                     <Option key={s.id} value={s.id}>{s.name}</Option>)
                             }
                         </Select>
-                    </Col>
+                    </Col>*/}
                     <Col span={4} style={{ textAlign: 'right' }} className="col-button">
                         <Button onClick={store.showForm} icon="plus-circle-o">新建表空间</Button>
                     </Col>

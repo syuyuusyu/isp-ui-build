@@ -104,7 +104,7 @@ export class DataUserStore {
       if(this.selectedAccId!==''){
         this.formDisplay='';
       }
-        //this.loadDataUsers(e);
+        this.loadDataUsers(e);
     };
 
     @action

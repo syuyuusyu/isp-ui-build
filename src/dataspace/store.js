@@ -84,7 +84,7 @@ export class DataSpaceStore {
     if(this.selectedAccId!==''){
       this.formDisplay='';
     }
-    //this.loadDataSpace(e);
+    this.loadDataSpace(e);
   };
 
   @action

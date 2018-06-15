@@ -86,8 +86,8 @@ export class CloudStore {
       this.loading = true;
       this.loadingtest = '正在向云平台获取表单信息...'
     });
-    //let json=await post(`${baseUrl}/invoke/cloud_form`);
-    let json = {
+    let json=await post(`${baseUrl}/invoke/cloud_form`);
+    /*let json = {
       "flavors": [
         {
           "id": "1bc6dfe0-48a4-4e1b-988d-1987b956d340",
@@ -718,7 +718,7 @@ export class CloudStore {
           "protected": true
         }
       ]
-    }
+    }*/
     if (json.status && json.status === 500) {
       notification.error({message: '连接云平台失败',});
       runInAction(() => {
