@@ -7,6 +7,7 @@ const Option=Select.Option;
 const FormItem = Form.Item;
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
+
 @inject('rootStore')
 @observer
 class UserForm extends React.Component{
@@ -32,18 +33,27 @@ class UserForm extends React.Component{
     };
 
     render(){
-        const store=this.props.rootStore.cloudStore;
+      const store = this.props.rootStore.dataUserStore;
         const { getFieldDecorator, } = this.props.form;
         return (
             <div>
                 <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
-                    <Form>
+                  <p>请选择数据库实例:</p>
+                  <Select className="col-input"  onChange={store.selectedAcc}>
+                    {
+                      store.dataAcc.filter(d=>d).filter(d=>d.dbType==='0'||d.dbType==='1').map(s=>
+                        <Option key={s.id} value={s.id}>{s.name}</Option>)
+                    }
+                  </Select>
+                  <br/>
+                  <br/>
+                    <Form style={{display:store.formDisplay}}>
                         <Row>
                             <FormItem label="用户名">
                                 {getFieldDecorator('name',{
                                     rules: [{ required: true, message: '必填' }],
                                 })(
-                                    <Input placeholder='输入用户名'/>
+                                    <Input  placeholder='输入用户名'/>
                                 )}
                             </FormItem>
                             <FormItem label="密码">

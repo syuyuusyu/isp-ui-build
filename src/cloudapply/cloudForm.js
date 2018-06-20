@@ -19,9 +19,19 @@ class CloudFrom extends React.Component {
     const store = this.props.rootStore.cloudStore;
     this.props.form.validateFields(async (err, values) => {
       if (err) return;
+      if(store.flavorId===''){
+        return notification.error({
+          message:'请选择虚拟机类型'});
+      }else if(store.networkId===''){
+         return notification.error({
+          message:'请选择网络类型'});
+      }else if(store.imageId===''){
+        return notification.error({
+          message:'请选择镜像类型'});
+      }
       let json = await post(`${baseUrl}/invoke/cloud_create`, {
         flavorId: store.flavorId,
-        name: store.name,
+        name: values.virtualMachineName,
         networkId: store.networkId,
         imageId: store.imageId
       });
@@ -114,8 +124,8 @@ class CloudFrom extends React.Component {
               </FormItem>
             </Row>
           </Form>
-          <Button icon="save" onClick={this.save}>保存</Button>
-
+          <Button icon="save" onClick={this.save}>保存</Button>&nbsp;&nbsp;
+          <Button icon="reload" href="/cloudapply">返回</Button>
           {/* <br/><br/>
                   <p style={{fontSize:'16px'}}>请输入虚拟机名称:</p>
                   <input style={{fontSize:'16px'}} placeholder='请输入虚拟机名称'onChange={this.onChange} />*/}

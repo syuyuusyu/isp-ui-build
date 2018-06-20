@@ -80,9 +80,9 @@ class ButtonConf extends Component{
                     </Tree>
                 </Sider>
                 <Content>
-                    <div>
+                    <div style={{paddingBottom:"12px"}}>
                         <Row gutter={24}>
-                            <Col span={20}><span>当前菜单名称:{this.props.rootStore.buttonStore.currentMenuName}</span></Col>
+                            <Col span={20}><span style={{fontSize: '16px'}}>当前菜单名称:{this.props.rootStore.buttonStore.currentMenuName}</span></Col>
                             <Col span={4} style={{ textAlign: 'right' }}>
                                 <Button icon="plus-circle" onClick={this.props.rootStore.buttonStore.showButtonForm(null)}>新建</Button>
                             </Col>
