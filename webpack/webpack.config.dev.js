@@ -25,6 +25,7 @@ const devConfig = {
     overlay: {
       errors: true
     },
+    disableHostCheck: true,
   },
 };
 
