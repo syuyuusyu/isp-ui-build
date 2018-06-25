@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { Icon, Form, Button, notification, Input, Row, Col, Modal, Checkbox } from 'antd';
 import { baseUrl } from '../util';
 import axios from 'axios';
-import './login-3.css';
+import './login-3.less';
 //import UserRegisterForm from '../signUp/userRegisterForm';
 import Logo from '../assets/images/logo.png'
 

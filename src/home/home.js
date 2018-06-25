@@ -32,7 +32,7 @@ class Home extends Component {
   render() {
     // console.log(this.props.rootStore.treeStore.currentRoleSys.filter(d=>d));
     const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = this.props.rootStore.treeStore;
-    const linksHeight = winHeight < 700 ? 100 : 180;
+    const linksHeight = winHeight < 700 ? 100 : 60;
     const marginOut = 16;
     const marginInner = 16;
     const blockTitleHeight = 48;
@@ -50,7 +50,6 @@ class Home extends Component {
       <div id="homePage" style={{ height: winHeight - headerHeight - menuHeight - footerHeight }}>
         <div id="linksBox" style={{ height: linksHeight }}>
           <div className="bg-box" />
-          <div className="title">基础支撑平台</div>
           <div className="links">
             {
               this.props.rootStore.treeStore.currentRoleSys.filter(d => d).map(sys => {
