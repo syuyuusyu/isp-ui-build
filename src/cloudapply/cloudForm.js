@@ -7,12 +7,15 @@ const Option = Select.Option;
 const FormItem = Form.Item;
 const antIcon = <Icon type="loading" style={{fontSize: 24}} spin/>;
 
+
 @inject('rootStore')
 @observer
 class CloudFrom extends React.Component {
 
   componentDidMount() {
     this.props.rootStore.cloudStore.loadFormInput();
+    this.props.rootStore.cloudStore.loadKeyPairs();
+    this.props.rootStore.cloudStore.getS02Url();
   }
 
   save = () => {
@@ -30,6 +33,7 @@ class CloudFrom extends React.Component {
           message:'请选择镜像类型'});
       }
       let json = await post(`${baseUrl}/invoke/cloud_create`, {
+        keypairName:store.selectKeyPairValue,
         flavorId: store.flavorId,
         name: values.virtualMachineName,
         networkId: store.networkId,
@@ -38,6 +42,7 @@ class CloudFrom extends React.Component {
       if(json.code===200){
         notification.success({
           message:'新建成功'})
+        this.props.history.push('/cloudapply');
       }else{
         notification.error({
           message:'失败,请联系管理员'});
@@ -71,49 +76,58 @@ class CloudFrom extends React.Component {
   render() {
     const store = this.props.rootStore.cloudStore;
     const {getFieldDecorator,} = this.props.form;
+    const treeStore = this.props.rootStore.treeStore;
+    const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = treeStore;
     return (
-      <div>
+      <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - headerHeight - menuHeight - footerHeight - 16 }}>
         <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
-          <div>
             <br/><br/>
-            <Form>
+          <Form style={{display:store.keyPairsDisplay}}>
+            <p style={{fontSize: '16px'}}>请选择密钥:</p>
+            <Select className="col-input" onChange={store.selectKeyPairs} style={{width:'300px'}}>
+              {store.keyPairs.filter(d=>d).map(s=>
+                <Option key={s.publicKey} value={s.name}>{s.name}</Option>
+              )}
+            </Select>
+          </Form>
+            <br/><br/>
+            <Form style={{display:store.formDisplay}}>
               <p style={{fontSize: '16px'}}>请选择虚拟机类型:</p>
               {store.flavors.filter(d => d).map(a => {
                 return (
-                  <Button title={'内存大小:' + a.ram + 'M' + ' 虚拟cpu数:' + a.vcpus + ' 磁盘大小:' + a.disk + 'G'} size="large"
+                  <Button key={a.id} title={'内存大小:' + a.ram + 'M' + ' 虚拟cpu数:' + a.vcpus + ' 磁盘大小:' + a.disk + 'G'} size="large"
                           style={{backgroundColor: store.flavorsColor[a.id], fontWeight: 'bold'}} onClick={() => {
                     store.onClickFlavors(a.id)
                   }}>{a.name}</Button>
                 );
               })}
             </Form>
-          </div>
-          <div>
             <br/><br/>
+            <Form style={{display:store.formDisplay}}>
             <p style={{fontSize: '16px'}}>请选择网络类型:</p>
             {store.networks.filter(d => d).map(b => {
               return (
-                <Button title={'网段地址:' + b.neutronSubnets[0].cidr} size="large"
+                <Button key={b.id} title={'网段地址:' + b.neutronSubnets[0].cidr} size="large"
                         style={{backgroundColor: store.networksColor[b.id], fontWeight: 'bold'}} onClick={() => {
                   store.onClickNetworks(b.id)
                 }}>{b.name}</Button>
               );
             })}
-          </div>
-          <div>
+            </Form>
             <br/><br/>
+            <Form style={{display:store.formDisplay}}>
             <p style={{fontSize: '16px'}}>请选择镜像类型:</p>
             {store.images.filter(d => d).map(c => {
               return (
-                <Button size="large" style={{backgroundColor: store.imagesColor[c.id], fontWeight: 'bold'}}
+                <Button key={c.id} size="large" style={{backgroundColor: store.imagesColor[c.id], fontWeight: 'bold'}}
                         onClick={() => {
                           store.onClickImages(c.id)
                         }}>{c.name}</Button>
               );
             })}
-          </div>
+            </Form>
          <br/>
-          <Form>
+          <Form style={{display:store.formDisplay}}>
             <Row>
               <FormItem label="虚拟机名称">
                 {getFieldDecorator('virtualMachineName', {
@@ -124,8 +138,8 @@ class CloudFrom extends React.Component {
               </FormItem>
             </Row>
           </Form>
-          <Button icon="save" onClick={this.save}>保存</Button>&nbsp;&nbsp;
-          <Button icon="reload" href="/cloudapply">返回</Button>
+          <Button icon="save" onClick={this.save} style={{display:store.formDisplay}}>保存</Button>&nbsp;&nbsp;
+          <Button icon="reload" href="/cloudapply" style={{display:store.formDisplay}}>返回</Button>
           {/* <br/><br/>
                   <p style={{fontSize:'16px'}}>请输入虚拟机名称:</p>
                   <input style={{fontSize:'16px'}} placeholder='请输入虚拟机名称'onChange={this.onChange} />*/}
