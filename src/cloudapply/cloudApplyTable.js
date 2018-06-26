@@ -17,7 +17,8 @@ class CloudApplyTable extends React.Component{
 
     componentDidMount(){
         this.props.rootStore.cloudStore.scheduleToken();
-        //this.props.rootStore.cloudStore.loadServerInfo();
+        this.props.rootStore.cloudStore.loadServerInfo();
+
         // this.timeoutid=setInterval(
         //     this.props.rootStore.cloudStore.loadServerInfo,
         //     1000*60
@@ -68,7 +69,7 @@ class CloudApplyTable extends React.Component{
 
     render(){
         const store=this.props.rootStore.cloudStore;
-        console.log(store.serverInfo.filter(d=>d));
+        //console.log(store.serverInfo.filter(d=>d));
         return (<div>
             <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
                 <Modal visible={store.formVisible}

@@ -175,7 +175,7 @@ class Main extends Component {
         {/*</Modal>*/}
           <Modal visible={this.props.rootStore.activitiStore.userTaskTableVisible}
                  width={1000}
-                 title={`代办事项`}
+                 title={`待办事项`}
                  footer={null}
                  onCancel={this.props.rootStore.activitiStore.toggleUserTaskTableVisible}
                  maskClosable={false}

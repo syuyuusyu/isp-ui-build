@@ -92,10 +92,10 @@ export class DataUserStore {
         }else{
             runInAction(()=>{
                 this.dataAcc=json;
+              console.log("this.dataAcc的值为:",this.dataAcc);
                 this.loading=false;
             });
         }
-
     };
 
     @action
@@ -135,7 +135,6 @@ export class DataUserStore {
                 this.loading=false;
             });
         }
-
     };
 
     @action
