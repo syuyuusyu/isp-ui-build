@@ -12,7 +12,7 @@ export const format = (txt, compress) => {
     var data = JSON.parse(txt);
   } catch (e) {
     console.error('数据源语法错误,格式化失败! 错误信息: ' + e.description, 'err');
-    return;
+    return txt;
   };
   var draw = [],
     //last=false,This=this,

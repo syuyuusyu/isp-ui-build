@@ -4,6 +4,7 @@ import {inject, observer} from 'mobx-react';
 import RoleButton from '../roleButton';
 import InvokeForm from './invokeForm';
 import InvokePromiss from './invokePromiss';
+import {format} from '../util';
 import '../style.css';
 
 @inject('rootStore')
@@ -49,13 +50,13 @@ class InvokeTable extends Component{
         <div className="box-code-card" style={{ background: '#ECECEC', padding: '1px' }}>
             <Row type="flex" justify="center" align="top" gutter={8}>
                 <Col span={8} >
-                    <Card  title="请求头示例" bordered={true}><pre>{record.head}</pre></Card>
+                    <Card  title="请求头示例" bordered={true}><pre>{format(record.head)}</pre></Card>
                 </Col>
                 <Col span={8} >
-                    <Card  title="请求体示例" bordered={false}><pre>{record.body}</pre></Card>
+                    <Card  title="请求体示例" bordered={false}><pre>{format(record.body)}</pre></Card>
                 </Col>
                 <Col span={8} >
-                    <Card  title="返回结果示例" bordered={false}><pre>{record.result}</pre></Card>
+                    <Card  title="返回结果示例" bordered={false}><pre>{format(record.result)}</pre></Card>
                 </Col>
 
             </Row>

@@ -152,7 +152,7 @@ class Main extends Component {
               })
           }
         </Switch>
-        <footer>CopyRight © 云南地矿测绘院</footer>
+        <footer>CopyRight © 云南省地质矿产勘查开发局</footer>
         <Modal visible={this.props.rootStore.notificationStore.applyPlatformVisible}
           width={600}
           title={`申请平台访问权限`}

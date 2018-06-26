@@ -7,6 +7,8 @@ export class HomeStore{
   constructor(rootStore){
     this.rootStore=rootStore;
   }
+
+
   @observable
   cloudManage = {
     instance: { total: 0, used: 0 },
@@ -20,6 +22,9 @@ export class HomeStore{
     hdfs: { total: 0, used: 0 },
     instance: [],
   };
+
+  @observable
+  hdfs= { total: 0, used: 0 };
 
   @action
   loadCloud=async()=>{
@@ -40,19 +45,14 @@ export class HomeStore{
   @action
   loadData=async()=>{
       let json=await post(`${baseUrl}/invoke/data_monitor`);
-      if(json['type_1'] && json['type_2']){
-          runInAction(()=>{
-              this.bigData= {
-                  hdfs: {
-                      total: json['type_2'].hdfs.schema_info.map(d=>d.value).reduce((a,b)=>a+b),
-                      used: json['type_2'].hdfs.schema_info.filter(d=>d.name==='hdfs_use').map(d=>d.value)[0] },
-                  instance: [
-                      { type: '数据清洗', total: 12, success: 8, used: 0 },
-                      { type: '数据接入', total: 16, success: 15, used: 0 },
-                      { type: '工作流', total: 7, success: 6, used: 3 },
-                      { type: '任务调度', total: 4, success: 4, used: 0 },
-                  ],
-              }
+      if(json['type_2']){
+          runInAction(()=> {
+              hdfs = {
+                  total: json['type_2'].hdfs.schema_info.map(d => d.value).reduce((a, b) => a + b),
+                  used: json['type_2'].hdfs.schema_info.filter(d => d.name === 'hdfs_use').map(d => d.value)[0]
+              };
+
+
           });
       }
   };

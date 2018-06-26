@@ -79,6 +79,7 @@ class SummaryCM extends Component{
     const sourceDataShow = currentActiveTable === 0 ? personalSource : totalSource;
     return (
       <div id="summaryBox">
+
         <div className="block tab-box" style={blockASize}>
           <div className="tab-title">
             <div
@@ -108,6 +109,8 @@ class SummaryCM extends Component{
             })}
           </div>
         </div>
+
+
         <div className="block right" style={blockASize}>
           <div className="title">CPU监控</div>
           <ReactEchartsCore

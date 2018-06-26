@@ -41,6 +41,9 @@ export default class SummaryStoreBD{
   @observable
   hdfsInfo = [];
 
+  @observable
+  mianhdfsInfo={ total: 0, used: 0 };
+
   @action
   initSummaryData = async ()=>{
     const {
@@ -85,6 +88,10 @@ export default class SummaryStoreBD{
         this.oracleInfo = type_2.oracle.schema_info;
         this.mySQLInfo = type_2.mysql.schema_info;
         this.hdfsInfo = type_2.hdfs.schema_info;
+        this.mianhdfsInfo={
+            total: type_2.hdfs.schema_info.map(d => d.value).reduce((a, b) => a + b),
+            used: type_2.hdfs.schema_info.filter(d => d.name === 'hdfs_use').map(d => d.value)[0]
+        };
       }
     });
   };
