@@ -58,7 +58,7 @@ export class DataSpaceStore {
   loadDataAcc = async () => {
     runInAction(() => {
       this.loading = true;
-      this.loadingtest = '获取数据库实列...'
+      this.loadingtest = '获取数据库实例...'
     });
     let json = await post(`${baseUrl}/invoke/data_acc`);
     if (json.status) {

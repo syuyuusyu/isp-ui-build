@@ -79,7 +79,7 @@ export class DataUserStore {
     loadDataAcc=async ()=>{
         runInAction(()=>{
             this.loading=true;
-            this.loadingtest='获取数据库实列...'
+            this.loadingtest='获取数据库实例...'
         });
         let json=await post(`${baseUrl}/invoke/data_acc`);
         if(json.status){
@@ -147,6 +147,7 @@ export class DataUserStore {
         let json=await post(`${baseUrl}/invoke/data_create_user`,{
             username:values.name,
             password:values.pwd,
+            host:'%',
             id:this.selectedAccId
         });
         if(json.success){
