@@ -39,6 +39,7 @@ class Home extends Component {
 
     }
 
+
     componentWillUnmount() {
         clearTimeout(this.timerAutoRefresh)
     }
@@ -68,7 +69,6 @@ class Home extends Component {
         const {cloudManage: {instance, cpu, ram, storage}, bigData} = this.props.rootStore.homeStore;
         const {tableInfo, mianhdfsInfo} = this.props.rootStore.summaryStoreBD;
         const {totalSource} = this.props.rootStore.summaryStoreCM;
-        console.log(totalSource);
         return (
             <div id="homePage" style={{height: winHeight - headerHeight - menuHeight - footerHeight}}>
                 <div id="linksBox" style={{height: linksHeight}}>
@@ -89,6 +89,7 @@ class Home extends Component {
                             this.props.rootStore.treeStore.currentRoleSys.filter(d => d).map(sys => {
                                 return (
                                     <div className={`link ${sys.icon}`} key={sys.id}>
+
                     <span className="text" onClick={this.targrt(sys.operations.filter(o => o.type === 1).length > 0
                         ? `${sys.url}${sys.operations.filter(o => o.type === 1).map(o => o.path)[0]}?ispToken=${sys.token}`
                         : null)}>
