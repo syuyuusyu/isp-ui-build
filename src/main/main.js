@@ -107,7 +107,7 @@ class Main extends Component {
                 {/*onClick={this.props.rootStore.notificationStore.toggleMessageTableVisible}*/}
               {/*/>*/}
             {/*</Badge>*/}
-              <Badge id="messageBox" dot={true} count={this.props.rootStore.activitiStore.currentTask.filter(d => d).length}>
+              <Badge id="messageBox"  style={{ backgroundColor: '#52c41a' }} count={this.props.rootStore.activitiStore.currentTask.filter(d => d).length}>
                   <Icon
                       type="message"
                       onClick={this.props.rootStore.activitiStore.showUserTaskTableVisible}
