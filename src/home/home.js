@@ -18,8 +18,6 @@ const colorGray = '#e8e8e8';
 class Home extends Component {
 
     componentDidMount() {
-        this.props.rootStore.homeStore.initHomeData();
-        this.props.rootStore.homeStore.loadCloud();
         this.props.rootStore.treeStore.loadCurrentRoleSys();
         this.isAdmin = 'admin' === JSON.parse(sessionStorage.getItem("user")).user_name;
 
@@ -28,9 +26,8 @@ class Home extends Component {
                 autoRefresh();
             }, 15000);
             this.props.rootStore.summaryStoreBD.initSummaryData();
-            if (this.isAdmin) {
-                this.props.rootStore.summaryStoreCM.initSummaryData();
-            }
+            this.props.rootStore.summaryStoreCM.initSummaryData();
+
         };
         autoRefresh();
     }
@@ -66,9 +63,8 @@ class Home extends Component {
         let barSize = {};
         barSize.width = Math.floor((winWidth - marginOut * 3) / 2 - marginInner * 2);
         barSize.height = blockSize.height - marginInner * 3 - blockTitleHeight - 70;
-        const {cloudManage: {instance, cpu, ram, storage}, bigData} = this.props.rootStore.homeStore;
         const {tableInfo, mianhdfsInfo} = this.props.rootStore.summaryStoreBD;
-        const {totalSource} = this.props.rootStore.summaryStoreCM;
+        const {totalSource, cloudManage: {instance, cpu, ram, storage}} = this.props.rootStore.summaryStoreCM;
         return (
             <div id="homePage" style={{height: winHeight - headerHeight - menuHeight - footerHeight}}>
                 <div id="linksBox" style={{height: linksHeight}}>
@@ -77,7 +73,7 @@ class Home extends Component {
                     <div className="links">
                         {
                             this.isAdmin ?
-                                <div className={`link ygl`} key='map'>
+                                <div className={`link qilinqu`} key='map'>
                         <span className="text">
                           <a target='_blank' href={`${baseUrl}/map`}>地图服务示范应用</a>
                         </span>
@@ -107,43 +103,58 @@ class Home extends Component {
                 <div className="home-content">
 
                     {
-                        this.isAdmin?
+                        this.isAdmin ?
                             <div className="block left" style={blockSize}>
                                 <div className="title">云管理平台概况</div>
 
                                 <div className="pie-container left">
                                     <ReactEchartsCore
                                         echarts={echarts}
-                                        option={getPieOption({ total: totalSource[0].values[0], used: totalSource[0].values[1] }, ['#2deb7d', '#e8e8e8'])}
+                                        option={getPieOption({
+                                            total: totalSource[0].values[0],
+                                            used: totalSource[0].values[1]
+                                        }, ['#2deb7d', '#e8e8e8'])}
                                         style={pieSize}
                                     />
                                     <div className="info-box">
                                         <div className="name">CPU</div>
-                                        <div className="num">使用{totalSource[0].values[1]}个，共{totalSource[0].values[0]}个</div>
+                                        <div
+                                            className="num">使用{totalSource[0].values[1]}个，共{totalSource[0].values[0]}个
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div className="pie-container">
                                     <ReactEchartsCore
                                         echarts={echarts}
-                                        option={getPieOption({ total: totalSource[1].values[0], used: totalSource[1].values[1] }, ['#4c96df', '#e8e8e8'])}
+                                        option={getPieOption({
+                                            total: totalSource[1].values[0],
+                                            used: totalSource[1].values[1]
+                                        }, ['#4c96df', '#e8e8e8'])}
                                         style={pieSize}
                                     />
                                     <div className="info-box">
                                         <div className="name">内存</div>
-                                        <div className="num">使用{totalSource[1].values[1]}G，共{totalSource[1].values[0]}G</div>
+                                        <div
+                                            className="num">使用{totalSource[1].values[1]}G，共{totalSource[1].values[0]}G
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div className="pie-container left button">
                                     <ReactEchartsCore
                                         echarts={echarts}
-                                        option={getPieOption({ total: totalSource[2].values[0], used: totalSource[2].values[1] }, ['#4c96df', '#e8e8e8'])}
+                                        option={getPieOption({
+                                            total: totalSource[2].values[0],
+                                            used: totalSource[2].values[1]
+                                        }, ['#4c96df', '#e8e8e8'])}
                                         style={pieSize}
                                     />
                                     <div className="info-box">
                                         <div className="name">内存</div>
-                                        <div className="num">使用{totalSource[2].values[1]}T，共{totalSource[2].values[0]}T</div>
+                                        <div
+                                            className="num">使用{totalSource[2].values[1]}T，共{totalSource[2].values[0]}T
+                                        </div>
                                     </div>
                                 </div>
 
@@ -204,7 +215,6 @@ class Home extends Component {
 
                             </div>
                     }
-
 
 
                     <div className="block right" style={blockSize}>
