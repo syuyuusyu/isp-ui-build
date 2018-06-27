@@ -32,7 +32,7 @@ class SpaceForm extends React.Component{
             <div>
                 <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
                   <p>请选择数据库实例:</p>
-                  <Select className="col-input"  onChange={store.selectedAcc}>
+                  <Select className="col-input"  onChange={store.selectedAcc} style={{width:'300px'}}>
                     {
                       store.dataAcc.filter(d=>d).filter(d=>d.dbType==='1').map(s=>
                         <Option key={s.id} value={s.id}>{s.name}</Option>)

@@ -79,7 +79,7 @@ export class DataUserStore {
     loadDataAcc=async ()=>{
         runInAction(()=>{
             this.loading=true;
-            this.loadingtest='获取数据库实列...'
+            this.loadingtest='获取数据库实例...'
         });
         let json=await post(`${baseUrl}/invoke/data_acc`);
         if(json.status){
@@ -92,10 +92,10 @@ export class DataUserStore {
         }else{
             runInAction(()=>{
                 this.dataAcc=json;
+              console.log("this.dataAcc的值为:",this.dataAcc);
                 this.loading=false;
             });
         }
-
     };
 
     @action
@@ -135,7 +135,6 @@ export class DataUserStore {
                 this.loading=false;
             });
         }
-
     };
 
     @action
@@ -148,6 +147,7 @@ export class DataUserStore {
         let json=await post(`${baseUrl}/invoke/data_create_user`,{
             username:values.name,
             password:values.pwd,
+            host:'%',
             id:this.selectedAccId
         });
         if(json.success){
