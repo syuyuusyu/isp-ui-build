@@ -50,7 +50,8 @@ class Home extends Component {
     render() {
         // console.log(this.props.rootStore.treeStore.currentRoleSys.filter(d=>d));
         const {winWidth, winHeight, headerHeight, menuHeight, footerHeight} = this.props.rootStore.treeStore;
-        const linksHeight = winHeight < 700 ? 100 : 60;
+        //const linksHeight = winHeight < 700 ? 100 : 60;
+        const linksHeight = 60;
         const marginOut = 16;
         const marginInner = 16;
         const blockTitleHeight = 48;

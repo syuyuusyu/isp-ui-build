@@ -157,7 +157,7 @@
       clear: both;
     }
     .link{
-      height: 100%;
+      height: @linkHeight;
       padding-left: 20px;
       padding-right: 20px;
       margin-left: 20px;
@@ -176,7 +176,7 @@
       &:before{
         content: "";
         display: block;
-        width: 48px;
+        width: 24px;
         height: @linkHeight;
         float: left;
         background-position: center;
@@ -243,12 +243,12 @@
     }
   }
 }
-@media (max-height: 700px) {
+/*@media (max-height: 700px) {
   #linksBox{
     > .links{
       @linkHeight: 60px;
       height: @linkHeight;
-      margin-top: -@linkHeight / 2;
+      margin-bottom: -@linkHeight / 2;
       .link{
         line-height: @linkHeight;
         &:before{
@@ -257,4 +257,4 @@
       }
     }
   }
-}
+}*/
