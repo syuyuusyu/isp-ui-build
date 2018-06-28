@@ -35,8 +35,7 @@ class DataSpaceTable extends React.Component{
         {dataIndex:'free',title:'空闲',width:100,render:this.renderUnit},
         {dataIndex:'used',title:'已使用',width:100,render:this.renderUnit},
         {title:'使用率',width:120,render:(value,record)=>Math.round(record.used/record.total*100)+'%' },
-
-
+        {dataIndex:'instanceName',title:'所属实例',width:100},
     ];
 
     render(){
@@ -44,7 +43,7 @@ class DataSpaceTable extends React.Component{
         return (<div>
             <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
                 <Modal visible={store.formVisible}
-                       width={400}
+                       width={800}
                        title={`新建表空间`}
                        footer={null}
                        onCancel={store.toggleFormVisible}
@@ -70,7 +69,7 @@ class DataSpaceTable extends React.Component{
                 </Row>
                 <Table columns={this.columns}
                        rowKey={record => record.tablespace_name}
-                       dataSource={store.spaces.filter(d=>d)}
+                       dataSource={store.allSpaces.filter(d=>d)}
                        rowSelection={null}
                        size="small"
                        scroll={{ y: 800 }}

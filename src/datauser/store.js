@@ -17,6 +17,9 @@ export class DataUserStore {
     dataUsers=[];
 
     @observable
+    allDataUsers=[];
+
+    @observable
     loading=false;
 
     @observable
@@ -36,9 +39,6 @@ export class DataUserStore {
 
     @observable
     formDisplay='none';
-
-    @observable
-    testData=[{"id":"test1","name":"drt1"},{"id":"test2","name":"drt2"},{"id":"test3","name":"drt3"}];
 
     @action
     toggleFormVisible=()=>{
@@ -82,9 +82,9 @@ export class DataUserStore {
             this.loadingtest='获取数据库实例...'
         });
         let json=await post(`${baseUrl}/invoke/data_acc`);
-        if(json.status){
+        if(!json.success){
             notification.error({
-                message:'获取数据库实列失败,请尝试刷新页面或联系管理员'});
+                message:'获取数据库实例失败,请尝试刷新页面或联系管理员'});
             runInAction(()=>{
                 this.dataAcc=[];
                 this.loading=false;
@@ -92,9 +92,34 @@ export class DataUserStore {
         }else{
             runInAction(()=>{
                 this.dataAcc=json;
-              console.log("this.dataAcc的值为:",this.dataAcc);
                 this.loading=false;
             });
+          runInAction(()=>{
+            this.loading=true;
+            this.loadingtest='获取用户列表...'
+          });
+          //遍历数据库实例dataAcc.result(数组),根据实例id获取用户列表
+          for(let i of this.dataAcc.result){
+            let dataUser=await post(`${baseUrl}/invoke/data_user`,{id:i.id});
+            if(dataUser.success){
+              runInAction(()=>{
+                this.dataUsers=dataUser.result;
+                this.loading=false;
+              });
+              //将实例名称加入每个用户中
+              for(let j of dataUser.result){
+                j.instanceName=i.name;
+                runInAction(()=>{this.allDataUsers.push(j);})
+              }
+            }
+            else{
+              notification.error({
+                message:'获取用户列表失败,请尝试刷新页面或联系管理员'});
+              runInAction(()=>{
+                this.loading=false;
+              });
+            }
+          }
         }
     };
 
@@ -104,7 +129,7 @@ export class DataUserStore {
       if(this.selectedAccId!==''){
         this.formDisplay='';
       }
-        this.loadDataUsers(e);
+        //this.loadDataUsers(e);
     };
 
     @action
@@ -121,7 +146,6 @@ export class DataUserStore {
         let json=await post(`${baseUrl}/invoke/data_user`,{
             id:id
         });
-        console.log('----',json);
         if(json.success){
             runInAction(()=>{
                 this.dataUsers=json.result;
