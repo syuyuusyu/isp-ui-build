@@ -52,6 +52,11 @@ const commonConfig = {
           limit: 8192 //小于等于8K的图片会被转成base64编码，直接插入HTML中，减少HTTP请求。
         }
       }]
+    },{
+        test: /\.(ico)$/,
+        use: [{
+            loader: 'url-loader',
+        }]
     },]
   },
   // 追踪到错误和警告在源代码中的原始位置
