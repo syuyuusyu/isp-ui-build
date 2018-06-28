@@ -13,7 +13,7 @@ const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 class UserForm extends React.Component{
 
     componentDidMount(){
-      this.props.rootStore.dataUserStore.loadDataAcc();
+      //this.props.rootStore.dataUserStore.loadDataAcc();
     }
 
     save=()=>{
@@ -41,7 +41,7 @@ class UserForm extends React.Component{
                   <p>请选择数据库实例:</p>
                   <Select className="col-input"  onChange={store.selectedAcc} style={{width:'300px'}}>
                     {
-                      store.dataAcc.filter(d=>d).filter(d=>d.dbType==='0'||d.dbType==='1').map(s=>
+                      store.dataAcc.result.filter(d=>d).filter(d=>d.dbType==='0'||d.dbType==='1').map(s=>
                         <Option key={s.id} value={s.id}>{s.name}</Option>)
                     }
                   </Select>

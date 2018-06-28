@@ -28,20 +28,16 @@ class DataUserTable extends React.Component{
     }
     columns=[
         {dataIndex:'username',title:'用户名',width:100},
-        {dataIndex:'created',title:'创建时间',width:120},
-        {dataIndex:'last_login',title:'创建时间',width:120},
-        {dataIndex:'account_status',title:'状态',width:120,
-            render:(text)=>{
-                switch (text){
-                    case 'OPEN':
-                        return '可用';
-                    default :
-                        return text;
-                }
-            }
+        {dataIndex:'instanceName',title:'所属实例',width:120},
+        {dataIndex:'host',title:'可连接主机',width:120,
+        render:(host)=>{
+          if(host==='%'){
+            return '所有主机';
+          }else{
+            return host;
+          }
         }
-
-
+        },
     ];
 
     render(){
@@ -75,7 +71,7 @@ class DataUserTable extends React.Component{
                 </Row>
                 <Table columns={this.columns}
                        rowKey={record => record.username}
-                       dataSource={store.dataUsers.filter(d=>d)}
+                       dataSource={store.allDataUsers.filter(d=>d)}
                        rowSelection={null}
                        size="small"
                        scroll={{ y: 800 }}
