@@ -17,6 +17,16 @@ class SpaceForm extends React.Component{
         });
     }
 
+    checkAutoextensible=(e)=>{
+      if(e==='YES'){
+        this.props.rootStore.dataSpaceStore.changeAutoextensibleDisplay1();
+      }
+      if(e==='NO'){
+        this.props.rootStore.dataSpaceStore.changeAutoextensibleDisplay2();
+      }
+
+    };
+
     save=()=>{
         this.props.form.validateFields(async (err,values)=>{
             if(err) return;
@@ -34,19 +44,22 @@ class SpaceForm extends React.Component{
                   <p>请选择数据库实例:</p>
                   <Select className="col-input"  onChange={store.selectedAcc} style={{width:'300px'}}>
                     {
-                      store.dataAcc.filter(d=>d).filter(d=>d.dbType==='1').map(s=>
+                      store.dataAcc.result.filter(d=>d).map(s=>
                         <Option key={s.id} value={s.id}>{s.name}</Option>)
                     }
                   </Select>
                     <Form style={{display:store.formDisplay}}>
-                        <Row>
+                        <Row gutter={26}>
+                          <Col span={10}>
                             <FormItem label="表空间名称">
                                 {getFieldDecorator('name',{
                                     rules: [{ required: true, message: '必填' }],
                                 })(
-                                    <Input placeholder='输入表空间名称'/>
+                                    <Input placeholder='请输入表空间名称'/>
                                 )}
                             </FormItem>
+                          </Col>
+                          <Col span={10} offset={3}>
                             <FormItem label="表空间类型">
                                 {getFieldDecorator('type',{
                                     rules: [
@@ -60,6 +73,67 @@ class SpaceForm extends React.Component{
                                     </Select>
                                 )}
                             </FormItem>
+                          </Col>
+                        </Row>
+                      <Row gutter={26}>
+                        <Col span={10}>
+                          <FormItem label="数据文件路径或文件名">
+                            {getFieldDecorator('files',{
+                              rules: [{ required: true, message: '必填' }],
+                            })(
+                              <Input placeholder='请输入数据文件路径或文件名'/>
+                            )}
+                          </FormItem>
+                        </Col>
+                        <Col span={10} offset={3}>
+                          <FormItem label="数据文件大小(字节数)">
+                            {getFieldDecorator('total',{
+                              rules: [{ required: true, message: '必填' },
+                                {pattern:'^[1-9]\\d*$',message:'数据文件大小必须是正整数'}],
+                            })(
+                              <Input placeholder='请输入数据文件大小(字节数)'/>
+                            )}
+                          </FormItem>
+                        </Col>
+                      </Row>
+                      <Row gutter={26}>
+                        <Col span={10}>
+                          <FormItem label="是否自增">
+                            {getFieldDecorator('autoextensible',{
+                              rules: [{ required: true, message: '必填' },
+                              ],
+                            })(
+                              <Select onChange={this.checkAutoextensible}>
+                                <Option key={1} value="NO">NO</Option>
+                                <Option key={2} value="YES">YES</Option>
+                              </Select>
+                            )}
+                          </FormItem>
+                        </Col>
+                      </Row>
+                      <Row gutter={26}>
+                        <Col span={10}>
+                          <FormItem label="自增最大大小(字节数)" style={{display:store.autoextensibleDisplay}}>
+                            {getFieldDecorator('maxbytes',{
+                              rules: [{ required: store.required, message: '必填' },
+                                      {pattern:'^[1-9]\\d*$',message:'自增最大大小必须是正整数'}
+                              ],
+                            })(
+                              <Input placeholder='请输入自增最大大小(字节数)'/>
+                            )}
+                          </FormItem>
+                        </Col>
+                        <Col span={10} offset={3}>
+                          <FormItem label="每次自增大小(字节数)" style={{display:store.autoextensibleDisplay}}>
+                            {getFieldDecorator('next_byte',{
+                              rules: [{ required: store.required, message: '必填' },
+                                {pattern:'^[1-9]\\d*$',message:'每次自增大小必须是正整数'}
+                              ],
+                            })(
+                              <Input placeholder='请输入每次自增大小(字节数)'/>
+                            )}
+                          </FormItem>
+                        </Col>
                         </Row>
                         <Row>
                             <Col span={24} style={{ textAlign: 'right' }}>

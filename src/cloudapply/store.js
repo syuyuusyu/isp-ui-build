@@ -83,15 +83,20 @@ export class CloudStore {
       this.loadingtest = '获取云机状态...'
     });
     let json = await post(`${baseUrl}/invoke/cloud_servers_info`);
-    //console.log(json);
     runInAction(() => {
-      if (json.code && json.code === 500) {
+      if(json===undefined){
+        notification.error({
+          message: '连接云平台失败,请尝试刷新页面或联系管理员'
+        });
+        this.loading = false;
+      }else if (json.code && json.code === 500) {
         this.serverInfo = [];
         notification.error({message: '连接云平台失败',});
+        this.loading = false;
       } else {
         this.serverInfo = json;
+        this.loading = false;
       }
-      this.loading = false;
     });
 
   };
@@ -103,7 +108,14 @@ export class CloudStore {
       this.loadingtest = '正在向云平台获取表单信息...'
     });
     let json=await post(`${baseUrl}/invoke/cloud_form`);
-    if (json.status && json.status === 500) {
+    if(json===undefined){
+      notification.error({
+        message: '连接云平台失败,请尝试刷新页面或联系管理员'
+      });
+      runInAction(() => {
+        this.loading = false;
+      })
+    } else if (json.status && json.status === 500) {
       notification.error({message: '连接云平台失败',});
       runInAction(() => {
         this.loading = false;
@@ -138,8 +150,14 @@ export class CloudStore {
       this.loadingtest = '正在获取用户密钥信息...'
     });
     let json = await post(`${baseUrl}/invoke/cloud_keypair_value`);
-    //runInAction(()=>this.keyPairs=json);
-    if(json.length===0){
+    if(json===undefined){
+      notification.error({
+        message: '连接云平台失败,请尝试刷新页面或联系管理员'
+      });
+      runInAction(() => {
+        this.loading = false;
+      })
+    } else if(json.length===0){
       Modal.confirm({title: `该登录用户没有密钥，点击'OK'按钮跳转至云平台创建密钥！`,
         onOk: () => {
           window.history.back(-1);
