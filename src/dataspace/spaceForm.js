@@ -27,6 +27,51 @@ class SpaceForm extends React.Component{
 
     };
 
+    checkSpaceName=(rule, value, callback)=>{
+      const store=this.props.rootStore.dataSpaceStore;
+      const instanceName=this.getInstanceName();
+      if (!value) {
+        callback();
+      }
+
+      //判断在该实例下是否已经有相同的表空间名称
+      for(let j of store.allSpaces){
+        if(j.instanceName===instanceName&&j.tablespace_name===value){
+          callback(`"${instanceName}"实例下已经有"${value}"表空间名称`);
+          break;
+        }
+      }
+    };
+
+    checkFiles=(rule, value, callback)=>{
+      const store=this.props.rootStore.dataSpaceStore;
+      const instanceName=this.getInstanceName();
+      if (!value) {
+        callback();
+      }
+      //判断在该实例下是否已经有相同的数据文件路径或文件名
+      for(let i of store.allSpaces){
+        console.log("i的值为:",i);
+        if(i.instanceName===instanceName&&i.files===value){
+          callback(`"${instanceName}"实例下已经有"${value}"据文件路径或文件名`);
+          break;
+        }
+      }
+    };
+
+    getInstanceName=()=>{
+      const store=this.props.rootStore.dataSpaceStore;
+      //根据选择的数据库实例的id查询出该实例的名称
+      let instanceName;
+      for(let i of store.dataAcc.result){
+        if(i.id===store.selectedAccId){
+          instanceName=i.name;
+          break;
+        }
+      }
+      return instanceName;
+    }
+
     save=()=>{
         this.props.form.validateFields(async (err,values)=>{
             if(err) return;
@@ -53,7 +98,9 @@ class SpaceForm extends React.Component{
                           <Col span={10}>
                             <FormItem label="表空间名称">
                                 {getFieldDecorator('name',{
-                                    rules: [{ required: true, message: '必填' }],
+                                    rules: [{ required: true, message: '必填' },
+                                            {validator: this.checkSpaceName}],
+                                  validateTrigger: 'onBlur'
                                 })(
                                     <Input placeholder='请输入表空间名称'/>
                                 )}
@@ -79,7 +126,9 @@ class SpaceForm extends React.Component{
                         <Col span={10}>
                           <FormItem label="数据文件路径或文件名">
                             {getFieldDecorator('files',{
-                              rules: [{ required: true, message: '必填' }],
+                              rules: [{ required: true, message: '必填' },
+                                       {validator: this.checkFiles}],
+                              validateTrigger: 'onBlur'
                             })(
                               <Input placeholder='请输入数据文件路径或文件名'/>
                             )}

@@ -14,7 +14,7 @@ class CloudFrom extends React.Component {
 
   componentDidMount() {
     this.props.rootStore.cloudStore.loadFormInput();
-    this.props.rootStore.cloudStore.loadKeyPairs();
+    //this.props.rootStore.cloudStore.loadKeyPairs();
     this.props.rootStore.cloudStore.getS02Url();
   }
 

@@ -16,8 +16,8 @@ class CloudApplyTable extends React.Component{
     timeoutid=0;
 
     componentDidMount(){
-        this.props.rootStore.cloudStore.scheduleToken();
-        this.props.rootStore.cloudStore.loadServerInfo();
+        //this.props.rootStore.cloudStore.scheduleToken();
+        //this.props.rootStore.cloudStore.loadServerInfo();
 
         // this.timeoutid=setInterval(
         //     this.props.rootStore.cloudStore.loadServerInfo,
@@ -90,7 +90,7 @@ class CloudApplyTable extends React.Component{
                     </Col>
 
                 </Row>
-            <Table columns={this.columns}
+           {/* <Table columns={this.columns}
                    rowKey={record => record.id}
                    dataSource={store.serverInfo.filter(d=>d)}
                    rowSelection={null}
@@ -100,7 +100,7 @@ class CloudApplyTable extends React.Component{
                 //pagination={this.state.pagination}
                 //loading={this.state.loading}
                 //onChange={this.handleTableChange}
-            />
+            />*/}
             </Spin>
         </div>);
     }
