@@ -175,7 +175,6 @@ export class DataSpaceStore {
         this.loading = false;
       });
     }
-
   };
 
   @action
@@ -190,7 +189,6 @@ export class DataSpaceStore {
     if(values.next_byte===undefined){
       values.next_byte='';
     }
-    console.log("看看这个files:",values.files,typeof values.files);
     let json = await post(`${baseUrl}/invoke/data_create_space`, {
       tablespace_name: values.name,
       type: values.type,
@@ -201,6 +199,7 @@ export class DataSpaceStore {
       maxbytes:values.maxbytes,
       next_byte:values.next_byte
     });
+    console.log("json的值为:",json);
     if (json.success) {
       notification.info({
         message: '新建成功'
