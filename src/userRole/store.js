@@ -3,8 +3,8 @@ import {notification, Button, Popconfirm, Alert} from 'antd';
 import {baseUrl, get, post} from '../util';
 import React from 'react';
 import RoleButton from '../roleButton';
-import {Divider,} from 'antd';
-import {Modal} from "antd/lib/index";
+import {Divider,Modal} from 'antd';
+
 
 configure({enforceActions: true});
 

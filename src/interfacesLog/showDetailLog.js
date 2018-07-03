@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {inject,observer} from 'mobx-react';
-import {Form,Row,Col } from 'antd';
+import {Form,Row,Col,Input } from 'antd';
 import {baseUrl} from "../util";
-import {Input} from "antd/lib/index";
 const FormItem = Form.Item;
 const {TextArea}=Input;
 
