@@ -96,7 +96,7 @@ class CloudFrom extends React.Component {
               {store.flavors.filter(d => d).map(a => {
                 return (
                   <Button key={a.id} title={'内存大小:' + a.ram + 'M' + ' 虚拟cpu数:' + a.vcpus + ' 磁盘大小:' + a.disk + 'G'} size="large"
-                          style={{backgroundColor: store.flavorsColor[a.id], fontWeight: 'bold'}} onClick={() => {
+                          style={{backgroundColor: store.flavorsColor[a.id], fontWeight: 'bold',border:store.flavorsBorder[a.id],color:store.flavorsFontColor[a.id]}} onClick={() => {
                     store.onClickFlavors(a.id)
                   }}>{a.name}</Button>
                 );
@@ -108,7 +108,7 @@ class CloudFrom extends React.Component {
             {store.networks.filter(d => d).map(b => {
               return (
                 <Button key={b.id} title={'网段地址:' + b.neutronSubnets[0].cidr} size="large"
-                        style={{backgroundColor: store.networksColor[b.id], fontWeight: 'bold'}} onClick={() => {
+                        style={{backgroundColor: store.networksColor[b.id], fontWeight: 'bold',border:store.networksBorder[b.id],color:store.networksFontColor[b.id]}} onClick={() => {
                   store.onClickNetworks(b.id)
                 }}>{b.name}</Button>
               );
@@ -119,7 +119,7 @@ class CloudFrom extends React.Component {
             <p style={{fontSize: '16px'}}>请选择镜像类型:</p>
             {store.images.filter(d => d).map(c => {
               return (
-                <Button key={c.id} size="large" style={{backgroundColor: store.imagesColor[c.id], fontWeight: 'bold'}}
+                <Button key={c.id} size="large" style={{backgroundColor: store.imagesColor[c.id], fontWeight: 'bold',border:store.imagesBorder[c.id],color:store.imagesFontColor[c.id]}}
                         onClick={() => {
                           store.onClickImages(c.id)
                         }}>{c.name}</Button>

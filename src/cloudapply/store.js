@@ -43,6 +43,24 @@ export class CloudStore {
   imagesColor = {};
 
   @observable
+  flavorsBorder={};
+
+  @observable
+  networksBorder={};
+
+  @observable
+  imagesBorder={};
+
+  @observable
+  flavorsFontColor={};
+
+  @observable
+  networksFontColor={};
+
+  @observable
+  imagesFontColor={};
+
+  @observable
   flavorId = '';
 
   @observable
@@ -778,15 +796,30 @@ export class CloudStore {
       });
       for (let i = 0; i < this.flavors.length; i++) {
         const id = this.flavors[i].id;
+        //虚拟机类型未选中时的按钮背景颜色
         this.flavorsColor[id] = '#006699';
+        //虚拟机类型未选中时的描边
+        this.flavorsBorder[id]='1px';
+        //虚拟机类型未选中时的字体颜色
+        this.flavorsFontColor[id]='#ffff00';
       }
       for (let i = 0; i < this.images.length; i++) {
         const id = this.images[i].id;
+        //镜像类型未选中时的按钮背景颜色
         this.imagesColor[id] = '#006699';
+        //镜像类型未选中时的描边
+        this.imagesBorder[id]='1px';
+        //镜像类型未选中时的字体颜色
+        this.imagesFontColor[id]='#ffff00';
       }
       for (let i = 0; i < this.networks.length; i++) {
         const id = this.networks[i].id;
+        //网络类型未选中时的按钮背景颜色
         this.networksColor[id] = '#006699';
+        //网络类型未选中时的描边
+        this.networksBorder[id]='1px';
+        //网络类型未选中时的字体颜色
+        this.networksFontColor[id]='#ffff00';
       }
     }
 
@@ -833,8 +866,15 @@ export class CloudStore {
   onClickFlavors = (value) => {
     for (let i in this.flavorsColor) {
       this.flavorsColor[i] = '#006699';
+      this.flavorsBorder[i]='1px';
+      this.flavorsFontColor[i]='#ffff00';
     }
+    //被点击的虚拟机类型的按钮背景颜色
     this.flavorsColor = {...this.flavorsColor, [value]: 'gray'};
+    //被点击的虚拟机类型的描边
+    this.flavorsBorder={...this.flavorsBorder, [value]: '1px'};
+    //被点击的虚拟机类型的字体颜色
+    this.flavorsFontColor={...this.flavorsFontColor, [value]: '#d1eeee'};
     this.flavorId = value;
   };
 
@@ -842,8 +882,14 @@ export class CloudStore {
   onClickImages = (value) => {
     for (let i in this.imagesColor) {
       this.imagesColor[i] = '#006699';
+      this.imagesBorder[i]='1px';
     }
+    //被点击的镜像类型的按钮背景颜色
     this.imagesColor = {...this.imagesColor, [value]: 'gray'};
+    //被点击的镜像类型的描边
+    this.imagesBorder={...this.imagesBorder, [value]: '1px'};
+    //被点击的镜像类型的字体颜色
+    this.imagesFontColor={...this.imagesFontColor, [value]: '#d1eeee'};
     this.imageId = value;
   };
 
@@ -851,10 +897,16 @@ export class CloudStore {
   onClickNetworks = (value) => {
     for (let i in this.networksColor) {
       this.networksColor[i] = '#006699';
+      this.networksBorder[i]='1px';
     }
+    //被点击的网络类型的按钮背景颜色
     this.networksColor = {...this.networksColor, [value]: 'gray'};
+    //被点击的网络类型的描边
+    this.networksBorder={...this.networksBorder, [value]: '1px'};
+    //被点击的网络类型的字体颜色
+    this.networksFontColor={...this.networksFontColor, [value]: '#d1eeee'};
     this.networkId = value;
-  }
+  };
 
   @action
   selectKeyPairs=(e)=>{
