@@ -797,29 +797,29 @@ export class CloudStore {
       for (let i = 0; i < this.flavors.length; i++) {
         const id = this.flavors[i].id;
         //虚拟机类型未选中时的按钮背景颜色
-        this.flavorsColor[id] = '#006699';
+        this.flavorsColor[id] = '#fff';
         //虚拟机类型未选中时的描边
-        this.flavorsBorder[id]='1px';
+        this.flavorsBorder[id]='1px solid #ccc ';
         //虚拟机类型未选中时的字体颜色
-        this.flavorsFontColor[id]='#ffff00';
+        this.flavorsFontColor[id]= '#333';
       }
       for (let i = 0; i < this.images.length; i++) {
         const id = this.images[i].id;
         //镜像类型未选中时的按钮背景颜色
-        this.imagesColor[id] = '#006699';
+        this.imagesColor[id] = '#fff';
         //镜像类型未选中时的描边
-        this.imagesBorder[id]='1px';
+        this.imagesBorder[id]='1px solid #ccc';
         //镜像类型未选中时的字体颜色
-        this.imagesFontColor[id]='#ffff00';
+        this.imagesFontColor[id]='#333';
       }
       for (let i = 0; i < this.networks.length; i++) {
         const id = this.networks[i].id;
         //网络类型未选中时的按钮背景颜色
-        this.networksColor[id] = '#006699';
+        this.networksColor[id] = '#fff';
         //网络类型未选中时的描边
-        this.networksBorder[id]='1px';
+        this.networksBorder[id]='1px solid #ccc';
         //网络类型未选中时的字体颜色
-        this.networksFontColor[id]='#ffff00';
+        this.networksFontColor[id]='#333';
       }
     }
 
@@ -865,46 +865,48 @@ export class CloudStore {
   @action
   onClickFlavors = (value) => {
     for (let i in this.flavorsColor) {
-      this.flavorsColor[i] = '#006699';
-      this.flavorsBorder[i]='1px';
-      this.flavorsFontColor[i]='#ffff00';
+      this.flavorsColor[i] = '#fff';
+      this.flavorsBorder[i]='1px solid #ccc';
+      this.flavorsFontColor[i]='#333';
     }
     //被点击的虚拟机类型的按钮背景颜色
-    this.flavorsColor = {...this.flavorsColor, [value]: 'gray'};
+    this.flavorsColor = {...this.flavorsColor, [value]: '#fff'};
     //被点击的虚拟机类型的描边
-    this.flavorsBorder={...this.flavorsBorder, [value]: '1px'};
+    this.flavorsBorder={...this.flavorsBorder, [value]: '1px solid #f75b52'};
     //被点击的虚拟机类型的字体颜色
-    this.flavorsFontColor={...this.flavorsFontColor, [value]: '#d1eeee'};
+    this.flavorsFontColor={...this.flavorsFontColor, [value]: '#f75b52'};
     this.flavorId = value;
   };
 
   @action
   onClickImages = (value) => {
     for (let i in this.imagesColor) {
-      this.imagesColor[i] = '#006699';
-      this.imagesBorder[i]='1px';
+      this.imagesColor[i] = '#fff';
+      this.imagesBorder[i]='1px solid #ccc';
+      this.imagesFontColor[i]='#333';
     }
     //被点击的镜像类型的按钮背景颜色
-    this.imagesColor = {...this.imagesColor, [value]: 'gray'};
+    this.imagesColor = {...this.imagesColor, [value]: '#fff'};
     //被点击的镜像类型的描边
-    this.imagesBorder={...this.imagesBorder, [value]: '1px'};
+    this.imagesBorder={...this.imagesBorder, [value]: '1px solid #f75b52'};
     //被点击的镜像类型的字体颜色
-    this.imagesFontColor={...this.imagesFontColor, [value]: '#d1eeee'};
+    this.imagesFontColor={...this.imagesFontColor, [value]: '#f75b52'};
     this.imageId = value;
   };
 
   @action
   onClickNetworks = (value) => {
     for (let i in this.networksColor) {
-      this.networksColor[i] = '#006699';
-      this.networksBorder[i]='1px';
+      this.networksColor[i] = '#fff';
+      this.networksBorder[i]='1px solid #ccc';
+      this.networksFontColor[i]='#333';
     }
     //被点击的网络类型的按钮背景颜色
-    this.networksColor = {...this.networksColor, [value]: 'gray'};
+    this.networksColor = {...this.networksColor, [value]: '#fff'};
     //被点击的网络类型的描边
-    this.networksBorder={...this.networksBorder, [value]: '1px'};
+    this.networksBorder={...this.networksBorder, [value]: '1px solid #f75b52'};
     //被点击的网络类型的字体颜色
-    this.networksFontColor={...this.networksFontColor, [value]: '#d1eeee'};
+    this.networksFontColor={...this.networksFontColor, [value]: '#f75b52'};
     this.networkId = value;
   };
 

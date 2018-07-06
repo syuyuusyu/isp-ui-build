@@ -145,8 +145,10 @@ class ModifyUserForm extends Component {
         labelCol: { span: 4 },
         wrapperCol: { span: 20}
       };
+      const treeStore = this.props.rootStore.treeStore;
+      const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = treeStore;
     return (
-      <div className="user-inform" >
+      <div className="user-inform" style={{ width: winWidth - 32, height: winHeight - headerHeight - menuHeight - footerHeight - 16 }}>
         <Form >
           <br/>
             <Row>
