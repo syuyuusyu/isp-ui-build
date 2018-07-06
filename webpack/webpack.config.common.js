@@ -3,6 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require('webpack');
 
+/* less全局变量 */
+const lessModifyVars = require(path.resolve(__dirname, '../src/theme/index.js'));
+
 const commonConfig = {
   /*入口*/
   entry: {
@@ -38,12 +41,17 @@ const commonConfig = {
       use: [
         { loader: MiniCssExtractPlugin.loader },
         { loader: 'css-loader' },
-        { loader: 'less-loader', options: { javascriptEnabled: true } }
+        { loader: 'less-loader', options: { javascriptEnabled: true, modifyVars: lessModifyVars } }
       ]
     }, {
       test: /\.js$/,
       exclude: /node_modules/,
-      use: ['babel-loader?cacheDirectory=true'],
+      use: [{
+        loader: 'babel-loader?cacheDirectory=true',
+        options: {
+          plugins: [['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }]]
+        }
+      }],
     }, {
       test: /\.(png|svg|jpg|gif)$/,
       use: [{
@@ -52,6 +60,11 @@ const commonConfig = {
           limit: 8192 //小于等于8K的图片会被转成base64编码，直接插入HTML中，减少HTTP请求。
         }
       }]
+    },{
+        test: /\.(ico)$/,
+        use: [{
+            loader: 'url-loader',
+        }]
     },]
   },
   // 追踪到错误和警告在源代码中的原始位置

@@ -24,7 +24,7 @@ class Home extends Component {
         const autoRefresh = () => {
             this.timerAutoRefresh = setTimeout(() => {
                 autoRefresh();
-            }, 15000);
+            }, 1000*60);
             this.props.rootStore.summaryStoreBD.initSummaryData();
             this.props.rootStore.summaryStoreCM.initSummaryData();
 
@@ -50,7 +50,8 @@ class Home extends Component {
     render() {
         // console.log(this.props.rootStore.treeStore.currentRoleSys.filter(d=>d));
         const {winWidth, winHeight, headerHeight, menuHeight, footerHeight} = this.props.rootStore.treeStore;
-        const linksHeight = winHeight < 700 ? 100 : 180;
+        //const linksHeight = winHeight < 700 ? 100 : 60;
+        const linksHeight = 60;
         const marginOut = 16;
         const marginInner = 16;
         const blockTitleHeight = 48;
@@ -69,7 +70,6 @@ class Home extends Component {
             <div id="homePage" style={{height: winHeight - headerHeight - menuHeight - footerHeight}}>
                 <div id="linksBox" style={{height: linksHeight}}>
                     <div className="bg-box"/>
-                    <div className="title">基础支撑平台</div>
                     <div className="links">
                         {
                             this.isAdmin ?
@@ -151,7 +151,7 @@ class Home extends Component {
                                         style={pieSize}
                                     />
                                     <div className="info-box">
-                                        <div className="name">内存</div>
+                                        <div className="name">储存</div>
                                         <div
                                             className="num">使用{totalSource[2].values[1]}T，共{totalSource[2].values[0]}T
                                         </div>
