@@ -113,9 +113,6 @@ export function request2(method, url, body) {
 }
 
 export function request(method, url, body) {
-  /*console.log("看看这些值 method:",method);
-  console.log("看看这些值 url:",url);
-  console.log("看看这些值 body:",body);*/
     method = method.toUpperCase();
     if (method === 'GET') {
         // fetch的GET不允许有body，参数只能放在url中
