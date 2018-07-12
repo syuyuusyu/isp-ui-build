@@ -43,6 +43,24 @@ export class CloudStore {
   imagesColor = {};
 
   @observable
+  flavorsBorder={};
+
+  @observable
+  networksBorder={};
+
+  @observable
+  imagesBorder={};
+
+  @observable
+  flavorsFontColor={};
+
+  @observable
+  networksFontColor={};
+
+  @observable
+  imagesFontColor={};
+
+  @observable
   flavorId = '';
 
   @observable
@@ -52,8 +70,8 @@ export class CloudStore {
   imageId = '';
 
   @observable
-  /*formDisplay='none';*/
-  formDisplay='';
+  formDisplay='none';
+  //formDisplay='';
 
   @observable
   keyPairs=[];
@@ -65,8 +83,8 @@ export class CloudStore {
   s02url='';
 
   @observable
-  //keyPairsDisplay='none';
-  keyPairsDisplay='';
+  keyPairsDisplay='none';
+  //keyPairsDisplay='';
 
 
   @action
@@ -105,12 +123,12 @@ export class CloudStore {
 
   @action
   loadFormInput = async () => {
-   /* runInAction(() => {
+    runInAction(() => {
       this.loading = true;
       this.loadingtest = '正在向云平台获取表单信息...'
     });
-    let json=await post(`${baseUrl}/invoke/cloud_form`);*/
-    let json={
+    let json=await post(`${baseUrl}/invoke/cloud_form`);
+    /*let json={
       "flavors":[
         {
           "id":"1bc6dfe0-48a4-4e1b-988d-1987b956d340",
@@ -756,7 +774,7 @@ export class CloudStore {
           "protected":true
         }
       ]
-    };
+    };*/
     if(json===undefined){
       notification.error({
         message: '连接云平台失败,请尝试刷新页面或联系管理员'
@@ -778,15 +796,30 @@ export class CloudStore {
       });
       for (let i = 0; i < this.flavors.length; i++) {
         const id = this.flavors[i].id;
-        this.flavorsColor[id] = '#006699';
+        //虚拟机类型未选中时的按钮背景颜色
+        this.flavorsColor[id] = '#fff';
+        //虚拟机类型未选中时的描边
+        this.flavorsBorder[id]='1px solid #ccc ';
+        //虚拟机类型未选中时的字体颜色
+        this.flavorsFontColor[id]= '#333';
       }
       for (let i = 0; i < this.images.length; i++) {
         const id = this.images[i].id;
-        this.imagesColor[id] = '#006699';
+        //镜像类型未选中时的按钮背景颜色
+        this.imagesColor[id] = '#fff';
+        //镜像类型未选中时的描边
+        this.imagesBorder[id]='1px solid #ccc';
+        //镜像类型未选中时的字体颜色
+        this.imagesFontColor[id]='#333';
       }
       for (let i = 0; i < this.networks.length; i++) {
         const id = this.networks[i].id;
-        this.networksColor[id] = '#006699';
+        //网络类型未选中时的按钮背景颜色
+        this.networksColor[id] = '#fff';
+        //网络类型未选中时的描边
+        this.networksBorder[id]='1px solid #ccc';
+        //网络类型未选中时的字体颜色
+        this.networksFontColor[id]='#333';
       }
     }
 
@@ -832,29 +865,50 @@ export class CloudStore {
   @action
   onClickFlavors = (value) => {
     for (let i in this.flavorsColor) {
-      this.flavorsColor[i] = '#006699';
+      this.flavorsColor[i] = '#fff';
+      this.flavorsBorder[i]='1px solid #ccc';
+      this.flavorsFontColor[i]='#333';
     }
-    this.flavorsColor = {...this.flavorsColor, [value]: 'gray'};
+    //被点击的虚拟机类型的按钮背景颜色
+    this.flavorsColor = {...this.flavorsColor, [value]: '#fff'};
+    //被点击的虚拟机类型的描边
+    this.flavorsBorder={...this.flavorsBorder, [value]: '1px solid #f75b52'};
+    //被点击的虚拟机类型的字体颜色
+    this.flavorsFontColor={...this.flavorsFontColor, [value]: '#f75b52'};
     this.flavorId = value;
   };
 
   @action
   onClickImages = (value) => {
     for (let i in this.imagesColor) {
-      this.imagesColor[i] = '#006699';
+      this.imagesColor[i] = '#fff';
+      this.imagesBorder[i]='1px solid #ccc';
+      this.imagesFontColor[i]='#333';
     }
-    this.imagesColor = {...this.imagesColor, [value]: 'gray'};
+    //被点击的镜像类型的按钮背景颜色
+    this.imagesColor = {...this.imagesColor, [value]: '#fff'};
+    //被点击的镜像类型的描边
+    this.imagesBorder={...this.imagesBorder, [value]: '1px solid #f75b52'};
+    //被点击的镜像类型的字体颜色
+    this.imagesFontColor={...this.imagesFontColor, [value]: '#f75b52'};
     this.imageId = value;
   };
 
   @action
   onClickNetworks = (value) => {
     for (let i in this.networksColor) {
-      this.networksColor[i] = '#006699';
+      this.networksColor[i] = '#fff';
+      this.networksBorder[i]='1px solid #ccc';
+      this.networksFontColor[i]='#333';
     }
-    this.networksColor = {...this.networksColor, [value]: 'gray'};
+    //被点击的网络类型的按钮背景颜色
+    this.networksColor = {...this.networksColor, [value]: '#fff'};
+    //被点击的网络类型的描边
+    this.networksBorder={...this.networksBorder, [value]: '1px solid #f75b52'};
+    //被点击的网络类型的字体颜色
+    this.networksFontColor={...this.networksFontColor, [value]: '#f75b52'};
     this.networkId = value;
-  }
+  };
 
   @action
   selectKeyPairs=(e)=>{
@@ -869,7 +923,9 @@ export class CloudStore {
     let json=await get(`${baseUrl}/s02Url/getS02Url`);
     const cloudToken=json.cloudToken;
     const ip=json.ip;
-    this.s02url=ip+'/compute/keyPair-list?_token='+cloudToken;
-    console.log("this.s02url的值为:",this.s02url);
+
+      this.s02url=ip+'/compute/keyPair-list?_token='+cloudToken;
+    //console.log("this.s02url的值为:",this.s02url);
+    //console.log("cloudToken的值为:",cloudToken);
   }
 }

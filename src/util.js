@@ -66,13 +66,21 @@ export const log = (target, name, descriptor) => {
 };
 
 
-//export const activitiUrl='http://127.0.0.1:5002';
+
+
 
 
 export const activitiUrl='http://10.10.50.10:5002';
-export const baseUrl = 'http://127.0.0.1:7001';
+//export const baseUrl = 'http://127.0.0.1:7001';
 //export const baseUrl = 'http://10.10.50.10:7001';
-//export const baseUrl = 'http://isp.yndk.cn:7001';
+export const baseUrl = 'http://isp.yndk.cn:7001';
+
+//export const activitiUrl='http://127.0.0.1:5002';
+//export const baseUrl = 'http://127.0.0.1:7001';
+
+//export const activitiUrl='http://10.10.50.10:5002';
+//export const baseUrl = 'http://10.10.50.10:7001';
+
 
 
 
@@ -113,9 +121,6 @@ export function request2(method, url, body) {
 }
 
 export function request(method, url, body) {
-  /*console.log("看看这些值 method:",method);
-  console.log("看看这些值 url:",url);
-  console.log("看看这些值 body:",body);*/
     method = method.toUpperCase();
     if (method === 'GET') {
         // fetch的GET不允许有body，参数只能放在url中
