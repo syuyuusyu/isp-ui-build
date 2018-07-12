@@ -1,44 +1,6 @@
-// 水平柱状图
-.horizontal-bar-container{
-  @cHeight: 70px;
-  @fontSize: 16px;
-  @barHeight: 40px;
-  position: relative;
-  width: 100%;
-  height: @cHeight;
-  > .title{
-    font-size: @fontSize;
-    line-height: 1;
-    padding-bottom: @cHeight - @barHeight - @fontSize;
-  }
-  .horizontal-bar{
-    position: relative;
-    height: @barHeight;
-    width: 70%;
-    border-radius: 4px;
-    background-color: #e8e8e8;
-    .bar{
-      position: relative;
-      height: 100%;
-      background-color: @blueMain;
-      border-radius: 4px;
-    }
-    .text-center{
-      position: absolute;
-      right: -32px;
-      top: (@barHeight - 16px) / 2;
-      line-height: 1;
-    }
-  }
-  .right{
-    position: absolute;
-    right: 0;
-    line-height: 1;
-    top: @cHeight - @barHeight + (@barHeight - 16px) / 2;
-  }
-}
-
 #homePage{
+  width: 100%;
+  overflow: auto;
   padding-top: 16px;
   padding-left: 16px;
   padding-right: 16px;
@@ -62,54 +24,37 @@
         font-size: 0;
         clear: both;
       }
-      &.left{
-        margin-right: 16px;
+      &.right{
+        margin-left: 16px;
       }
-      /*> div.title{
+      &.bottom{
+        margin-top: 16px;
+      }
+      > div.title{
         color: #4c4c4c;
         font-size: 16px;
         line-height: 1;
-        padding-bottom: 32px;
-      }*/
-      > div.more{
-        position: absolute;
-        top: 16px;
-        right: 16px;
-        line-height: 1;
-        color: @blueMain;
-        cursor: pointer;
-        &:hover{
-          color: @blueDeep;
-        }
-      }
-      .horizontal-bar-container{
-        margin-top: 16px;
+        padding-bottom: 16px;
       }
     }
   }
   .pie-container{
     float: left;
     margin-left: 16px;
-    &.left{
+    &:first-child{
       margin-left: 0;
     }
-    &.bottom{
-      margin-top: 16px;
-    }
-  }
-  .info-box{
-    text-align: center;
-    font-size: 14px;
-    line-height: 1;
-    color: #333;
-    .name,
-    .num{
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    .name{
-      padding-bottom: 8px;
+    .pie-info{
+      font-size: 14px;
+      line-height: 1;
+      text-align: center;
+      .name,
+      .num{
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
     }
   }
 }
