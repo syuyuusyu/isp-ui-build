@@ -39,6 +39,8 @@ class SpaceForm extends React.Component{
         if(j.instanceName===instanceName&&j.tablespace_name===value){
           callback(`"${instanceName}"实例下已经有"${value}"表空间名称`);
           break;
+        }else{
+          callback();
         }
       }
     };
@@ -51,10 +53,11 @@ class SpaceForm extends React.Component{
       }
       //判断在该实例下是否已经有相同的数据文件路径或文件名
       for(let i of store.allSpaces){
-        console.log("i的值为:",i);
         if(i.instanceName===instanceName&&i.files===value){
           callback(`"${instanceName}"实例下已经有"${value}"据文件路径或文件名`);
           break;
+        }else{
+          callback();
         }
       }
     };

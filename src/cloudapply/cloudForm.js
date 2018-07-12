@@ -14,7 +14,7 @@ class CloudFrom extends React.Component {
 
   componentDidMount() {
     this.props.rootStore.cloudStore.loadFormInput();
-    //this.props.rootStore.cloudStore.loadKeyPairs();
+    this.props.rootStore.cloudStore.loadKeyPairs();
     this.props.rootStore.cloudStore.getS02Url();
   }
 
@@ -91,9 +91,10 @@ class CloudFrom extends React.Component {
                 )}
               </Select>
             </Form>
-            <hr className="dotted01" />
+            <hr className="dotted01" style={{display:store.formDisplay}}/>
             <Form style={{display:store.formDisplay}}>
               <p style={{fontSize: '16px'}}>请选择虚拟机类型:</p>
+              <p>C代表虚拟cpu数量，第一个G代表内存大小，第二个G代表磁盘大小</p>
               {store.flavors.filter(d => d).map(a => {
                 return (
                   <Button className="cloudselect-button" key={a.id} title={'内存大小:' + a.ram + 'M' + ' 虚拟cpu数:' + a.vcpus + ' 磁盘大小:' + a.disk + 'G'} size="large"
@@ -103,7 +104,7 @@ class CloudFrom extends React.Component {
                 );
               })}
             </Form>
-            <hr/>
+            <hr style={{display:store.formDisplay}}/>
             <Form style={{display:store.formDisplay}}>
               <p style={{fontSize: '16px'}}>请选择网络类型:</p>
               {store.networks.filter(d => d).map(b => {
@@ -115,7 +116,7 @@ class CloudFrom extends React.Component {
                 );
               })}
             </Form>
-            <hr/>
+            <hr style={{display:store.formDisplay}}/>
             <Form style={{display:store.formDisplay}}>
               <p style={{fontSize: '16px'}}>请选择镜像类型:</p>
               {store.images.filter(d => d).map(c => {
@@ -127,7 +128,7 @@ class CloudFrom extends React.Component {
                 );
               })}
             </Form>
-            <hr/>
+            <hr style={{display:store.formDisplay}}/>
             <Form style={{display:store.formDisplay}}>
               <Row>
                 <FormItem label="虚拟机名称" className="machine-input">

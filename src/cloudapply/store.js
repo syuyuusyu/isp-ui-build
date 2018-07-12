@@ -70,8 +70,8 @@ export class CloudStore {
   imageId = '';
 
   @observable
-  /*formDisplay='none';*/
-  formDisplay='';
+  formDisplay='none';
+  //formDisplay='';
 
   @observable
   keyPairs=[];
@@ -83,8 +83,8 @@ export class CloudStore {
   s02url='';
 
   @observable
-  //keyPairsDisplay='none';
-  keyPairsDisplay='';
+  keyPairsDisplay='none';
+  //keyPairsDisplay='';
 
 
   @action
@@ -123,12 +123,12 @@ export class CloudStore {
 
   @action
   loadFormInput = async () => {
-   /* runInAction(() => {
+    runInAction(() => {
       this.loading = true;
       this.loadingtest = '正在向云平台获取表单信息...'
     });
-    let json=await post(`${baseUrl}/invoke/cloud_form`);*/
-    let json={
+    let json=await post(`${baseUrl}/invoke/cloud_form`);
+    /*let json={
       "flavors":[
         {
           "id":"1bc6dfe0-48a4-4e1b-988d-1987b956d340",
@@ -774,7 +774,7 @@ export class CloudStore {
           "protected":true
         }
       ]
-    };
+    };*/
     if(json===undefined){
       notification.error({
         message: '连接云平台失败,请尝试刷新页面或联系管理员'
@@ -923,7 +923,9 @@ export class CloudStore {
     let json=await get(`${baseUrl}/s02Url/getS02Url`);
     const cloudToken=json.cloudToken;
     const ip=json.ip;
-    this.s02url=ip+'/compute/keyPair-list?_token='+cloudToken;
-    console.log("this.s02url的值为:",this.s02url);
+
+      this.s02url=ip+'/compute/keyPair-list?_token='+cloudToken;
+    //console.log("this.s02url的值为:",this.s02url);
+    //console.log("cloudToken的值为:",cloudToken);
   }
 }
