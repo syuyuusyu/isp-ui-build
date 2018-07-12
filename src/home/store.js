@@ -1,90 +1,74 @@
 import {observable,action,runInAction,configure} from 'mobx';
-import {baseUrl,get,post} from '../util';
+import {baseUrl, get, post} from '../util';
 
 configure({ enforceActions: true });
 
 export class HomeStore{
   constructor(rootStore){
-    this.rootStore=rootStore;
+    this.rootStore = rootStore;
   }
 
 
   @observable
-  cloudManage = {
-    instance: { total: 0, used: 0 },
-    cpu: { total: 0, used: 0 },
-    ram: { total: 0, used: 0 },
-    storage: { total: 0, used: 0 },
-  };
+  dataBD = [
+    { name: 'Oracle', value: 0 },
+    { name: 'MySQL', value: 0 },
+    { name: 'Mongo', value: 0 },
+    { name: 'HBase', value: 0 }
+  ];
 
   @observable
-  bigData = {
-    hdfs: { total: 0, used: 0 },
-    instance: [],
-  };
+  dataCM = [
+    { type: 'CPU', unit: '个', values: [0, 0] },
+    { type: '内存', unit: 'MB', values: [0, 0] },
+    { type: '存储', unit: 'GB', values: [0, 0] },
+    { type: 'CPU', unit: '个', values: [0, 0] },
+  ];
 
   @observable
-  hdfs= { total: 0, used: 0 };
+  slicePics = null;
 
   @action
-  loadCloud=async()=>{
-      let json=await post(`${baseUrl}/invoke/cloud_monitor`);
-      if(json.UserSourceMsg && json.UserSourceMsg.totalInstances){
+  loadCMData = async (isAdmin) => {
+      let json = await post(`${baseUrl}/invoke/cloud_monitor`);
+      if(json.UserSourceMsg && json.UserSourceMsg.totalCores !== undefined){
           let a=json.UserSourceMsg;
           runInAction(()=>{
-              this.cloudManage={
-                  instance: { total: a.totalInstances, used: a.instanceUsed },
-                  cpu: { total: a.totalCores, used: a.coreUsed },
-                  ram: { total: a.totalRAMSize, used: a.ramused },
-                  storage: { total: a.totalVolumeStorage, used: a.volumeStorageUsed },
+              let data = [
+                { type: 'CPU', unit: '个', values: [a.totalCores, a.coreUsed] },
+                { type: '内存', unit: 'MB', values: [a.totalRAMSize, a.ramused] },
+                { type: '存储', unit: 'GB', values: [a.totalVolumeStorage, a.volumeStorageUsed] }
+              ];
+              if (!isAdmin) {
+                data.push({ type: '实例', unit: '个', values: [a.totalInstances, a.instanceUsed] })
               }
+              this.dataCM = data
           });
       }
   };
 
   @action
-  loadData=async()=>{
+  loadBDData = async () => {
       let json=await post(`${baseUrl}/invoke/data_monitor`);
       if(json['type_2']){
           runInAction(()=> {
-              hdfs = {
-                  total: json['type_2'].hdfs.schema_info.map(d => d.value).reduce((a, b) => a + b),
-                  used: json['type_2'].hdfs.schema_info.filter(d => d.name === 'hdfs_use').map(d => d.value)[0]
-              };
-
-
+            this.dataBD = [
+              { name: 'Oracle', value: json['type_2']['oracle']['table_numbers'] },
+              { name: 'MySQL', value: json['type_2']['mysql']['table_numbers'] },
+              { name: 'Mongo', value: json['type_2']['mongo']['table_numbers'] },
+              { name: 'HBase', value: json['type_2']['hbase']['table_numbers'] }
+            ]
           });
       }
   };
 
   @action
-  initHomeData = async ()=>{
-    let json = await new Promise((resolve => {
-      setTimeout(() => {
-        // 首页数据
-        resolve({
-          success: true,
-          cloudManage: {
-            instance: { total: 10, used: 5 },
-            cpu: { total: 1, used: 0.36 },
-            ram: { total: 64, used: 22.2 },
-            storage: { total: 10240, used: 4780 },
-          },
-          bigData: {
-            hdfs: { total: 18, used: 7.62 },
-            instance: [
-              { type: '数据清洗', total: 12, success: 8, used: 0 },
-              { type: '数据接入', total: 16, success: 15, used: 0 },
-              { type: '工作流', total: 7, success: 6, used: 3 },
-              { type: '任务调度', total: 4, success: 4, used: 0 },
-            ],
-          },
-        })
-      }, 1000);
-    }));
-    runInAction(()=>{
-      //this.cloudManage = json.cloudManage;
-      this.bigData = json.bigData;
-    })
+  loadSlicePics = async () => {
+    let json=await post(`${baseUrl}/screen/picture`);
+    if (json) {
+      runInAction(() => {
+        this.slicePics = json.list
+      })
+    }
   }
 }
