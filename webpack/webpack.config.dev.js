@@ -5,7 +5,7 @@ const commonConfig = require('./webpack.config.common');
 const devConfig = {
   mode: 'development',
   // 追踪到错误和警告在源代码中的原始位置
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   entry: {
     app: [
       'babel-polyfill',

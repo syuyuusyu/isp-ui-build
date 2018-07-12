@@ -24,12 +24,13 @@ class Home extends Component {
         const autoRefresh = () => {
             this.timerAutoRefresh = setTimeout(() => {
                 autoRefresh();
-            }, 1000*60);
+            }, 1000*60*6);
             this.props.rootStore.summaryStoreBD.initSummaryData();
             this.props.rootStore.summaryStoreCM.initSummaryData();
 
         };
         autoRefresh();
+        this.props.rootStore.homeStore.loadSlicesPics();
     }
 
     componentWillUpdate() {
