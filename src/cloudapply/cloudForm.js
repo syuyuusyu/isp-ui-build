@@ -80,71 +80,76 @@ class CloudFrom extends React.Component {
     const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = treeStore;
     return (
       <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - headerHeight - menuHeight - footerHeight - 16 }}>
-        <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
-            <br/><br/>
-          <Form style={{display:store.keyPairsDisplay}}>
-            <p style={{fontSize: '16px'}}>请选择密钥:</p>
-            <Select className="col-input" onChange={store.selectKeyPairs} style={{width:'300px'}}>
-              {store.keyPairs.filter(d=>d).map(s=>
-                <Option key={s.publicKey} value={s.name}>{s.name}</Option>
-              )}
-            </Select>
-          </Form>
-            <br/><br/>
+        <div className="cloud-box" >
+          <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
+            <br/>
+            <Form style={{display:store.keyPairsDisplay}}>
+              <p style={{fontSize: '16px'}}>请选择密钥:</p>
+              <Select className="col-input" onChange={store.selectKeyPairs} >
+                {store.keyPairs.filter(d=>d).map(s=>
+                  <Option key={s.publicKey} value={s.name}>{s.name}</Option>
+                )}
+              </Select>
+            </Form>
+            <hr className="dotted01" />
             <Form style={{display:store.formDisplay}}>
               <p style={{fontSize: '16px'}}>请选择虚拟机类型:</p>
               {store.flavors.filter(d => d).map(a => {
                 return (
-                  <Button key={a.id} title={'内存大小:' + a.ram + 'M' + ' 虚拟cpu数:' + a.vcpus + ' 磁盘大小:' + a.disk + 'G'} size="large"
-                          style={{backgroundColor: store.flavorsColor[a.id], fontWeight: 'bold'}} onClick={() => {
+                  <Button className="cloudselect-button" key={a.id} title={'内存大小:' + a.ram + 'M' + ' 虚拟cpu数:' + a.vcpus + ' 磁盘大小:' + a.disk + 'G'} size="large"
+                          style={{backgroundColor: store.flavorsColor[a.id],border:store.flavorsBorder[a.id],color:store.flavorsFontColor[a.id]}} onClick={() => {
                     store.onClickFlavors(a.id)
                   }}>{a.name}</Button>
                 );
               })}
             </Form>
-            <br/><br/>
+            <hr/>
             <Form style={{display:store.formDisplay}}>
-            <p style={{fontSize: '16px'}}>请选择网络类型:</p>
-            {store.networks.filter(d => d).map(b => {
-              return (
-                <Button key={b.id} title={'网段地址:' + b.neutronSubnets[0].cidr} size="large"
-                        style={{backgroundColor: store.networksColor[b.id], fontWeight: 'bold'}} onClick={() => {
-                  store.onClickNetworks(b.id)
-                }}>{b.name}</Button>
-              );
-            })}
+              <p style={{fontSize: '16px'}}>请选择网络类型:</p>
+              {store.networks.filter(d => d).map(b => {
+                return (
+                  <Button className="cloudselect-button" key={b.id} title={'网段地址:' + b.neutronSubnets[0].cidr} size="large"
+                          style={{backgroundColor: store.networksColor[b.id],border:store.networksBorder[b.id],color:store.networksFontColor[b.id]}} onClick={() => {
+                    store.onClickNetworks(b.id)
+                  }}>{b.name}</Button>
+                );
+              })}
             </Form>
-            <br/><br/>
+            <hr/>
             <Form style={{display:store.formDisplay}}>
-            <p style={{fontSize: '16px'}}>请选择镜像类型:</p>
-            {store.images.filter(d => d).map(c => {
-              return (
-                <Button key={c.id} size="large" style={{backgroundColor: store.imagesColor[c.id], fontWeight: 'bold'}}
-                        onClick={() => {
-                          store.onClickImages(c.id)
-                        }}>{c.name}</Button>
-              );
-            })}
+              <p style={{fontSize: '16px'}}>请选择镜像类型:</p>
+              {store.images.filter(d => d).map(c => {
+                return (
+                  <Button className="cloudselect-button" key={c.id} size="large" style={{backgroundColor: store.imagesColor[c.id],border:store.imagesBorder[c.id],color:store.imagesFontColor[c.id]}}
+                          onClick={() => {
+                            store.onClickImages(c.id)
+                          }}>{c.name}</Button>
+                );
+              })}
             </Form>
-         <br/>
-          <Form style={{display:store.formDisplay}}>
-            <Row>
-              <FormItem label="虚拟机名称">
-                {getFieldDecorator('virtualMachineName', {
-                  rules: [{required: true, message: '必填'}],
-                })(
-                  <Input placeholder='输入虚拟机名称'/>
-                )}
-              </FormItem>
-            </Row>
-          </Form>
-          <Button icon="save" onClick={this.save} style={{display:store.formDisplay}}>保存</Button>&nbsp;&nbsp;
-          <Button icon="reload" href="/cloudapply" style={{display:store.formDisplay}}>返回</Button>
-          {/* <br/><br/>
+            <hr/>
+            <Form style={{display:store.formDisplay}}>
+              <Row>
+                <FormItem label="虚拟机名称" className="machine-input">
+                  {getFieldDecorator('virtualMachineName', {
+                    rules: [{required: true, message: '必填'}],
+                  })(
+                    <Input placeholder='输入虚拟机名称'/>
+                  )}
+                </FormItem>
+              </Row>
+            </Form>
+
+            <div className="cloud-button">
+              <Button icon="save" onClick={this.save} type="primary" htmlType="submit" style={{display:store.formDisplay}}>保存</Button>
+              <Button icon="reload" href="/cloudapply" style={{display:store.formDisplay}}>返回</Button>
+            </div>
+
+            {/* <br/><br/>
                   <p style={{fontSize:'16px'}}>请输入虚拟机名称:</p>
                   <input style={{fontSize:'16px'}} placeholder='请输入虚拟机名称'onChange={this.onChange} />*/}
 
-          {/*<Form>
+            {/*<Form>
                   <br/>
                     <Row>
                         <FormItem label="虚拟机名称">
@@ -200,7 +205,9 @@ class CloudFrom extends React.Component {
                         </Col>
                     </Row>
                 </Form>*/}
-        </Spin>
+          </Spin>
+        </div>
+
       </div>
     );
   }
