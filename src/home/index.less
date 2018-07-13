@@ -60,144 +60,102 @@
 }
 #linksBox{
   @linkHeight: 60px;
-  //@titleWidth: 244px;
-  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
   overflow: hidden;
-  border-radius: 4px;
-  div.bg-box{
-    position: absolute;
-    z-index: 1;
-    width: 100%;
+  .link{
+    flex: 1 1 auto;
+    width: auto;
     height: @linkHeight;
-    //background-image: url("../assets/images/home_link_bg.jpg");
-    //background-repeat: no-repeat;
-    //background-position: center;
-    //background-size: 100% auto;
-  }
-  /*> .title{
-    position: absolute;
-    z-index: 2;
-    top: 50%;
-    left: 0;
-    width: @titleWidth;
-    margin-top: -12px;
-    line-height: 1;
-    font-size: 24px;
-    color: #fff;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: 20px;
+    vertical-align: middle;
     text-align: center;
-  }*/
-  > .links{
-    position: absolute;
-    z-index: 2;
-    //top: 50%;
-    //left: @titleWidth;
-    height: @linkHeight;
-    //margin-top: -@linkHeight / 2;
-    &:after{
-      content: "";
-      display: block;
-      font-size: 0;
-      clear: both;
+    background-color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    &:first-child{
+      margin-left: 0;
     }
-    .link{
+    &:before{
+      content: "";
+      display: inline-block;
+      width: 24px;
       height: @linkHeight;
-      padding-left: 20px;
-      padding-right: 20px;
-      margin-left: 20px;
-      float: left;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    &:hover{
+      transform: scale(1.02);
+    }
+    .text{
+      position: relative;
+      top: -24px;
+      display: inline-block;
+      margin-left: 10px;
       font-size: 16px;
       line-height: @linkHeight;
-      vertical-align: middle;
-      text-align: center;
       color: #4d4d4d;
-      background-color: #fff;
-      border-radius: 8px;
-      cursor: pointer;
-      &:first-child{
-        margin-left: 0;
-      }
-      &:before{
-        content: "";
-        display: block;
-        width: 24px;
-        height: @linkHeight;
-        float: left;
-        background-position: center;
-        background-repeat: no-repeat;
-      }
-      &:hover{
-        transform: scale(1.02);
-      }
-      .text{
-        float: left;
-        margin-left: 10px;
-      }
-    }
-    .ygl:before{
-      background-image: url("../assets/images/icon_ygl.png");
-    }
-    .dsj:before{
-      background-image: url("../assets/images/icon_dsj.png");
-    }
-    .yaq:before{
-      background-image: url("../assets/images/icon_yaq.png");
-    }
-    .yw:before{
-      background-image: url("../assets/images/icon_yyw.png");
-    }
-    .gis_suppet:before{
-      background-image: url("../assets/images/gis_suppet.png");
-    }
-    .one_map_many_rule:before{
-      background-image: url("../assets/images/one_map_many_rule.png");
-    }
-    .bigdata:before{
-      background-image: url("../assets/images/bigdata.png");
-    }
-    .cloud_pateform:before{
-      background-image: url("../assets/images/cloud_pateform.png");
-    }
-    .database_management:before{
-      background-image: url("../assets/images/database_management.png");
-    }
-    .geology_consult:before{
-      background-image: url("../assets/images/geology_consult.png");
-    }
-    .more:before{
-      background-image: url("../assets/images/more.png");
-    }
-    .qilinqu:before{
-      background-image: url("../assets/images/qilinqu.png");
     }
   }
 }
-
-@media (max-width: 1360px) {
-  #linksBox{
-    >.links{
-      .link{
-        padding-left: 8px;
-        padding-right: 8px;
-        font-size: 16px;
-        .text{
-          margin-left: 8px;
-        }
-      }
+div.links-more{
+  .link {
+    cursor: pointer;
+    .text{
+      position: relative;
+      top: -7px;
+      margin-left: 8px;
+      display: inline-block;
+      line-height: 24px;
+    }
+    &:before{
+      content: "";
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background-position: center;
+      background-repeat: no-repeat;
     }
   }
 }
-/*@media (max-height: 700px) {
-  #linksBox{
-    > .links{
-      @linkHeight: 60px;
-      height: @linkHeight;
-      margin-bottom: -@linkHeight / 2;
-      .link{
-        line-height: @linkHeight;
-        &:before{
-          height: @linkHeight;
-        }
-      }
-    }
+.link{
+  &.ygl:before{
+    background-image: url("../assets/images/icon_ygl.png");
   }
-}*/
+  &.dsj:before{
+    background-image: url("../assets/images/icon_dsj.png");
+  }
+  &.yaq:before{
+    background-image: url("../assets/images/icon_yaq.png");
+  }
+  &.yw:before{
+    background-image: url("../assets/images/icon_yyw.png");
+  }
+  &.gis_suppet:before{
+    background-image: url("../assets/images/gis_suppet.png");
+  }
+  &.one_map_many_rule:before{
+    background-image: url("../assets/images/one_map_many_rule.png");
+  }
+  &.bigdata:before{
+    background-image: url("../assets/images/bigdata.png");
+  }
+  &.cloud_pateform:before{
+    background-image: url("../assets/images/cloud_pateform.png");
+  }
+  &.database_management:before{
+    background-image: url("../assets/images/database_management.png");
+  }
+  &.geology_consult:before{
+    background-image: url("../assets/images/geology_consult.png");
+  }
+  &.more:before{
+    background-image: url("../assets/images/more.png");
+  }
+  &.qilinqu:before{
+    background-image: url("../assets/images/qilinqu.png");
+  }
+}
