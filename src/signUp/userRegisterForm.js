@@ -53,7 +53,7 @@ class UserRegisterForm extends Component {
       callback("身份证号码不合规");
     }
     //区位码校验
-    // 出生年月日校验  前正则限制起始年份为1900;
+    // 出生年月日校验，限制起始年份为1900;
     const year = value.substr(6,4);//身份证年
     const month = value.substr(10,2);//身份证月
     const date = value.substr(12,2);//身份证日
@@ -74,7 +74,7 @@ class UserRegisterForm extends Component {
     if(id_array[17].toUpperCase() != checkCode[sum%11].toUpperCase()){
       callback("身份证校验码不合规");
     }else(callback());
-  }
+  };
 
   checkPhoneUnique = async (rule, value, callback) => {
     if (!value) {
@@ -87,7 +87,7 @@ class UserRegisterForm extends Component {
     } else {
       callback(new Error())
     }
-  }
+  };
 
   checkEmailUnique = async (rule, value, callback) => {
     if (!value) {
@@ -109,7 +109,7 @@ class UserRegisterForm extends Component {
       form.validateFields(['confirm'], { force: true });
     }
     callback();
-  }
+  };
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && value !== form.getFieldValue('password')) {
@@ -117,7 +117,7 @@ class UserRegisterForm extends Component {
     } else {
       callback();
     }
-  }
+  };
   save=()=> {
     this.props.form.validateFields(async (err, values) => {
       if(err) return;
@@ -133,7 +133,7 @@ class UserRegisterForm extends Component {
      if(json.success==='账号已经存在'){
        notification.error({
          message:'账号已经存在！'
-       })
+       });
        this.reset();
      }else if(json.success){
         Modal.success({

@@ -57,6 +57,7 @@ export class InterfacesLogStory{
         this.logTotal=json.length;
       }
     )
+    console.log("this.allInterfacesLog的值为:",this.allInterfacesLog);
   };
 
   /*@action

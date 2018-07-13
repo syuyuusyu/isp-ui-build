@@ -70,7 +70,7 @@ class DataUserTable extends React.Component{
                     </Col>
                 </Row>
                 <Table columns={this.columns}
-                       rowKey={record => record.username}
+                       /*rowKey={record => record.username}*/
                        dataSource={store.allDataUsers.filter(d=>d)}
                        rowSelection={null}
                        size="small"

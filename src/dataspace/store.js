@@ -150,6 +150,7 @@ export class DataSpaceStore {
   @action
   afterClose=()=>{
     this.formDisplay='none';
+    this.autoextensibleDisplay='none';
   }
 
   @action
@@ -199,7 +200,6 @@ export class DataSpaceStore {
       maxbytes:values.maxbytes,
       next_byte:values.next_byte
     });
-    console.log("json的值为:",json);
     if (json.success) {
       notification.info({
         message: '新建成功'
@@ -213,9 +213,6 @@ export class DataSpaceStore {
     this.loadDataSpace(this.selectedAccId);
     runInAction(() => {
       this.loading = false;
-
     });
   };
-
-
 }
