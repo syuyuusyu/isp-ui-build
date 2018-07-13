@@ -1,7 +1,7 @@
 import {observable,action,runInAction,configure} from 'mobx';
 import {notification} from 'antd';
-import {baseUrl,get,post,message} from '../util';
-
+import {baseUrl,get,post} from '../util';
+import {message} from "antd/lib/index";
 //import {configure} from "mobx/lib/mobx";
 
 configure({ enforceActions: true });
@@ -57,7 +57,6 @@ export class InterfacesLogStory{
         this.logTotal=json.length;
       }
     )
-    console.log("this.allInterfacesLog的值为:",this.allInterfacesLog);
   };
 
   /*@action
