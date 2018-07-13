@@ -79,7 +79,7 @@ const getSingleBarOption = (sourceData, colors) => {
             {
                 name: '统计图',
                 type: 'bar',
-                barMaxWidth: 32,
+                barMaxWidth: 56,
                 markLine: {
                     label: {show: false},
                 },
