@@ -72,9 +72,9 @@ export const log = (target, name, descriptor) => {
 //export const activitiUrl='http://127.0.0.1:5002';
 export const activitiUrl='http://10.10.50.10:5002';
 
-export const baseUrl = 'http://127.0.0.1:7001';
+//export const baseUrl = 'http://127.0.0.1:7001';
 //export const baseUrl = 'http://10.10.50.10:7001';
-//export const baseUrl = 'http://isp.yndk.cn:7001';
+export const baseUrl = 'http://isp.yndk.cn:7001';
 
 
 
@@ -149,7 +149,6 @@ export function request(method, url, body) {
                 return res.data;
             }
         }).catch((err)=>{
-      console.log("err的值为:",err);
             if(err.response.status===401){
                 console.log('token失效!!');
                 sessionStorage.clear();

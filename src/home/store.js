@@ -64,7 +64,7 @@ export class HomeStore{
 
   @action
   loadSlicePics = async () => {
-    let json=await post(`${baseUrl}/screen/picture`);
+    let json=await get(`${baseUrl}/screen/picture`);
     if (json) {
       runInAction(() => {
         this.slicePics = json.list
