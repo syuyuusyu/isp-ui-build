@@ -67,6 +67,17 @@ const commonConfig = {
         }]
     },]
   },
+    devServer: {
+        host: '0.0.0.0',
+        port: 3000,
+        contentBase: path.resolve(__dirname, '../dist'),
+        historyApiFallback: { index: '/public/index.html' },
+        publicPath: '/public/',
+        overlay: {
+            errors: true
+        },
+        disableHostCheck: true,
+    },
   // 追踪到错误和警告在源代码中的原始位置
     //devtool: 'source-map',
   plugins: [

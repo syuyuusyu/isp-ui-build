@@ -8,17 +8,6 @@ const path = require('path');
 const prodConfig = {
     devtool: 'source-map',
     mode: 'production',
-    devServer: {
-        host: '0.0.0.0',
-        port: 3000,
-        contentBase: path.resolve(__dirname, '../dist'),
-        historyApiFallback: {index: '/public/index.html'},
-        publicPath: '/public/',
-        overlay: {
-            errors: true
-        },
-        disableHostCheck: true,
-    },
     optimization: {
         minimizer: [
             new UglifyJSPlugin({
