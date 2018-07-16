@@ -1,5 +1,6 @@
 import {observable,action,runInAction,configure} from 'mobx';
 import {baseUrl, get, post} from '../util';
+import {notification} from 'antd';
 
 configure({enforceActions: true});
 
@@ -96,6 +97,12 @@ export class HomeStore{
         let json=await post(`${baseUrl}/invoke/self_monitor_list_api`,{});
         runInAction(()=>{
             this.selfMonitor=json;
+            if(json[0].status){
+                this.selfMonitor=[];
+                notification.error({
+                    message: `云平台权限认证失败,请刷新重试!`
+                });
+            }
             this.isLoadingMonitor=false;
         });
     };
