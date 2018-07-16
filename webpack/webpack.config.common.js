@@ -68,7 +68,6 @@ const commonConfig = {
     },]
   },
   // 追踪到错误和警告在源代码中的原始位置
-  devtool: 'source-map',
   plugins: [
     new HtmlWebpackPlugin({
       title: "系统综合集成",

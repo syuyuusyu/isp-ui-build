@@ -28,23 +28,59 @@ export class HomeStore{
   @observable
   slicePics = null;
 
+    // "CloudSource":{
+    //     "runningVM":21,
+    //     "leastAvailableDisk":4111,
+    //     "virtualCPU":192,
+    //     "virtualUsedCPU":115,
+    //     "count":6,
+    //     "current_workload":0,
+    //     "disk_available_least":4111,
+    //     "free_disk_gb":1081,
+    //     "free_ram_mb":329124,
+    //     "local_gb":4332,
+    //     "local_gb_used":3251,
+    //     "memory_mb":783780,
+    //     "memory_mb_used":454656,
+    //     "running_vms":21,
+    //     "vcpus":192,
+    //     "vcpus_used":115
+    // }
+
+
+
+
+
   @action
   loadCMData = async (isAdmin) => {
       let json = await post(`${baseUrl}/invoke/cloud_monitor`);
-      if(json.UserSourceMsg && json.UserSourceMsg.totalCores !== undefined){
-          let a=json.UserSourceMsg;
-          runInAction(()=>{
-              let data = [
-                { type: 'CPU', unit: '个', values: [a.totalCores, a.coreUsed] },
-                { type: '内存', unit: 'MB', values: [a.totalRAMSize, a.ramused] },
-                { type: '存储', unit: 'GB', values: [a.totalVolumeStorage, a.volumeStorageUsed] }
-              ];
-              if (!isAdmin) {
-                data.push({ type: '实例', unit: '个', values: [a.totalInstances, a.instanceUsed] })
-              }
-              this.dataCM = data
-          });
+      if(!isAdmin){
+          if(json.UserSourceMsg && json.UserSourceMsg.totalCores !== undefined){
+              let a=json.UserSourceMsg;
+              runInAction(()=>{
+                  let data = [
+                      { type: 'CPU', unit: '个', values: [a.totalCores, a.coreUsed] },
+                      { type: '内存', unit: 'MB', values: [a.totalRAMSize, a.ramused] },
+                      { type: '存储', unit: 'GB', values: [a.totalVolumeStorage, a.volumeStorageUsed] },
+                      { type: '实例', unit: '个', values: [a.totalInstances, a.instanceUsed] }
+                  ];
+                  this.dataCM = data;
+              });
+          }
+      }else{
+          if(json.CloudSource && json.CloudSource.vcpus !== undefined){
+              let a=json.CloudSource;
+              runInAction(()=>{
+                  let data = [
+                      { type: 'CPU', unit: '个', values: [a.vcpus, a.vcpus_used] },
+                      { type: '内存', unit: 'MB', values: [a.memory_mb, a.memory_mb_used] },
+                      { type: '存储', unit: 'GB', values: [a.local_gb, a.local_gb_used] }
+                  ];
+                  this.dataCM = data;
+              });
+          }
       }
+
   };
 
   @action
@@ -71,4 +107,23 @@ export class HomeStore{
       })
     }
   }
+
+    //自监控数据
+    @observable
+    selfMonitor=[];
+
+    @observable
+    isLoadingMonitor=false;
+
+    @action
+    loadSelfMonitor=async ()=>{
+        runInAction(()=>{
+            this.isLoadingMonitor=true;
+        });
+        let json=await post(`${baseUrl}/invoke/self_monitor_list_api`,{});
+        runInAction(()=>{
+            this.selfMonitor=json;
+            this.isLoadingMonitor=false;
+        });
+    };
 }

@@ -1,9 +1,10 @@
 import React from 'react';
-import {Table,Modal,} from 'antd';
+import {Table,Modal,Icon,Spin} from 'antd';
 import {inject,observer} from 'mobx-react';
 import '../style.css';
 //import RoleButton from "../roleButton";
 //const Option = Select.Option;
+const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 @inject('rootStore')
 @observer
@@ -39,17 +40,19 @@ class SelfMonitor extends React.Component{
         const store=this.props.rootStore.homeStore;
         return (
             <div>
-                <Table columns={this.columns}
-                       rowKey={record => record.id}
-                       dataSource={store.selfMonitor.filter(d=>d)}
-                       rowSelection={null}
-                       size="small"
-                       scroll={{ y: 800 }}
-                    //expandedRowRender={this.expandedRowRender}
-                    //pagination={this.state.pagination}
-                    //loading={this.state.loading}
-                    //onChange={this.handleTableChange}
-                />
+                <Spin indicator={antIcon} tip='获取监控数据' spinning={store.isLoadingMonitor}>
+                    <Table columns={this.columns}
+                           rowKey={record => record.id}
+                           dataSource={store.selfMonitor.filter(d=>d)}
+                           rowSelection={null}
+                           size="small"
+                           scroll={{ y: 800 }}
+                        //expandedRowRender={this.expandedRowRender}
+                        //pagination={this.state.pagination}
+                        //loading={this.state.loading}
+                        //onChange={this.handleTableChange}
+                    />
+                </Spin>
             </div>
         );
     }
