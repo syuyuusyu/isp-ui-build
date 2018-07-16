@@ -39,7 +39,6 @@ class CloudFrom extends React.Component {
         networkId: store.networkId,
         imageId: store.imageId
       });
-      console.log("json的值为:",json);
       if(json.code===200){
         notification.success({
           message:'新建成功'})
