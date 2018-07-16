@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Row, Col, Button, notification, Select, Spin, Icon, Input} from 'antd';
+import {Form, Row, Col, Button, notification, Select, Spin, Icon, Input,Modal} from 'antd';
 import {inject, observer} from 'mobx-react';
 import {baseUrl, post} from '../util';
 
@@ -44,8 +44,7 @@ class CloudFrom extends React.Component {
           message:'新建成功'})
         this.props.history.push('/cloudapply');
       }else{
-        notification.error({
-          message:'失败,请联系管理员'});
+        Modal.error({title: '新建失败',content:`失败信息为：${json.msg}`})
       }
       store.loadServerInfo();
     });

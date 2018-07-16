@@ -30,35 +30,42 @@ class SpaceForm extends React.Component{
     checkSpaceName=(rule, value, callback)=>{
       const store=this.props.rootStore.dataSpaceStore;
       const instanceName=this.getInstanceName();
+      let boolean=false;
       if (!value) {
         callback();
       }
-
       //判断在该实例下是否已经有相同的表空间名称
       for(let j of store.allSpaces){
         if(j.instanceName===instanceName&&j.tablespace_name===value){
-          callback(`"${instanceName}"实例下已经有"${value}"表空间名称`);
+          boolean=true;
           break;
-        }else{
-          callback();
         }
+      }
+      if(boolean===true){
+        callback(`"${instanceName}"实例下已经有"${value}"表空间名称`);
+      }else{
+        callback();
       }
     };
 
     checkFiles=(rule, value, callback)=>{
       const store=this.props.rootStore.dataSpaceStore;
       const instanceName=this.getInstanceName();
+      let boolean=false;
       if (!value) {
         callback();
       }
       //判断在该实例下是否已经有相同的数据文件路径或文件名
       for(let i of store.allSpaces){
         if(i.instanceName===instanceName&&i.files===value){
-          callback(`"${instanceName}"实例下已经有"${value}"据文件路径或文件名`);
+          boolean=true;
           break;
-        }else{
-          callback();
         }
+      }
+      if(boolean===true){
+        callback(`"${instanceName}"实例下已经有"${value}"数据文件路径或文件名`);
+      }else{
+        callback();
       }
     };
 
@@ -73,7 +80,7 @@ class SpaceForm extends React.Component{
         }
       }
       return instanceName;
-    }
+    };
 
     save=()=>{
         this.props.form.validateFields(async (err,values)=>{

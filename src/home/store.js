@@ -28,60 +28,33 @@ export class HomeStore{
   @observable
   slicePics = null;
 
-    // "CloudSource":{
-    //     "runningVM":21,
-    //     "leastAvailableDisk":4111,
-    //     "virtualCPU":192,
-    //     "virtualUsedCPU":115,
-    //     "count":6,
-    //     "current_workload":0,
-    //     "disk_available_least":4111,
-    //     "free_disk_gb":1081,
-    //     "free_ram_mb":329124,
-    //     "local_gb":4332,
-    //     "local_gb_used":3251,
-    //     "memory_mb":783780,
-    //     "memory_mb_used":454656,
-    //     "running_vms":21,
-    //     "vcpus":192,
-    //     "vcpus_used":115
-    // }
+    @action
+    loadCMData = async (isAdmin) => {
+        let json = await post(`${baseUrl}/invoke/cloud_monitor`);
+        if(json.UserSourceMsg && json.UserSourceMsg.totalCores !== undefined){
+            let data;
+            if (isAdmin) {
+                let a = json.CloudSource;
+                data = [
+                    { type: 'CPU', unit: '个', values: [a.vcpus, a.vcpus_used] },
+                    { type: '内存', unit: 'MB', values: [a.memory_mb, a.memory_mb_used] },
+                    { type: '存储', unit: 'GB', values: [a.local_gb, a.local_gb_used] }
+                ]
+            } else {
+                let a=json.UserSourceMsg;
+                data = [
+                    { type: 'CPU', unit: '个', values: [a.totalCores, a.coreUsed] },
+                    { type: '内存', unit: 'MB', values: [a.totalRAMSize, a.ramused] },
+                    { type: '存储', unit: 'GB', values: [a.totalVolumeStorage, a.volumeStorageUsed] },
+                    { type: '实例', unit: '个', values: [a.totalInstances, a.instanceUsed] }
+                ]
+            }
+            runInAction(()=>{
+                this.dataCM = data
+            });
+        }
+    };
 
-
-
-
-
-  @action
-  loadCMData = async (isAdmin) => {
-      let json = await post(`${baseUrl}/invoke/cloud_monitor`);
-      if(!isAdmin){
-          if(json.UserSourceMsg && json.UserSourceMsg.totalCores !== undefined){
-              let a=json.UserSourceMsg;
-              runInAction(()=>{
-                  let data = [
-                      { type: 'CPU', unit: '个', values: [a.totalCores, a.coreUsed] },
-                      { type: '内存', unit: 'MB', values: [a.totalRAMSize, a.ramused] },
-                      { type: '存储', unit: 'GB', values: [a.totalVolumeStorage, a.volumeStorageUsed] },
-                      { type: '实例', unit: '个', values: [a.totalInstances, a.instanceUsed] }
-                  ];
-                  this.dataCM = data;
-              });
-          }
-      }else{
-          if(json.CloudSource && json.CloudSource.vcpus !== undefined){
-              let a=json.CloudSource;
-              runInAction(()=>{
-                  let data = [
-                      { type: 'CPU', unit: '个', values: [a.vcpus, a.vcpus_used] },
-                      { type: '内存', unit: 'MB', values: [a.memory_mb, a.memory_mb_used] },
-                      { type: '存储', unit: 'GB', values: [a.local_gb, a.local_gb_used] }
-                  ];
-                  this.dataCM = data;
-              });
-          }
-      }
-
-  };
 
   @action
   loadBDData = async () => {
@@ -89,8 +62,8 @@ export class HomeStore{
       if(json['type_2']){
           runInAction(()=> {
             this.dataBD = [
-              { name: 'Oracle', value: json['type_2']['oracle']['table_numbers'] },
               { name: 'MySQL', value: json['type_2']['mysql']['table_numbers'] },
+              { name: 'Oracle', value: json['type_2']['oracle']['table_numbers'] },
               { name: 'Mongo', value: json['type_2']['mongo']['table_numbers'] },
               { name: 'HBase', value: json['type_2']['hbase']['table_numbers'] }
             ]

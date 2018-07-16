@@ -1,7 +1,7 @@
 import {observable,action,runInAction,configure} from 'mobx';
 import {notification} from 'antd';
-import {baseUrl,get,post,message} from '../util';
-
+import {baseUrl,get,post} from '../util';
+import {message} from "antd/lib/index";
 //import {configure} from "mobx/lib/mobx";
 
 configure({ enforceActions: true });

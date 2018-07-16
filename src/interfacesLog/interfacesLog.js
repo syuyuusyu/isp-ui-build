@@ -20,9 +20,9 @@ class InterfacesLog extends Component{
     {dataIndex:'initiativeSystem',title:'调用方系统编号',width:40},
     {dataIndex:'initiativeSystem_CN',title:'调用方系统名称',width:60},
     {dataIndex:'initiative_ip',title:'调用方地址',width:60},
-    {dataIndex:'system',title:'被调用方系统编号',width:40},
-    {dataIndex:'system_cn',title:'被调用方系统名称',width:60},
-    {dataIndex:'ip',title:'被调用方地址',width:50},
+    {dataIndex:'system',title:'被调用系统编号',width:40},
+    {dataIndex:'system_cn',title:'被调用系统名称',width:60},
+    {dataIndex:'ip',title:'被调用系统地址',width:50},
     /*{dataIndex:'reqdate_info',title:'请求体信息',width:50},*/
     /*{dataIndex:'response_info',title:'响应信息',width:40},*/
     {dataIndex:'response_status',title:'响应状态',width:30},
