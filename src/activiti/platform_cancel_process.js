@@ -51,7 +51,8 @@ const approval=(values)=>{
 };
 
 export const paltfromCancelProcess=(taskName,values,formData)=>{
-    if(taskName==='用户申请注销平台权限'){
+    //let username = JSON.parse(sessionStorage.getItem("user")).name;
+    if(taskName===`用户申请注销平台权限`){
         return applyVariable(values,formData);
     }
     if(taskName==='审批注销平台权限'){
