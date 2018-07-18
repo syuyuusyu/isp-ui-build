@@ -136,6 +136,36 @@ export class InvokeOpStore{
         console.log('target:', e.target);
     };
 
+    @action
+    synInterfaces=async (sysId)=>{
+      let interfaceName='';
+      let interfaceConfig=await get(`${baseUrl}/interfaceConfig`);
+      for(let i of interfaceConfig){
+        if(i.systemId===sysId){
+          interfaceName=i.interfaceName;
+          let json = await post(`${baseUrl}/invoke/${interfaceName}`);
+          let result=await post(`${baseUrl}/interfaces`,JSON.stringify(json));
+          //console.log("result的值为:",result);
+          break;
+        }
+      }
+    };
 
+  @action
+  manuSynInterfaces=(sysId)=>(
+    async ()=>{
+      let interfaceName='';
+      let interfaceConfig=await get(`${baseUrl}/interfaceConfig`);
+      for(let i of interfaceConfig){
+        if(i.systemId===sysId){
+          interfaceName=i.interfaceName;
+          let json = await post(`${baseUrl}/invoke/${interfaceName}`);
+          let result=await post(`${baseUrl}/interfaces`,JSON.stringify(json));
+          //console.log("result的值为:",result);
+          break;
+        }
+      }
+    }
+  )
 
 }
