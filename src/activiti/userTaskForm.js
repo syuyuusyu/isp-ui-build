@@ -54,7 +54,7 @@ class UserTaskForm extends React.Component{
                 nextJson=paltfromCancelProcess(store.selectedTask.name,values,store.formData.filter(d=>d));
             }
 
-            console.log(nextJson);
+
             if(nextJson==='default'){
                 notification.error({
                     message: `当前流程:${store.selectedTask.name}没有对应的处理程序,请联系管理员`
@@ -64,6 +64,7 @@ class UserTaskForm extends React.Component{
             if(!nextJson){
                 return;
             };
+            nextJson.previousUser=JSON.parse(sessionStorage.getItem("user")).name;
 
             let submitResult=await post(`${activitiUrl}/userTask/submit/${store.selectedTask.id}`,nextJson);
             if(submitResult.success){

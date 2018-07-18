@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Divider, Popconfirm, Table, Modal, Row, Col,Button} from 'antd';
 import {inject, observer} from 'mobx-react';
+import {dateFtt} from '../util';
 import UserTaskForm from './userTaskForm';
 //import {SysOperationStore} from "./store";
 
@@ -15,7 +16,11 @@ class UserTaskTable extends Component {
         {
             dataIndex: 'name', title: '代办事项', width: 200
         },
-        {dataIndex: 'createTime', title: '创建时间', width: 200,},
+        {dataIndex: 'owner', title: '申请人', width: 200,},
+        {
+            dataIndex: 'createTime', title: '创建时间', width: 200,
+            render:text=>dateFtt('yyyy年MM月dd日 dd:mm:ss',new Date(text))
+        },
         {
             title: '操作',
             width: 100,
