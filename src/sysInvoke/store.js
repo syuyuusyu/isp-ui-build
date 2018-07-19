@@ -31,6 +31,15 @@ export class InvokeOpStore{
     @observable
     selectedKeys=[];
 
+    @observable
+    display=true;
+
+    @observable
+    loading = false;
+
+    @observable
+    loadingMessage='';
+
     @action
     toggleInvokePromissFormVisible=()=>{
         this.invokePromissFormVisible=!this.invokePromissFormVisible;
@@ -139,7 +148,7 @@ export class InvokeOpStore{
     @action
     synInterfaces=async (sysId)=>{
       let interfaceName='';
-      let interfaceConfig=await get(`${baseUrl}/interfaceConfig`);
+      let interfaceConfig=await get(`${baseUrl}/interfaceConfig/1`);
       for(let i of interfaceConfig){
         if(i.systemId===sysId){
           interfaceName=i.interfaceName;
@@ -154,14 +163,49 @@ export class InvokeOpStore{
   @action
   manuSynInterfaces=(sysId)=>(
     async ()=>{
+      runInAction(()=>{
+        this.loading = true;
+        this.loadingMessage = '正在同步接口信息...';
+      })
       let interfaceName='';
-      let interfaceConfig=await get(`${baseUrl}/interfaceConfig`);
+      let interfaceConfig=await get(`${baseUrl}/interfaceConfig/1`);
+      console.log("interfaceConfig的值为:",interfaceConfig);
       for(let i of interfaceConfig){
         if(i.systemId===sysId){
           interfaceName=i.interfaceName;
           let json = await post(`${baseUrl}/invoke/${interfaceName}`);
+          if(json===undefined){
+            notification.error({
+              message:'获取接口信息失败,请尝试刷新页面或联系管理员',
+            });
+            runInAction(()=>{
+              this.loading=false;
+            });
+            break;
+          }
           let result=await post(`${baseUrl}/interfaces`,JSON.stringify(json));
-          //console.log("result的值为:",result);
+          if(result===undefined){
+            notification.error({
+              message:'同步失败,请尝试刷新页面或联系管理员',
+            });
+            runInAction(()=>{
+              this.loading=false;
+            });
+          }else if(result.status==='801'){
+            notification.success({
+              message:'同步成功',
+            });
+           runInAction(()=>{
+             this.loading=false;
+           })
+          }else if(result.status==='806'){
+            notification.error({
+              message:'同步失败，请尝试刷新页面或联系管理员',
+            });
+            runInAction(()=>{
+              this.loading=false;
+            })
+          }
           break;
         }
       }

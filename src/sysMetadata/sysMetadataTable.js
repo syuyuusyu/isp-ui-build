@@ -92,6 +92,7 @@ constructor(){
         this.store.setDataBaseType(null);
         await this.store.loadMetada();
 
+        this.store.synMetadata(metadataType);
 
     }
 

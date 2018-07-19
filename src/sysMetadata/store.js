@@ -98,7 +98,15 @@ export class SysmetadataStore{
         })
     };
 
-
-
-
+    @action
+    synMetadata=async (metadataType)=>{
+      /*if(metadataType===1){
+        let interfaceName='';
+        let interfaceConfig=await get(`${baseUrl}/interfaceConfig/2`);
+        console.log("interfaceConfig的值为:",interfaceConfig);
+      }*/
+      let json = await post(`${baseUrl}/invoke/syn_databaseManager_metadate_config`);
+      let result=await post(`${baseUrl}/interfaces`,json);
+      //console.log("result的值为:",result);
+    }
 }

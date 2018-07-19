@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Divider, Popconfirm, Table, Modal, Row, Col,Card,Button} from 'antd';
+import { Divider, Popconfirm, Table, Modal, Row, Col,Card,Spin} from 'antd';
 import {inject, observer} from 'mobx-react';
 import RoleButton from '../roleButton';
 import InvokeForm from './invokeForm';
@@ -86,6 +86,7 @@ class InvokeTable extends Component{
       });
         return (
             <div>
+              <Spin tip={store.loadingMessage} spinning={store.loading}>
                 <div>
                     <Row gutter={24}>
                         <Col span={20}><span style={{fontSize: '16px'}}>当前平台:{store.currentSys.name}-url:{store.currentSys.url}</span></Col>
@@ -126,6 +127,7 @@ class InvokeTable extends Component{
                     //loading={this.state.loading}
                     //onChange={this.handleTableChange}
                 />
+              </Spin>
             </div>
         );
     }

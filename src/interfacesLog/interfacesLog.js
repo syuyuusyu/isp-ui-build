@@ -81,7 +81,7 @@ class InterfacesLog extends Component{
               <Option  value={''} style={{color:'white'}}>&nbsp;</Option>
               {
                 store.allSystems.filter(d=>d).map(s=>
-                  <Option key={s.system_cn} value={s.system_cn}>{s.system_cn}</Option>)
+                  <Option key={s.name} value={s.name}>{s.name}</Option>)
               }
             </Select>
           </Col>

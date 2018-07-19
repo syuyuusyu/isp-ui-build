@@ -128,6 +128,14 @@ export class InterfacesLogStory{
       systemName: this.systemName,
       statusName: this.statusName
     });
+    if(json.length>=0){
+      notification.success({
+        message:'查询成功'})
+    }else{
+      notification.error({
+        message:'后台错误，请联系管理员'
+      })
+    }
     //console.log("loadQueryLog中json的值为:",json);
     runInAction(() => {
       this.allInterfacesLog = json;
