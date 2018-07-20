@@ -75,13 +75,13 @@ class InterfacesLog extends Component{
         <Col span={2}  offset={0} style={{ textAlign: 'right' }}>
           <Button icon="reload" onClick={this.props.rootStore.interfacesLog.getRefreshLog}>刷新</Button>
         </Col>
-          <Col span={2} offset={2} style={{lineHeight:'32px'}}>系统平台:</Col>
+          <Col span={2} offset={2} style={{lineHeight:'32px'}}>被调用系统平台:</Col>
           <Col span={2}>
             <Select style={{width:150}}  onChange={store.setSystemName}>
               <Option  value={''} style={{color:'white'}}>&nbsp;</Option>
               {
                 store.allSystems.filter(d=>d).map(s=>
-                  <Option key={s.system_cn} value={s.system_cn}>{s.system_cn}</Option>)
+                  <Option key={s.name} value={s.name}>{s.name}</Option>)
               }
             </Select>
           </Col>

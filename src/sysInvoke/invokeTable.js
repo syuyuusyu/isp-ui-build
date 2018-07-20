@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Divider, Popconfirm, Table, Modal, Row, Col,Card} from 'antd';
+import { Divider, Popconfirm, Table, Modal, Row, Col,Card,Spin} from 'antd';
 import {inject, observer} from 'mobx-react';
 import RoleButton from '../roleButton';
 import InvokeForm from './invokeForm';
@@ -75,17 +75,23 @@ class InvokeTable extends Component{
         });
         await this.props.rootStore.invokeOpStore.loadCurrentSys(sysId);
         await this.props.rootStore.invokeOpStore.loadOperationById(sysId);
+        await this.props.rootStore.invokeOpStore.synInterfaces(sysId);
     }
 
     render(){
         const store=this.props.rootStore.invokeOpStore;
+      let sysId=-1;
+      this.props.match.path.replace(/\/(\d+)$/,(w,p1)=>{
+        sysId=parseInt(p1,10);
+      });
         return (
             <div>
+              <Spin tip={store.loadingMessage} spinning={store.loading}>
                 <div>
                     <Row gutter={24}>
                         <Col span={20}><span style={{fontSize: '16px'}}>当前平台:{store.currentSys.name}-url:{store.currentSys.url}</span></Col>
                         <Col span={4} style={{textAlign: 'right'}}>
-                            <RoleButton buttonId={22} onClick={store.showForm(null)}/>
+                            <RoleButton buttonId={22} onClick={this.props.rootStore.invokeOpStore.manuSynInterfaces(sysId)}/>
                         </Col>
                     </Row>
                   <br/>
@@ -121,6 +127,7 @@ class InvokeTable extends Component{
                     //loading={this.state.loading}
                     //onChange={this.handleTableChange}
                 />
+              </Spin>
             </div>
         );
     }

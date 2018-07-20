@@ -111,7 +111,7 @@ export class CloudStore {
         this.loading = false;
       }else if (json.code && json.code === 500) {
         this.serverInfo = [];
-        notification.error({message: '连接云平台失败',});
+        notification.error({message: '获取云机状态失败,请尝试刷新页面或联系管理员',});
         this.loading = false;
       } else {
         this.serverInfo = json;
@@ -136,7 +136,7 @@ export class CloudStore {
         this.loading = false;
       })
     } else if (json.status && json.status === 500) {
-      notification.error({message: '连接云平台失败',});
+      notification.error({message: '连接云平台失败,请尝试刷新页面或联系管理员',});
       runInAction(() => {
         this.loading = false;
       })
