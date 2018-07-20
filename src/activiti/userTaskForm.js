@@ -140,7 +140,6 @@ class UserTaskForm extends React.Component{
 
     createDate=(form,getFieldDecorator)=>{
         return (
-
                 <FormItem label={form.label} key={form.key+''}>
                     {getFieldDecorator(form.key+'', {
                         rules: [{ type: 'object', required:form.required, message: '请选择时间' }]

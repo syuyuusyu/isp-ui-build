@@ -269,8 +269,6 @@ export class ActivitiStore {
     loadFormData = async () => {
         //let json = await get(`${activitiUrl}/form/form-data?taskId=${this.selectedTask.id}`);
         let json=await get(`${activitiUrl}/userTask/variables/${this.selectedTask.id}/nextForm`)
-        console.log(json);
-
         runInAction(()=>{
             this.formData=json.data;
         })
@@ -282,8 +280,6 @@ export class ActivitiStore {
     @action
     loadMessage=async ()=>{
         let json=await get(`${activitiUrl}/userTask/variables/${this.selectedTask.id}/message`)
-        console.log(json);
-
         runInAction(()=>{
             this.message=json.data;
         })

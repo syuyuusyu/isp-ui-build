@@ -112,6 +112,9 @@ class Home extends Component {
   linkClick (e) {
     const href = e.currentTarget.getAttribute('data-href');
     window.open(href);
+    setTimeout(()=>{
+        this.props.rootStore.treeStore.loadCurrentRoleSys();
+    },5000)
   };
   render() {
       const {
@@ -165,7 +168,7 @@ class Home extends Component {
                   <div className="block left bottom" style={blockCSize}>
                     <div className="title">切片服务</div>
                     {slicePics ?
-                      <Gallery size={gallerySize} pictures={slicePics} duration={4000}  />
+                      <Gallery size={gallerySize} pictures={slicePics.filter(d=>d)} duration={4000}  />
                       : ''
                     }
                   </div>
