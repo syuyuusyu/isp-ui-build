@@ -1,5 +1,7 @@
 import {observable, configure,action,runInAction,} from 'mobx';
 import {baseUrl,get,post} from '../util';
+import {notification} from "antd/lib/index";
+import {message, Modal} from 'antd';
 
 configure({ enforceActions: true });
 
@@ -33,6 +35,12 @@ export class SysmetadataStore{
 
     @observable
     allSystems=[];
+
+    @observable
+    loading = false;
+
+    @observable
+    loadingMessage='';
 
     @action
     setMetadataType=async (type)=>{
@@ -100,13 +108,76 @@ export class SysmetadataStore{
 
     @action
     synMetadata=async (metadataType)=>{
-      /*if(metadataType===1){
-        let interfaceName='';
+      if(metadataType==='1'){//系统元数据
         let interfaceConfig=await get(`${baseUrl}/interfaceConfig/2`);
-        console.log("interfaceConfig的值为:",interfaceConfig);
-      }*/
-      let json = await post(`${baseUrl}/invoke/syn_databaseManager_metadate_config`);
-      let result=await post(`${baseUrl}/interfaces`,json);
-      //console.log("result的值为:",result);
-    }
+        for(let i of interfaceConfig){
+          let json = await post(`${baseUrl}/invoke/${i.interfaceName}`);
+          let result=await post(`${baseUrl}/interfaces`,json);
+          //console.log("result的值为:",result);
+        }
+      }else if(metadataType==='2'){//专业元数据
+        let interfaceName='';
+        let interfaceConfig=await get(`${baseUrl}/interfaceConfig/3`);
+        for(let i of interfaceConfig){
+          let json = await post(`${baseUrl}/invoke/${i.interfaceName}`);
+          let result=await post(`${baseUrl}/interfaces`,json);
+          //console.log("result1的值为:",result);
+        }
+      }
+    };
+
+    @action
+    manuSynInterfaces=(metadataType)=>(
+      async ()=>{
+        runInAction(()=>{
+          this.loading = true;
+          this.loadingMessage = '正在同步元数据信息...';
+        });
+          let interfaceConfig=await get(`${baseUrl}/interfaceConfig/${metadataType==='1'?2:3}`);
+          let error1=[];//存调获取元数据接口失败时哪些平台有问题
+          let error2=[];//存同步元数据接口失败时哪些平台有问题
+          let success=[];//存同步元数据接口成功时哪些平台成功
+          for(let i of interfaceConfig){
+            let json = await post(`${baseUrl}/invoke/${i.interfaceName}`);
+            //console.log("json的值为:",i.systemName,json);
+            if(json===undefined){
+              error1.push(i.systemName);
+            }else if(json.code===500){
+              error1.push(i.systemName);
+            }else if(json.reqdata.status===404){
+              error1.push(i.systemName);
+            }
+
+            let result=await post(`${baseUrl}/interfaces`,json);
+            //console.log("result的值为:",i.systemName,result);
+            if(result===undefined){
+              error2.push(i.systemName);
+            }else if(result.status==='801'){
+              success.push(i.systemName);
+            }else if(result.status==='806'){
+              error2.push(i.systemName);
+            }
+          }
+          if(success.length===interfaceConfig.length){
+            otification.success({
+              message:'同步成功',
+            });
+            runInAction(()=>{
+              this.loading=false;
+            })
+          }else if(error1.length!==0&&error2.length!==0&&success.length!==0){
+            Modal.warning({title: `${error1.join(', ')}获取元数据失败;${error2.join(', ')}同步元数据失败;${success.join(', ')}同步元数据成功`},
+              );
+            runInAction(()=>{
+              this.loading=false;
+            })
+          }else if(error1.length===0&&error2.length!==0&&success.length!==0){
+            Modal.warning({title: `${error2.join(', ')}同步元数据失败;${success.join(', ')}同步元数据成功`},
+            );
+          }else if(error1.length!==0&&error2.length===0&&success.length!==0){
+            Modal.warning({title: `${error1.join(', ')}获取元数据失败;${success.join(', ')}同步元数据成功`},
+            );
+          }
+      }
+    )
 }

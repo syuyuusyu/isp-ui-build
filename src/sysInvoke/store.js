@@ -154,7 +154,7 @@ export class InvokeOpStore{
           interfaceName=i.interfaceName;
           let json = await post(`${baseUrl}/invoke/${interfaceName}`);
           let result=await post(`${baseUrl}/interfaces`,JSON.stringify(json));
-          //console.log("result的值为:",result);
+          console.log("result的值为:",result);
           break;
         }
       }
@@ -166,10 +166,9 @@ export class InvokeOpStore{
       runInAction(()=>{
         this.loading = true;
         this.loadingMessage = '正在同步接口信息...';
-      })
+      });
       let interfaceName='';
       let interfaceConfig=await get(`${baseUrl}/interfaceConfig/1`);
-      console.log("interfaceConfig的值为:",interfaceConfig);
       for(let i of interfaceConfig){
         if(i.systemId===sysId){
           interfaceName=i.interfaceName;

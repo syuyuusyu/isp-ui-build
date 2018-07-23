@@ -1,6 +1,7 @@
 import React from 'react';
-import {Table,Row,Col,Select,Button} from 'antd';
+import {Table,Row,Col,Select,Button,Spin} from 'antd';
 import {inject,observer} from 'mobx-react';
+import RoleButton from '../roleButton';
 import {baseUrl, get} from "../util";
 import '../style.css';
 
@@ -106,6 +107,7 @@ constructor(){
         const store=this.store;
         return (
             <div>
+              <Spin tip={store.loadingMessage} spinning={store.loading}>
                 <Row gutter={2} className="table-head-row">
                     <Col span={2} className="col-label">所属系统平台:</Col>
                     <Col span={4}>
@@ -144,8 +146,11 @@ constructor(){
                         :<span></span>
                     }
                     <Col span={4} style={{ textAlign: 'right'}} className="col-button">
-                            <Button icon="search" onClick={store.loadMetada}>查询</Button>
+                      <RoleButton buttonId={42} onClick={store.manuSynInterfaces(store.metadataType)}/>
                     </Col>
+                  <Col span={4}  className="col-button">
+                    <Button icon="search" onClick={store.loadMetada}>查询</Button>
+                  </Col>
                 </Row>
                 <Table columns={this.state.columns}
                        rowKey={record => record.id}
@@ -159,6 +164,7 @@ constructor(){
                     //loading={this.state.loading}
                     //onChange={this.handleTableChange}
                 />
+              </Spin>
             </div>
         )
     }
