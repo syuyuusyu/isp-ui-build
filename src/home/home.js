@@ -28,8 +28,8 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
   let linksMore = [];
   if (isAdmin) {
     linksLess.push(
-      <div key={0} className={`link qilinqu`} data-href={`${baseUrl}/map`} onClick={eClick}>
-        <span className="text">地图服务示范应用</span>
+      <div key={0} className={`link qilinqu`} data-href={'http://10.10.50.37:8088'} onClick={eClick}>
+        <span className="text">北衙矿车计量管理系统</span>
       </div>
     )
   }
