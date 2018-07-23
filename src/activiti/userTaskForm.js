@@ -1,7 +1,7 @@
 //label key required placeholder type validateMessage validatePattern value enumValues
 
 import React from 'react';
-import { Form, Row, Col, Input, Button ,notification,Select,Switch,DatePicker} from 'antd';
+import { Form, Row, Col, Input, Button ,notification,Select,Switch,DatePicker,Checkbox} from 'antd';
 import {inject,observer} from 'mobx-react';
 import {activitiUrl, baseUrl, post,get} from '../util';
 import {paltfromApplyProcess} from './platform_apply_process';
@@ -138,6 +138,22 @@ class UserTaskForm extends React.Component{
         );
     };
 
+    createCheck=(form,getFieldDecorator)=>{
+        return (
+            <Row key={form.key+''}>
+                <Col span={14} style={{ lineHeight: '39px' }}>{form.label+':'}</Col>
+                <Col span={10}>
+                    <FormItem key={form.key+''} >
+                        {getFieldDecorator(form.key+'', { valuePropName: 'checked' })(
+                            <Checkbox disabled={!form.editable}></Checkbox>
+                        )}
+                    </FormItem>
+                </Col>
+            </Row>
+
+        );
+    };
+
     createDate=(form,getFieldDecorator)=>{
         return (
                 <FormItem label={form.label} key={form.key+''}>
@@ -172,6 +188,8 @@ class UserTaskForm extends React.Component{
                                 return this.createDate(data,getFieldDecorator);
                             case 'select':
                                 return this.createSelect(data,getFieldDecorator);
+                            case 'check':
+                                return this.createCheck(data,getFieldDecorator);
                         }
 
                     })

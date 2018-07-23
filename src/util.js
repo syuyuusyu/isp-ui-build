@@ -69,20 +69,13 @@ export const log = (target, name, descriptor) => {
 
 
 
-export const activitiUrl='http://127.0.0.1:5002';
-//export const activitiUrl='http://10.10.50.10:5002';
+//export const activitiUrl='http://127.0.0.1:5002';
+export const activitiUrl='http://10.10.50.10:5002';
 
 
-export const baseUrl = 'http://127.0.0.1:7001';
+//export const baseUrl = 'http://127.0.0.1:7001';
 //export const baseUrl = 'http://10.10.50.10:7001';
-//export const baseUrl = 'http://isp.yndk.cn:7001';
-
-
-
-
-
-
-
+export const baseUrl = 'http://isp.yndk.cn:7001';
 
 
 export function request2(method, url, body) {
@@ -166,7 +159,7 @@ export const put = (url, body) => request('PUT', url, body);
 export const del = (url, body) => request('DELETE', url, body);
 
 export const convertGiga = (byte) => {
-  const units = ['byte','KB', 'MB', 'GB', 'TB']
+  const units = ['byte','KB', 'MB', 'GB', 'TB'];
   for (let i = 0; i < units.length; i++) {
     if (byte < 1024){
       return {
