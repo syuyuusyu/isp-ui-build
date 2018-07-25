@@ -24,6 +24,7 @@ import {BacklogLogStore} from "./backlogLog/store";
 import {SignUpStore} from "./signUp/store";
 import {ActivitiStore} from "./activiti";
 import {MenuManageStore} from "./menuManage";
+import {MonitorLogStore} from "./monitorLog";
 
 
 
@@ -67,6 +68,8 @@ export default class RootStore {
 
 
         this.menuManageStore=new MenuManageStore(this);
+
+        this.monitorLogStore=new MonitorLogStore(this);
 
     }
 }

@@ -154,7 +154,6 @@ export class InvokeOpStore{
           interfaceName=i.interfaceName;
           let json = await post(`${baseUrl}/invoke/${interfaceName}`);
           let result=await post(`${baseUrl}/interfaces`,JSON.stringify(json));
-          console.log("result的值为:",result);
           break;
         }
       }
