@@ -28,10 +28,15 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
   let linksMore = [];
   if (isAdmin) {
     linksLess.push(
-      <div key={0} className={`link qilinqu`} data-href={'http://10.10.50.37:8088'} onClick={eClick}>
+      <div key={100} className={`link qilinqu`} data-href={'http://10.10.50.37:8088'} onClick={eClick}>
         <span className="text">北衙矿车计量管理系统</span>
       </div>
-    )
+    );
+    linksLess.push(
+        <div key={101} className={`link qilinqu`} data-href={`${baseUrl}/map`} onClick={eClick}>
+            <span className="text">地图服务示范应用</span>
+        </div>
+    );
   }
   for (let i = isAdmin ? 1 : 0; i < linkNum; i++) {
     const { name, icon, url, token, operations } = currentRoleSys[isAdmin ? i - 1 : i];
@@ -43,9 +48,9 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
       </div>
     );
     if ((linkNum > 5 && i < 4) || linkNum < 6) {
-      linksLess.push(node)
+      linksLess.push(node);
     } else {
-      linksMore.push(node)
+      linksMore.push(node);
     }
   }
   return {
