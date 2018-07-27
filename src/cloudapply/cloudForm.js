@@ -15,7 +15,8 @@ class CloudFrom extends React.Component {
   componentDidMount() {
     this.props.rootStore.cloudStore.loadFormInput();
     this.props.rootStore.cloudStore.loadKeyPairs();
-    this.props.rootStore.cloudStore.getS02Url();
+    //this.props.rootStore.cloudStore.getS02Url();
+    this.props.rootStore.cloudStore.getS02urlKeyPairs();
   }
 
   save = () => {
@@ -32,7 +33,7 @@ class CloudFrom extends React.Component {
         return notification.error({
           message:'请选择镜像类型'});
       }
-      let json = await post(`${baseUrl}/invoke/cloud_create`, {
+      let json = await post(`${baseUrl}/invoke/cloud_create/dsf`, {
         keypairName:store.selectKeyPairValue,
         flavorId: store.flavorId,
         name: values.virtualMachineName,

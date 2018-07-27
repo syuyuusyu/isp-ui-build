@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import {Table,Col,Button,Row,Select,Modal} from 'antd';
+import {Table,Col,Button,Row,Select,Modal,DatePicker} from 'antd';
 import {inject,observer} from 'mobx-react';
 import ShowDetailMonitorLog from './showDetailMonitorLog';
-import ShowDetailSystemLog from "../systemLog/showDetailSystemLog";
+import { LocaleProvider } from 'antd';
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import 'moment/locale/zh-cn';
 
 const Option = Select.Option;
 
@@ -42,6 +44,7 @@ class MonitorLog extends Component{
     return(
       <div>
         <div style={{paddingBottom:"12px"}}>
+          <LocaleProvider locale={zh_CN}>
           <Row gutter={25}>
             <Col span={2} offset={0} style={{lineHeight:'32px'}}>虚拟机名称:</Col>
             <Col span={2}>
@@ -53,7 +56,34 @@ class MonitorLog extends Component{
                 }
               </Select>
             </Col>
-           {/* <Col span={2} offset={2} style={{lineHeight:'32px'}}>操作类型:</Col>
+            <Col span={2} offset={3} style={{lineHeight:'32px'}}>数据采集时间:</Col>
+            <Col span={2}>
+              <DatePicker
+                disabledDate={store.disabledStartDate}
+                showTime
+                format="YYYY-MM-DD HH:mm:ss"
+                value={store.startValue}
+                placeholder="开始时间"
+                onChange={store.onStartChange}
+                onOpenChange={store.handleStartOpenChange}
+                style={{width:170}}
+              />
+            </Col>
+            <Col span={2} offset={1}>
+              <DatePicker
+                disabledDate={store.disabledEndDate}
+                showTime
+                format="YYYY-MM-DD HH:mm:ss"
+                value={store.endValue}
+                placeholder="结束时间"
+                onChange={store.onEndChange}
+                open={store.endOpen}
+                onOpenChange={store.handleEndOpenChange}
+                style={{width:170}}
+              />
+            </Col>
+
+            {/*<Col span={2} offset={2} style={{lineHeight:'32px'}}>操作类型:</Col>
             <Col span={2}>
               <Select style={{width:150}}  onChange={store.setOperateType}>
                 <Option  value={''} style={{color:'white'}}>&nbsp;</Option>
@@ -62,11 +92,12 @@ class MonitorLog extends Component{
                     <Option key={s.operate_type} value={s.operate_type}>{s.operate_type}</Option>)
                 }
               </Select>
-            </Col>
-            <Col span={4} style={{ textAlign: 'right',float:'right' }}>
-              <Button icon="search" onClick={store.loadQuerySystemLog}>查询</Button>
             </Col>*/}
+            <Col span={4} style={{ textAlign: 'right',float:'right' }}>
+              <Button icon="search" onClick={store.loadQueryMonitorLog}>查询</Button>
+            </Col>
           </Row>
+          </LocaleProvider>
         </div>
         <Modal visible={store.detailMonitorLog}
                width={900}
