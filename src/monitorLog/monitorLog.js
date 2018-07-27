@@ -82,17 +82,6 @@ class MonitorLog extends Component{
                 style={{width:170}}
               />
             </Col>
-
-            {/*<Col span={2} offset={2} style={{lineHeight:'32px'}}>操作类型:</Col>
-            <Col span={2}>
-              <Select style={{width:150}}  onChange={store.setOperateType}>
-                <Option  value={''} style={{color:'white'}}>&nbsp;</Option>
-                {
-                  store.allOperateType.filter(d=>d).map(s=>
-                    <Option key={s.operate_type} value={s.operate_type}>{s.operate_type}</Option>)
-                }
-              </Select>
-            </Col>*/}
             <Col span={4} style={{ textAlign: 'right',float:'right' }}>
               <Button icon="search" onClick={store.loadQueryMonitorLog}>查询</Button>
             </Col>
