@@ -40,24 +40,24 @@ export class SystemLogStore{
         this.logTotal=json.length;
       }
       )
-  }
+  };
 
   @action
   getRefreshSystemLog=async ()=>{
     this.initAllSystemLog();
     notification.success({
       message:'刷新成功'})
-  }
+  };
 
    @action
   setLoginName=(loginName)=>{
     this.loginName=loginName;
-  }
+  };
 
   @action
   setOperateType=(operateName)=>{
     this.operateType=operateName;
-  }
+  };
 
   @action
   initAllLoginName=async ()=>{
@@ -66,16 +66,16 @@ export class SystemLogStore{
         this.allLoginName=json;
       }
     );
-  }
+  };
 
   @action
   initOperateType=async ()=>{
-    let json=await get(`${baseUrl}/systyemLog/getAllOperateType`)
+    let json=await get(`${baseUrl}/systyemLog/getAllOperateType`);
     runInAction(()=>{
         this.allOperateType=json;
       }
     );
-  }
+  };
 
   @action
   loadQuerySystemLog=async ()=>{
@@ -88,12 +88,20 @@ export class SystemLogStore{
       this.logTotal=json.length;
       }
     );
-  }
+    if(json.length>=0){
+      notification.success({
+        message:'查询成功'})
+    }else{
+      notification.error({
+        message:'后台错误，请联系管理员'
+      })
+    }
+  };
 
   @action
   toggleDetailSystemLog=()=>{
     this.detailSystemLog=!this.detailSystemLog;
-  }
+  };
 
   @action
   loadDetailSystemLog=(record)=>{

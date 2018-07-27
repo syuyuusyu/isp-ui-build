@@ -133,7 +133,7 @@ export class SysmetadataStore{
           this.loading = true;
           this.loadingMessage = '正在同步元数据信息...';
         });
-          let interfaceConfig=await get(`${baseUrl}/interfaceConfig/${metadataType==='1'?2:3}`);
+          let interfaceConfig=await get(`${baseUrl}/interfaceConfig/2`);
           let error1=[];//存调获取元数据接口失败时哪些平台有问题
           let error2=[];//存同步元数据接口失败时哪些平台有问题
           let success=[];//存同步元数据接口成功时哪些平台成功

@@ -86,6 +86,8 @@ export class CloudStore {
   keyPairsDisplay='none';
   //keyPairsDisplay='';
 
+  @observable
+  s02urlLoginInfo='';
 
   @action
   toggleFormVisible = () => {
@@ -143,9 +145,15 @@ export class CloudStore {
     } else {
       runInAction(() => {
         this.images = json.image;
-        this.networks = json.network;
+        //this.networks = json.network;
         this.flavors = json.flavors;
         this.loading = false;
+        //只提供公共网络
+        for(let i of json.network){
+          if(i.routerExternal===true){
+            this.networks.push(i);
+          }
+        }
       });
       for (let i = 0; i < this.flavors.length; i++) {
         const id = this.flavors[i].id;
@@ -197,7 +205,7 @@ export class CloudStore {
         onOk: () => {
           window.history.back(-1);
           //window.open('http://10.10.50.20/compute/keyPair-list?_token=a7f8ee9d6c7d4f0c80b7773154c281dd');
-          window.open(this.s02url);
+          window.open(this.s02urlKeyPairs);
         },
         onCancel:()=>{
           window.history.back(-1);
@@ -208,7 +216,7 @@ export class CloudStore {
       this.loading=false;
       setTimeout(this.keyPairsDisplay='',500)
     })}
-  }
+  };
 
   @action
   detail = (record) => (() => {
@@ -269,14 +277,32 @@ export class CloudStore {
     if(this.selectKeyPairValue!==''){
       this.formDisplay='';
     }
-  }
+  };
 
   @action
   getS02Url=async ()=>{
     let json=await get(`${baseUrl}/s02Url/getS02Url`);
+    return json;
+  };
+
+  @action
+  getS02urlKeyPairs=async ()=>{
+    let json=await this.getS02Url();
     const cloudToken=json.cloudToken;
     const ip=json.ip;
-    this.s02url=ip+'/toIndex?_token='+cloudToken+'&_url=/compute/keyPair-list';
-    console.log("this.s02url的值为:",this.s02url);
+    this.s02urlKeyPairs=ip+'/toIndex?_token='+cloudToken+'&_url=/compute/keyPair-list';
+  };
+
+  @action
+  getS02urlLoginInfo=async ()=>{
+    let json=await this.getS02Url();
+    const cloudToken=json.cloudToken;
+    const ip=json.ip;
+    this.s02urlLoginInfo=ip+'/toIndex?_token='+cloudToken+'&_url=/compute/server-list';
+  };
+
+  @action
+  skipCloud=()=>{
+    window.open(this.s02urlLoginInfo);
   }
 }
