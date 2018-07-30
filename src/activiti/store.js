@@ -254,12 +254,14 @@ export class ActivitiStore {
     };
 
     @action
-    showUserTaskForm = (record) => (() => {
+    showUserTaskForm = (record) => ((e) => {
         runInAction(() => {
             this.selectedTask = record;
         });
         this.toggleUserTaskFormVisible();
     });
+
+
 
     @observable
     formData = [];

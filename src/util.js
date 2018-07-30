@@ -65,12 +65,14 @@ export const log = (target, name, descriptor) => {
     return descriptor;
 };
 
-export const activitiUrl='http://127.0.0.1:5002';
-//export const activitiUrl='http://10.10.50.10:5002';
+//export const activitiUrl='http://192.168.50.20:5002';
+//export const activitiUrl='http://127.0.0.1:5002';
+export const activitiUrl='http://10.10.50.10:5002';
 
-export const baseUrl = 'http://127.0.0.1:7001';
+//export const baseUrl = 'http://127.0.0.1:7001';
 //export const baseUrl = 'http://10.10.50.10:7001';
-//export const baseUrl = 'http://isp.yndk.cn:7001';
+//export const activitiUrl='http://192.168.50.20:7001';
+export const baseUrl = 'http://isp.yndk.cn:7001';
 
 
 export function request2(method, url, body) {
@@ -191,4 +193,33 @@ export const dateFtt=(fmt,date)=>
         if(new RegExp("("+ k +")").test(fmt))
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
     return fmt;
+};
+
+export const getPathById= (id, catalog, callback,idField) =>{
+    //定义变量保存当前结果路径
+    let temppath = [];
+    try {
+        function getNodePath(node) {
+            temppath.push(node);
+            //找到符合条件的节点，通过throw终止掉递归
+            if (node[idField]+'' === id+'') {
+                throw (new Error("got it!"));
+            }
+            if (node.children && node.children.length > 0) {
+                for (let i = 0; i < node.children.length; i++) {
+                    getNodePath(node.children[i]);
+                }
+                //当前节点的子节点遍历完依旧没找到，则删除路径中的该节点
+                temppath.pop();
+            }
+            else {
+                //找到叶子节点时，删除路径当中的该叶子节点
+                temppath.pop();
+            }
+        }
+        getNodePath(catalog);
+    }
+    catch (e) {
+        callback(temppath);
+    }
 };
