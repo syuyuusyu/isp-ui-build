@@ -146,7 +146,7 @@ constructor(){
                         :<span></span>
                     }
                     <Col span={4} style={{ textAlign: 'right'}} className="col-button">
-                      <RoleButton buttonId={42} onClick={store.manuSynInterfaces(store.metadataType)}/>
+                      <RoleButton buttonId={45} onClick={store.manuSynInterfaces(store.metadataType)}/>
                     </Col>
                   <Col span={4}  className="col-button">
                     <Button icon="search" onClick={store.loadMetada}>查询</Button>

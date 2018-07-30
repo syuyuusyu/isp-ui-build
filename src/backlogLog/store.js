@@ -38,24 +38,24 @@ export class BacklogLogStore{
         this.logTotal=json.length;
       }
     )
-  }
+  };
 
   @action
   getRefreshBacklogLog=async ()=>{
     this.initAllBacklogLog();
     notification.success({
       message:'刷新成功'})
-  }
+  };
 
   @action
   setLoginName=(loginName)=>{
     this.loginName=loginName;
-  }
+  };
 
   @action
   setBacklogStatus=(BacklogStatus)=>{
     this.backlogStatus=BacklogStatus;
-  }
+  };
 
   @action
   initAllLoginName=async ()=>{
@@ -64,7 +64,7 @@ export class BacklogLogStore{
         this.allLoginName=json;
       }
     );
-  }
+  };
 
   @action
   initBacklogStatus=async ()=>{
@@ -73,7 +73,7 @@ export class BacklogLogStore{
         this.allBacklogStatus=json;
       }
     );
-  }
+  };
 
   @action
   loadQuerySystemLog=async ()=>{
@@ -86,12 +86,20 @@ export class BacklogLogStore{
         this.logTotal=json.length;
       }
     );
-  }
+    if(json.length>=0){
+      notification.success({
+        message:'查询成功'})
+    }else{
+      notification.error({
+        message:'后台错误，请联系管理员'
+      })
+    }
+  };
 
   @action
   toggleBacklogSystemLog=()=>{
     this.detailBacklogLog=!this.detailBacklogLog;
-  }
+  };
 
   @action
   loadDetailBacklogLog=(record)=>{

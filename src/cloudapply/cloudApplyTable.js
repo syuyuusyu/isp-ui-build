@@ -18,7 +18,7 @@ class CloudApplyTable extends React.Component{
     componentDidMount(){
         this.props.rootStore.cloudStore.scheduleToken();
         this.props.rootStore.cloudStore.loadServerInfo();
-
+        this.props.rootStore.cloudStore.getS02urlLoginInfo();
         // this.timeoutid=setInterval(
         //     this.props.rootStore.cloudStore.loadServerInfo,
         //     1000*60
@@ -63,8 +63,15 @@ class CloudApplyTable extends React.Component{
             }
 
         },
-
-
+      {title:'获取登录信息',width:200,
+        render:()=>{
+        return(
+          <div>
+            <Button  onClick={this.props.rootStore.cloudStore.skipCloud} >跳转云平台</Button>
+          </div>
+        );
+        }
+      },
     ];
 
     render(){
