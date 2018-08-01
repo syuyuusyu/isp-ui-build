@@ -13,7 +13,7 @@ class RoleButton extends React.Component {
       <Button
         ghost={this.props.ghost}
         href={this.props.href}
-        htmlType={this.props.htmlType}
+        //htmlType={this.props.htmlType}
         icon={this.props.icon || this.createButton.icon}
         loading={this.props.loading}
         shape={this.props.shape}

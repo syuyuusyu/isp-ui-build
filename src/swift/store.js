@@ -343,7 +343,7 @@ export class SwiftStore{
         for(let i=1;i<=maxLength;i++){
             mertix[i]=mertix[i].concat(json.filter(d=>d.hierachy===i));
         }
-
+        console.log(mertix);
         temps=mertix[1];
         console.log(temps);
         this._compoent(temps,mertix,1,maxLength);
