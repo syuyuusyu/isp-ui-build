@@ -28,7 +28,7 @@ import {MonitorLogStore} from "./monitorLog";
 
 
 import {OracleUserStore} from "./oracleUser"
-import {SpecialtyMetdataStore} from "./specialtymetdata";
+import {SpecialtyMetdataStore} from "./specialtymetadata";
 
 
 
