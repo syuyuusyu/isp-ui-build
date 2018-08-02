@@ -103,7 +103,7 @@ export class DataSpaceStore {
         this.loading = true;
         this.loadingtest = '获取表空间列表...'
       });
-      //遍历数据库实例dataAcc.result(数组),根据实例id获取用户列表
+      //遍历数据库实例dataAcc.result(数组),根据实例id获取表空间列表
       for(let i of this.dataAcc.result){
         let json = await post(`${baseUrl}/invoke/data_space_list`, {id: i.id});
         if(json===undefined){
@@ -151,7 +151,7 @@ export class DataSpaceStore {
   afterClose=()=>{
     this.formDisplay='none';
     this.autoextensibleDisplay='none';
-  }
+  };
 
   @action
   loadDataSpace = async (id) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Table,Icon,Spin,Modal,Row,Col,Button} from 'antd';
 import {inject,observer} from 'mobx-react';
-import CloudForm from './cloudForm';
+//import CloudForm from './cloudForm';
 import { Link } from 'react-router-dom';
 //import {baseUrl, get} from "../util";
 import '../style.css';
@@ -79,7 +79,7 @@ class CloudApplyTable extends React.Component{
         //console.log(store.serverInfo.filter(d=>d));
         return (<div>
             <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
-                <Modal visible={store.formVisible}
+                {/*<Modal visible={store.formVisible}
                        width={400}
                        title={`新建云机`}
                        footer={null}
@@ -88,8 +88,8 @@ class CloudApplyTable extends React.Component{
                        destroyOnClose={true}
                 >
                     <CloudForm />
-                </Modal>
-                <Row gutter={2} className="table-head-row">
+                </Modal>*/}
+                <Row gutter={2} className="table-head-row">s
 
                     <Col span={4} style={{ textAlign: 'right' }} className="col-button">
                       <Icon type="profile" />&nbsp;&nbsp; <Link to="/applyCloud">新建云机</Link>

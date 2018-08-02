@@ -13,6 +13,7 @@ import UserRegisterForm from '../signUp/userRegisterForm';
 import ModifyUserForm from '../modifyUserInfo/modifyUserForm'
 import {UserTaskTable} from '../activiti';
 import CloudForm from '../cloudapply/cloudForm';
+import CreateOracleUserForm from '../oracleUser/createOracleUserForm';
 
 @inject('rootStore')
 @observer
@@ -122,6 +123,7 @@ class Main extends Component {
           <Route exact path="/home" component={Home} />
           <Route exact path="/modifyUser" component={ModifyUserForm} />
           <Route exact path="/applyCloud" component={CloudForm} />
+          <Route exact path="/createOracleUser" component={CreateOracleUserForm} />
           {
             this.props.rootStore.treeStore.currentRoleMenu
               .filter(d => d)

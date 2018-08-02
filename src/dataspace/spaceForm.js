@@ -205,6 +205,4 @@ class SpaceForm extends React.Component{
         );
     }
 }
-
-
 export default  Form.create()(SpaceForm);

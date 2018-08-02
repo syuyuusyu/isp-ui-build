@@ -42,7 +42,7 @@ class DataSpaceTable extends React.Component{
         const store=this.props.rootStore.dataSpaceStore;
         return (<div>
             <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
-                <Modal visible={store.formVisible}
+               {/* <Modal visible={store.formVisible}
                        width={800}
                        title={`新建表空间`}
                        footer={null}
@@ -52,7 +52,7 @@ class DataSpaceTable extends React.Component{
                        afterClose={this.props.rootStore.dataSpaceStore.afterClose}
                 >
                     <SpaceForm/>
-                </Modal>
+                </Modal>*/}
                 <Row gutter={2} className="table-head-row">
                     {/*<Col span={2} className="col-label">数据库实列:</Col>
                     <Col span={4} >
