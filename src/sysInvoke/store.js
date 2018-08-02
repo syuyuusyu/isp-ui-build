@@ -147,15 +147,20 @@ export class InvokeOpStore{
 
     @action
     synInterfaces=async (sysId)=>{
-      let interfaceName='';
       let interfaceConfig=await get(`${baseUrl}/interfaceConfig/1`);
+      let exist=false;//判断系统平台是否存在获取接口信息的接口
       for(let i of interfaceConfig){
         if(i.systemId===sysId){
-          interfaceName=i.interfaceName;
-          let json = await post(`${baseUrl}/invoke/${interfaceName}`);
+          exist=true;
+          let json = await post(`${baseUrl}/invoke/${i.interfaceName}`);
           let result=await post(`${baseUrl}/interfaces`,JSON.stringify(json));
           break;
         }
+      }
+      if(!exist){
+        notification.warning({
+          message:'该系统平台未提供同步接口信息的接口',
+        });
       }
     };
 
@@ -166,12 +171,12 @@ export class InvokeOpStore{
         this.loading = true;
         this.loadingMessage = '正在同步接口信息...';
       });
-      let interfaceName='';
       let interfaceConfig=await get(`${baseUrl}/interfaceConfig/1`);
+      let exist=false;//判断系统平台是否存在获取接口信息的接口
       for(let i of interfaceConfig){
         if(i.systemId===sysId){
-          interfaceName=i.interfaceName;
-          let json = await post(`${baseUrl}/invoke/${interfaceName}`);
+          exist=true;
+          let json = await post(`${baseUrl}/invoke/${i.interfaceName}`);
           if(json===undefined){
             notification.error({
               message:'获取接口信息失败,请尝试刷新页面或联系管理员',
@@ -206,6 +211,14 @@ export class InvokeOpStore{
           }
           break;
         }
+      }
+      if(!exist){
+        notification.error({
+          message:'手工同步失败，该系统平台未提供同步接口信息的接口',
+        });
+        runInAction(()=>{
+          this.loading=false;
+        })
       }
     }
   )
