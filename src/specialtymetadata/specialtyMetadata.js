@@ -9,7 +9,7 @@ const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 @inject('rootStore')
 @observer
-class SpecialtyMetdata extends Component{
+class SpecialtyMetadata extends Component{
 
     columns=[
         {dataIndex:'name',title:'编码',width:100},
@@ -121,4 +121,4 @@ class SubTable extends React.Component{
 
 }
 
-export default SpecialtyMetdata;
+export default SpecialtyMetadata;

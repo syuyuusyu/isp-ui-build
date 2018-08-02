@@ -111,7 +111,6 @@ class ConfForm extends React.Component{
             }else{
                 values.next=values.next.reduce((a,b)=>a+','+b);
             }
-            console.log(values);
             this.setState({saveVisible:true});
             let json=await post(`${baseUrl}/invokeInfo/save` , values);
             this.setState({savePercent:75});
