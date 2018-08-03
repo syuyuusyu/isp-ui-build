@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {inject, observer} from 'mobx-react';
+import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 import { Popover } from 'antd';
 import ReactEchartsCore from 'echarts-for-react/lib/core';
 import echarts from 'echarts/lib/echarts';
@@ -7,9 +7,9 @@ import 'echarts/lib/chart/pie';
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/component/title';
 import Gallery from '../components/Gallery';
-import {getPieOption, getSingleBarOption} from './tools';
+import { getPieOption, getSingleBarOption } from './tools';
 import './index.less';
-import {convertGigaFormat, baseUrl} from '../util';
+import { convertGigaFormat, baseUrl } from '../util';
 
 const colorIndex = ['#2deb7d', '#4c96df', '#f8c32f', '#ff294c', '#8e3ef2'];
 const colorGray = '#e8e8e8';
@@ -33,9 +33,9 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
       </div>
     );
     linksLess.push(
-        <div key={101} className={`link qilinqu`} data-href={`${baseUrl}/map`} onClick={eClick}>
-            <span className="text">地图服务示范应用</span>
-        </div>
+      <div key={101} className={`link qilinqu`} data-href={`${baseUrl}/map`} onClick={eClick}>
+        <span className="text">地图服务示范应用</span>
+      </div>
     );
   }
   for (let i = isAdmin ? 1 : 0; i < linkNum; i++) {
@@ -67,7 +67,7 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
 @inject('rootStore')
 @observer
 class Home extends Component {
-  componentWillMount () {
+  componentWillMount() {
     /* 请求数据加载 */
     this.props.rootStore.treeStore.loadCurrentRoleSys();
     this.isAdmin = 'admin' === JSON.parse(sessionStorage.getItem("user")).user_name;
@@ -75,7 +75,7 @@ class Home extends Component {
     this.props.rootStore.homeStore.loadBDData();
     this.props.rootStore.homeStore.loadSlicePics();
 
-    const {winWidth, winHeight, headerHeight, menuHeight, footerHeight} = this.props.rootStore.treeStore;
+    const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = this.props.rootStore.treeStore;
     const linksHeight = 60;
     const marginOut = 16;
     const marginInner = 16;
@@ -114,72 +114,72 @@ class Home extends Component {
       height: this.blockCSize.height - blockTitleHeight - marginInner * 2
     };
   }
-  linkClick (e) {
+  linkClick(e) {
     const href = e.currentTarget.getAttribute('data-href');
     window.open(href);
-    setTimeout(()=>{
-        this.props.rootStore.treeStore.loadCurrentRoleSys();
-    },5000)
+    setTimeout(() => {
+      this.props.rootStore.treeStore.loadCurrentRoleSys();
+    }, 5000)
   };
   render() {
-      const {
-        isAdmin, mainHeight, linksHeight, blockASize, blockBSize, blockCSize, pieSize, barSize, gallerySize
-      } = this;
-      /* 外链入口 */
-      const { currentRoleSys } = this.props.rootStore.treeStore;
-      const { linkNum, linksLess, linksMore } = getLinks(isAdmin, currentRoleSys, this.linkClick.bind(this));
-      /* 可视化数据 */
-      const { dataCM, dataBD, slicePics } = this.props.rootStore.homeStore;
-      return (
-          <div id="homePage" style={{ height: mainHeight }}>
-              <div id="linksBox" style={{ height: linksHeight }}>
-                {linksLess}
-                {linkNum > 5 ?
-                  <Popover placement="bottom" content={linksMore} trigger="click">
-                    <div className="link more">
-                      <span className="text">更多</span>
-                    </div>
-                  </Popover>
-                  : ''
-                }
+    const {
+      isAdmin, mainHeight, linksHeight, blockASize, blockBSize, blockCSize, pieSize, barSize, gallerySize
+    } = this;
+    /* 外链入口 */
+    const { currentRoleSys } = this.props.rootStore.treeStore;
+    const { linkNum, linksLess, linksMore } = getLinks(isAdmin, currentRoleSys, this.linkClick.bind(this));
+    /* 可视化数据 */
+    const { dataCM, dataBD, slicePics } = this.props.rootStore.homeStore;
+    return (
+      <div id="homePage" style={{ height: mainHeight }}>
+        <div id="linksBox" style={{ height: linksHeight }}>
+          {linksLess}
+          {linkNum > 5 ?
+            <Popover placement="bottom" content={linksMore} trigger="click">
+              <div className="link more">
+                <span className="text">更多</span>
               </div>
-              <div className="home-content">
-                  <div className="block left" style={blockASize}>
-                    <div className="title">云管理平台概况</div>
-                    <div className="pies-box">
-                      {dataCM[0].values ? dataCM.map((item, index) => (
-                        <div className="pie-container" key={index}>
-                          <ReactEchartsCore
-                            echarts={echarts}
-                            option={getPieOption({ total: item.values[0], used: item.values[1] }, [colorIndex[index], colorGray])}
-                            style={pieSize}
-                          />
-                          <div className="pie-info">
-                            <div className="name">{item.type}</div>
-                            <div className="num">{item.values[1]}{item.unit}&nbsp;(共{item.values[0]}{item.unit})</div>
-                          </div>
-                        </div>
-                      )) : ''}
-                    </div>
+            </Popover>
+            : ''
+          }
+        </div>
+        <div className="home-content">
+          <div className="block left" style={blockASize}>
+            <div className="title">云管理平台概况</div>
+            <div className="pies-box">
+              {dataCM[0].values ? dataCM.map((item, index) => (
+                <div className="pie-container" key={index}>
+                  <ReactEchartsCore
+                    echarts={echarts}
+                    option={getPieOption({ total: item.values[0], used: item.values[1] }, [colorIndex[index], colorGray])}
+                    style={pieSize}
+                  />
+                  <div className="pie-info">
+                    <div className="name">{item.type}</div>
+                    <div className="num">{item.values[1]}{item.unit}&nbsp;(共{item.values[0]}{item.unit})</div>
                   </div>
-                  <div className="block right" style={blockBSize}>
-                    <div className="title">大数据平台概况</div>
-                    <ReactEchartsCore
-                      echarts={echarts}
-                      option={getSingleBarOption(dataBD, colorIndex)}
-                      style={barSize}
-                    />
-                  </div>
-                  <div className="block left bottom" style={blockCSize}>
-                    <div className="title">切片服务</div>
-                    {slicePics ?
-                      <Gallery size={gallerySize} pictures={slicePics.filter(d=>d)} duration={4000}  />
-                      : ''
-                    }
-                  </div>
-              </div>
+                </div>
+              )) : ''}
+            </div>
           </div>
-      );
+          <div className="block right" style={blockBSize}>
+            <div className="title">大数据平台概况</div>
+            <ReactEchartsCore
+              echarts={echarts}
+              option={getSingleBarOption(dataBD, colorIndex)}
+              style={barSize}
+            />
+          </div>
+          <div className="block left bottom" style={blockCSize}>
+            <div className="title">切片服务</div>
+            {slicePics ?
+              <Gallery size={gallerySize} pictures={slicePics.filter(d => d)} duration={4000} />
+              : ''
+            }
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 
