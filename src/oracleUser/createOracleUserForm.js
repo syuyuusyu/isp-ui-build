@@ -82,6 +82,7 @@ class CreateOracleUserForm extends  React.Component{
     const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = treeStore;
     return(
       <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - headerHeight - menuHeight - footerHeight - 16 }}>
+        <div className="createOracle-box" >
         <Spin indicator={antIcon} tip={store.loadingInfo} spinning={store.loading}>
           <br/>
           <p style={{fontSize: '16px'}}>请选择数据库实例:</p>
@@ -135,7 +136,7 @@ class CreateOracleUserForm extends  React.Component{
             <p style={{fontSize: '16px'}}>请选择默认表空间:</p>
             {store.defaultSpaces.filter(d=>d).map(a => {
               return (
-                <Button key={a.tablespace_name} title={'表空间名:' + a.tablespace_name + ' 类型:' + a.type + ' 总大小:' + a.total + 'MB'+' 已使用:'+a.used} size="large"
+                <Button className="spaceselect-button" key={a.tablespace_name} title={'表空间名:' + a.tablespace_name + ' 类型:' + a.type + ' 总大小:' + a.total + 'MB'+' 已使用:'+a.used} size="large"
                         style={{border:store.defaultSpacesBorder[a.tablespace_name],color:store.defaultSpacesFontColor[a.tablespace_name]}} onClick={()=>{store.onClickDefaultSpaces(a.tablespace_name)}}
                 >{a.tablespace_name}</Button>
               );
@@ -145,19 +146,20 @@ class CreateOracleUserForm extends  React.Component{
             <p style={{fontSize: '16px'}}>请选择临时表空间:</p>
             {store.temporarySpaces.filter(d=>d).map(a => {
               return (
-                <Button key={a.tablespace_name} title={'表空间名:' + a.tablespace_name + ' 类型:' + a.type + ' 总大小:' + a.total + 'MB'+' 已使用:'+a.used} size="large"
+                <Button className="spaceselect-button" key={a.tablespace_name} title={'表空间名:' + a.tablespace_name + ' 类型:' + a.type + ' 总大小:' + a.total + 'MB'+' 已使用:'+a.used} size="large"
                         style={{border:store.temporarySpacesBorder[a.tablespace_name],color:store.temporarySpacesFontColor[a.tablespace_name]}} onClick={()=>{store.onClickTemporarySpaces(a.tablespace_name)}}
                 >{a.tablespace_name}</Button>
               );
             })}
           </Form>
-          <div>
+          <div className="createOracle-button">
             <br/>
             <br/>
             <Button icon="save" onClick={this.save} type="primary" htmlType="submit" style={{display:store.formDisplay}}>新建</Button>
             <Button icon="reload" href="/oracleUser" style={{display:store.formDisplay}}>返回</Button>
           </div>
         </Spin>
+        </div>
       </div>
     );
   }

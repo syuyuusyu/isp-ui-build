@@ -147,6 +147,9 @@ export class InvokeOpStore{
 
     @action
     synInterfaces=async (sysId)=>{
+        runInAction(()=>{
+          this.loading = false;
+        });
       let interfaceConfig=await get(`${baseUrl}/interfaceConfig/1`);
       let exist=false;//判断系统平台是否存在获取接口信息的接口
       for(let i of interfaceConfig){
@@ -157,7 +160,7 @@ export class InvokeOpStore{
           break;
         }
       }
-      if(!exist){
+      if(!exist&&sysId!==1){
         notification.warning({
           message:'该系统平台未提供同步接口信息的接口',
         });
@@ -167,6 +170,7 @@ export class InvokeOpStore{
   @action
   manuSynInterfaces=(sysId)=>(
     async ()=>{
+      if(sysId!==1){
       runInAction(()=>{
         this.loading = true;
         this.loadingMessage = '正在同步接口信息...';
@@ -220,7 +224,7 @@ export class InvokeOpStore{
           this.loading=false;
         })
       }
-    }
+    }}
   )
 
 }

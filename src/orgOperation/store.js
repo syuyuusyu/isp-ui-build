@@ -96,6 +96,7 @@ export class OrgStore{
   @action
   initRoot=async ()=>{
     let json=await get(`${baseUrl}/org/orgMenu/0`);
+    //console.log("json的值为:",json);
     //let json=await response.json();
     runInAction(()=>{
       this.treeData=json;
