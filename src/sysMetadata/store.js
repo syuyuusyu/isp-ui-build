@@ -108,22 +108,12 @@ export class SysmetadataStore{
 
     @action
     synMetadata=async (metadataType)=>{
-      if(metadataType==='1'){//系统元数据
         let interfaceConfig=await get(`${baseUrl}/interfaceConfig/2`);
         for(let i of interfaceConfig){
-          let json = await post(`${baseUrl}/invoke/${i.interfaceName}`);
+          let json = await post(`${baseUrl}/invoke/${i.interfaceName}`,{ip:i.url,path:i.path});
           let result=await post(`${baseUrl}/interfaces`,json);
           //console.log("result的值为:",result);
         }
-      }else if(metadataType==='2'){//专业元数据
-        let interfaceName='';
-        let interfaceConfig=await get(`${baseUrl}/interfaceConfig/3`);
-        for(let i of interfaceConfig){
-          let json = await post(`${baseUrl}/invoke/${i.interfaceName}`);
-          let result=await post(`${baseUrl}/interfaces`,json);
-          //console.log("result1的值为:",result);
-        }
-      }
     };
 
     @action
@@ -138,8 +128,8 @@ export class SysmetadataStore{
           let error2=[];//存同步元数据接口失败时哪些平台有问题
           let success=[];//存同步元数据接口成功时哪些平台成功
           for(let i of interfaceConfig){
-            let json = await post(`${baseUrl}/invoke/${i.interfaceName}`);
-            //console.log("json的值为:",i.systemName,json);
+            let json = await post(`${baseUrl}/invoke/${i.interfaceName}`,{ip:i.url,path:i.path});
+            console.log("json的值为:",i.systemName,json);
             if(json===undefined){
               error1.push(i.systemName);
             }else if(json.code===500){
@@ -166,7 +156,7 @@ export class SysmetadataStore{
               this.loading=false;
             })
           }else if(error1.length!==0&&error2.length!==0&&success.length!==0){
-            Modal.warning({title: `${error1.join(', ')}获取元数据失败;${error2.join(', ')}同步元数据失败;${success.join(', ')}同步元数据成功`},
+            Modal.warning({title: `${error1.join(', ')}获取元数据失败;/n${error2.join(', ')}同步元数据失败;/n${success.join(', ')}同步元数据成功`},
               );
             runInAction(()=>{
               this.loading=false;
