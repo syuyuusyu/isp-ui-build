@@ -29,6 +29,10 @@ class SysOperation extends Component {
                         return '推送用户';
                     case 6:
                         return '注销平台用户';
+                    case 7:
+                        return '服务资源目录';
+                    case 8:
+                        return '系统元数据';
                     default:
                         return '';
                 }
