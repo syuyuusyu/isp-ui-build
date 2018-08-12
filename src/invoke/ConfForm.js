@@ -247,7 +247,6 @@ class ConfForm extends React.Component{
                                         }
                                     }
                                     onChange={(editor, data, value) => {
-                                        console.log('onChange head');
                                         this.headMirrValue=value;
                                     }}
                                 />
@@ -266,7 +265,6 @@ class ConfForm extends React.Component{
                                         }
                                     }
                                     onChange={(editor, data, value) => {
-                                        console.log('onChange body');
                                         this.bodyMirrValue=value;
                                     }}
                                 />
