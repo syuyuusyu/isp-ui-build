@@ -58,6 +58,7 @@ export class DataSpaceStore {
   };
 
   showForm = () => {
+      console.log(1111);
     /*if(!this.selectedAccId){
         notification.error({
             message:'请先选择数据库实列'});
