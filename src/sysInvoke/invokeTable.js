@@ -74,6 +74,7 @@ class InvokeTable extends Component{
             sysId=parseInt(p1,10);
         });
         await this.props.rootStore.invokeOpStore.loadCurrentSys(sysId);
+        await this.props.rootStore.invokeOpStore.loadCurrentSysPath(sysId);
         await this.props.rootStore.invokeOpStore.loadOperationById(sysId);
         await this.props.rootStore.invokeOpStore.synInterfaces(sysId);
     }
