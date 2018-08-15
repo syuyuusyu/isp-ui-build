@@ -66,13 +66,13 @@ export const log = (target, name, descriptor) => {
 };
 
 //export const activitiUrl='http://192.168.50.20:5002';
-//export const activitiUrl='http://127.0.0.1:5002';
-export const activitiUrl='http://10.10.50.10:5002';
+export const activitiUrl='http://127.0.0.1:5002';
+//export const activitiUrl='http://10.10.50.10:5002';
 
-//export const baseUrl = 'http://127.0.0.1:7001';
+export const baseUrl = 'http://127.0.0.1:7001';
 //export const baseUrl = 'http://10.10.50.10:7001';
 //export const activitiUrl='http://192.168.50.20:7001';
-export const baseUrl = 'http://isp.yndk.cn:7001';
+//export const baseUrl = 'http://isp.yndk.cn:7001';
 
 
 export function request2(method, url, body) {
@@ -111,9 +111,11 @@ export function request2(method, url, body) {
 
 export function request(method, url, body) {
     method = method.toUpperCase();
+    let params;
     if (method === 'GET') {
         // fetch的GET不允许有body，参数只能放在url中
-        body = undefined;
+        params = body;
+        body=undefined;
     } else {
         body = body //&& JSON.stringify(body);
     }
@@ -125,7 +127,8 @@ export function request(method, url, body) {
             'Accept': 'application/json',
             'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
         },
-        data:body
+        data:body,
+        params:params
     }).then((res) => {
         if (res.status === 401) {
             console.log('token失效!!');
@@ -150,7 +153,7 @@ export function request(method, url, body) {
     });
 }
 
-export const get = url => request('GET', url);
+export const get = (url,body) => request('GET', url,body);
 export const post = (url, body) => request('POST', url, body);
 export const put = (url, body) => request('PUT', url, body);
 export const del = (url, body) => request('DELETE', url, body);
@@ -223,6 +226,7 @@ export const getPathById= (id, catalog, callback,idField) =>{
         callback(temppath);
     }
 };
+
 
 
 
