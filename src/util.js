@@ -65,6 +65,7 @@ export const log = (target, name, descriptor) => {
     return descriptor;
 };
 
+
 //export const activitiUrl='http://192.168.50.20:5002';
 //export const activitiUrl='http://127.0.0.1:5002';
 export const activitiUrl='http://10.10.50.10:5002';
