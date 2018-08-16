@@ -25,10 +25,10 @@ class UserTable extends React.Component{
                   <Col span={2} offset={0} style={{lineHeight:'32px'}}>登录名称:</Col>
                   <Col span={3} offset={1}>
                     <Select style={{width:150}}  onChange={store.setSelectUser}>
-                      <Option  value={''} style={{color:'white'}}>&nbsp;</Option>
+                      <Select.Option  value={''} style={{color:'white'}}>&nbsp;</Select.Option>
                       {
                         store.usersBack.filter(d=>d).map(s=>
-                          <Option key={s.id} value={s.user_name}>{s.user_name}</Option>)
+                          <Select.Option key={s.id} value={s.user_name}>{s.user_name}</Select.Option>)
                       }
                     </Select>
                   </Col>
