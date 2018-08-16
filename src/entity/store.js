@@ -18,6 +18,8 @@ export class EntityStore {
 
     isFormUpdate=false;
 
+    originalColumns=[];
+
     //----------------------
     //entityTable
     allDictionary=[];
@@ -28,6 +30,7 @@ export class EntityStore {
     @action
     loadEntitys=async ()=> {
         get(`${baseUrl}/entity/allDictionary`).then(json=>this.allDictionary=json);
+        get(`${baseUrl}/entity/originalColumns`).then(json=>this.originalColumns=json);
         let json = await get(`${baseUrl}/entity/entitys`);
         runInAction(()=>{
             this.entitys=json;
@@ -81,10 +84,37 @@ export class EntityStore {
         this.currentColumn=record;
         this.isFormUpdate=isUpdate;
         this.toggleColumnFormVisible();
-    })
+    });
 
 
+    //entityForm
+    //-------------------------
+    @observable
+    tableNames=[];
 
+    @observable
+    entityFormVisible=false;
+
+
+    @action
+    toggleEntityFormVisible=()=>{
+        this.entityFormVisible=!this.entityFormVisible;
+    };
+
+    @action
+    loadTableNames=async()=>{
+        let json=await get(`${baseUrl}/entity/tableNames`);
+
+        runInAction(()=>{
+            this.tableNames=json.filter(_=>this.entitys.filter(o=>o.tableName===_.tableName).length===0);
+        });
+    };
+
+    showEntityForm=(isUpdate,record)=>action(()=>{
+        this.currentEntity=record;
+        this.isFormUpdate=isUpdate;
+        this.toggleEntityFormVisible();
+    });
 
 
 

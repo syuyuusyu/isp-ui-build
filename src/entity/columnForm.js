@@ -14,7 +14,6 @@ import '../style.css';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-const {TextArea} = Input;
 
 
 //id,entityId,entityName,
@@ -49,12 +48,12 @@ class ColumnForm extends React.Component {
         const store = this.props.rootStore.entityStore;
         this.props.form.validateFields(async (err, values) => {
             if (err) return;
-            let json = await post(`${baseUrl}/entity/saveColumn`, {
+            let json = await post(`${baseUrl}/entity/saveConfig/entity_column/id`, {
                 ...values,
                 render: this.funMirrValue,
                 entityId: store.currentEntity.id,
                 id: store.currentColumn ? store.currentColumn.id : null,
-                entityName: store.currentEntity.tableName
+                tableName: store.currentEntity.tableName
             });
             if (json.success) {
                 notification.info({

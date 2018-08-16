@@ -60,7 +60,7 @@ class ColumnTable extends Component {
     ];
 
     delete=(id)=>(async ()=>{
-        let json=await get(`${baseUrl}/entity/deleteColumn/${id}`);
+        let json=await get(`${baseUrl}/entity/deleteConfig/entity_column/id/${id}`);
         if(json.success){
             notification.info({
                 message: '删除成功'

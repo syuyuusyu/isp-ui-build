@@ -1,5 +1,60 @@
 import axios from 'axios';
 
+
+const toString=Object.prototype.toString;
+const isFunction=function(v){
+    return toString.call(v)=="[object Function]";
+}
+
+// Array.prototype.indexOf = Array.prototype.indexOf ? Array.prototype.indexOf
+//     : function(o, from)  {
+//         from = from || 0;
+//         var len = this.length;
+//         from += (from < 0) ? len : 0;
+//         for (; from < len; from++) {
+//             console.log(this[from]);
+//             console.log(o);
+//             console.log(this[from] === o);
+//             if (this[from] === o)
+//                 return from;
+//         }
+//         return -1;
+//     };
+
+Array.prototype.remove = Array.prototype.remove ? Array.prototype.remove
+    : function(o)  {
+        let index = this.indexOf(o);
+        if (index != -1) {
+            this.splice(index, 1);
+        }
+    };
+
+Function.prototype.createInterceptor=Function.prototype.createInterceptor?Function.prototype.createInterceptor
+    :function(fn,scope){
+        var method=this;
+        return !isFunction(fn)?
+            this:
+            function(){
+                var me=this,
+                    arg=arguments;
+                return (fn.apply(scope||me||global,arg)!==false)?
+                    method.apply(me||global,arg):
+                    null;
+            }
+    };
+
+Function.prototype.replaceArguments=Function.prototype.replaceArguments?Function.prototype.replaceArguments
+    :function(fn){
+        var method=this;
+        return !isFunction(fn)?
+            this:
+            function(){
+                var me=this,
+                    arg=arguments;
+                return method.apply(me||global,fn.apply(null,arg));
+            }
+    };
+
 export const format = (txt, compress) => {
 
     var indentChar = '    ';

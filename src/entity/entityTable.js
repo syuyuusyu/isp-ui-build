@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import { Divider, Popconfirm, Table, Modal, Row, Col,Button,Drawer,Select} from 'antd';
+import { Divider, Popconfirm, Table, Modal, Row, Col,Button,Drawer,Select,notification} from 'antd';
 import {inject, observer} from 'mobx-react';
-import {dateFtt} from '../util';
+import {baseUrl, dateFtt, get} from '../util';
 import ColumnTable from './columnTable';
+import EntityForm from './entityForm';
 
 const Option=Select.Option;
 
@@ -22,7 +23,17 @@ class EntityTable extends Component {
         {dataIndex: 'entityCode', title: '编码', width: 80,},
         {dataIndex: 'entityName', title: '名称', width: 100,},
         {dataIndex: 'idField', title: 'ID字段', width: 80,},
-        {dataIndex: 'parentId', title: '父类实体', width: 80,},
+        {
+            dataIndex: 'parentEntityId', title: '父实体表名', width: 80,
+            render:(text)=>{
+                if(text){
+                    return this.props.rootStore.entityStore.entitys.filter(o=>o.id==text)[0]['tableName'];
+                }else{
+                    return text;
+                }
+
+            }
+        },
         {dataIndex: 'pidField', title: '父ID字段', width: 80,},
         {
             title: '操作',
@@ -37,10 +48,11 @@ class EntityTable extends Component {
                         <Divider type="vertical"/>
                         <Button icon="play-circle-o" onClick={null} size='small'>SQL配置</Button>
                         <Divider type="vertical"/>
-                        <Button icon="edit" onClick={null} size='small'>修改</Button>
+                        <Button icon="edit"
+                                onClick={this.props.rootStore.entityStore.showEntityForm(true,record)} size='small'>修改</Button>
                         <Divider type="vertical"/>
-                        <Popconfirm onConfirm={null} title="确认删除?">
-                            <Button icon="edit" onClick={null} size='small'>删除</Button>
+                        <Popconfirm onConfirm={this.delete(record.id)} title="确认删除?">
+                            <Button icon="delete" onClick={null} size='small'>删除</Button>
                         </Popconfirm>
                     </span>
                 )
@@ -48,6 +60,19 @@ class EntityTable extends Component {
         }
     ];
 
+    delete=(id)=>(async ()=>{
+        let json=await get(`${baseUrl}/entity/deleteConfig/entity/id/${id}`);
+        if(json.success){
+            notification.info({
+                message: '删除成功'
+            });
+        }else{
+            notification.error({
+                message: '删除失败'
+            });
+        }
+        this.props.rootStore.entityStore.loadEntitys();
+    });
 
 
     componentDidMount() {
@@ -65,12 +90,12 @@ class EntityTable extends Component {
             <div>
                 <Row gutter={2} className="table-head-row">
                     <Col span={4} style={{ textAlign: 'right' }} className="col-button">
-                            <Button icon="plus-circle-o">新建</Button>
+                            <Button icon="plus-circle-o" onClick={store.showEntityForm(false,null)}>新建</Button>
                     </Col>
 
                 </Row>
                 <Drawer
-                    title={store.currentEntity.entityName}
+                    title={store.currentEntity?store.currentEntity.entityName:''}
                     placement="right"
                     width={1020}
                     zIndex={999}
@@ -82,6 +107,20 @@ class EntityTable extends Component {
 
                 >
                     <ColumnTable/>
+                </Drawer>
+                <Drawer
+                    title={store.currentEntity?store.currentEntity.entityName:''}
+                    placement="right"
+                    width={600}
+                    zIndex={999}
+                    closable={true}
+                    maskClosable={false}
+                    destroyOnClose={true}
+                    onClose={store.toggleEntityFormVisible}
+                    visible={store.entityFormVisible}
+
+                >
+                    <EntityForm/>
                 </Drawer>
                 <Table columns={this.columns}
                        rowKey={record => record.id}
