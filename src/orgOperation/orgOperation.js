@@ -48,14 +48,14 @@ class OrganizationConf extends Component{
       }
       return <TreeNode title={title} key={item.id} dataRef={item} isLeaf={item.is_leaf==='1'?true:false} />;
     });
-  }
+  };
 
 
   render(){
     const { winWidth, winHeight } = this.props.rootStore.treeStore;
     return(
       <Layout>
-        <Sider width={winWidth - 1300} style={{ paddingRight: '16px', background: '#fff' }}>
+        <Sider width={winWidth - 1150} style={{ paddingRight: '16px', background: '#fff' }}>
           <Tree loadData={this.props.rootStore.orgOperationStore.onLoadData} onSelect={this.props.rootStore.orgOperationStore.treeSelect}
           >
             {this.renderTreeNodes(this.props.rootStore.orgOperationStore.treeData)}

@@ -124,7 +124,6 @@ export class UserRoleStore {
     runInAction(() => {
       this.targetKeys = json.map(r => r.id);
     });
-    console.log("loadCurrentUserRole中targetKeys的值为:",this.targetKeys.filter(d=>d));
   };
 
 
