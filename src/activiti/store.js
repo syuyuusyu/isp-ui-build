@@ -52,7 +52,7 @@ export class ActivitiStore {
             });
         if (startResult.id) {
             notification.info({
-                message: `流程启动成功,请在代办信息中查看`
+                message: `流程启动成功,请在待办信息中查看`
             });
             this.loadCurrentTask();
         } else {

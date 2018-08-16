@@ -14,7 +14,7 @@ class UserTaskTable extends Component {
 
     columns = [
         {
-            dataIndex: 'name', title: '代办事项', width: 200
+            dataIndex: 'name', title: '待办事项', width: 200
         },
         {dataIndex: 'owner', title: '申请人', width: 200,},
         {
