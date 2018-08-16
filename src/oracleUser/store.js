@@ -25,6 +25,9 @@ export class OracleUserStore {
   allOracleUser=[];
 
   @observable
+  allOracleUserBack=[];
+
+  @observable
   formVisible = false;
 
   @observable
@@ -60,6 +63,9 @@ export class OracleUserStore {
   @observable
   temporarySpacesFontColor={};
 
+  @observable
+  queryOracleUser='';
+
 
   @action
   loadDataAcc = async () =>{
@@ -68,6 +74,7 @@ export class OracleUserStore {
       this.loadingInfo = '获取数据库实例...'
     });
     let json = await post(`${baseUrl}/invoke/data_oracle_acc`);
+
     if(json===undefined){
       notification.error({
         message: '连接大数据平台失败,请尝试刷新页面或联系管理员'
@@ -117,7 +124,9 @@ export class OracleUserStore {
         //将实例名称加入每个用户信息中
         for(let j of this.oracleUser){
           j.instanceName=i.name;
-          runInAction(()=>{this.allOracleUser.push(j);})
+          runInAction(()=>{this.allOracleUser.push(j);
+            this.allOracleUserBack=this.allOracleUser;
+          })
         }
       }else {
         notification.error({
@@ -297,14 +306,14 @@ export class OracleUserStore {
       return notification.error({
         message:'请选择临时表空间'});
     }
-    /*let json=await post(`${baseUrl}/invoke/data_oracle_create_user`,{
+    let json=await post(`${baseUrl}/invoke/data_oracle_create_user`,{
       username:values.name,
       password:values.password,
-      default_tablespace:this.defaultSpacesName,
-      temporary_tablespace:this.temporarySpacesName,
+      defaultTbs:this.defaultSpacesName,
+      tempTbs:this.temporarySpacesName,
       id:this.selectedAccId
-    });*/
-    let json={"success":true};
+    });
+    console.log("json的值为:",json);
     if(json===undefined){
       notification.error({
         message: '连接大数据平台失败,请尝试刷新页面或联系管理员'
@@ -324,6 +333,27 @@ export class OracleUserStore {
       this.loading = false;
       this.loadingInfo='';
     });
+  }
+
+
+  @action
+  setQueryOracleUser=(queryOracleUser)=>{
+    this.queryOracleUser=queryOracleUser;
+  }
+
+  @action
+  loadQueryOracleUser=()=>{
+    if(this.queryOracleUser===''){
+      this.allOracleUser=this.allOracleUserBack;
+    }else{
+      this.allOracleUser=this.allOracleUserBack;
+      for(let i of this.allOracleUser){
+        if(i.username===this.queryOracleUser){
+          this.allOracleUser=[];
+          this.allOracleUser.push(i);
+        }
+      }
+    }
   }
 
 }

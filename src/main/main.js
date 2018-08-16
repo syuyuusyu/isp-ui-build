@@ -78,7 +78,7 @@ class Main extends Component {
             <Route path="/login" component={Login} />
             <Redirect path="/" to="/login" />
           </Switch>
-          <footer>© 2018 云南地质大数据服务平台</footer>
+          <footer>© 云南省地质矿产勘查开发局</footer>
         </div>
       );
     }
@@ -154,7 +154,7 @@ class Main extends Component {
               })
           }
         </Switch>
-        <footer>CopyRight © 云南省地质矿产勘查开发局</footer>
+        <footer>© 云南省地质矿产勘查开发局</footer>
         <Modal visible={this.props.rootStore.notificationStore.applyPlatformVisible}
           width={600}
           title={`申请平台访问权限`}
