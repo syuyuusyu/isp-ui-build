@@ -24,7 +24,6 @@ import {BacklogLogStore} from "./backlogLog/store";
 import {SignUpStore} from "./signUp/store";
 import {ActivitiStore} from "./activiti";
 import {MenuManageStore} from "./menuManage";
-import {MonitorLogStore} from "./monitorLog";
 
 
 import {OracleUserStore} from "./oracleUser"
@@ -75,7 +74,6 @@ export default class RootStore {
 
         this.menuManageStore=new MenuManageStore(this);
 
-        this.monitorLogStore=new MonitorLogStore(this);
         this.oracleUserStore=new OracleUserStore(this);
         this.specialtyMetdataStore=new SpecialtyMetdataStore(this);
         this.entityStore=new EntityStore(this);

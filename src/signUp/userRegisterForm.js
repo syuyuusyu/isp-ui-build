@@ -166,11 +166,11 @@ class UserRegisterForm extends Component {
       <div className="sign">
         <Form layout="horizontal" className="sign-content">
             <h2 className="sign-title">注册</h2>
-            <FormItem label="账号" {...formItemLayout} >
+            <FormItem label="登录名称" {...formItemLayout} >
               {
                 getFieldDecorator('userName', {
-                  rules: [{required: true, message: '账号不能为空'},
-                    {pattern:'^[a-zA-Z0-9_]{1,}$',message:'账号只能包含字母数字下划线'},
+                  rules: [{required: true, message: '登录名称不能为空'},
+                    {pattern:'^[a-zA-Z0-9_]{1,}$',message:'登录名称只能包含字母数字下划线'},
                   ],
                   validateTrigger: 'onBlur'
                 })(

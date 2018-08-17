@@ -30,6 +30,9 @@ export class UserRoleStore {
   users = [];
 
   @observable
+  usersBack=[];
+
+  @observable
   userType = '1';
 
   @observable
@@ -57,6 +60,17 @@ export class UserRoleStore {
         return  newOrgNameArray;
       }
     },
+    {dataIndex: 'update_date', title: '创建时间',sorter:(a,b)=>Date.parse(b.update_date)-Date.parse(a.update_date), width: 100,render:(operateDate)=>{
+        const logDate=new Date(operateDate);
+        const Y=logDate.getFullYear()+'-';
+        const M=(logDate.getMonth()+1 < 10 ? '0'+(logDate.getMonth()+1) : logDate.getMonth()+1) + '-';
+        const D=(logDate.getDate()<10? '0'+(logDate.getDate()):logDate.getDate())+' ';
+        const h=(logDate.getHours()<10? '0'+(logDate.getHours()):logDate.getHours())+':';
+        const m=(logDate.getMinutes()<10? '0'+(logDate.getMinutes()):logDate.getMinutes())+':';
+        const s=(logDate.getSeconds()<10? '0'+(logDate.getSeconds()):logDate.getSeconds());
+        const date=Y+M+D+h+m+s;
+        return date;
+      }},
     {
       title: '操作',
       width: 200,
@@ -80,6 +94,9 @@ export class UserRoleStore {
     }
   ];
 
+  @observable
+  selectUser='';
+
   @action
   loadUserRoleConfRoles = async () => {
     //userRoleConfRoles
@@ -97,6 +114,7 @@ export class UserRoleStore {
     let json = await get(`${baseUrl}/user/allUsers`);
     runInAction(() => {
       this.users = json;
+      this.usersBack=json;
     });
   };
 
@@ -106,7 +124,6 @@ export class UserRoleStore {
     runInAction(() => {
       this.targetKeys = json.map(r => r.id);
     });
-    console.log("loadCurrentUserRole中targetKeys的值为:",this.targetKeys.filter(d=>d));
   };
 
 
@@ -195,5 +212,18 @@ export class UserRoleStore {
   afterClose=()=>{
     this.selectedKeys=[];
   }
+
+  @action
+  setSelectUser=(selectUser)=>{
+    this.selectUser=selectUser;
+  };
+
+  @action
+  queryUser=async()=>{
+    let json=await  post(`${baseUrl}/user/queryUser`,{selectUser:this.selectUser});
+    runInAction(()=>{
+      this.users=json;
+    })
+  };
 
 }

@@ -78,7 +78,7 @@ class Main extends Component {
             <Route path="/login" component={Login} />
             <Redirect path="/" to="/login" />
           </Switch>
-          <footer>© 2018 云南地质大数据服务平台</footer>
+          <footer>© 云南省地质矿产勘查开发局</footer>
         </div>
       );
     }
@@ -154,7 +154,7 @@ class Main extends Component {
               })
           }
         </Switch>
-        <footer>CopyRight © 云南省地质矿产勘查开发局</footer>
+        <footer>© 云南省地质矿产勘查开发局</footer>
         <Modal visible={this.props.rootStore.notificationStore.applyPlatformVisible}
           width={600}
           title={`申请平台访问权限`}
@@ -184,6 +184,19 @@ class Main extends Component {
                  destroyOnClose={true}
           >
               <UserTaskTable />
+          </Modal>
+          <Modal visible={this.props.rootStore.authorityStore.alertMessageVisible}
+                 width={700}
+                 title={`welcome`}
+                 footer={null}
+                 onCancel={this.props.rootStore.authorityStore.toggleAlertMessageVisible}
+                 maskClosable={false}
+                 destroyOnClose={true}
+          >
+              <div>
+                  欢迎各位使用综合集成平台,由于平台刚刚投入使用,难免存在各种bug,
+                  如果大家在使用中发现各种问题,请把问题截图和对应的说明发送到邮箱syuyuusyu@gmail.com,我们会尽快处理,谢谢大家!
+              </div>
           </Modal>
       </div>
     );

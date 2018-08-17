@@ -156,7 +156,7 @@ export class SysmetadataStore{
               this.loading=false;
             })
           }else if(error1.length!==0&&error2.length!==0&&success.length!==0){
-            Modal.warning({title: `${error1.join(', ')}获取元数据失败;/n${error2.join(', ')}同步元数据失败;/n${success.join(', ')}同步元数据成功`},
+            Modal.warning({title: `${error1.join(', ')}获取元数据失败;${error2.join(', ')}同步元数据失败;${success.join(', ')}同步元数据成功`},
               );
             runInAction(()=>{
               this.loading=false;
