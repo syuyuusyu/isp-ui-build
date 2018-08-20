@@ -4,6 +4,7 @@ import {inject, observer} from 'mobx-react';
 import {baseUrl, dateFtt, get} from '../util';
 import ColumnTable from './columnTable';
 import EntityForm from './entityForm';
+import DictionaryTable from './dictionaryTable';
 
 const Option=Select.Option;
 
@@ -77,6 +78,7 @@ class EntityTable extends Component {
 
     componentDidMount() {
         this.props.rootStore.entityStore.loadEntitys();
+        this.props.rootStore.entityStore.loadallDictionary();
     }
 
     componentWillUpdate(){
@@ -89,8 +91,11 @@ class EntityTable extends Component {
         return (
             <div>
                 <Row gutter={2} className="table-head-row">
-                    <Col span={4} style={{ textAlign: 'right' }} className="col-button">
-                            <Button icon="plus-circle-o" onClick={store.showEntityForm(false,null)}>新建</Button>
+                    <Col span={2} style={{ textAlign: 'right' }} className="col-button">
+                            <Button icon="plus-circle-o" onClick={store.showEntityForm(false,null)}>实体新建</Button>
+                    </Col>
+                    <Col span={2} style={{ textAlign: 'right' }} className="col-button">
+                        <Button icon="profile" onClick={store.toggleDictionaryTableVisible}>字典配置</Button>
                     </Col>
 
                 </Row>
@@ -121,6 +126,20 @@ class EntityTable extends Component {
 
                 >
                     <EntityForm/>
+                </Drawer>
+                <Drawer
+                    title={'字典配置'}
+                    placement="right"
+                    width={600}
+                    zIndex={999}
+                    closable={true}
+                    maskClosable={true}
+                    destroyOnClose={true}
+                    onClose={store.toggleDictionaryTableVisible}
+                    visible={store.dictionaryTableVisible}
+
+                >
+                    <DictionaryTable/>
                 </Drawer>
                 <Table columns={this.columns}
                        rowKey={record => record.id}

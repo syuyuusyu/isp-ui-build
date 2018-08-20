@@ -168,7 +168,7 @@ class ColumnForm extends React.Component {
                                     <Select>
                                         <Option value={null}>&nbsp;</Option>
                                         {
-                                            store.allDictionary.map(o =>
+                                            store.allDictionary.filter(d=>d).map(o =>
                                                 <Option key={o.groupId} value={o.groupId}>{o.groupName}</Option>)
                                         }
                                     </Select>

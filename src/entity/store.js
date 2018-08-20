@@ -22,6 +22,7 @@ export class EntityStore {
 
     //----------------------
     //entityTable
+    @observable
     allDictionary=[];
 
     @observable
@@ -29,7 +30,6 @@ export class EntityStore {
 
     @action
     loadEntitys=async ()=> {
-        get(`${baseUrl}/entity/allDictionary`).then(json=>this.allDictionary=json);
         get(`${baseUrl}/entity/originalColumns`).then(json=>this.originalColumns=json);
         let json = await get(`${baseUrl}/entity/entitys`);
         runInAction(()=>{
@@ -116,6 +116,56 @@ export class EntityStore {
         this.toggleEntityFormVisible();
     });
 
+    //dictionaryTable
+    //-------------------------
+    @observable
+    addDicVisible=false;
+
+    @observable
+    addDicFieldVisible=false;
+
+    selectDic={};
+
+    selectDicField={};
+
+    @action
+    toggleAddDicVisible=()=>{
+        this.addDicVisible=!this.addDicVisible;
+    };
+
+    @action
+    toggleAddDicFieldVisible=()=>{
+        this.addDicFieldVisible=!this.addDicFieldVisible;
+    };
+
+    showAddDicForm=(record,isUpdate)=>{
+       this.selectDic=record;
+       this.isFormUpdate=isUpdate;
+       this.toggleAddDicVisible();
+    };
+
+    showAddDicFieldForm=(record,isUpdate)=>{
+        this.selectDicField=record;
+        this.isFormUpdate=isUpdate;
+        this.toggleAddDicFieldVisible();
+    };
+
+
+    @action
+    loadallDictionary=async ()=>{
+        let json=await get(`${baseUrl}/entity/allDictionary`);
+        runInAction(()=>{
+            this.allDictionary=json;
+        });
+    };
+
+    @observable
+    dictionaryTableVisible=false;
+
+    @action
+    toggleDictionaryTableVisible=()=>{
+        this.dictionaryTableVisible=!this.dictionaryTableVisible;
+    };
 
 
 }
