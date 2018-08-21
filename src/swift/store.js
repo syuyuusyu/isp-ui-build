@@ -127,14 +127,14 @@ export class SwiftStore{
             notification.error({
                 message:'单个文件不能大于1G'
             });
-            this.uploadRef.props.props.onRemove();
+            this.uploadRef.props.onRemove();
             return false;
         }
         if((this.total+file.size)>1024*1024*1024*10){
             notification.error({
                 message:'网盘总量为10G,无法上传该文件,请先清除不必要文件'
             });
-            this.uploadRef.props.props.onRemove();
+            this.uploadRef.props.onRemove();
             return false;
         }
         this.fileList=[...this.fileList,file];
@@ -318,7 +318,6 @@ export class SwiftStore{
             this.loadingtest='请求网盘信息...';
         });
         let json=await get(`${baseUrl}/swift/getObject/${JSON.parse(sessionStorage.getItem("user")).user_name}`);
-        console.log(json);
         if(json.status){
             notification.error({
                 message:'云平台权限认证失败,请尝试刷新页面或联系管理员',
@@ -343,9 +342,7 @@ export class SwiftStore{
         for(let i=1;i<=maxLength;i++){
             mertix[i]=mertix[i].concat(json.filter(d=>d.hierachy===i));
         }
-        console.log(mertix);
         temps=mertix[1];
-        console.log(temps);
         this._compoent(temps,mertix,1,maxLength);
         runInAction(()=>{
             this.rootDir=temps?temps:[];

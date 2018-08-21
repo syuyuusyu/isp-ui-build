@@ -102,7 +102,7 @@ class EntityTable extends Component {
                 <Drawer
                     title={store.currentEntity?store.currentEntity.entityName:''}
                     placement="right"
-                    width={1020}
+                    width={1220}
                     zIndex={999}
                     closable={true}
                     maskClosable={false}
@@ -130,7 +130,7 @@ class EntityTable extends Component {
                 <Drawer
                     title={'字典配置'}
                     placement="right"
-                    width={600}
+                    width={800}
                     zIndex={999}
                     closable={true}
                     maskClosable={true}

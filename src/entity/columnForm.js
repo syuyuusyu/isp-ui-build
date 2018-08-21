@@ -25,13 +25,26 @@ class ColumnForm extends React.Component {
 
     funMirrValue;
 
+    foreignKeyColumn;
+
     state={
         foreignColumns:[]
     };
 
     foreignEntitySelected=async (entityId)=>{
-        let json=await get(`${baseUrl}/entity/columns/${entityId}`);
-        this.setState({foreignColumns:json});
+        const store = this.props.rootStore.entityStore;
+        store.loadForeignColumns(entityId);
+        if(store.currentColumn && store.currentColumn.foreignKeyId && entityId===this.foreignKeyColumn.entityId){
+            this.props.form.setFieldsValue({
+                foreignKeyId:store.currentColumn.foreignKeyId,
+                foreignKeyNameId:store.currentColumn.foreignKeyNameId,
+            });
+        }else{
+            this.props.form.setFieldsValue({
+                foreignKeyId:null,
+                foreignKeyNameId:null,
+            });
+        }
     };
 
 
@@ -48,6 +61,7 @@ class ColumnForm extends React.Component {
         const store = this.props.rootStore.entityStore;
         this.props.form.validateFields(async (err, values) => {
             if (err) return;
+            delete values.foreignEntity;
             let json = await post(`${baseUrl}/entity/saveConfig/entity_column/id`, {
                 ...values,
                 render: this.funMirrValue,
@@ -73,8 +87,30 @@ class ColumnForm extends React.Component {
         const store = this.props.rootStore.entityStore;
         if (store.currentColumn) {
             this.props.form.setFieldsValue(
-                store.currentColumn
+                {
+                    columnIndex:store.currentColumn.columnIndex,
+                    code:store.currentColumn.code,
+                    columnType:store.currentColumn.columnType,
+                    hidden:store.currentColumn.hidden,
+                    columnName:store.currentColumn.columnName,
+                    text:store.currentColumn.text,
+                    width:store.currentColumn.width,
+                    dicGroupId:store.currentColumn.dicGroupId,
+                }
             );
+            if(store.currentColumn.foreignKeyId){
+                get(`${baseUrl}/entity/column/${store.currentColumn.foreignKeyId}`)
+                    .then(column=>{
+                        this.foreignKeyColumn=column;
+                        this.props.form.setFieldsValue({
+                            foreignEntity:column.entityId,
+                            foreignKeyId:store.currentColumn.foreignKeyId,
+                            foreignKeyNameId:store.currentColumn.foreignKeyNameId,
+                        });
+                        this.foreignEntitySelected(column.entityId);
+                    });
+
+            }
         }
     }
 
@@ -116,7 +152,7 @@ class ColumnForm extends React.Component {
                         <Col span={6}>
                             <FormItem label="是否隐藏">
                                 {getFieldDecorator('hidden', {
-                                    initialValue: '0'
+
                                 })(
                                     <Select>
                                         <Option value="0">显示</Option>
@@ -137,7 +173,12 @@ class ColumnForm extends React.Component {
                                     }],
                                     validateTrigger: 'onBlur'
                                 })(
-                                    <Input placeholder="输入列名"/>
+                                    <Select disabled={store.isFormUpdate}>
+                                        {
+                                            store.originalColumns.filter(d=>d.table_name===store.currentColumns[0].tableName)
+                                                .map((d,index)=><Option key={index} value={d.column_name}>{d.column_name}</Option>)
+                                        }
+                                    </Select>
                                 )}
                             </FormItem>
                         </Col>
@@ -179,13 +220,15 @@ class ColumnForm extends React.Component {
                     <Row gutter={24}>
                         <Col span={6}>
                             <FormItem label="外键对应实体">
-                                <Select onSelect={this.foreignEntitySelected}>
-                                    <Option value={null}>&nbsp;</Option>
-                                    {
-                                        store.entitys.filter(d=>d).map(o =>
-                                            <Option key={o.id} value={o.id}>{o.entityName}</Option>)
-                                    }
-                                </Select>
+                                {getFieldDecorator('foreignEntity')(
+                                    <Select onChange={this.foreignEntitySelected}>
+                                        <Option value={null}>&nbsp;</Option>
+                                        {
+                                            store.entitys.filter(d=>d).map(o =>
+                                                <Option key={o.id} value={o.id}>{o.entityName}</Option>)
+                                        }
+                                    </Select>
+                                )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
@@ -194,8 +237,8 @@ class ColumnForm extends React.Component {
                                     <Select>
                                         <Option value={null}>&nbsp;</Option>
                                         {
-                                            this.state.foreignColumns.map(o =>
-                                                <Option key={o.id} value={o.id}>{o.text?o.text:o.columnName}</Option>)
+                                            store.foreignColumns.filter(d=>d).map(o =>
+                                                <Option key={o.id} value={o.id}>{o.text?o.columnName+'-'+o.text:o.columnName}</Option>)
                                         }
                                     </Select>
                                 )}
@@ -207,8 +250,8 @@ class ColumnForm extends React.Component {
                                     <Select>
                                         <Option value={null}>&nbsp;</Option>
                                         {
-                                            this.state.foreignColumns.map(o =>
-                                                <Option key={o.id} value={o.id}>{o.text?o.text:o.columnName}</Option>)
+                                            store.foreignColumns.filter(d=>d).map(o =>
+                                                <Option key={o.id} value={o.id}>{o.text?o.columnName+'-'+o.text:o.columnName}</Option>)
                                         }
                                     </Select>
                                 )}

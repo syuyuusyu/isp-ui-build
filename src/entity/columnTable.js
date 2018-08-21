@@ -36,7 +36,7 @@ class ColumnTable extends Component {
             }
         },
         {
-            dataIndex: 'dicGroupId', title: '关联字典值', width: 80,
+            dataIndex: 'dicGroupId', title: '关联字典', width: 150,
             render:(text)=>{
                 return this.props.rootStore.entityStore.allDictionary.filter(d=>d.groupId===text).length===1?
                     this.props.rootStore.entityStore.allDictionary.filter(d=>d.groupId===text)[0].groupName:''

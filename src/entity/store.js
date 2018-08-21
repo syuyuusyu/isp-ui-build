@@ -75,6 +75,19 @@ export class EntityStore {
 
     currentColumn;
 
+    @observable
+    foreignColumns=[];
+
+    @action
+    loadForeignColumns=async (entityId)=>{
+        let json=await get(`${baseUrl}/entity/columns/${entityId}`);
+        console.log('------');
+        console.log(json);
+        runInAction(()=>{
+           this.foreignColumns=json;
+        });
+    };
+
     @action
     toggleColumnFormVisible=()=>{
         this.columnFormVisible=!this.columnFormVisible;
@@ -128,6 +141,8 @@ export class EntityStore {
 
     selectDicField={};
 
+    subTables={};
+
     @action
     toggleAddDicVisible=()=>{
         this.addDicVisible=!this.addDicVisible;
@@ -138,22 +153,23 @@ export class EntityStore {
         this.addDicFieldVisible=!this.addDicFieldVisible;
     };
 
-    showAddDicForm=(record,isUpdate)=>{
-       this.selectDic=record;
-       this.isFormUpdate=isUpdate;
-       this.toggleAddDicVisible();
-    };
+    showAddDicForm=(record,isUpdate)=>(()=>{
+        this.selectDic=record;
+        this.isFormUpdate=isUpdate;
+        this.toggleAddDicVisible();
+    });
 
-    showAddDicFieldForm=(record,isUpdate)=>{
+    showAddDicFieldForm=(record,isUpdate)=>(()=>{
         this.selectDicField=record;
         this.isFormUpdate=isUpdate;
         this.toggleAddDicFieldVisible();
-    };
+    });
 
 
     @action
     loadallDictionary=async ()=>{
-        let json=await get(`${baseUrl}/entity/allDictionary`);
+        this.subTables={};
+        let json=await get(`${baseUrl}/dictionary/allDictionary`);
         runInAction(()=>{
             this.allDictionary=json;
         });
@@ -166,6 +182,41 @@ export class EntityStore {
     toggleDictionaryTableVisible=()=>{
         this.dictionaryTableVisible=!this.dictionaryTableVisible;
     };
+
+
+    refDictionaryFieldTable=(groupId)=>((instance)=>{
+        this.subTables[groupId]=instance;
+    });
+
+    deleteGroup=(groupId)=>(async()=>{
+        let json = await get(`${baseUrl}/dictionary/deleteGroup/${groupId}`);
+        if (json.success) {
+            notification.info({
+                message: '删除成功'
+            });
+        } else {
+            notification.error({
+                message: '删除失败'
+            });
+        }
+        this.loadallDictionary();
+    });
+
+    deleteDictionary=(id,groupId)=>(async()=>{
+        let json = await get(`${baseUrl}/dictionary/deleteDictionary/${id}`);
+        if (json.success) {
+            notification.info({
+                message: '删除成功'
+            });
+        } else {
+            notification.error({
+                message: '删除失败'
+            });
+        }
+        this.subTables[groupId].setCurrentFields();
+        this.loadallDictionary();
+    });
+
 
 
 }

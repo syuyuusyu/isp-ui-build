@@ -1,14 +1,9 @@
 import React from 'react';
-import {Table, Row, Col, Divider, notification, Popconfirm, Input, Icon, Button,Form} from 'antd';
+import {Table,Modal, Row, Col, Divider, notification, Popconfirm, Input, Icon, Button,Form} from 'antd';
 import {inject, observer} from 'mobx-react';
+import DicForm from './dicForm';
+import DicFieldFrom from './dicFieldForm';
 import {baseUrl, del, post, get} from '../util';
-
-const FormItem = Form.Item;
-const Option = Select.Option;
-
-const DicFormCreated=Form.create()(DicForm);
-const DicFieldFormCreated=Form.create()(DicFieldForm);
-
 
 
 @inject('rootStore')
@@ -20,14 +15,16 @@ class DictionaryTable extends React.Component {
         {dataIndex: 'groupName', title: '字典名称', width: 200},
         {
             title: '操作',
-            width: 200,
+            width: 300,
             render: (text, record) => {
                 return (
                     <span>
                         <Button icon="edit" onClick={this.props.rootStore.entityStore.showAddDicFieldForm(record,false)} size='small'>新增字段</Button>
                         <Divider type="vertical"/>
-                        <Popconfirm onConfirm={null} title="确认删除?">
-                            <Button icon="delete" onClick={null} size='small'>删除</Button>
+                        <Button icon="edit" onClick={this.props.rootStore.entityStore.showAddDicForm(record,true)} size='small'>修改组名称</Button>
+                        <Divider type="vertical"/>
+                        <Popconfirm onConfirm={this.props.rootStore.entityStore.deleteGroup(record.groupId)} title="确认删除?">
+                            <Button icon="delete" onClick={null} size='small'>删除组</Button>
                         </Popconfirm>
                     </span>
                 )
@@ -35,9 +32,18 @@ class DictionaryTable extends React.Component {
         }
     ];
 
+    async componentDidMount(){
+        this.props.rootStore.entityStore.loadallDictionary();
+    }
+
     expandedRowRender=(record)=>{
         return (
-            <DictionaryFieldTable group={record}/>
+            <DictionaryFieldTable ref={this.props.rootStore.entityStore.refDictionaryFieldTable(record.groupId)}
+                                  group={record}
+                                  showAddDicFieldForm={this.props.rootStore.entityStore.showAddDicFieldForm}
+                                  deleteDictionary={this.props.rootStore.entityStore.deleteDictionary}
+
+            />
         );
     };
 
@@ -45,11 +51,6 @@ class DictionaryTable extends React.Component {
         const store = this.props.rootStore.entityStore;
         return (
             <div>
-                <Row gutter={2} className="table-head-row">
-                    <Col span={4} style={{ textAlign: 'right' }} className="col-button">
-                        <Button icon="plus-circle-o" onClick={null}>新建字典</Button>
-                    </Col>
-                </Row>
                 <Modal visible={store.addDicVisible}
                        width={300}
                        title="字典"
@@ -58,7 +59,7 @@ class DictionaryTable extends React.Component {
                        maskClosable={false}
                        destroyOnClose={true}
                 >
-                    <DicFormCreated/>
+                   <DicForm/>
                 </Modal>
                 <Modal visible={store.addDicFieldVisible}
                        width={300}
@@ -68,10 +69,15 @@ class DictionaryTable extends React.Component {
                        maskClosable={false}
                        destroyOnClose={true}
                 >
-                    <DicFieldFormCreated/>
+                    <DicFieldFrom/>
                 </Modal>
+                <Row gutter={2} className="table-head-row">
+                    <Col span={4} style={{ textAlign: 'right' }} className="col-button">
+                        <Button icon="plus-circle-o" onClick={store.showAddDicForm(null,false)}>新建分组</Button>
+                    </Col>
+                </Row>
                 <Table columns={this.columns}
-                       rowKey={record => record.id}
+                       rowKey={record => record.groupId}
                        dataSource={store.allDictionary.filter(d => d)}
                        rowSelection={null}
                        size="small"
@@ -85,145 +91,6 @@ class DictionaryTable extends React.Component {
     }
 }
 
-@inject('rootStore')
-@observer
-class DicForm extends React.Component{
-
-    componentDidMount(){
-        const store=this.props.rootStore.entityStore;
-        if (store.selectDic) {
-            this.props.form.setFieldsValue(
-                {groupName:store.selectDic.groupName}
-            );
-        }
-    }
-
-    save(){
-        const store = this.props.rootStore.entityStore;
-        this.props.form.validateFields(async (err, values) => {
-            if (err) return;
-            let json = await post(`${baseUrl}/entity/saveDic`, {
-                groupId:store.selectDic?store.selectDic.groupId:null,
-                groupName:values.groupName
-            });
-            if (json.success) {
-                notification.info({
-                    message: '保存成功'
-                });
-            } else {
-                notification.error({
-                    message: '保存失败'
-                });
-            }
-            store.loadallDictionary();
-        });
-    }
-
-    render(){
-        const store=this.props.rootStore.entityStore;
-        const {getFieldDecorator,} = this.props.form;
-        return (
-            <div>
-                <Form>
-                    <Row gutter={24}>
-                        <Col span={6}>
-                            <FormItem label="字典名称">
-                                {getFieldDecorator('groupName', {
-                                    rules: [{required: true, message: '不能为空',}],
-                                })(
-                                    <Input placeholder="输入字典名称"/>
-                                )}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={24} style={{textAlign: 'right'}}>
-                            <Button icon="save" onClick={this.save}>保存</Button>
-                            <Button type="reload" onClick={store.toggleAddDicVisible}>取消</Button>
-                        </Col>
-                    </Row>
-                </Form>
-            </div>
-        );
-
-    }
-}
-
-@inject('rootStore')
-@observer
-class DicFieldForm extends React.Component{
-
-    componentDidMount(){
-        const store=this.props.rootStore.entityStore;
-        if (store.selectDicField) {
-            this.props.form.setFieldsValue(
-                {
-                    text:store.selectDicField.text,
-                    value:store.selectDicField.value,
-                }
-            );
-        }
-    }
-
-    save(){
-        const store = this.props.rootStore.entityStore;
-        this.props.form.validateFields(async (err, values) => {
-            if (err) return;
-            let json = await post(`${baseUrl}/entity/saveDic`, {
-                groupId:store.selectDic?store.selectDic.groupId:null,
-                groupName:values.groupName
-            });
-            if (json.success) {
-                notification.info({
-                    message: '保存成功'
-                });
-            } else {
-                notification.error({
-                    message: '保存失败'
-                });
-            }
-            store.loadallDictionary();
-        });
-    }
-
-    render(){
-        const store=this.props.rootStore.entityStore;
-        const {getFieldDecorator,} = this.props.form;
-        return (
-            <div>
-                <Form>
-                    <Row gutter={24}>
-                        <Col span={12}>
-                            <FormItem label="字典字段">
-                                {getFieldDecorator('text', {
-                                    rules: [{required: true, message: '不能为空',}],
-                                })(
-                                    <Input placeholder="输入字段"/>
-                                )}
-                            </FormItem>
-                        </Col>
-                        <Col span={12}>
-                            <FormItem label="字典值">
-                                {getFieldDecorator('value', {
-                                    rules: [{required: true, message: '不能为空',}],
-                                })(
-                                    <Input placeholder="输入值"/>
-                                )}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={24} style={{textAlign: 'right'}}>
-                            <Button icon="save" onClick={this.save}>保存</Button>
-                            <Button type="reload" onClick={store.toggleAddDicVisible}>取消</Button>
-                        </Col>
-                    </Row>
-                </Form>
-            </div>
-        );
-
-    }
-}
 
 class DictionaryFieldTable extends React.Component {
 
@@ -236,10 +103,10 @@ class DictionaryFieldTable extends React.Component {
             render: (text, record) => {
                 return (
                     <span>
-                        <Button icon="edit" onClick={null} size='small'>修改</Button>
+                        <Button icon="edit" onClick={this.props.showAddDicFieldForm(record,true)} size='small'>修改字段</Button>
                         <Divider type="vertical"/>
-                        <Popconfirm onConfirm={null} title="确认删除?">
-                            <Button icon="delete" onClick={null} size='small'>删除</Button>
+                        <Popconfirm onConfirm={this.props.deleteDictionary(record.id,record.groupId)} title="确认删除?">
+                            <Button icon="delete" onClick={null} size='small'>删除字段</Button>
                         </Popconfirm>
                     </span>
                 )
@@ -251,15 +118,19 @@ class DictionaryFieldTable extends React.Component {
         currentFields: []
     };
 
-    async componentDidMount(){
-        let json=await get(`${baseUrl}/entity/dictionary/${this.props.group.groupId}`);
+    setCurrentFields=async ()=>{
+        let json=await get(`${baseUrl}/dictionary/dictionary/${this.props.group.groupId}`);
         this.setState({currentFields:json});
+    };
+
+    async componentDidMount(){
+        this.setCurrentFields();
     }
 
     render() {
         return (
             <Table columns={this.columns}
-                   rowKey={record => record.id}
+                   rowKey={(record,index) => index}
                    dataSource={this.state.currentFields}
                    rowSelection={null}
                    size="small"
