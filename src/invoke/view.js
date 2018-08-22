@@ -119,7 +119,6 @@ class InvkeGrid extends React.Component{
         groupnames.unshift({id:null,name:null});
         this.setState({groupnames});
         this.setState({filtergroupname:groupnames});
-
     };
 
 
