@@ -47,7 +47,7 @@ save=()=>{
     return (
       <Form>
         <Row>
-          <FormItem label="修改机构信息">
+          <FormItem label="机构名称">
             {getFieldDecorator('name',{
               rules: [{ required: true, message: '此项为必填项!!'}],
             })(
