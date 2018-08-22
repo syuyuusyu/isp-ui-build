@@ -123,7 +123,7 @@ export class SwiftStore{
 
     @action
     beforeUpload= (file) => {
-        if(file.size>1024*1024*1024){
+        if(file.size>1024*1024*1024*5){
             notification.error({
                 message:'单个文件不能大于1G'
             });

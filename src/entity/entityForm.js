@@ -68,7 +68,7 @@ class EntityForm extends React.Component {
             let json = await post(`${baseUrl}/entity/saveConfig/entity/id`, {
                 ...values,
                 id: store.currentEntity ? store.currentEntity.id : null,
-
+                queryField:values.queryField.length>0?values.queryField.join(','):[]
             });
             if (json.success) {
                 notification.info({
@@ -85,12 +85,21 @@ class EntityForm extends React.Component {
         store.loadEntitys();
     };
 
+    queryFieldChange=(value)=>{
+        console.log(value);
+    };
+
     componentDidMount() {
         const store = this.props.rootStore.entityStore;
         store.loadTableNames();
+        store.loadColumns();
         if (store.currentEntity) {
             this.props.form.setFieldsValue(
-                store.currentEntity
+                {
+                    ...store.currentEntity,
+                    queryField:store.currentEntity.queryField?store.currentEntity.queryField.split(','):[]
+                }
+
             );
         }
 
@@ -125,6 +134,16 @@ class EntityForm extends React.Component {
                     <FormItem label="名称">
                         {getFieldDecorator('entityName')(
                             <Input placeholder="输入表名称"/>
+                        )}
+                    </FormItem>
+                    <FormItem label="查询字段">
+                        {getFieldDecorator('queryField')(
+                            <Select mode="multiple" onChange={this.queryFieldChange}>
+                                {
+                                    store.currentColumns.filter(d => d).map(o =>
+                                        <Option key={o.id} value={o.id}>{o.text?o.columnName+'-'+o.text:o.columnName}</Option>)
+                                }
+                            </Select>
                         )}
                     </FormItem>
                     <FormItem label="ID字段">
