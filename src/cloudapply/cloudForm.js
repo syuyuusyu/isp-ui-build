@@ -17,6 +17,7 @@ class CloudFrom extends React.Component {
     this.props.rootStore.cloudStore.loadKeyPairs();
     //this.props.rootStore.cloudStore.getS02Url();
     this.props.rootStore.cloudStore.getS02urlKeyPairs();
+    this.props.rootStore.cloudStore.initStatus();
   }
 
   save = () => {
