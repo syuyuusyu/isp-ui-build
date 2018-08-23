@@ -19,6 +19,7 @@ class SwiftTable extends React.Component {
         //this.props.rootStore.swiftStore.scheduleToken();
         if(this.props.match.path.endsWith('self')){
             this.props.rootStore.swiftStore.username=JSON.parse(sessionStorage.getItem("user")).user_name;
+            this.props.rootStore.swiftStore.isSelf=true;
         }else{
             this.props.rootStore.swiftStore.username=this.props.match.path.replace('/swift/','');
             this.props.rootStore.swiftStore.isSelf=false;
@@ -92,8 +93,6 @@ class SwiftTable extends React.Component {
     ];
 
     format=(p)=>{
-
-
         return `${p}% `;
     };
 
