@@ -33,6 +33,9 @@ export class UserRoleStore {
   usersBack=[];
 
   @observable
+  usersBack1=[];
+
+  @observable
   userType = '1';
 
   @observable
@@ -105,7 +108,6 @@ export class UserRoleStore {
     runInAction(() => {
       this.userRoleConfRoles = json;
     });
-    console.log("loadUserRoleConfRoles中userRoleConfRoles的值为:",this.userRoleConfRoles.filter(d=>d));
   };
 
 
@@ -115,6 +117,8 @@ export class UserRoleStore {
     runInAction(() => {
       this.users = json;
       this.usersBack=json;
+      this.usersBack.unshift({id:null,entityId:null,system_id:null,org_id:null,type:null,user_name:null,passwd:null,name:null,ID_number:null,phone:null,email:null,organization_id:null,organization_name:null,salt:null,update_date:null,create_by:null,update_by:null,create_time:null,update_time:null,stateflag:null})
+      this.usersBack1=this.usersBack;
     });
   };
 
@@ -215,7 +219,13 @@ export class UserRoleStore {
 
   @action
   setSelectUser=(selectUser)=>{
-    this.selectUser=selectUser;
+    this.selectUser=selectUser
+  };
+
+  @action
+  onSearch=(value)=>{
+    let regExp = new RegExp('.*'+value+'.*','i');
+    this.usersBack=this.usersBack.filter(a=>regExp.test(a.name))
   };
 
   @action
@@ -223,6 +233,7 @@ export class UserRoleStore {
     let json=await  post(`${baseUrl}/user/queryUser`,{selectUser:this.selectUser});
     runInAction(()=>{
       this.users=json;
+      this.usersBack=this.usersBack1;
     })
   };
 
