@@ -15,6 +15,10 @@ export class SwiftStore{
 
     uploadRef;
 
+    username;
+
+    isSelf=true;
+
     @observable
     hasContainer=false;
 
@@ -70,7 +74,7 @@ export class SwiftStore{
             notification.error({
                 message:'云平台权限认证失败,请尝试刷新页面或联系管理员'});
         }else{
-            if(json.filter(d=>d.name===JSON.parse(sessionStorage.getItem("user")).user_name).length===1){
+            if(json.filter(d=>d.name===this.username).length===1){
                 runInAction(() => {
                     this.hasContainer = true;
                 });
@@ -90,7 +94,7 @@ export class SwiftStore{
             this.loadingtest='正在开通网盘...';
         });
         let json=await post(`${baseUrl}/swift/createContainer`,{
-            username:JSON.parse(sessionStorage.getItem("user")).user_name
+            username:this.username
         });
         runInAction(()=>{
             this.inDowning=false;
@@ -125,12 +129,12 @@ export class SwiftStore{
     beforeUpload= (file) => {
         if(file.size>1024*1024*1024*5){
             notification.error({
-                message:'单个文件不能大于1G'
+                message:'单个文件不能大于5G'
             });
             this.uploadRef.props.onRemove();
             return false;
         }
-        if((this.total+file.size)>1024*1024*1024*10){
+        if((this.total+file.size)>1024*1024*1024*10 && this.isSelf){
             notification.error({
                 message:'网盘总量为10G,无法上传该文件,请先清除不必要文件'
             });
@@ -153,7 +157,7 @@ export class SwiftStore{
         });
         const {folderName}=values;
         const filePath=this.selectRow.name;
-        const username=JSON.parse(sessionStorage.getItem("user")).user_name;
+        const username=this.username;
         let json=await post(`${baseUrl}/swift/createFolder`,{
             filePath:filePath+folderName,username
         });
@@ -187,7 +191,7 @@ export class SwiftStore{
             method:'POST',
             headers: {
                 //'Content-Type': 'multipart/form-data',//application/x-www-form-urlencoded
-                'User-Name':JSON.parse(sessionStorage.getItem("user")).user_name,
+                'User-Name':this.username,
                 'Folder-Path':this.selectRow.name.split('/').map(p=>encodeURI(p)).join('/'),
                 //'filename': encodeURI(file.name),
                 'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
@@ -235,7 +239,7 @@ export class SwiftStore{
             this.inDowning=true;
             this.loadingtest='正在向服务器请求删除';
         });
-        const username=JSON.parse(sessionStorage.getItem("user")).user_name;
+        const username=this.username;
         let json=await post(`${baseUrl}/swift/delete`,{
             filePath:record.name,username
         });
@@ -267,7 +271,7 @@ export class SwiftStore{
                 'Accept': 'application/json',
                 'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
             },
-            body:JSON.stringify({...record,username:JSON.parse(sessionStorage.getItem("user")).user_name})
+            body:JSON.stringify({...record,username:this.username})
         });
         //console.log(response);
         let blob=await response.blob();
@@ -295,7 +299,7 @@ export class SwiftStore{
                 'Accept': 'application/json',
                 'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
             },
-            data:JSON.stringify({...record,username:JSON.parse(sessionStorage.getItem("user")).user_name}),
+            data:JSON.stringify({...record,username:this.username}),
             responseType: 'blob'
         });
         let blob= response.data;
@@ -317,7 +321,7 @@ export class SwiftStore{
             this.inDowning=true;
             this.loadingtest='请求网盘信息...';
         });
-        let json=await get(`${baseUrl}/swift/getObject/${JSON.parse(sessionStorage.getItem("user")).user_name}`);
+        let json=await get(`${baseUrl}/swift/getObject/${this.username}`);
         if(json.status){
             notification.error({
                 message:'云平台权限认证失败,请尝试刷新页面或联系管理员',

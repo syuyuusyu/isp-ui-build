@@ -17,6 +17,12 @@ class SwiftTable extends React.Component {
 
     componentDidMount() {
         //this.props.rootStore.swiftStore.scheduleToken();
+        if(this.props.match.path.endsWith('self')){
+            this.props.rootStore.swiftStore.username=JSON.parse(sessionStorage.getItem("user")).user_name;
+        }else{
+            this.props.rootStore.swiftStore.username=this.props.match.path.replace('/swift/','');
+            this.props.rootStore.swiftStore.isSelf=false;
+        }
         this.props.rootStore.swiftStore.checkContainer();
         this.timeoutid=setInterval(
             this.props.rootStore.swiftStore.scheduleToken,
@@ -124,21 +130,35 @@ class SwiftTable extends React.Component {
                 >
                     <FileForm />
                 </Modal>
-                    <Row gutter={8} className="table-head-row">
-                        <Col span={4}>
-                            <Progress percent={parseFloat((store.total/store.tenG*100).toFixed(2))}
-                                      strokeWidth={20}
-                                      format={this.format}
-                            />
-                        </Col>
-                        <Col span={6} offset={1}><span>{`共10G已使用${n.number}${n.unit}`}</span></Col>
-                        <Col span={8} style={{ textAlign: 'right' }} className="col-button">
-                            <ButtonGroup>
-                                <Button onClick={store.showFileForm({name:'/'})} icon="upload" >上传文件</Button>
-                                <Button onClick={store.showForm({name:''})} icon="folder-add" >新建文件夹</Button>
-                            </ButtonGroup>
-                        </Col>
-                    </Row>
+                    {
+                        store.isSelf?
+                            <Row gutter={8} className="table-head-row">
+                                <Col span={4}>
+                                    <Progress percent={parseFloat((store.total/store.tenG*100).toFixed(2))}
+                                              strokeWidth={20}
+                                              format={this.format}
+                                    />
+                                </Col>
+                                <Col span={6} offset={1}><span>{`共10G已使用${n.number}${n.unit}`}</span></Col>
+                                <Col span={8} style={{ textAlign: 'right' }} className="col-button">
+                                    <ButtonGroup>
+                                        <Button onClick={store.showFileForm({name:'/'})} icon="upload" >上传文件</Button>
+                                        <Button onClick={store.showForm({name:''})} icon="folder-add" >新建文件夹</Button>
+                                    </ButtonGroup>
+                                </Col>
+                            </Row>
+                            :
+                            <Row gutter={8} className="table-head-row">
+                                <Col span={6} offset={1}><span>{`已使用${n.number}${n.unit}`}</span></Col>
+                                <Col span={8} style={{ textAlign: 'right' }} className="col-button">
+                                    <ButtonGroup>
+                                        <Button onClick={store.showFileForm({name:'/'})} icon="upload" >上传文件</Button>
+                                        <Button onClick={store.showForm({name:''})} icon="folder-add" >新建文件夹</Button>
+                                    </ButtonGroup>
+                                </Col>
+                            </Row>
+                    }
+
                 <Table columns={this.columns}
                        rowKey={record => record.name}
                        dataSource={store.rootDir.filter(d => d)}

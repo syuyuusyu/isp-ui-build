@@ -96,7 +96,6 @@ export class RoleStore{
 
     @action
     loadAllRoles=async ()=>{
-        console.log('loadAllRoles');
         let json=await get(`${baseUrl}/role/allRoles`);
         runInAction(()=>{
             this.allRoles=json;
@@ -203,15 +202,13 @@ export class RoleMenuStore{
         runInAction(()=>{
             treeNode.props.dataRef.children=json;
             this.treeData=[...this.treeData];
+            console.log(this.treeData.filter(d=>d));
         })
     };
 
     @action
     onCheck=(checkedKeys)=>{
-        console.log(checkedKeys.checked);
         this.roleCheckedKeys=checkedKeys.checked;
-        console.log(this.roleCheckedKeys.filter(d=>d));
-
     };
 
     @action
@@ -286,6 +283,7 @@ export class RoleButtonStore{
 
     @action
     onCheck=(checkedKeys,{checkedNodes})=>{
+        console.log(1111);
         this.checkedKeys=checkedKeys.checked;
 
     };

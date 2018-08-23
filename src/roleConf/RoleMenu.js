@@ -17,14 +17,14 @@ class RoleMenu extends React.Component{
             //const title=item.text;
             if (item.children) {
                 return (
-                    <TreeNode title={title} key={item.id} dataRef={item}>
+                    <TreeNode title={title} key={item.id+''} dataRef={item}>
                         {this.renderTreeNodes(item.children)}
                     </TreeNode>
                 );
             }
-            return <TreeNode title={title} key={item.id} dataRef={item} isLeaf={item.is_leaf==='1'?true:false} />;
+            return <TreeNode title={title} key={item.id+''} dataRef={item} isLeaf={item.is_leaf==='1'?true:false} />;
         });
-    }
+    };
 
     render() {
         const store=this.props.rootStore.roleMenuStore;
@@ -37,8 +37,6 @@ class RoleMenu extends React.Component{
                   checkStrictly={true}
                   defaultExpandAll={false}
                   defaultCheckedKeys={store.roleCheckedKeys.filter(d=>d)}
-                  onSelect={store.onSelect}
-                  selectedKeys={store.selectedKeys}
                   >
                 {this.renderTreeNodes(store.treeData)}
             </Tree>
