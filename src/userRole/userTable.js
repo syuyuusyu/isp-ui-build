@@ -32,7 +32,7 @@ class UserTable extends React.Component{
                       }
                     </Select>
                   </Col>*/}
-                  <Col span={3} offset={1}>
+                  <Col span={4} offset={0}>
                     <AutoComplete
                       style={{ width: 200 }}
                       dataSource={store.usersBack.filter(d=>d).map(a=>{

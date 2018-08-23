@@ -151,6 +151,7 @@ export class CloudStore {
         //只提供公共网络
         for(let i of json.network){
           if(i.routerExternal===true){
+            this.networks=[];
             this.networks.push(i);
           }
         }
@@ -304,5 +305,11 @@ export class CloudStore {
   @action
   skipCloud=()=>{
     window.open(this.s02urlLoginInfo);
+  };
+
+  @action
+  initStatus=()=>{
+    this.formDisplay='none';
+    this.keyPairsDisplay='none';
   }
 }

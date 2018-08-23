@@ -89,7 +89,7 @@ class CloudApplyTable extends React.Component{
                 >
                     <CloudForm />
                 </Modal>*/}
-                <Row gutter={2} className="table-head-row">s
+                <Row gutter={2} className="table-head-row">
 
                     <Col span={4} style={{ textAlign: 'right' }} className="col-button">
                       <Icon type="profile" />&nbsp;&nbsp; <Link to="/applyCloud">新建云机</Link>
