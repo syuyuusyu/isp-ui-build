@@ -14,6 +14,7 @@ class CreateOracleUserForm extends  React.Component{
 
   componentDidMount() {
     this.props.rootStore.oracleUserStore.loadDataAccForCreate();
+    this.props.rootStore.oracleUserStore.initStatus();
   }
 
   checkUserName=(rule, value, callback)=>{
@@ -79,9 +80,7 @@ class CreateOracleUserForm extends  React.Component{
     const store=this.props.rootStore.oracleUserStore;
     const { getFieldDecorator, } = this.props.form;
     const treeStore = this.props.rootStore.treeStore;
-    const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = treeStore;
     return(
-      <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - headerHeight - menuHeight - footerHeight - 16 }}>
         <div className="createOracle-box" >
         <Spin indicator={antIcon} tip={store.loadingInfo} spinning={store.loading}>
           <br/>
@@ -92,7 +91,8 @@ class CreateOracleUserForm extends  React.Component{
                 <Option key={s.id} value={s.id}>{s.name}</Option>)
             }
           </Select>
-          <hr className="dotted01"/>
+          <br/>
+          <br/>
           <Form style={{display:store.formDisplay}}>
             <Row gutter={26}>
               <Col span={10}>
@@ -160,7 +160,6 @@ class CreateOracleUserForm extends  React.Component{
           </div>
         </Spin>
         </div>
-      </div>
     );
   }
 }

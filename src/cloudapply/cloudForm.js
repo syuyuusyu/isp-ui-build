@@ -56,9 +56,7 @@ class CloudFrom extends React.Component {
     const store = this.props.rootStore.cloudStore;
     const {getFieldDecorator,} = this.props.form;
     const treeStore = this.props.rootStore.treeStore;
-    const { winWidth, winHeight, headerHeight, menuHeight, footerHeight } = treeStore;
     return (
-      <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - headerHeight - menuHeight - footerHeight - 16 }}>
         <div className="cloud-box" >
           <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
             <br/>
@@ -83,7 +81,7 @@ class CloudFrom extends React.Component {
               );
             })}
           </Form>
-            <hr style={{display:store.formDisplay}}/>
+            <hr className="dotted01" style={{display:store.formDisplay}}/>
             <Form style={{display:store.formDisplay}}>
               <p style={{fontSize: '16px'}}>请选择网络类型:</p>
               {store.networks.filter(d => d).map(b => {
@@ -95,7 +93,7 @@ class CloudFrom extends React.Component {
                 );
               })}
             </Form>
-            <hr style={{display:store.formDisplay}}/>
+            <hr className="dotted01" style={{display:store.formDisplay}}/>
             <Form style={{display:store.formDisplay}}>
               <p style={{fontSize: '16px'}}>请选择镜像类型:</p>
               {store.images.filter(d => d).map(c => {
@@ -107,7 +105,7 @@ class CloudFrom extends React.Component {
                 );
               })}
             </Form>
-            <hr style={{display:store.formDisplay}}/>
+            <hr className="dotted01" style={{display:store.formDisplay}}/>
             <Form style={{display:store.formDisplay}}>
               <Row>
                 <FormItem label="虚拟机名称" className="machine-input">
@@ -120,12 +118,11 @@ class CloudFrom extends React.Component {
               </Row>
             </Form>
             <div className="cloud-button">
-              <Button icon="save" onClick={this.save} type="primary" htmlType="submit" style={{display:store.formDisplay}}>保存</Button>
+              <Button icon="save" onClick={this.save} type="primary" htmlType="submit" style={{display:store.formDisplay}}>新建</Button>
               <Button icon="reload" href="/cloudapply" style={{display:store.formDisplay}}>返回</Button>
             </div>
           </Spin>
         </div>
-      </div>
     );
   }
 }

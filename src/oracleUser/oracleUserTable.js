@@ -2,6 +2,7 @@ import React from 'react';
 import {Table,Icon,Spin,Modal,Row,Col,Button,Select} from 'antd';
 import {inject,observer} from 'mobx-react';
 import {Link} from "react-router-dom";
+import CreateOracleUserForm from "./createOracleUserForm";
 
 const Option = Select.Option;
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
@@ -28,9 +29,20 @@ class OracleUserTable extends React.Component{
    return(
      <div>
        <Spin indicator={antIcon} tip={store.loadingInfo} spinning={store.loading}>
+         <Modal visible={store.formVisible}
+                width={1000}
+                title={`新建用户`}
+                footer={null}
+                onCancel={store.toggleFormVisible}
+                maskClosable={false}
+                destroyOnClose={true}
+         >
+           <CreateOracleUserForm />
+         </Modal>
          <Row gutter={2} className="table-head-row">
            <Col span={4} style={{ textAlign: 'right' }} className="col-button">
-             <Icon type="profile" />&nbsp;&nbsp; <Link to="/createOracleUser">新建用户</Link>
+             <Button onClick={store.toggleFormVisible} icon="plus-circle-o">新建用户</Button>
+             {/*<Icon type="profile" />&nbsp;&nbsp; <Link to="/createOracleUser">新建用户</Link>*/}
            </Col>
            <Col span={2} offset={0} style={{lineHeight:'32px'}}>用户名:</Col>
            <Col span={3} offset={1}>

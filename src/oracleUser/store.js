@@ -354,6 +354,10 @@ export class OracleUserStore {
         }
       }
     }
-  }
+  };
 
+  @action
+  initStatus=()=>{
+    this.formDisplay='none';
+  }
 }
