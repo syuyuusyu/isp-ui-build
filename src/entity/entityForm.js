@@ -91,7 +91,7 @@ class EntityForm extends React.Component {
 
     componentDidMount() {
         const store = this.props.rootStore.entityStore;
-        store.loadTableNames();
+        store.loadFilterTableNames();
         store.loadColumns();
         if (store.currentEntity) {
             this.props.form.setFieldsValue(

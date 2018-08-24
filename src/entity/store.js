@@ -117,7 +117,14 @@ export class EntityStore {
     @action
     loadTableNames=async()=>{
         let json=await get(`${baseUrl}/entity/tableNames`);
+        runInAction(()=>{
+            this.tableNames=json;
+        });
+    };
 
+    @action
+    loadFilterTableNames=async()=>{
+        let json=await get(`${baseUrl}/entity/tableNames`);
         runInAction(()=>{
             this.tableNames=json.filter(_=>this.entitys.filter(o=>o.tableName===_.tableName).length===0);
         });
@@ -253,9 +260,5 @@ export class EntityStore {
         this.currentMonyToMony=record;
         this.toggleMonyToMonyFormVisible();
     });
-
-
-
-
 
 }

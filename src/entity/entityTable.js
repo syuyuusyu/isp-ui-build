@@ -96,8 +96,8 @@ class EntityTable extends Component {
                     <Col span={2} style={{ textAlign: 'right' }} className="col-button">
                         <Button icon="profile" onClick={store.toggleDictionaryTableVisible}>字典配置</Button>
                     </Col>
-                    <Col span={2} style={{ textAlign: 'right' }} className="col-button">
-                        <Button icon="appstore-o" onClick={store.toggleMonyTomonyTableVisible}>多对多关系配置</Button>
+                    <Col span={4} style={{ textAlign: 'right' }} className="col-button">
+                        <Button icon="appstore-o" onClick={store.toggleMonyToMonyTableVisible}>多对多关系配置</Button>
                     </Col>
                 </Row>
                 <Drawer
@@ -150,8 +150,8 @@ class EntityTable extends Component {
                     closable={true}
                     maskClosable={true}
                     destroyOnClose={true}
-                    onClose={store.toggleMonyTomonyTableVisible}
-                    visible={store.monyTomonyTableVisible}
+                    onClose={store.toggleMonyToMonyTableVisible}
+                    visible={store.monyToMonyTableVisible}
 
                 >
                     <MonyToMonyTable/>

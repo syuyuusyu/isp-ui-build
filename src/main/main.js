@@ -45,8 +45,6 @@ class Main extends Component {
             this.props.rootStore.activitiStore.loadCurrentTask()
       ]);
     }
-
-
   }
   render() {
     const { loginVisible } = this.props.rootStore.authorityStore;

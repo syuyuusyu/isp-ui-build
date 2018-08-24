@@ -3,7 +3,7 @@ import { Divider, Popconfirm, Table, Modal, Row, Col,Button,Drawer,Select,notifi
 import {inject, observer} from 'mobx-react';
 import {baseUrl, get} from '../util';
 import MonyToMonyForm from './monyTomonyForm';
-
+import '../style.css';
 
 const Option=Select.Option;
 
@@ -70,7 +70,7 @@ class MonyToMonyTable extends Component {
         return (
             <div>
                 <Modal visible={store.monyToMonyFormVisible}
-                       width={300}
+                       width={400}
                        title="配置表多对多关系"
                        footer={null}
                        onCancel={store.toggleMonyToMonyFormVisible}
@@ -80,7 +80,7 @@ class MonyToMonyTable extends Component {
                     <MonyToMonyForm/>
                 </Modal>
                 <Row gutter={2} className="table-head-row">
-                    <Col span={2} style={{ textAlign: 'right' }} className="col-button">
+                    <Col span={4} style={{ textAlign: 'right' }} className="col-button">
                         <Button icon="plus-circle-o" onClick={store.showMonyToMonyForm(false,null)}>新建关联</Button>
                     </Col>
                 </Row>

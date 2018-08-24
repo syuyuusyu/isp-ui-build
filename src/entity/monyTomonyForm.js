@@ -44,12 +44,13 @@ class MonyToMonyForm extends React.Component {
         const store = this.props.rootStore.entityStore;
         let columns=store.originalColumns
             .filter(d=>d.table_name===value && d.column_key!=='PRI');
-        this.setStete({idFileds:columns});
+        this.setState({idFileds:columns});
 
     };
 
     componentDidMount() {
         const store = this.props.rootStore.entityStore;
+        store.loadTableNames();
         if (store.currentMonyToMony) {
             this.props.form.setFieldsValue(
                 {
@@ -108,7 +109,7 @@ class MonyToMonyForm extends React.Component {
                         )}
                     </FormItem>
                     <FormItem label="表一ID字段">
-                        {getFieldDecorator('firstIdFiled', {
+                        {getFieldDecorator('firstIdField', {
                             rules: [{required: true, message: '不能为空',}],
                             validateTrigger: 'onBlur'
                         })(
@@ -137,7 +138,7 @@ class MonyToMonyForm extends React.Component {
                     <Row>
                         <Col span={24} style={{textAlign: 'right'}}>
                             <Button icon="save" onClick={this.save}>保存</Button>
-                            <Button type="reload" onClick={store.toggleMonyTomonyTableVisible()}>取消</Button>
+                            <Button type="reload" onClick={store.toggleMonyToMonyFormVisible}>取消</Button>
                         </Col>
                     </Row>
                 </Form>
