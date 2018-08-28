@@ -5,6 +5,7 @@ import {baseUrl, dateFtt, get} from '../util';
 import ColumnTable from './columnTable';
 import EntityForm from './entityForm';
 import DictionaryTable from './dictionaryTable';
+import MonyToMonyTable from './monyToMonyTable';
 
 const Option=Select.Option;
 
@@ -23,6 +24,7 @@ class EntityTable extends Component {
         },
         {dataIndex: 'entityCode', title: '编码', width: 80,},
         {dataIndex: 'entityName', title: '名称', width: 100,},
+        {dataIndex: 'nameField', title: '名称字段', width: 120,},
         {dataIndex: 'idField', title: 'ID字段', width: 80,},
         {
             dataIndex: 'parentEntityId', title: '父实体表名', width: 80,
@@ -44,8 +46,6 @@ class EntityTable extends Component {
                     <span>
                         <Button icon="menu-unfold"
                                 onClick={this.props.rootStore.entityStore.checkColumn(record)} size='small'>查看表字段</Button>
-                        <Divider type="vertical"/>
-                        <Button icon="play-circle-o" onClick={null} size='small'>设置表关联</Button>
                         <Divider type="vertical"/>
                         <Button icon="play-circle-o" onClick={null} size='small'>SQL配置</Button>
                         <Divider type="vertical"/>
@@ -97,7 +97,9 @@ class EntityTable extends Component {
                     <Col span={2} style={{ textAlign: 'right' }} className="col-button">
                         <Button icon="profile" onClick={store.toggleDictionaryTableVisible}>字典配置</Button>
                     </Col>
-
+                    <Col span={4} style={{ textAlign: 'right' }} className="col-button">
+                        <Button icon="appstore-o" onClick={store.toggleMonyToMonyTableVisible}>多对多关系配置</Button>
+                    </Col>
                 </Row>
                 <Drawer
                     title={store.currentEntity?store.currentEntity.entityName:''}
@@ -140,6 +142,20 @@ class EntityTable extends Component {
 
                 >
                     <DictionaryTable/>
+                </Drawer>
+                <Drawer
+                    title={'多对多关系'}
+                    placement="right"
+                    width={800}
+                    zIndex={999}
+                    closable={true}
+                    maskClosable={true}
+                    destroyOnClose={true}
+                    onClose={store.toggleMonyToMonyTableVisible}
+                    visible={store.monyToMonyTableVisible}
+
+                >
+                    <MonyToMonyTable/>
                 </Drawer>
                 <Table columns={this.columns}
                        rowKey={record => record.id}

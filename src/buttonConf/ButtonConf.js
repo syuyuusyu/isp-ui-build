@@ -68,18 +68,18 @@ class ButtonConf extends Component{
             }
             return <TreeNode title={title} key={item.id} dataRef={item} isLeaf={item.is_leaf==='1'?true:false} />;
         });
-    }
+    };
 
     render(){
         return (
-            <Layout>
+            <Layout >
                 <Sider width={200} style={{ background: '#fff' }}>
                     <Tree loadData={this.props.rootStore.roleMenuStore.onLoadData} onSelect={this.props.rootStore.buttonStore.treeSelect}
                     >
                         {this.renderTreeNodes(this.props.rootStore.roleMenuStore.treeData)}
                     </Tree>
                 </Sider>
-                <Content>
+                <Content style={{height:'100%'}}>
                     <div style={{paddingBottom:"12px"}}>
                         <Row gutter={24}>
                             <Col span={20}><span style={{fontSize: '16px'}}>当前菜单名称:{this.props.rootStore.buttonStore.currentMenuName}</span></Col>
@@ -115,6 +115,7 @@ class ButtonConf extends Component{
                                rowSelection={null}
                                size="small"
                                scroll={{ y: 800 ,}}
+                               style={{height:'100%'}}
                             //expandedRowRender={this.expandedRowRender}
                             //pagination={this.state.pagination}
                             //loading={this.state.loading}

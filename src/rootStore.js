@@ -29,10 +29,7 @@ import {MenuManageStore} from "./menuManage";
 import {OracleUserStore} from "./oracleUser"
 import {SpecialtyMetdataStore} from "./specialtymetadata";
 import {EntityStore} from './entity';
-
-
-
-
+import {CommonStore} from "./components";
 
 
 export default class RootStore {
@@ -77,6 +74,7 @@ export default class RootStore {
         this.oracleUserStore=new OracleUserStore(this);
         this.specialtyMetdataStore=new SpecialtyMetdataStore(this);
         this.entityStore=new EntityStore(this);
+        this.commonStore=new CommonStore(this);
 
 
     }

@@ -117,7 +117,14 @@ export class EntityStore {
     @action
     loadTableNames=async()=>{
         let json=await get(`${baseUrl}/entity/tableNames`);
+        runInAction(()=>{
+            this.tableNames=json;
+        });
+    };
 
+    @action
+    loadFilterTableNames=async()=>{
+        let json=await get(`${baseUrl}/entity/tableNames`);
         runInAction(()=>{
             this.tableNames=json.filter(_=>this.entitys.filter(o=>o.tableName===_.tableName).length===0);
         });
@@ -217,6 +224,41 @@ export class EntityStore {
         this.loadallDictionary();
     });
 
+    //monyTomonyTable
+    //------------------------------------
+    @observable
+    monyToMonyTableVisible=false;
 
+    @observable
+    monyToMonyFormVisible=false;
+
+    @observable
+    monyToMonys=[];
+
+    currentMonyToMony;
+
+    @action
+    loadMonyToMonys=async ()=>{
+        let json=await get(`${baseUrl}/entity/monyToMonys`);
+        runInAction(()=>{
+            this.monyToMonys=json;
+        });
+    };
+
+    @action
+    toggleMonyToMonyTableVisible=()=>{
+        this.monyToMonyTableVisible=!this.monyToMonyTableVisible;
+    };
+
+    @action
+    toggleMonyToMonyFormVisible=()=>{
+        this.monyToMonyFormVisible=!this.monyToMonyFormVisible;
+    };
+
+    showMonyToMonyForm=(isFormUpdate,record)=>(()=>{
+        this.isFormUpdate=isFormUpdate;
+        this.currentMonyToMony=record;
+        this.toggleMonyToMonyFormVisible();
+    });
 
 }

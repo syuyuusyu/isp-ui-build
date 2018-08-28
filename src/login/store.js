@@ -36,7 +36,6 @@ export default class AuthorityStore {
     this.loginVisible = !this.loginVisible;
   };
 
-  @action
   loadAllbuttons = async () => {
     const json = await get(`${baseUrl}/btn/allButtons`);
     const allButtons = {};
