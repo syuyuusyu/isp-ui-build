@@ -68,7 +68,7 @@ class EntityForm extends React.Component {
             let json = await post(`${baseUrl}/entity/saveConfig/entity/id`, {
                 ...values,
                 id: store.currentEntity ? store.currentEntity.id : null,
-                queryField:values.queryField.length>0?values.queryField.join(','):[]
+                queryField:values.queryField.length>0?values.queryField.join(','):null
             });
             if (json.success) {
                 notification.info({
@@ -134,6 +134,19 @@ class EntityForm extends React.Component {
                     <FormItem label="名称">
                         {getFieldDecorator('entityName')(
                             <Input placeholder="输入表名称"/>
+                        )}
+                    </FormItem>
+                    <FormItem label="名称字段">
+                        {getFieldDecorator('nameField', {
+                            rules: [{required: true, message: '不能为空',}],
+                            validateTrigger: 'onBlur'
+                        })(
+                            <Select>
+                                {
+                                    store.currentColumns.filter(d => d).map(o =>
+                                        <Option key={o.id} value={o.columnName}>{o.text?o.columnName+'-'+o.text:o.columnName}</Option>)
+                                }
+                            </Select>
                         )}
                     </FormItem>
                     <FormItem label="查询字段">

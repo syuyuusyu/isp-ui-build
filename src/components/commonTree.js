@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
-import { Divider, Popconfirm, Table, Modal, Row, Col,Button,Drawer,Select,notification} from 'antd';
+import {Tree} from 'antd';
 import {inject, observer} from 'mobx-react';
 import {baseUrl, dateFtt, get} from '../util';
 
 
 
-const Option=Select.Option;
 
-//import {SysOperationStore} from "./store";
+const TreeNode = Tree.TreeNode;
 
-//const TreeNode = Tree.TreeNode;
-//const {Content, Sider} = Layout;
 
 @inject('rootStore')
 @observer
@@ -18,13 +15,33 @@ class CommonTree extends Component{
 
     componentWillMount(){
         const store=this.props.rootStore.commonStore;
+        store.initTree();
+        this.nameField=store.currentParentEntity.nameField;
+        this.idField=store.currentParentEntity.idField;
 
     }
 
-    render(){
+    renderTreeNodes = (data) => {
+        return data.map((item) => {
+            const title=item[this.nameField];
+            if (item.children) {
+                return (
+                    <TreeNode title={title} key={item[this.idField]} dataRef={item}>
+                        {this.renderTreeNodes(item.children)}
+                    </TreeNode>
+                );
+            }
+            return <TreeNode title={title} key={item[this.idField]} dataRef={item} isLeaf={item.is_leaf==='1'?true:false} />;
+        });
+    };
 
+    render(){
+        const store=this.props.rootStore.commonStore;
         return (
-            <div>tree</div>
+            <Tree loadData={store.onLoadTreeData} onSelect={store.treeSelect}
+            >
+                {this.renderTreeNodes(store.treeData)}
+            </Tree>
         );
     }
 

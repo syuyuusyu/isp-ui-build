@@ -21,7 +21,7 @@ class RoleButton extends React.Component {
         target={this.props.target}
         type={this.props.type}
         onClick={this.props.onClick}
-        disabled={this.createButton.available !== 1}
+        disabled={this.createButton.available < 1}
       >
         {this.props.clidren || this.createButton.text}
       </Button>

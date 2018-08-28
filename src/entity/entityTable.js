@@ -24,6 +24,7 @@ class EntityTable extends Component {
         },
         {dataIndex: 'entityCode', title: '编码', width: 80,},
         {dataIndex: 'entityName', title: '名称', width: 100,},
+        {dataIndex: 'nameField', title: '名称字段', width: 120,},
         {dataIndex: 'idField', title: 'ID字段', width: 80,},
         {
             dataIndex: 'parentEntityId', title: '父实体表名', width: 80,

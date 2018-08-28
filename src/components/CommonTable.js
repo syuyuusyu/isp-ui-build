@@ -18,17 +18,7 @@ class CommonTable extends Component{
 
     componentWillMount(){
         const store=this.props.rootStore.commonStore;
-        this.columns=[];
-        store.allColumns.filter(d=>d.entityId===this.props.entityId && d.hidden!=='1')
-            .forEach(c=>{
-                let column={
-                    dataIndex:c.columnName,
-                    title:c.text?c.text:c.columnName,
-                    width:c.width?c.width:100
-                };
-                //TODO
-                this.columns.push(column);
-            })
+        store.loadColumns();
 
     }
 
@@ -40,14 +30,14 @@ class CommonTable extends Component{
         const store=this.props.rootStore.commonStore;
         return (
             <div>
-                <Table columns={store.columns}
+                <Table columns={store.columns.filter(d=>d)}
                        rowKey={record => record[store.currentEntity.idField]}
                        dataSource={store.tableRows.filter(d => d)}
                        rowSelection={null}
                        size="small"
-                       scroll={{y: 800,}}
-                       pagination={this.state.pagination}
-                       loading={this.state.loading}
+                       scroll={{y: 800,x:1440}}
+                       pagination={store.pagination}
+                       loading={store.loading}
                 />
             </div>
         );

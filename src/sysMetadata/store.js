@@ -92,7 +92,7 @@ export class SysmetadataStore{
 
     @action
     initAlldataBaseType=async ()=>{
-        let json=await get(`${baseUrl}/dic/getDictionary/1`);
+        let json=await get(`${baseUrl}/dictionary/dictionary/5`);
         runInAction(()=>{
             this.allDatabaseType=json;
         })
