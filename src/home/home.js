@@ -37,6 +37,11 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
         <span className="text">地图服务示范应用</span>
       </div>
     );
+    linksLess.push(
+      <div key={102} className={`link qilinqu`} data-href={'http://baidu.com'} onClick={eClick}>
+        <span className="text">麒麟区城市综合管理空间信息系统</span>
+      </div>
+    );
   }
   for (let i = isAdmin ? 1 : 0; i < linkNum; i++) {
     const { name, icon, url, token, operations } = currentRoleSys[isAdmin ? i - 1 : i];

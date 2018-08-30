@@ -55,6 +55,14 @@ Function.prototype.replaceArguments=Function.prototype.replaceArguments?Function
             }
     };
 
+Function.prototype.callInstance=function(obj){
+    var method=this;
+    return function(){
+        var arg=arguments;
+        return method.apply(obj,arg);
+    }
+};
+
 export const format = (txt, compress) => {
 
     var indentChar = '    ';

@@ -1,6 +1,10 @@
+import React from 'react';
 import {observable, configure, action, runInAction,} from 'mobx';
-import {notification} from 'antd';
-import {activitiUrl, get, post, del, baseUrl} from '../util';
+import {Icon,notification} from 'antd';
+import {activitiUrl, get, post, del, baseUrl,evil} from '../util';
+
+const antd=require('antd');
+
 
 
 
@@ -38,7 +42,6 @@ export class CommonStore {
     @action
     setCurrentEntity=()=>{
         this.currentEntity = this.allEntitys.filter(d => d.id === this.entityId)[0];
-        console.log(this.currentEntity);
         if(this.currentEntity.parentEntityId){
             this.hasParent=true;
             this.currentParentEntity=this.allEntitys.filter(d => d.id === this.currentEntity.parentEntityId)[0];
@@ -98,7 +101,19 @@ export class CommonStore {
                     title:c.text?c.text:c.columnName,
                     width:c.width?c.width:100
                 };
-                //TODO
+                if(c.render){
+                    column.render=eval('('+c.render+')').callInstance({React,antd});
+                }
+                if(c.dicGroupId){
+                    const currentDictionary=this.allDictionary.filter(d=>d.groupId===c.dicGroupId);
+                    column.render=(value,record)=>{
+                        return currentDictionary.filter(d=>d.value===value).length===1?
+                            currentDictionary.filter(d=>d.value===value)[0].text:value;
+                    }
+                }
+                if(c.foreginKeyId){
+                    //TODO
+                }
                 return column;
             })
         });
@@ -135,6 +150,7 @@ export class CommonStore {
     @action
     initTree=async ()=>{
         let {topParentId}=await get(`${baseUrl}/entity/topParentId/${this.currentParentEntity.parentEntityId}`);
+        //this.queryObj={[this.currentEntity.pidField]:topParentId};
         let json=await post(`${baseUrl}/entity/query/${this.currentParentEntity.parentEntityId}`,{[this.currentParentEntity.pidField]:topParentId});
         runInAction(()=>{
             this.treeData=json.data;

@@ -34,7 +34,6 @@ class CommonLayout extends Component {
 
     render() {
         const store = this.props.rootStore.commonStore;
-        console.log(store.hasParent);
         return (
             <Layout style={{height: "100%"}}>
                 {
