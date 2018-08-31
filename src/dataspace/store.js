@@ -1,6 +1,6 @@
 import {observable, configure, action, runInAction,} from 'mobx';
 import {baseUrl, get, post} from '../util';
-import {notification} from 'antd';
+import {Modal, notification} from 'antd';
 
 configure({enforceActions: true});
 
@@ -205,10 +205,8 @@ export class DataSpaceStore {
       notification.info({
         message: '新建成功'
       });
-    } else {
-      notification.error({
-        message: '新建失败'
-      });
+    } else{
+      Modal.error({title: '新建失败',content:`失败信息为：${json.message}`})
     }
     this.toggleFormVisible();
     this.loadDataSpace(this.selectedAccId);
