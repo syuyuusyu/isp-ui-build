@@ -60,6 +60,10 @@ export class ActivitiStore {
                 message: `启动流程失败,请联系管理员!!!`
             });
         }
+        //采集日志
+        await post(`${baseUrl}/backlogLog/getBackLogForApply`,{
+          startResult
+        })
     });
 
 
