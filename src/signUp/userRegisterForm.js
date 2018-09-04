@@ -1,8 +1,10 @@
 import React,{Component} from 'react';
-import { Form, Row, Col, Input, Button ,Select, Modal,notification} from 'antd';
+import { Form, Row, Col, Input, Button ,Select, Modal,notification,Cascader} from 'antd';
 import {baseUrl, get,post} from "../util";
 import {inject, observer} from "mobx-react";
 import {Link} from 'react-router-dom';
+import SelectOrg from './selectOrg';
+
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -119,15 +121,24 @@ class UserRegisterForm extends Component {
     }
   };
   save=()=> {
+    const store=this.props.rootStore.signUpStore;
     this.props.form.validateFields(async (err, values) => {
       if(err) return;
-      //console.log("values的值为:",values);
-      //对输入的密码和确认密码就行加密
+
+      if(store.orgCheckedKeys.length===0){
+        notification.error({
+          message:'请选择所属机构'
+        })
+        return
+      }
+
+      //对输入的密码和确认密码进行加密
       const randomNumber=Math.random().toString().substr(2,10);
       const hmac = crypto.createHmac('sha256', randomNumber);
       values.password= hmac.update(values.password).digest('hex');
       values.confirmPassword= hmac.update(values.confirmPassword).digest('hex');
       values.randomNumber=randomNumber;
+      values.orgCheckedKeys=store.orgCheckedKeys;
 
       let json=await post(`${baseUrl}/userRegister/save`,values);
      if(json.success==='账号已经存在'){
@@ -162,8 +173,19 @@ class UserRegisterForm extends Component {
       labelCol: { span: 7 },
       wrapperCol: { span: 14},
     };
+    const store=this.props.rootStore.signUpStore;
     return (
       <div className="sign">
+        <Modal visible={store.orgVisible}
+               width={600}
+               title="选择机构"
+               footer={null}
+               onCancel={store.toggleOrgVisible}
+               maskClosable={false}
+               destroyOnClose={true}
+        >
+          <SelectOrg/>
+        </Modal>
         <Form layout="horizontal" className="sign-content">
             <h2 className="sign-title">注册</h2>
             <FormItem label="登录名称" {...formItemLayout} >
@@ -252,6 +274,9 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
+          <div  className="sign-button02">
+            <Button onClick={this.props.rootStore.signUpStore.toggleOrgVisible}>选择所属机构</Button>
+          </div>
             <div className="sign-button">
                 <Button type="primary" htmlType="submit" onClick={this.save}>注册</Button>
                 <Button className="sign-button01" onClick={this.reset}>重置</Button>

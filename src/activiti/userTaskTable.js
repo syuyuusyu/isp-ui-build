@@ -19,7 +19,7 @@ class UserTaskTable extends Component {
         {dataIndex: 'owner', title: '申请人', width: 200,},
         {
             dataIndex: 'createTime', title: '创建时间', width: 200,
-            render:text=>dateFtt('yyyy年MM月dd日 dd:mm:ss',new Date(text))
+            render:text=>dateFtt('yyyy年MM月dd日 hh:mm:ss',new Date(text))
         },
         {
             title: '操作',
