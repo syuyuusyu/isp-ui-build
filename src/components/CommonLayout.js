@@ -23,18 +23,32 @@ class CommonLayout extends Component {
     constructor(props) {
         super(props);
         const store = this.props.rootStore.commonStore;
-        this.props.match.path.replace(/\/(\d+)$/, (w, p1) => {
+        props.match.path.replace(/\/(\d+)$/, (w, p1) => {
             this.entityId = parseInt(p1, 10);
             store.setEntityId(this.entityId);
         });
-        store.loadAllEntitys();
-        store.loadAllDictionary();
-        store.loadAllColumns();
+        try{
+            let obj=JSON.parse(props.defaultQueryObj);
+            store.setDefaultQueryObj(obj);
+        }catch (e){}
+
+
+    }
+
+    async componentWillMount(){
+        const store=this.props.rootStore.commonStore;
+        await store.loadAllEntitys();
+        await store.loadAllDictionary();
+        await store.loadAllColumns();
+        await store.loadAllMonyToMony();
+        store.setshouldRender(true);
     }
 
     render() {
         const store = this.props.rootStore.commonStore;
-        console.log(store.hasParent);
+        if(!store.shouldRender){
+            return <div></div>
+        }
         return (
             <Layout style={{height: "100%"}}>
                 {
@@ -47,11 +61,9 @@ class CommonLayout extends Component {
                 }
                 <Content style={{height: "100%"}}>
                     <Layout style={{height: "100%"}}>
-                        <Header>
-                            <QueryFrom/>
-                        </Header>
                         <Content style={{height: "100%"}}>
-                            <CommonTable/>
+                            <QueryFrom/>
+                            <CommonTable style={{height: "100%"}}/>
                         </Content>
                     </Layout>
                 </Content>

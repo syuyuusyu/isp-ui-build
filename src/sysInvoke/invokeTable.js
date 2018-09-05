@@ -58,7 +58,6 @@ class InvokeTable extends Component{
                 <Col span={8} >
                     <Card  title="返回结果示例" bordered={false}><pre>{format(record.result)}</pre></Card>
                 </Col>
-
             </Row>
             <Row>
                 <Col >

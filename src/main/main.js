@@ -15,6 +15,21 @@ import {UserTaskTable} from '../activiti';
 import CloudForm from '../cloudapply/cloudForm';
 import CreateOracleUserForm from '../oracleUser/createOracleUserForm';
 
+const renderMergedProps = (component, ...rest) => {
+    const finalProps = Object.assign({}, ...rest);
+    return (
+        React.createElement(component, finalProps)
+    );
+};
+
+const PropsRoute = ({ component, ...rest }) => {
+    return (
+        <Route {...rest} render={routeProps => {
+            return renderMergedProps(component, routeProps, rest);
+        }}/>
+    );
+};
+
 @inject('rootStore')
 @observer
 class Main extends Component {
@@ -144,7 +159,7 @@ class Main extends Component {
                     path={m.path + (m.path_holder ? m.path_holder : '')}
                     render={() => (
                       <div id="contentBox" style={{ width: winWidth - 32, height: winHeight - headerHeight - menuHeight - footerHeight - 16 }}>
-                        <Route component={require('../' + m.page_path)[m.page_class]} />
+                          <PropsRoute  component={require('../' + m.page_path)[m.page_class]} defaultQueryObj={m.defaultQueryObj} />
                       </div>
                     )}
                   />

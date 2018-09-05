@@ -92,12 +92,22 @@ class EntityForm extends React.Component {
     componentDidMount() {
         const store = this.props.rootStore.entityStore;
         store.loadFilterTableNames();
-        store.loadColumns();
+        if(store.isFormUpdate){
+            store.loadColumns();
+        }
+
         if (store.currentEntity) {
             this.props.form.setFieldsValue(
                 {
                     ...store.currentEntity,
                     queryField:store.currentEntity.queryField?store.currentEntity.queryField.split(','):[]
+                }
+
+            );
+        }else{
+            this.props.form.setFieldsValue(
+                {
+                    queryField:[]
                 }
 
             );
@@ -136,9 +146,16 @@ class EntityForm extends React.Component {
                             <Input placeholder="输入表名称"/>
                         )}
                     </FormItem>
+                    <FormItem label="删除标示字段">
+                        {getFieldDecorator('deleteFlagField')(
+                            <Input placeholder="删除标示字段"/>
+                        )}
+                    </FormItem>
                     <FormItem label="名称字段">
                         {getFieldDecorator('nameField', {
-                            rules: [{required: true, message: '不能为空',}],
+                            rules: [{required: store.isFormUpdate?true:false,
+                                message: store.currentColumns.length===0?'请先进行表字段配置':'不能为空',
+                            }],
                             validateTrigger: 'onBlur'
                         })(
                             <Select>
@@ -171,13 +188,17 @@ class EntityForm extends React.Component {
                         {getFieldDecorator('parentEntityId', {
 
                         })(
-                            <Select onSelect={this.parentEntityIdSeleted}>
-                                <Option value={null}>&nbsp;</Option>
-                                {
-                                    store.entitys.filter(d => d).map(o =>
-                                        <Option key={o.id} value={o.id}>{o.tableName}</Option>)
-                                }
-                            </Select>
+                            store.isFormUpdate?
+                                <Select onSelect={this.parentEntityIdSeleted}>
+                                    <Option value={null}>&nbsp;</Option>
+                                    {
+                                        store.entitys
+                                            .filter(d => store.currentEntity.id===d.id || d.id===d.parentEntityId).map(o =>
+                                            <Option key={o.id} value={o.id}>{o.tableName}</Option>)
+                                    }
+                                </Select>
+                                :
+                                <Input placeholder="保存当前实体后才能配置父实体表名" disabled={true}/>
                         )}
                     </FormItem>
                     <FormItem label="父实体ID字段">

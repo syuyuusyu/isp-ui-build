@@ -26,12 +26,32 @@ class ColumnTable extends Component {
         {dataIndex: 'text', title: '中文名', width: 100,},
         {dataIndex: 'width', title: '渲染宽度', width: 100,},
         {
-            dataIndex: 'hidden', title: '是否隐藏', width: 50,
+            dataIndex: 'hidden', title: '隐藏', width: 50,
             render:(text)=>{
                 if(text==='1'){
                     return '隐藏';
                 }else{
                     return '显示';
+                }
+            }
+        },
+        {
+            dataIndex: 'isUnique', title: '唯一', width: 50,
+            render:(text)=>{
+                if(text==='1'){
+                    return '是';
+                }else{
+                    return '否';
+                }
+            }
+        },
+        {
+            dataIndex: 'required', title: '必须', width: 50,
+            render:(text)=>{
+                if(text==='1'){
+                    return '是';
+                }else{
+                    return '否';
                 }
             }
         },

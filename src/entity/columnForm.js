@@ -86,6 +86,7 @@ class ColumnForm extends React.Component {
     componentDidMount() {
         const store = this.props.rootStore.entityStore;
         if (store.currentColumn) {
+            console.log(store.currentColumn);
             this.props.form.setFieldsValue(
                 {
                     columnIndex:store.currentColumn.columnIndex,
@@ -96,6 +97,8 @@ class ColumnForm extends React.Component {
                     text:store.currentColumn.text,
                     width:store.currentColumn.width,
                     dicGroupId:store.currentColumn.dicGroupId,
+                    isUnique:store.currentColumn.isUnique,
+                    required:store.currentColumn.required,
                 }
             );
             if(store.currentColumn.foreignKeyId){
@@ -134,8 +137,8 @@ class ColumnForm extends React.Component {
                         </Col>
                         <Col span={6}>
                             <FormItem label="编码">
-                                {getFieldDecorator('code', {
-                                    rules: [{validator: this.checkUnique('code'), message: '不能和现有字段重复',}],
+                                {getFieldDecorator('entityCode', {
+                                    rules: [{validator: this.checkUnique('entityCode'), message: '不能和现有字段重复',}],
                                     validateTrigger: 'onBlur'
                                 })(
                                     <Input placeholder="编码"/>
@@ -152,7 +155,10 @@ class ColumnForm extends React.Component {
                         <Col span={6}>
                             <FormItem label="是否隐藏">
                                 {getFieldDecorator('hidden', {
-
+                                    rules: [{
+                                        message: '不能为空',
+                                        required: true
+                                    }],
                                 })(
                                     <Select>
                                         <Option value="0">显示</Option>
@@ -175,7 +181,7 @@ class ColumnForm extends React.Component {
                                 })(
                                     <Select disabled={store.isFormUpdate}>
                                         {
-                                            store.originalColumns.filter(d=>d.table_name===store.currentColumns[0].tableName)
+                                            store.originalColumns.filter(d=>d.table_name===store.currentEntity.tableName)
                                                 .map((d,index)=><Option key={index} value={d.column_name}>{d.column_name}</Option>)
                                         }
                                     </Select>
@@ -219,6 +225,18 @@ class ColumnForm extends React.Component {
                     </Row>
                     <Row gutter={24}>
                         <Col span={6}>
+                            <FormItem label="是否唯一">
+                                {getFieldDecorator('isUnique',{
+
+                                })(
+                                    <Select>
+                                        <Option  value={'1'}>是</Option>
+                                        <Option  value={'0'}>否</Option>
+                                    </Select>
+                                )}
+                            </FormItem>
+                        </Col>
+                        <Col span={6}>
                             <FormItem label="外键对应实体">
                                 {getFieldDecorator('foreignEntity')(
                                     <Select onChange={this.foreignEntitySelected}>
@@ -253,6 +271,20 @@ class ColumnForm extends React.Component {
                                             store.foreignColumns.filter(d=>d).map(o =>
                                                 <Option key={o.id} value={o.id}>{o.text?o.columnName+'-'+o.text:o.columnName}</Option>)
                                         }
+                                    </Select>
+                                )}
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row gutter={24}>
+                        <Col span={6}>
+                            <FormItem label="是否必须">
+                                {getFieldDecorator('required',{
+
+                                })(
+                                    <Select>
+                                        <Option  value={'1'}>是</Option>
+                                        <Option  value={'0'}>否</Option>
                                     </Select>
                                 )}
                             </FormItem>

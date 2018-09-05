@@ -47,8 +47,6 @@ class EntityTable extends Component {
                         <Button icon="menu-unfold"
                                 onClick={this.props.rootStore.entityStore.checkColumn(record)} size='small'>查看表字段</Button>
                         <Divider type="vertical"/>
-                        <Button icon="play-circle-o" onClick={null} size='small'>SQL配置</Button>
-                        <Divider type="vertical"/>
                         <Button icon="edit"
                                 onClick={this.props.rootStore.entityStore.showEntityForm(true,record)} size='small'>修改</Button>
                         <Divider type="vertical"/>

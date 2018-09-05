@@ -38,14 +38,14 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
       </div>
     );
     linksLess.push(
-      <div key={100} className={`link qilinqu`} data-href={'http://baidu.com'} onClick={eClick}>
-        <span className="text">麒麟区城市综合管理空间信息系统</span>
+      <div key={102} className={`link qilinqu`} data-href={'http://baidu.com'} onClick={eClick}>
+        <span className="text">城市综合管理系统</span>
       </div>
     );
   }
   for (let i = isAdmin ? 1 : 0; i < linkNum; i++) {
     const { name, icon, url, token, operations } = currentRoleSys[isAdmin ? i - 1 : i];
-    const usableOpe = operations.filter(o => o.type === 1);
+    const usableOpe = operations.filter(o => o.type == 1);
     const href = `${url}${usableOpe[0] ? usableOpe[0].path : ''}?ispToken=${token}`;
     const node = (
       <div key={i} className={`link ${icon}`} data-href={href} onClick={eClick}>

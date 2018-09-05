@@ -37,7 +37,6 @@ class MetadataTabs extends Component{
         const tables=[];
         const store=this.props.rootStore.specialtyMetdataStore;
         for(let tableName in store.metadataObj.tabName){
-            console.log(tableName);
             const trs=[];
             for(let key in store.metadataObj[tableName]){
                 const tr=(
