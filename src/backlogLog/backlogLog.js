@@ -42,7 +42,7 @@ class BacklogLog extends Component{
          {/*<Col span={2}  offset={0} style={{ textAlign: 'right' }}>
            <Button icon="plus-circle" onClick={store.getRefreshBacklogLog}>刷新</Button>
          </Col>*/}
-         <Col span={2} offset={0} style={{lineHeight:'32px'}}>登录用户:</Col>
+         <Col span={2} offset={0} style={{lineHeight:'32px'}}>操作用户:</Col>
          <Col span={3} offset={1}>
            <Select style={{width:150}}  onChange={store.setLoginName}>
              <Option  value={''} style={{color:'white'}}>&nbsp;</Option>

@@ -313,7 +313,6 @@ export class OracleUserStore {
       tempTbs:this.temporarySpacesName,
       id:this.selectedAccId
     });
-    console.log("json的值为:",json);
     if(json===undefined){
       notification.error({
         message: '连接大数据平台失败,请尝试刷新页面或联系管理员'

@@ -34,7 +34,7 @@ class CloudFrom extends React.Component {
         return notification.error({
           message:'请选择镜像类型'});
       }
-      let json = await post(`${baseUrl}/invoke/cloud_create/dsf`, {
+      let json = await post(`${baseUrl}/invoke/cloud_create`, {
         keypairName:store.selectKeyPairValue,
         flavorId: store.flavorId,
         name: values.virtualMachineName,
@@ -44,10 +44,11 @@ class CloudFrom extends React.Component {
       if(json.code===200){
         notification.success({
           message:'新建成功'})
-        this.props.history.push('/cloudapply');
+        //this.props.history.push('/cloudapply');
       }else{
         Modal.error({title: '新建失败',content:`失败信息为：${json.msg}`})
       }
+      store.toggleFormVisible();
       store.loadServerInfo();
     });
   };

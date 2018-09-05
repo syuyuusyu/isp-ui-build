@@ -40,10 +40,15 @@ class UserTaskForm extends React.Component{
 
     submit=()=>{
         const store=this.props.rootStore.activitiStore;
+        let selectedTask=store.selectedTask;
         this.props.form.validateFields(async (err,values)=>{
             if(err) return;
             let processDefinitionKey=await get(`${activitiUrl}/userTask/processDefinitionKey/${store.selectedTask.id}`);
             let nextJson='default';
+          //采集日志
+          await post(`${baseUrl}/backlogLog/getBackLogForsubmitApply`,{
+            values,processDefinitionKey,selectedTask
+          });
 
             if(processDefinitionKey.key==='platform_apply'){
                 //平台权限申请流程
