@@ -97,10 +97,11 @@ class EntityForm extends React.Component {
         }
 
         if (store.currentEntity) {
+            console.log(store.currentEntity.queryField?store.currentEntity.queryField.split(',').map(c=>parseInt(c)):[]);
             this.props.form.setFieldsValue(
                 {
                     ...store.currentEntity,
-                    queryField:store.currentEntity.queryField?store.currentEntity.queryField.split(','):[]
+                    queryField:store.currentEntity.queryField?store.currentEntity.queryField.split(',').map(c=>parseInt(c)):[]
                 }
 
             );
