@@ -31,6 +31,7 @@ class CommonLayout extends Component {
         });
         try{
             let obj=JSON.parse(props.defaultQueryObj);
+            console.log(obj);
             store.setDefaultQueryObj(obj);
         }catch (e){}
 

@@ -225,7 +225,6 @@ export class CommonStore {
     };
 
     refQueryForm=(instance)=>{
-        console.log(instance);
         this.queryFormInstance=instance;
     };
 
@@ -243,7 +242,7 @@ export class CommonStore {
         let {topParentId}=await get(`${baseUrl}/entity/topParentId/${this.currentParentEntity.parentEntityId}`);
         this.treeSelectObj={[this.currentEntity.pidField]:topParentId};
         //this.queryObj={[this.currentEntity.pidField]:topParentId};
-        let json=await post(`${baseUrl}/entity/query/${this.currentParentEntity.id}`,{[this.currentParentEntity.idField]:topParentId});
+        let json=await post(`${baseUrl}/entity/query/${this.currentParentEntity.id}`,{...this.defaultQueryObj,[this.currentParentEntity.idField]:topParentId});
         runInAction(()=>{
             this.treeData=json.data;
             this.setCurrentRoute(topParentId);
@@ -260,7 +259,7 @@ export class CommonStore {
     @action
     onLoadTreeData=async(treeNode)=>{
         const parentId=treeNode.props.dataRef[this.currentParentEntity.idField];
-        let json=await post(`${baseUrl}/entity/query/${this.currentParentEntity.parentEntityId}`,{[this.currentParentEntity.pidField]:parentId});
+        let json=await post(`${baseUrl}/entity/query/${this.currentParentEntity.parentEntityId}`,{...this.defaultQueryObj,[this.currentParentEntity.pidField]:parentId});
         runInAction(()=>{
             treeNode.props.dataRef.children=json.data;
             this.treeData=[...this.treeData];
