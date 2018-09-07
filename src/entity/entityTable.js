@@ -6,6 +6,7 @@ import ColumnTable from './columnTable';
 import EntityForm from './entityForm';
 import DictionaryTable from './dictionaryTable';
 import MonyToMonyTable from './monyToMonyTable';
+import OperationTable from './operationTable';
 
 const Option=Select.Option;
 
@@ -58,7 +59,7 @@ class EntityTable extends Component {
                                 onClick={this.props.rootStore.entityStore.checkColumn(record)} size='small'>查看表字段</Button>
                         <Divider type="vertical"/>
                         <Button icon="tool"
-                                onClick={this.props.rootStore.entityStore.checkColumn(record)} size='small'>操作配置</Button>
+                                onClick={this.props.rootStore.entityStore.showOperationTable(record)} size='small'>操作配置</Button>
                         <Divider type="vertical"/>
                         <Button icon="edit"
                                 onClick={this.props.rootStore.entityStore.showEntityForm(true,record)} size='small'>修改</Button>
@@ -139,6 +140,20 @@ class EntityTable extends Component {
 
                 >
                     <EntityForm/>
+                </Drawer>
+                <Drawer
+                    title={store.currentEntity?store.currentEntity.entityName:''}
+                    placement="right"
+                    width={800}
+                    zIndex={999}
+                    closable={true}
+                    maskClosable={false}
+                    destroyOnClose={true}
+                    onClose={store.toggleOperationTableVisible}
+                    visible={store.operationTableVisible}
+
+                >
+                    <OperationTable/>
                 </Drawer>
                 <Drawer
                     title={'字典配置'}
