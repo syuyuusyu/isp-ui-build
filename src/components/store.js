@@ -163,6 +163,15 @@ export class CommonStore {
                 render:(text,record)=>{
                     return (
                         <span >
+                            {
+                                this.allMonyToMony.filter(m=>m.firstTable===this.currentEntity.tableName)
+                                    .map(m=>(
+                                        <span>
+                                            <Button icon="edit" onClick={null} size='small'>{m.name}</Button>
+                                            <Divider type="vertical"/>
+                                        </span>
+                                    ))
+                            }
                             <Button icon="edit" onClick={this.showCreateForm(record,true)} size='small'>修改</Button>
                             <Divider type="vertical"/>
                             <Popconfirm onConfirm={this.deleteRow(record[this.currentEntity.idField])} title="确认删除?">
@@ -215,6 +224,15 @@ export class CommonStore {
         });
     };
 
+    refQueryForm=(instance)=>{
+        console.log(instance);
+        this.queryFormInstance=instance;
+    };
+
+    refCreateForm=(instance)=>{
+        this.createFormInstance=instance;
+    };
+
     //tree
     //---------------------
     @observable
@@ -223,11 +241,19 @@ export class CommonStore {
     @action
     initTree=async ()=>{
         let {topParentId}=await get(`${baseUrl}/entity/topParentId/${this.currentParentEntity.parentEntityId}`);
+        this.treeSelectObj={[this.currentEntity.pidField]:topParentId};
         //this.queryObj={[this.currentEntity.pidField]:topParentId};
         let json=await post(`${baseUrl}/entity/query/${this.currentParentEntity.id}`,{[this.currentParentEntity.idField]:topParentId});
         runInAction(()=>{
             this.treeData=json.data;
+            this.setCurrentRoute(topParentId);
         });
+        if(this.queryFormInstance){
+            this.queryFormInstance.setCandidate();
+        }
+        if(this.createFormInstance){
+            this.createFormInstance.setCandidate();
+        }
     };
 
 
@@ -247,18 +273,25 @@ export class CommonStore {
     currentRoute=[];
 
     @action
-    treeSelect=(selectedKeys,e)=>{
-        let id=e.node.props.dataRef[this.currentParentEntity.idField];
-        this.treeSelectObj={[this.currentEntity.pidField]:id};
+    setCurrentRoute=(id)=>{
         this.treeData.filter(d=>d).forEach(data=>{
-            getPathById(e.node.props.dataRef[[this.currentParentEntity.idField]],Object.create(data),(result)=>{
+            getPathById(id,Object.create(data),(result)=>{
                 runInAction(()=>{
                     this.currentRoute=result.map(r=>({id:r[this.currentParentEntity.idField],text:r[this.currentParentEntity.nameField]}));
                 });
             },this.currentParentEntity.idField)
         });
+    };
+
+    @action
+    treeSelect=(selectedKeys,e)=>{
+        let id=e.node.props.dataRef[this.currentParentEntity.idField];
+        this.treeSelectObj={[this.currentEntity.pidField]:id};
+        this.setCurrentRoute(id);
         this.queryObj={start:0,pageSize:this.pagination.pageSize,page:1,...this.treeSelectObj};
         this.queryTable();
+        if(this.queryFormInstance) this.queryFormInstance.setCandidate();
+        if(this.createFormInstance) this.createFormInstance.setCandidate();
 
     };
 

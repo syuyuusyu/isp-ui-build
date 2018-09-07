@@ -14,19 +14,15 @@ const Option=Select.Option;
 
 @inject('rootStore')
 @observer
-class MonyToMonyTable extends Component {
+class OperationTable extends Component {
 
     columns = [
-        {dataIndex: 'name', title: '关系名称', width: 120,},
+        {dataIndex: 'name', title: '操作名称', width: 120,},
         {
-            dataIndex: 'firstTable', title: '表一名称', width: 120
+            dataIndex: 'icon', title: '图标', width: 50
         },
-        {
-            dataIndex: 'secondTable', title: '表二名称', width: 120
-        },
-        {dataIndex: 'firstIdField', title: '表一ID字段', width: 120,},
-        {dataIndex: 'secondIdField', title: '表二ID字段', width: 120,},
-        {dataIndex: 'relationTable', title: '关联表名称', width: 120,},
+        {dataIndex: 'pagePath', title: '类所在目录', width: 120,},
+        {dataIndex: 'pageClass', title: '页面类名', width: 120,},
         {
             title: '操作',
             width: 320,
@@ -62,7 +58,7 @@ class MonyToMonyTable extends Component {
 
 
     componentDidMount() {
-        this.props.rootStore.entityStore.loadMonyToMonys();
+        this.props.rootStore.entityStore.loadEntityOperations();
     }
 
 
@@ -82,12 +78,12 @@ class MonyToMonyTable extends Component {
                 </Modal>
                 <Row gutter={2} className="table-head-row">
                     <Col span={4} style={{ textAlign: 'right' }} className="col-button">
-                        <Button icon="plus-circle-o" onClick={store.showMonyToMonyForm(false,null)}>新建关联</Button>
+                        <Button icon="plus-circle-o" onClick={store.showMonyToMonyForm(false,null)}>新建操作</Button>
                     </Col>
                 </Row>
                 <Table columns={this.columns}
                        rowKey={record => record.id}
-                       dataSource={store.monyToMonys.filter(d => d)}
+                       dataSource={store.entityOperations.filter(d => d)}
                        rowSelection={null}
                        size="small"
                        scroll={{y: 800,}}
@@ -97,4 +93,4 @@ class MonyToMonyTable extends Component {
     }
 }
 
-export default MonyToMonyTable;
+export default OperationTable;

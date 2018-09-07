@@ -97,7 +97,6 @@ class EntityForm extends React.Component {
         }
 
         if (store.currentEntity) {
-            console.log(store.currentEntity.queryField?store.currentEntity.queryField.split(',').map(c=>parseInt(c)):[]);
             this.props.form.setFieldsValue(
                 {
                     ...store.currentEntity,
@@ -150,6 +149,18 @@ class EntityForm extends React.Component {
                     <FormItem label="删除标示字段">
                         {getFieldDecorator('deleteFlagField')(
                             <Input placeholder="删除标示字段"/>
+                        )}
+                    </FormItem>
+                    <FormItem label="是否可编辑">
+                        {getFieldDecorator('editAble',{
+                            rules: [{required: true,
+                                message:'不能为空',
+                            }],
+                        })(
+                            <Select>
+                                    <Option value={'1'}>是</Option>
+                                    <Option value={'0'}>否</Option>
+                            </Select>
                         )}
                     </FormItem>
                     <FormItem label="名称字段">

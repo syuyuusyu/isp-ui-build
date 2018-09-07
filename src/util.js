@@ -129,13 +129,30 @@ export const log = (target, name, descriptor) => {
 };
 
 //export const activitiUrl='http://192.168.50.20:5002';
-//export const activitiUrl='http://127.0.0.1:5002';
-export const activitiUrl='http://10.10.50.10:5002';
-
+export const activitiUrl='http://127.0.0.1:5002';
+//export const activitiUrl='http://10.10.50.10:5002';
+//export const activitiUrl='http://59.216.201.52:5002';
 export const baseUrl = 'http://127.0.0.1:7001';
 //export const baseUrl = 'http://10.10.50.10:7001';
+//export const baseUrl='http://59.216.201.52:7001'
 //export const activitiUrl='http://192.168.50.20:7001';
 //export const baseUrl = 'http://isp.yndk.cn:7001';
+
+// export const activitiUrl=(function(){
+//     if(/59.216.201.52/.test(window.location.href)){
+//         return 'http://59.216.201.52:5002';
+//     }else{
+//         return 'http://10.10.50.10:5002';
+//     }
+// })();
+//
+// export const baseUrl=(function(){
+//     if(/59.216.201.52/.test(window.location.href)){
+//         return 'http://59.216.201.52:7001';
+//     }else{
+//         return 'http://isp.yndk.cn:7001';
+//     }
+// })();
 
 
 export function request2(method, url, body) {

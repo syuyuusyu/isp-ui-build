@@ -261,4 +261,30 @@ export class EntityStore {
         this.toggleMonyToMonyFormVisible();
     });
 
+    //operationTable
+    //--------------------
+    @observable
+    operationTableVisible=false;
+
+    @observable
+    entityOperations=[];
+
+    @action
+    loadEntityOperations=async ()=>{
+        let json=await get(`${baseUrl}/entity/entityOperations/${this.currentEntity.id}`);
+        runInAction(()=>{
+            this.entityOperations=json;
+        });
+    };
+
+    @action
+    toggleOperationTableVisible=()=>{
+        this.operationTableVisible=!this.operationTableVisible;
+    };
+
+    showOperationTable=(record)=>action(()=>{
+        this.currentEntity=record;
+        this.toggleOperationTableVisible();
+    });
+
 }

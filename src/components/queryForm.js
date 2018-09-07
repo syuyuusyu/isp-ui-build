@@ -28,20 +28,29 @@ class QueryForm extends React.Component {
 
     state={};
 
+
+
     componentWillMount() {
         const store = this.props.rootStore.commonStore;
         const queryFieldIds=store.currentEntity.queryField?store.currentEntity.queryField.split(','):[];
         this.queryColumn=queryFieldIds.map(id=>store.allColumns.find(_=>_.id===parseInt(id)));
+        this.setCandidate();
+
+    }
+
+    setCandidate=()=>{
+        const store = this.props.rootStore.commonStore;
         this.queryColumn.forEach(async col=>{
             this.state[col.columnName]=[];
             this.state[`filter${col.columnName}`]=[];
-            let json=await post(`${baseUrl}/entity/queryCandidate/${col.id}`,store.defaultQueryObj);
+            let json=await post(`${baseUrl}/entity/queryCandidate/${col.id}`,{...store.treeSelectObj,...store.defaultQueryObj});
             json.unshift({value:null,text:null});
             this.setState({[col.columnName]:json});
             this.setState({[`filter${col.columnName}`]:json});
         });
+    };
 
-    }
+
 
     handleSearch=(colunmName)=>((value)=>{
         let regExp = new RegExp('.*'+value.trim()+'.*','i');
@@ -205,5 +214,5 @@ class QueryForm extends React.Component {
     }
 }
 
-export default Form.create()(QueryForm);
+export default QueryForm;
 

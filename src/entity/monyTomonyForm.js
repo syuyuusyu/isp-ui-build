@@ -69,6 +69,14 @@ class MonyToMonyForm extends React.Component {
         return (
             <div>
                 <Form>
+                    <FormItem label="关系名称">
+                        {getFieldDecorator('name', {
+                            rules: [{required: true, message: '不能为空',}],
+                            validateTrigger: 'onBlur'
+                        })(
+                            <Input placeholder="关系名称"/>
+                        )}
+                    </FormItem>
                     <FormItem label="表一名称">
                         {getFieldDecorator('firstTable', {
                             rules: [{required: true, message: '不能为空',}],

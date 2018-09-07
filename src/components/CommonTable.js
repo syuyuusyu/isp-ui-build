@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import { Divider, Popconfirm, Table, Modal, Row, Col,Button,Drawer,Select,notification,Card} from 'antd';
+import {Form, Divider, Popconfirm, Table, Modal, Row, Col,Button,Drawer,Select,notification,Card} from 'antd';
 import {inject, observer} from 'mobx-react';
 import {baseUrl, dateFtt, format, get} from '../util';
 import CreateForm from './createForm';
 
 
-
+const EnhancedCreateFrom=Form.create()(CreateForm);
 const Option=Select.Option;
 
 //import {SysOperationStore} from "./store";
@@ -70,7 +70,7 @@ class CommonTable extends Component{
                        maskClosable={false}
                        destroyOnClose={true}
                 >
-                    <CreateForm/>
+                    <EnhancedCreateFrom wrappedComponentRef={(form)=>{store.refCreateForm(form?form.wrappedInstance:null)}}/>
                 </Modal>
                 <Table style={{height: "100%"}}
                        columns={store.columns.filter(d=>d)}

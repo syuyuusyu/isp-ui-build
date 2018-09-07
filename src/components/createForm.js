@@ -45,15 +45,20 @@ class CreateForm extends React.Component {
         const store = this.props.rootStore.commonStore;
         this.columns = store.allColumns.filter(c => c.entityId === store.currentEntity.id && c.hidden !== '1');
         this.textColumns = this.columns.filter(c => c.columnType === 'text');
+        this.setCandidate();
+
+    }
+
+    setCandidate=()=>{
+        const store = this.props.rootStore.commonStore;
         this.columns.filter(c => c.foreignKeyId).forEach(async col => {
             this.state[col.columnName] = [];
             this.state[`filter${col.columnName}`] = [];
-            let json = await post(`${baseUrl}/entity/queryCandidate/${col.id}`, store.defaultQueryObj);
+            let json = await post(`${baseUrl}/entity/queryCandidate/${col.id}`, {...store.treeSelectObj,...store.defaultQueryObj});
             this.setState({[col.columnName]: json});
             this.setState({[`filter${col.columnName}`]: json});
         });
-
-    }
+    };
 
 
     componentDidMount() {

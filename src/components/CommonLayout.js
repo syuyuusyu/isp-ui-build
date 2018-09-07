@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Layout, Divider, Popconfirm, Table, Modal, Row, Col, Button, Drawer, Select, notification} from 'antd';
+import {Form,Layout, Divider, Popconfirm, Table, Modal, Row, Col, Button, Drawer, Select, notification} from 'antd';
 import {inject, observer} from 'mobx-react';
 import {baseUrl, dateFtt, get} from '../util';
 import CommonTree from './commonTree';
@@ -10,6 +10,8 @@ const {Header, Footer, Sider, Content} = Layout;
 
 
 const Option = Select.Option;
+
+const EnhancedQueryFrom =  Form.create()(QueryFrom);
 
 //import {SysOperationStore} from "./store";
 
@@ -53,7 +55,7 @@ class CommonLayout extends Component {
             <Layout style={{height: "100%"}}>
                 {
                     store.hasParent ?
-                        <Sider width={200}  style={{ background: '#fff',overflowY: 'auto', height: "100%" }}>
+                        <Sider width={300}  style={{ background: '#fff',overflowY: 'auto', height: "100%" }}>
                             <CommonTree/>
                         </Sider>
                         :
@@ -62,7 +64,7 @@ class CommonLayout extends Component {
                 <Content style={{height: "100%"}}>
                     <Layout style={{height: "100%"}}>
                         <Content style={{height: "100%"}}>
-                            <QueryFrom/>
+                            <EnhancedQueryFrom wrappedComponentRef={(form)=>{store.refQueryForm(form?form.wrappedInstance:null)}}/>
                             <CommonTable style={{height: "100%"}}/>
                         </Content>
                     </Layout>

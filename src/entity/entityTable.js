@@ -25,6 +25,16 @@ class EntityTable extends Component {
         {dataIndex: 'entityCode', title: '编码', width: 80,},
         {dataIndex: 'entityName', title: '名称', width: 100,},
         {dataIndex: 'nameField', title: '名称字段', width: 120,},
+        {
+            dataIndex: 'editAble', title: '是否可编辑', width: 100,
+            render:(text)=>{
+                if(text==='1'){
+                    return '是';
+                }else{
+                    return '否';
+                }
+            }
+        },
         {dataIndex: 'idField', title: 'ID字段', width: 80,},
         {
             dataIndex: 'parentEntityId', title: '父实体表名', width: 80,
@@ -46,6 +56,9 @@ class EntityTable extends Component {
                     <span>
                         <Button icon="menu-unfold"
                                 onClick={this.props.rootStore.entityStore.checkColumn(record)} size='small'>查看表字段</Button>
+                        <Divider type="vertical"/>
+                        <Button icon="tool"
+                                onClick={this.props.rootStore.entityStore.checkColumn(record)} size='small'>操作配置</Button>
                         <Divider type="vertical"/>
                         <Button icon="edit"
                                 onClick={this.props.rootStore.entityStore.showEntityForm(true,record)} size='small'>修改</Button>
