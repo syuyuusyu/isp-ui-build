@@ -62,7 +62,7 @@ class MonyToMonyTable extends Component {
 
 
     componentDidMount() {
-        this.props.rootStore.entityStore.loadMonyToMonys();
+        //this.props.rootStore.entityStore.loadMonyToMonys();
     }
 
 

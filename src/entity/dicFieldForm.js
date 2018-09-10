@@ -42,7 +42,8 @@ class DicFieldForm extends React.Component{
                     message: '保存失败'
                 });
             }
-            store.subTables[store.selectDicField.groupId].setCurrentFields();
+            if(store.subTables[store.selectDicField.groupId])
+                store.subTables[store.selectDicField.groupId].setCurrentFields();
             store.loadallDictionary();
             store.toggleAddDicFieldVisible();
         });

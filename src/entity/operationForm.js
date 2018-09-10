@@ -12,10 +12,7 @@ const Option = Select.Option;
 @observer
 class OperationForm extends React.Component {
 
-    state={
-        idFileds:[]
-    };
-
+    state={type:'1'};
 
     save = () => {
         const store = this.props.rootStore.entityStore;
@@ -23,7 +20,8 @@ class OperationForm extends React.Component {
             if (err) return;
             let json = await post(`${baseUrl}/entity/saveConfig/entity_operation/id`, {
                 ...values,
-                id: store.currentMonyToMony ? store.currentMonyToMony.id : null,
+                id: store.currentOperation ? store.currentOperation.id : null,
+                entityId:store.currentEntity.id
             });
             if (json.success) {
                 notification.info({
@@ -36,25 +34,21 @@ class OperationForm extends React.Component {
             }
 
         });
-        store.toggleMonyToMonyFormVisible();
-        store.loadMonyToMonys();
+        store.toggleOperationFormVisible();
+        store.loadEntityOperations();
     };
 
-    selectelationTable=(value)=>{
-        const store = this.props.rootStore.entityStore;
-        let columns=store.originalColumns
-            .filter(d=>d.table_name===value && d.column_key!=='PRI');
-        this.setState({idFileds:columns});
-
+    typeSelect=(value)=>{
+        this.setState({type:value});
     };
+
 
     componentDidMount() {
         const store = this.props.rootStore.entityStore;
-        store.loadTableNames();
-        if (store.currentMonyToMony) {
+        if (store.currentOperation) {
             this.props.form.setFieldsValue(
                 {
-                    ...store.currentMonyToMony,
+                    ...store.currentOperation,
                 }
 
             );
@@ -84,27 +78,56 @@ class OperationForm extends React.Component {
                             <Input placeholder="图标"/>
                         )}
                     </FormItem>
-                    <FormItem label="类所在目录">
-                        {getFieldDecorator('pagePath', {
+                    <FormItem label="类型">
+                        {getFieldDecorator('type', {
                             rules: [{required: true, message: '不能为空',}],
                             validateTrigger: 'onBlur'
                         })(
-                            <Input placeholder="类所在目录"/>
+                            <Select onSelect={this.typeSelect}>
+                                <Option value={'1'}>关联关系</Option>
+                                <Option value={'2'}>自定义</Option>
+                            </Select>
+                        )}
+                    </FormItem>
+                    <FormItem label="关系名称">
+                        {getFieldDecorator('monyToMonyId', {
+                            rules: [{required: this.state.type=='1'?true:false, message: '不能为空',}],
+                            validateTrigger: 'onBlur'
+                        })(
+                            <Select disabled={this.state.type=='1'?false:true}>
+                                {
+                                    store.monyToMonys
+                                        .filter(m=>m.firstTable===store.currentEntity.tableName
+                                            || m.secondTable===store.currentEntity.tableName)
+                                        .map(m=>(
+                                            <Option key={m.id} value={m.id}>{m.name}</Option>
+                                        ))
+                                }
+                            </Select>
+                        )}
+                    </FormItem>
+                    <FormItem label="类所在目录">
+                        {getFieldDecorator('pagePath', {
+                            rules: [{required: this.state.type=='1'?false:true, message: '不能为空',}],
+                            validateTrigger: 'onBlur'
+                        })(
+                            <Input disabled={this.state.type=='1'?true:false} placeholder="类所在目录"/>
                         )}
                     </FormItem>
                     <FormItem label="页面类名">
                         {getFieldDecorator('pageClass', {
-                            rules: [{required: true, message: '不能为空',}],
+                            rules: [{required: this.state.type=='1'?false:true, message: '不能为空',}],
                             validateTrigger: 'onBlur'
                         })(
-                            <Input placeholder="页面类名"/>
+                            <Input disabled={this.state.type=='1'?true:false} placeholder="页面类名"/>
                         )}
                     </FormItem>
+
 
                     <Row>
                         <Col span={24} style={{textAlign: 'right'}}>
                             <Button icon="save" onClick={this.save}>保存</Button>
-                            <Button type="reload" onClick={store}>取消</Button>
+                            <Button type="reload" onClick={store.toggleOperationFormVisible}>取消</Button>
                         </Col>
                     </Row>
                 </Form>

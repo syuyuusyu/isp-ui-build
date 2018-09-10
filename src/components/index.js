@@ -1,5 +1,5 @@
 import {CommonStore} from "./store";
-import CommonLayOut from './CommonLayout'
+import CommonLayOut from './commonLayout'
 
 
 export {CommonStore,CommonLayOut}

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Divider, Popconfirm, Table, Modal, Row, Col,Button,Drawer,Select,notification} from 'antd';
 import {inject, observer} from 'mobx-react';
 import {baseUrl, get} from '../util';
-import MonyToMonyForm from './monyTomonyForm';
+import OperationForm from './operationForm';
 import '../style.css';
 
 const Option=Select.Option;
@@ -21,8 +21,31 @@ class OperationTable extends Component {
         {
             dataIndex: 'icon', title: '图标', width: 50
         },
+        {
+            dataIndex: 'type', title: '类型', width: 100,
+            render:(text)=>{
+                if(text==='1'){
+                    return '关联关系';
+                }else{
+                    return '自定义';
+                }
+            }
+        },
         {dataIndex: 'pagePath', title: '类所在目录', width: 120,},
         {dataIndex: 'pageClass', title: '页面类名', width: 120,},
+        {
+            dataIndex: 'monyToMonyId', title: '关系名称', width: 120,
+            render:(text,record)=>{
+                if(record.type=='1'){
+                    const store = this.props.rootStore.entityStore;
+                    console.log(store.monyToMonys.filter(d=>d),text);
+                    return store.monyToMonys.find(d=>d.id==text).name;
+                }else{
+                    return '';
+                }
+
+            }
+        },
         {
             title: '操作',
             width: 320,
@@ -31,7 +54,7 @@ class OperationTable extends Component {
                     <span>
                         <Divider type="vertical"/>
                         <Button icon="edit"
-                                onClick={this.props.rootStore.entityStore.showMonyToMonyForm(true,record)} size='small'>修改</Button>
+                                onClick={this.props.rootStore.entityStore.showOperationForm(true,record)} size='small'>修改</Button>
                         <Divider type="vertical"/>
                         <Popconfirm onConfirm={this.delete(record.id)} title="确认删除?">
                             <Button icon="delete" onClick={null} size='small'>删除</Button>
@@ -53,7 +76,7 @@ class OperationTable extends Component {
                 message: '删除失败'
             });
         }
-        this.props.rootStore.entityStore.loadMonyToMonys();
+        this.props.rootStore.entityStore.loadEntityOperations();
     });
 
 
@@ -66,19 +89,19 @@ class OperationTable extends Component {
         const store = this.props.rootStore.entityStore;
         return (
             <div>
-                <Modal visible={store.monyToMonyFormVisible}
+                <Modal visible={store.operationFormVisible}
                        width={400}
-                       title="配置表多对多关系"
+                       title="配置操作"
                        footer={null}
-                       onCancel={store.toggleMonyToMonyFormVisible}
+                       onCancel={store.toggleOperationFormVisible}
                        maskClosable={false}
                        destroyOnClose={true}
                 >
-                    <MonyToMonyForm/>
+                    <OperationForm/>
                 </Modal>
                 <Row gutter={2} className="table-head-row">
                     <Col span={4} style={{ textAlign: 'right' }} className="col-button">
-                        <Button icon="plus-circle-o" onClick={store.showMonyToMonyForm(false,null)}>新建操作</Button>
+                        <Button icon="plus-circle-o" onClick={store.showOperationForm(false,null)}>新建操作</Button>
                     </Col>
                 </Row>
                 <Table columns={this.columns}

@@ -12,7 +12,6 @@ const Option=Select.Option;
 
 //const TreeNode = Tree.TreeNode;
 //const {Content, Sider} = Layout;
-
 @inject('rootStore')
 @observer
 class CommonTable extends Component{

@@ -293,9 +293,20 @@ export class EntityStore {
     @observable
     operationFormVisible=false;
 
+    currentOperation;
+
+
     @action
-    toggleOperationForm=()=>{
+    toggleOperationFormVisible=()=>{
         this.operationFormVisible=!this.operationFormVisible;
-    }
+    };
+
+    showOperationForm=(isFormUpdate,record)=>(()=>{
+        this.isFormUpdate=isFormUpdate;
+        this.currentOperation=record;
+        this.toggleOperationFormVisible();
+    });
+
+
 
 }

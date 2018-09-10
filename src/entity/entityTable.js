@@ -91,6 +91,7 @@ class EntityTable extends Component {
     componentDidMount() {
         this.props.rootStore.entityStore.loadEntitys();
         this.props.rootStore.entityStore.loadallDictionary();
+        this.props.rootStore.entityStore.loadMonyToMonys();
     }
 
     componentWillUpdate(){

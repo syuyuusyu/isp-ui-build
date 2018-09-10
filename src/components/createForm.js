@@ -34,7 +34,6 @@ const formItemLayout = {
     },
 };
 
-
 @inject('rootStore')
 @observer
 class CreateForm extends React.Component {
@@ -54,7 +53,7 @@ class CreateForm extends React.Component {
         this.columns.filter(c => c.foreignKeyId).forEach(async col => {
             this.state[col.columnName] = [];
             this.state[`filter${col.columnName}`] = [];
-            let json = await post(`${baseUrl}/entity/queryCandidate/${col.id}`, {...store.treeSelectObj,...store.defaultQueryObj});
+            let json = await post(`${baseUrl}/entity/queryCandidate/${col.id}`, {...store.treeSelectedObj,...store.defaultQueryObj});
             this.setState({[col.columnName]: json});
             this.setState({[`filter${col.columnName}`]: json});
         });

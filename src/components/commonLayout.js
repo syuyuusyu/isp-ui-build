@@ -3,7 +3,7 @@ import {Form,Layout, Divider, Popconfirm, Table, Modal, Row, Col, Button, Drawer
 import {inject, observer} from 'mobx-react';
 import {baseUrl, dateFtt, get} from '../util';
 import CommonTree from './commonTree';
-import CommonTable from './CommonTable';
+import CommonTable from './commonTable';
 import QueryFrom from './queryForm';
 
 const {Header, Footer, Sider, Content} = Layout;
@@ -24,27 +24,35 @@ class CommonLayout extends Component {
 
     constructor(props) {
         super(props);
-        const store = this.props.rootStore.commonStore;
-        props.match.path.replace(/\/(\d+)$/, (w, p1) => {
-            this.entityId = parseInt(p1, 10);
-            store.setEntityId(this.entityId);
-        });
-        try{
-            let obj=JSON.parse(props.defaultQueryObj);
-            console.log(obj);
-            store.setDefaultQueryObj(obj);
-        }catch (e){}
-
+        //const store = this.props.rootStore.commonStore;
 
     }
 
     async componentWillMount(){
-        const store=this.props.rootStore.commonStore;
+        console.log('componentWillMount',  this.props.match.path);
+
+        const store = this.props.rootStore.commonStore;
+        let entityId=this.props.match.path.replace(/\/\w+\/(\d+)$/, (w, p1) => {
+            return p1;
+        });
+        store.setEntityId(parseInt(entityId,10));
+        try{
+            let obj=JSON.parse(this.props.defaultQueryObj);
+            store.setDefaultQueryObj(obj);
+        }catch (e){}
         await store.loadAllEntitys();
         await store.loadAllDictionary();
         await store.loadAllColumns();
         await store.loadAllMonyToMony();
+        await store.loadAllOperations();
         store.setshouldRender(true);
+
+
+    }
+
+    componentWillUnmount(){
+        console.log('componentWillUnmount',  this.props.match.path);
+
     }
 
     render() {
@@ -57,7 +65,7 @@ class CommonLayout extends Component {
                 {
                     store.hasParent ?
                         <Sider width={300}  style={{ background: '#fff',overflowY: 'auto', height: "100%" }}>
-                            <CommonTree/>
+                            <CommonTree commonStore={store}/>
                         </Sider>
                         :
                         ''
@@ -65,8 +73,8 @@ class CommonLayout extends Component {
                 <Content style={{height: "100%"}}>
                     <Layout style={{height: "100%"}}>
                         <Content style={{height: "100%"}}>
-                            <EnhancedQueryFrom wrappedComponentRef={(form)=>{store.refQueryForm(form?form.wrappedInstance:null)}}/>
-                            <CommonTable style={{height: "100%"}}/>
+                            <EnhancedQueryFrom  commonStore={store} wrappedComponentRef={(form)=>{store.refQueryForm(form?form.wrappedInstance:null)}}/>
+                            <CommonTable style={{height: "100%"}} commonStore={store}/>
                         </Content>
                     </Layout>
                 </Content>

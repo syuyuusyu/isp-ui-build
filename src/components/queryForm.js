@@ -21,7 +21,6 @@ const formItemLayout = {
     },
 };
 
-
 @inject('rootStore')
 @observer
 class QueryForm extends React.Component {
@@ -31,7 +30,10 @@ class QueryForm extends React.Component {
 
 
     componentWillMount() {
+        this.setState({});
+        console.log(this.state);
         const store = this.props.rootStore.commonStore;
+        console.log(store.currentEntity);
         const queryFieldIds=store.currentEntity.queryField?store.currentEntity.queryField.split(','):[];
         this.queryColumn=queryFieldIds.map(id=>store.allColumns.find(_=>_.id===parseInt(id)));
         this.setCandidate();
@@ -43,7 +45,7 @@ class QueryForm extends React.Component {
         this.queryColumn.forEach(async col=>{
             this.state[col.columnName]=[];
             this.state[`filter${col.columnName}`]=[];
-            let json=await post(`${baseUrl}/entity/queryCandidate/${col.id}`,{...store.treeSelectObj,...store.defaultQueryObj});
+            let json=await post(`${baseUrl}/entity/queryCandidate/${col.id}`,{...store.treeSelectedObj,...store.defaultQueryObj});
             json.unshift({value:null,text:null});
             this.setState({[col.columnName]:json});
             this.setState({[`filter${col.columnName}`]:json});
@@ -204,7 +206,12 @@ class QueryForm extends React.Component {
                         }
                         <Col span={6} style={{textAlign: 'right'}}>
                             <Button icon="search" onClick={this.query}>查询</Button>
-                            <Button icon="plus-circle-o" onClick={store.showCreateForm(null,false)}>新建</Button>
+                            {
+                                store.currentEntity.editAble=='1'?
+                                    <Button icon="plus-circle-o" onClick={store.showCreateForm(null,false)}>新建</Button>
+                                    :''
+                            }
+
                         </Col>
                     </Row>
                 </Form>
