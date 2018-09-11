@@ -38,7 +38,7 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
       </div>
     );
     linksLess.push(
-      <div key={102} className={`link qilinqu`} data-href={'http://baidu.com'} onClick={eClick}>
+      <div key={102} className={`link qilinqu`} data-href={'http://10.10.50.39:8080/gds'} onClick={eClick}>
         <span className="text">城市综合管理系统</span>
       </div>
     );
