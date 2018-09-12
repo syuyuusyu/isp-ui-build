@@ -24,10 +24,13 @@ class OperationTable extends Component {
         {
             dataIndex: 'type', title: '类型', width: 100,
             render:(text)=>{
-                if(text==='1'){
-                    return '关联关系';
-                }else{
-                    return '自定义';
+                switch (text){
+                    case '1':
+                        return '关联关系';
+                    case '2':
+                        return '自定义';
+                    case '3':
+                        return '执行方法';
                 }
             }
         },
@@ -66,7 +69,7 @@ class OperationTable extends Component {
     ];
 
     delete=(id)=>(async ()=>{
-        let json=await get(`${baseUrl}/entity/deleteConfig/entity_mony_to_mony/id/${id}`);
+        let json=await get(`${baseUrl}/entity/deleteConfig/entity_operation/id/${id}`);
         if(json.success){
             notification.info({
                 message: '删除成功'
@@ -81,7 +84,9 @@ class OperationTable extends Component {
 
 
     componentDidMount() {
+
         this.props.rootStore.entityStore.loadEntityOperations();
+        console.log(this.props.rootStore.entityStore.monyToMonys.filter(d=>d));
     }
 
 
@@ -90,7 +95,7 @@ class OperationTable extends Component {
         return (
             <div>
                 <Modal visible={store.operationFormVisible}
-                       width={400}
+                       width={600}
                        title="配置操作"
                        footer={null}
                        onCancel={store.toggleOperationFormVisible}

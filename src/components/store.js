@@ -1,5 +1,5 @@
 import React from 'react';
-import {observable, configure, action, runInAction,computed,autorun,when} from 'mobx';
+import {observable, configure, action, runInAction, computed, autorun, when} from 'mobx';
 import {Icon, notification, Button, Divider, Popconfirm} from 'antd';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -14,7 +14,7 @@ export class CommonStore {
     constructor(rootStore) {
         this.rootStore = rootStore;
         when(
-            () => this.selectedTreeId!==-1,
+            () => this.selectedTreeId !== -1,
             () => this.queryTable()
         );
     }
@@ -36,7 +36,8 @@ export class CommonStore {
 
     allEntitys = [];
 
-    allOperations = [];
+    @observable
+    operations = [];
 
     allMonyToMony = [];
 
@@ -49,18 +50,18 @@ export class CommonStore {
     };
 
     @computed
-    get currentEntity(){
+    get currentEntity() {
         return this.allEntitys.filter(d => d.id === this.entityId)[0];
     }
 
     @computed
-    get hasParent(){
-        return this.currentEntity.parentEntityId?true:false;
+    get hasParent() {
+        return this.currentEntity.parentEntityId ? true : false;
     }
 
     @computed
-    get currentParentEntity(){
-        return this.hasParent?this.allEntitys.filter(d => d.id === this.currentEntity.parentEntityId)[0]:null;
+    get currentParentEntity() {
+        return this.hasParent ? this.allEntitys.filter(d => d.id === this.currentEntity.parentEntityId)[0] : null;
     }
 
     loadAllDictionary = async () => {
@@ -83,15 +84,35 @@ export class CommonStore {
         this.allMonyToMony = json;
     };
 
+    @action
     loadAllOperations = async () => {
         let json = await get(`${baseUrl}/entity/entityOperations/0`);
-        this.allOperations = json;
-        console.log(this.currentEntity);
+        runInAction(() => {
+            this.operations = json.filter(o => o.entityId === this.currentEntity.id);
+            this.operations.forEach(o => this.operationVisible[o.id] = false);
+        });
     };
 
 
     //table
     //--------------------
+
+    @observable
+    operationVisible = {};
+
+    currentTableRow = {};
+
+
+    toggleOperationVisible = (operationId) => action(() => {
+        let obj = Object.create(this.operationVisible);
+        obj[operationId] = !obj[operationId];
+        this.operationVisible = obj;
+    });
+
+    showOperationForm = (record, operationId) => (() => {
+        this.currentTableRow = record;
+        this.toggleOperationVisible(operationId)();
+    });
 
     @observable
     tableRows = [];
@@ -159,17 +180,32 @@ export class CommonStore {
                     return (
                         <span>
                             {
-                                this.allOperations.filter(o => o.entityId === this.currentEntity.id)
-                                    .map(m => (
-                                        <span key={m.id}>
-                                            <Button  icon={m.icon} onClick={null} size='small'>{m.name}</Button>
-                                            <Divider type="vertical"/>
-                                        </span>
-                                    ))
+                                this.operations.filter(d => d)
+                                    .map(m => {
+                                        if (m.type === '3') {
+                                            return (
+                                                <span key={m.id}>
+                                                    <Popconfirm onConfirm={this.execFun(record, m.function)}
+                                                                title={`确认${m.name}?`}>
+                                                        <Button icon={m.icon} onClick={null}
+                                                                size='small'>{m.name}</Button>
+                                                    </Popconfirm>
+                                                    <Divider type="vertical"/>
+                                                </span>
+                                            );
+                                        }
+                                        return (
+                                            <span key={m.id}>
+                                                <Button icon={m.icon} onClick={this.showOperationForm(record, m.id)}
+                                                        size='small'>{m.name}</Button>
+                                                <Divider type="vertical"/>
+                                            </span>
+                                        );
+                                    })
                             }
                             {
-                                this.currentEntity.editAble=='1' ? (
-                                    <span>
+                                this.currentEntity.editAble == '1' ? (
+                                        <span>
                                     <Button icon="edit" onClick={this.showCreateForm(record, true)}
                                             size='small'>修改</Button>
                                         <Divider type="vertical"/>
@@ -191,9 +227,13 @@ export class CommonStore {
         });
     };
 
+    execFun = (record, fn) => (() => {
+        let fun = eval('(' + fn + ')').callInstance({notification, baseUrl, get, post});
+        fun(record);
+    });
+
     deleteRow = (id) => (async () => {
         let json = await get(`${baseUrl}/entity/deleteEntity/${this.currentEntity.id}/${id}`);
-        console.log(json);
         if (json.success) {
             notification.info({
                 message: '删除成功'
@@ -222,7 +262,7 @@ export class CommonStore {
         console.log(this.treeSelectedObj);
         console.log(this.defaultQueryObj);
         console.log(this.queryObj);
-        let json = await post(`${baseUrl}/entity/query/${this.entityId}`, {...this.treeSelectedObj,...this.defaultQueryObj, ...this.queryObj});
+        let json = await post(`${baseUrl}/entity/query/${this.entityId}`, {...this.treeSelectedObj, ...this.defaultQueryObj, ...this.queryObj});
         runInAction(() => {
             this.tableRows = json.data;
             this.pagination = {
@@ -248,25 +288,25 @@ export class CommonStore {
     treeData = [];
 
     @observable
-    selectedTreeId=-1;
+    selectedTreeId = -1;
 
     @computed
-    get treeSelectedObj(){
-        return {[this.currentEntity.pidField]: this.selectedTreeId};
+    get treeSelectedObj() {
+        return this.currentEntity.pidField ? {[this.currentEntity.pidField]: this.selectedTreeId} : null;
     }
 
     @action
     initTree = async () => {
-        let {topParentId} = await get(`${baseUrl}/entity/topParentId/${this.currentParentEntity.parentEntityId}`);
+        let topParentRecord = await get(`${baseUrl}/entity/topParentRecord/${this.currentParentEntity.parentEntityId}`);
         //this.queryObj={[this.currentEntity.pidField]:topParentId};
         let json = await post(`${baseUrl}/entity/query/${this.currentParentEntity.id}`, {
             ...this.defaultQueryObj,
-            [this.currentParentEntity.idField]: topParentId
+            [this.currentParentEntity.idField]: topParentRecord[this.currentParentEntity.idField]
         });
         runInAction(() => {
-            this.selectedTreeId=json.data[0][this.currentParentEntity.idField];
+            this.selectedTreeId = json.data[0][this.currentParentEntity.idField];
             this.treeData = json.data;
-            this.setCurrentRoute(topParentId);
+            this.setCurrentRoute(topParentRecord[this.currentParentEntity.idField]);
         });
         if (this.queryFormInstance) {
             this.queryFormInstance.setCandidate();
@@ -310,7 +350,7 @@ export class CommonStore {
     @action
     treeSelect = (selectedKeys, e) => {
         let id = e.node.props.dataRef[this.currentParentEntity.idField];
-        this.selectedTreeId=id;
+        this.selectedTreeId = id;
         this.setCurrentRoute(id);
         this.queryObj = {start: 0, pageSize: this.pagination.pageSize, page: 1};
         this.queryTable();
@@ -326,7 +366,7 @@ export class CommonStore {
 
     isFormUpdate = false;
 
-    currentTableRow = {};
+
 
     @action
     toggleCreateFormVisible = () => {
@@ -337,7 +377,8 @@ export class CommonStore {
         this.isFormUpdate = isUpdate;
         this.currentTableRow = record;
         if (this.hasParent) {
-            if (!this.treeSelectObj[this.currentEntity.pidField]) {
+            console.log(this.treeSelectedObj);
+            if (!this.treeSelectedObj[this.currentEntity.pidField]) {
                 notification.info({
                     message: '先选中对应父节点'
                 });
@@ -346,6 +387,10 @@ export class CommonStore {
         }
         this.toggleCreateFormVisible();
     });
+
+    //operation
+    //---------------------------
+    relevantEntity;
 
 
 }

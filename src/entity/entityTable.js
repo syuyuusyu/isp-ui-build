@@ -173,7 +173,7 @@ class EntityTable extends Component {
                 <Drawer
                     title={'多对多关系'}
                     placement="right"
-                    width={800}
+                    width={1000}
                     zIndex={999}
                     closable={true}
                     maskClosable={true}

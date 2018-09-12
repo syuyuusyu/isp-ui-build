@@ -52,6 +52,7 @@ class MonyToMonyForm extends React.Component {
         const store = this.props.rootStore.entityStore;
         store.loadTableNames();
         if (store.currentMonyToMony) {
+            this.selectelationTable(store.currentMonyToMony.relationTable);
             this.props.form.setFieldsValue(
                 {
                     ...store.currentMonyToMony,

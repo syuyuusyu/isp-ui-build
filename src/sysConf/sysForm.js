@@ -1,9 +1,10 @@
 import React from 'react';
-import { Form, Row, Col, Input, Button ,notification,} from 'antd';
+import { Form, Row, Col, Input, Button ,notification,Select} from 'antd';
 import {inject,observer} from 'mobx-react';
 import {baseUrl,post} from '../util';
 //const Option=Select.Option;
 const FormItem = Form.Item;
+const Option=Select.Option;
 
 @inject('rootStore')
 @observer
@@ -15,7 +16,9 @@ class SysForm extends React.Component{
             this.props.form.setFieldsValue({
                 code:store.currentSys.code,
                 name:store.currentSys.name,
-                url:store.currentSys.url
+                url:store.currentSys.url,
+                isGov:store.currentSys.isGov,
+                govUrl:store.currentSys.govUrl,
             });
         }
     }
@@ -54,35 +57,46 @@ class SysForm extends React.Component{
         const { getFieldDecorator, } = this.props.form;
         return (
         <Form>
-            <Row>
-                <FormItem label="平台编码">
-                    {getFieldDecorator('code',{
-                        rules: [{ validator: this.props.rootStore.sysStore.checkUnique, message: '系统编码不能重复', }],
-                        validateTrigger:'onBlur'
-                    })(
-                        <Input placeholder="输入系统编码"  />
-                    )}
-                </FormItem>
-            </Row>
-            <Row>
-                <FormItem label='平台名称'>
-                    {getFieldDecorator('name',{
-                        rules: [{ required: true, message: '此项为必填项!!' }],
-                        validateTrigger:'onBlur'
-                    })(
-                        <Input placeholder="输入系统名称"  />
-                    )}
-                </FormItem>
-            </Row>
-            <Row>
-                <FormItem label="URL">
-                    {getFieldDecorator('url',{
-                        rules: [{ required: true, message: '此项为必填项!!' }],
-                    })(
-                        <Input placeholder="输入URL" />
-                    )}
-                </FormItem>
-            </Row>
+            <FormItem label="平台编码">
+                {getFieldDecorator('code',{
+                    rules: [{ validator: this.props.rootStore.sysStore.checkUnique, message: '系统编码不能重复', }],
+                    validateTrigger:'onBlur'
+                })(
+                    <Input placeholder="输入系统编码"  />
+                )}
+            </FormItem>
+            <FormItem label='平台名称'>
+                {getFieldDecorator('name',{
+                    rules: [{ required: true, message: '此项为必填项!!' }],
+                    validateTrigger:'onBlur'
+                })(
+                    <Input placeholder="输入系统名称"  />
+                )}
+            </FormItem>
+            <FormItem label='政务网是否可以访问该系统'>
+                {getFieldDecorator('isGov',{
+                    rules: [{ required: true, message: '此项为必填项!!' }],
+                    validateTrigger:'onBlur'
+                })(
+                    <Select>
+                        <Option value={'1'} >是</Option>
+                        <Option value={'0'} >否</Option>
+                    </Select>
+                )}
+            </FormItem>
+            <FormItem label="URL">
+                {getFieldDecorator('url',{
+                    rules: [{ required: true, message: '此项为必填项!!' }],
+                })(
+                    <Input placeholder="输入URL" />
+                )}
+            </FormItem>
+            <FormItem label="政务网URL">
+                {getFieldDecorator('govUrl',{
+                })(
+                    <Input placeholder="输入URL" />
+                )}
+            </FormItem>
             <Row>
                 <Col span={24} style={{ textAlign: 'right' }}>
                     <Button icon="save" onClick={this.save}>保存</Button>

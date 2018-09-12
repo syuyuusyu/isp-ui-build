@@ -3,6 +3,8 @@ import {Form, Divider, Popconfirm, Table, Modal, Row, Col,Button,Drawer,Select,n
 import {inject, observer} from 'mobx-react';
 import {baseUrl, dateFtt, format, get} from '../util';
 import CreateForm from './createForm';
+import CommonTransfer from './commonTransfer';
+import RelevantTree from './relevantTree';
 
 
 const EnhancedCreateFrom=Form.create()(CreateForm);
@@ -15,6 +17,10 @@ const Option=Select.Option;
 @inject('rootStore')
 @observer
 class CommonTable extends Component{
+
+    state={
+        modalWidth:400
+    };
 
     componentWillMount(){
         const store=this.props.rootStore.commonStore;
@@ -57,6 +63,69 @@ class CommonTable extends Component{
         </div>
     );
 
+    createOperationPage=(op)=>{
+        const store=this.props.rootStore.commonStore;
+        if(op.type==='1'){
+            let monyTomony=store.allMonyToMony.find(m=>m.id===op.monyToMonyId);
+            let relevantEntity;
+            if(monyTomony.firstTable===store.currentEntity.tableName){
+                relevantEntity=store.allEntitys.find(e=>e.tableName===monyTomony.secondTable);
+            }else if(monyTomony.secondTable===store.currentEntity.tableName){
+                relevantEntity=store.allEntitys.find(e=>e.tableName===monyTomony.firstTable);
+            }
+            if(relevantEntity){
+                store.relevantEntity=relevantEntity;
+                if(!relevantEntity.parentEntityId){
+                    return (
+                        <Modal visible={store.operationVisible[op.id]}
+                               key={op.id}
+                               width={900}
+                               title={op.name}
+                               footer={null}
+                               onCancel={store.toggleOperationVisible(op.id)}
+                               maskClosable={false}
+                               destroyOnClose={true}
+                        >
+                            <CommonTransfer monyTomony={monyTomony} operationId={op.id}/>
+                        </Modal>
+                    );
+                }else if(store.relevantEntity.id===relevantEntity.parentEntityId){
+                    return (
+                        <Modal visible={store.operationVisible[op.id]}
+                               key={op.id}
+                               width={400}
+                               title={op.name}
+                               footer={null}
+                               onCancel={store.toggleOperationVisible(op.id)}
+                               maskClosable={false}
+                               destroyOnClose={true}
+                        >
+                            <RelevantTree monyTomony={monyTomony} operationId={op.id}/>
+                        </Modal>
+                    );
+                }
+            }
+        }
+        if(op.type==='2'){
+            console.log('../'+op.pagePath,op.pageClass)
+            console.log(require('../' + op.pagePath)[op.pageClass]);
+            return (
+                <Modal visible={store.operationVisible[op.id]}
+                       key={op.id}
+                       width={400}
+                       title={op.name}
+                       footer={null}
+                       onCancel={store.toggleOperationVisible(op.id)}
+                       maskClosable={false}
+                       destroyOnClose={true}
+                >
+                    {React.createElement(require('../' + op.pagePath)[op.pageClass],{operationId:op.id})}
+                </Modal>
+            );
+
+        }
+    };
+
     render(){
         const store=this.props.rootStore.commonStore;
         return (
@@ -71,6 +140,9 @@ class CommonTable extends Component{
                 >
                     <EnhancedCreateFrom wrappedComponentRef={(form)=>{store.refCreateForm(form?form.wrappedInstance:null)}}/>
                 </Modal>
+                {
+                    store.operations.filter(o=>o.type!=='3').map(o=>this.createOperationPage(o))
+                }
                 <Table style={{height: "100%"}}
                        columns={store.columns.filter(d=>d)}
                        rowKey={record => record[store.currentEntity.idField]}

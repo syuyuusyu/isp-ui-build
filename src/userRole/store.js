@@ -146,6 +146,7 @@ export class UserRoleStore {
   @action
   handleChange = (nextTargetKeys, direction, moveKeys) => {
     console.log('handleChange');
+    console.log(nextTargetKeys);
     this.targetKeys = nextTargetKeys;
 
   };
@@ -210,12 +211,12 @@ export class UserRoleStore {
         message: '后台错误，请联系管理员',
       })
     }
-  })
+  });
 
   @action
   afterClose=()=>{
     this.selectedKeys=[];
-  }
+  };
 
   @action
   setSelectUser=(selectUser)=>{

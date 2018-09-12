@@ -17,21 +17,21 @@ class SysOperation extends Component {
             dataIndex: 'type', title: '类型', width: 100,
             render: (text) => {
                 switch (text) {
-                    case 1:
+                    case '1':
                         return '登录';
-                    case 2:
+                    case '2':
                         return '退出';
-                    case 3:
+                    case '3':
                         return '接口调用';
-                    case 4:
+                    case '4':
                         return '页面引用';
-                    case 5:
+                    case '5':
                         return '推送用户';
-                    case 6:
+                    case '6':
                         return '注销平台用户';
-                    case 7:
+                    case '7':
                         return '服务资源目录';
-                    case 8:
+                    case '8':
                         return '系统元数据';
                     default:
                         return '';

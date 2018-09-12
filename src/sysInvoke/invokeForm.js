@@ -66,8 +66,6 @@ class InvokeForm extends React.Component{
                                 <Input placeholder="输入调用名称" />
                             )}
                         </FormItem>
-
-
                     </Col>
                     <Col span={6}>
                         <FormItem label="请求方法">

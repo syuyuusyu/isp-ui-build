@@ -78,7 +78,7 @@ class QueryForm extends React.Component {
 
                 }
             });
-            store.queryObj={...store.queryObj,...values,start:0,pageSize:store.pagination.pageSize,page:1};
+            store.queryObj={...values,start:0,pageSize:store.pagination.pageSize,page:1};
             store.queryTable();
         });
     };
@@ -190,9 +190,9 @@ class QueryForm extends React.Component {
                 <Form layout='horizontal'>
                     {this.createItems()}
                     <Row>
-                        {
-                            store.hasParent?
-                                <Col span={18} style={{textAlign: 'left'}}>
+                        <Col span={18} style={{textAlign: 'left'}}>
+                            {
+                                store.hasParent?
                                     <Breadcrumb style={{ margin: '10px 8px' }}>
                                         <Breadcrumb.Item>当前路径:</Breadcrumb.Item>
                                         {
@@ -200,12 +200,17 @@ class QueryForm extends React.Component {
                                                 .filter(d=>d).map(r=><Breadcrumb.Item key={r.id}>{r.text}</Breadcrumb.Item>)
                                         }
                                     </Breadcrumb>
-                                </Col>
-                            :''
+                                    :
+                                    ''
+                            }
 
-                        }
+                        </Col>
                         <Col span={6} style={{textAlign: 'right'}}>
-                            <Button icon="search" onClick={this.query}>查询</Button>
+                            {
+                                store.currentEntity.queryField?
+                                    <Button icon="search" onClick={this.query}>查询</Button>
+                                    :''
+                            }
                             {
                                 store.currentEntity.editAble=='1'?
                                     <Button icon="plus-circle-o" onClick={store.showCreateForm(null,false)}>新建</Button>

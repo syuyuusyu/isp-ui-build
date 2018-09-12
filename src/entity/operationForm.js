@@ -2,6 +2,14 @@ import React from 'react';
 import {Form, Row, Col, Input, Button, Select, Modal, Progress, InputNumber, notification} from 'antd';
 import {inject, observer} from 'mobx-react';
 import {baseUrl, get, post} from "../util";
+import {UnControlled as CodeMirror} from 'react-codemirror2'
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/addon/hint/show-hint.css';
+import 'codemirror/addon/hint/show-hint.js';
+import 'codemirror/addon/hint/javascript-hint.js';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/material.css';
+import 'codemirror/theme/ambiance.css';
 import '../style.css';
 
 const FormItem = Form.Item;
@@ -12,7 +20,11 @@ const Option = Select.Option;
 @observer
 class OperationForm extends React.Component {
 
-    state={type:'1'};
+    state={
+        type:'1'
+    };
+
+    funMirrValue;
 
     save = () => {
         const store = this.props.rootStore.entityStore;
@@ -21,7 +33,8 @@ class OperationForm extends React.Component {
             let json = await post(`${baseUrl}/entity/saveConfig/entity_operation/id`, {
                 ...values,
                 id: store.currentOperation ? store.currentOperation.id : null,
-                entityId:store.currentEntity.id
+                entityId:store.currentEntity.id,
+                function:this.funMirrValue
             });
             if (json.success) {
                 notification.info({
@@ -45,6 +58,7 @@ class OperationForm extends React.Component {
 
     componentDidMount() {
         const store = this.props.rootStore.entityStore;
+        this.props.form.setFieldsValue({type:'1'});
         if (store.currentOperation) {
             this.props.form.setFieldsValue(
                 {
@@ -86,44 +100,81 @@ class OperationForm extends React.Component {
                             <Select onSelect={this.typeSelect}>
                                 <Option value={'1'}>关联关系</Option>
                                 <Option value={'2'}>自定义</Option>
+                                <Option value={'3'}>执行方法</Option>
                             </Select>
                         )}
                     </FormItem>
-                    <FormItem label="关系名称">
-                        {getFieldDecorator('monyToMonyId', {
-                            rules: [{required: this.state.type=='1'?true:false, message: '不能为空',}],
-                            validateTrigger: 'onBlur'
-                        })(
-                            <Select disabled={this.state.type=='1'?false:true}>
-                                {
-                                    store.monyToMonys
-                                        .filter(m=>m.firstTable===store.currentEntity.tableName
-                                            || m.secondTable===store.currentEntity.tableName)
-                                        .map(m=>(
-                                            <Option key={m.id} value={m.id}>{m.name}</Option>
-                                        ))
-                                }
-                            </Select>
-                        )}
-                    </FormItem>
-                    <FormItem label="类所在目录">
-                        {getFieldDecorator('pagePath', {
-                            rules: [{required: this.state.type=='1'?false:true, message: '不能为空',}],
-                            validateTrigger: 'onBlur'
-                        })(
-                            <Input disabled={this.state.type=='1'?true:false} placeholder="类所在目录"/>
-                        )}
-                    </FormItem>
-                    <FormItem label="页面类名">
-                        {getFieldDecorator('pageClass', {
-                            rules: [{required: this.state.type=='1'?false:true, message: '不能为空',}],
-                            validateTrigger: 'onBlur'
-                        })(
-                            <Input disabled={this.state.type=='1'?true:false} placeholder="页面类名"/>
-                        )}
-                    </FormItem>
+                    {
+                        this.state.type==='1'?
+                            <FormItem label="关系名称" >
+                                {getFieldDecorator('monyToMonyId', {
+                                    rules: [{required: this.state.type=='1'?true:false, message: '不能为空',}],
+                                    validateTrigger: 'onBlur'
+                                })(
+                                    <Select>
+                                        {
+                                            store.monyToMonys
+                                                .filter(m=>m.firstTable===store.currentEntity.tableName
+                                                    || m.secondTable===store.currentEntity.tableName)
+                                                .map(m=>(
+                                                    <Option key={m.id} value={m.id}>{m.name}</Option>
+                                                ))
+                                        }
+                                    </Select>
+                                )}
+                            </FormItem>
+                            :''
+                    }
+                    {
+                        this.state.type==='2'?
+                            <div>
+                                <FormItem label="类所在目录">
+                                    {getFieldDecorator('pagePath', {
+                                        rules: [{required: this.state.type=='2'?true:false, message: '不能为空',}],
+                                        validateTrigger: 'onBlur'
+                                    })(
+                                        <Input placeholder="类所在目录"/>
+                                    )}
+                                </FormItem>
+                                <FormItem label="页面类名">
+                                    {getFieldDecorator('pageClass', {
+                                        rules: [{required: this.state.type=='2'?true:false, message: '不能为空',}],
+                                        validateTrigger: 'onBlur'
+                                    })(
+                                        <Input placeholder="页面类名"/>
+                                    )}
+                                </FormItem>
+                            </div>
+                            :''
 
-
+                    }
+                    {
+                        this.state.type==='3'?
+                            <Row>
+                                <Col span={24}>
+                                    <div>
+                                        <div style={{marginBottom:'5px',marginTop:'10px'}}>执行函数</div>
+                                        <CodeMirror
+                                            ref="editorFun"
+                                            value={this.funMirrValue}
+                                            options={
+                                                {
+                                                    mode:'javascript',
+                                                    theme: 'material',
+                                                    lineNumbers: true,
+                                                    extraKeys: {"Ctrl": "autocomplete"},
+                                                }
+                                            }
+                                            onChange={(editor, data, value) => {
+                                                console.log('onChange fun');
+                                                this.funMirrValue=value;
+                                            }}
+                                        />
+                                    </div>
+                                </Col>
+                            </Row>
+                            :''
+                    }
                     <Row>
                         <Col span={24} style={{textAlign: 'right'}}>
                             <Button icon="save" onClick={this.save}>保存</Button>

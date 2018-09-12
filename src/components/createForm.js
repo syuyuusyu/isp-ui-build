@@ -104,7 +104,7 @@ class CreateForm extends React.Component {
         this.props.form.validateFields(async (err, values) => {
             if (err) return;
             if(store.hasParent){
-                values={...values,...store.treeSelectObj};
+                values={...values,...store.treeSelectedObj};
             }
             if (store.isFormUpdate) {
                 values[store.currentEntity.idField] = store.currentTableRow[store.currentEntity.idField];
@@ -114,6 +114,8 @@ class CreateForm extends React.Component {
                     values[c.columnName] = values[c.columnName].format('YYYY-MM-DD HH:mm:ss');
                 }
             });
+            console.log(store.treeSelectedObj);
+            console.log(values);
             let json = await post(`${baseUrl}/entity/saveEntity/${store.currentEntity.id}`, values);
             if (json.success) {
                 notification.info({

@@ -6,15 +6,12 @@ import {inject,observer} from 'mobx-react';
 @observer
 class UserRoleConf extends React.Component{
 
+
     componentDidMount(){
         this.props.rootStore.userRoleStore.loadUserRoleConfRoles();
         this.props.rootStore.userRoleStore.loadCurrentUserRole();
     }
 
-    // filterOption = (inputValue, option) => {
-    //     console.log(option);
-    //     return option.description.indexOf(inputValue) > -1;
-    // };
 
 
     render(){

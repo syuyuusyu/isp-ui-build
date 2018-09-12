@@ -9,7 +9,7 @@ import 'echarts/lib/component/title';
 import Gallery from '../components/Gallery';
 import { getPieOption, getSingleBarOption } from './tools';
 import './index.less';
-import { convertGigaFormat, baseUrl } from '../util';
+import { convertGigaFormat, baseUrl,isGov } from '../util';
 
 const colorIndex = ['#2deb7d', '#4c96df', '#f8c32f', '#ff294c', '#8e3ef2'];
 const colorGray = '#e8e8e8';
@@ -38,13 +38,16 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
       </div>
     );
     linksLess.push(
-      <div key={102} className={`link qilinqu`} data-href={'http://baidu.com'} onClick={eClick}>
+      <div key={102} className={`link qilinqu`} data-href={'http://10.10.50.39:8080/gds'} onClick={eClick}>
         <span className="text">城市综合管理系统</span>
       </div>
     );
   }
   for (let i = isAdmin ? 1 : 0; i < linkNum; i++) {
-    const { name, icon, url, token, operations } = currentRoleSys[isAdmin ? i - 1 : i];
+    const { name, icon, token, operations } = currentRoleSys[isAdmin ? i - 1 : i];
+    const url=currentRoleSys[isAdmin ? i - 1 : i]['isGov']==='0'?
+        currentRoleSys[isAdmin ? i - 1 : i]['url']:
+        currentRoleSys[isAdmin ? i - 1 : i][isGov?'govUrl':'url'];
     const usableOpe = operations.filter(o => o.type == 1);
     const href = `${url}${usableOpe[0] ? usableOpe[0].path : ''}?ispToken=${token}`;
     const node = (

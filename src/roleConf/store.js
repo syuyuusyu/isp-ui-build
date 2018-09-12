@@ -283,7 +283,6 @@ export class RoleButtonStore{
 
     @action
     onCheck=(checkedKeys,{checkedNodes})=>{
-        console.log(1111);
         this.checkedKeys=checkedKeys.checked;
 
     };
