@@ -41,7 +41,6 @@ class OperationTable extends Component {
             render:(text,record)=>{
                 if(record.type=='1'){
                     const store = this.props.rootStore.entityStore;
-                    console.log(store.monyToMonys.filter(d=>d),text);
                     return store.monyToMonys.find(d=>d.id==text).name;
                 }else{
                     return '';
@@ -84,9 +83,7 @@ class OperationTable extends Component {
 
 
     componentDidMount() {
-
         this.props.rootStore.entityStore.loadEntityOperations();
-        console.log(this.props.rootStore.entityStore.monyToMonys.filter(d=>d));
     }
 
 

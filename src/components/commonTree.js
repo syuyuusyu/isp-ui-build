@@ -31,7 +31,7 @@ class CommonTree extends Component{
                     </TreeNode>
                 );
             }
-            return <TreeNode title={title} key={item[this.idField]} dataRef={item}  />;
+            return <TreeNode title={title} key={item[this.idField]} dataRef={item} isLeaf={item.is_leaf?(item.is_leaf==='1'?true:false):false}   />;
         });
     };
 

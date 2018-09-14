@@ -3,7 +3,7 @@ import {observable, configure, action, runInAction, computed, autorun, when} fro
 import {Icon, notification, Button, Divider, Popconfirm} from 'antd';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import {activitiUrl, get, post, del, baseUrl, evil, getPathById} from '../util';
+import { get, post, del, baseUrl, evil, getPathById} from '../util';
 
 const antd = require('antd');
 
@@ -377,7 +377,6 @@ export class CommonStore {
         this.isFormUpdate = isUpdate;
         this.currentTableRow = record;
         if (this.hasParent) {
-            console.log(this.treeSelectedObj);
             if (!this.treeSelectedObj[this.currentEntity.pidField]) {
                 notification.info({
                     message: '先选中对应父节点'

@@ -1,7 +1,8 @@
 import React from 'react';
-import {Form, Row, Col, Input, Button, Select, Modal, Progress, InputNumber, notification} from 'antd';
+import {Form, Row, Col, Input, Button, Select, Modal, Progress, InputNumber, notification,Icon} from 'antd';
 import {inject, observer} from 'mobx-react';
 import {baseUrl, get, post} from "../util";
+import IconSelect from '../iconSelect';
 import {UnControlled as CodeMirror} from 'react-codemirror2'
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/addon/hint/show-hint.css';
@@ -14,6 +15,12 @@ import '../style.css';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
+
+const iconType=["edit",'delete',"question","question-circle-o","question-circle",'play-circle','play-circle-o',"plus","plus-circle-o",
+    "plus-circle","pause","minus", "minus-circle-o",'profile',
+    "solution","info","info-circle-o","exclamation-circle-o","close","close-circle-o","check","check-circle-o","save",
+    "appstore-o","setting","folder","database","rocket","safety","dashboard","fork","cloud-o","undo",
+];
 
 
 @inject('rootStore')
@@ -30,6 +37,7 @@ class OperationForm extends React.Component {
         const store = this.props.rootStore.entityStore;
         this.props.form.validateFields(async (err, values) => {
             if (err) return;
+            console.log(values);
             let json = await post(`${baseUrl}/entity/saveConfig/entity_operation/id`, {
                 ...values,
                 id: store.currentOperation ? store.currentOperation.id : null,
@@ -52,20 +60,43 @@ class OperationForm extends React.Component {
     };
 
     typeSelect=(value)=>{
-        this.setState({type:value});
+        this.setState({type:value},()=>{
+            const store = this.props.rootStore.entityStore;
+            if(store.currentOperation){
+                switch (value){
+                    case '1':
+                        this.props.form.setFieldsValue({monyToMonyId:store.currentOperation.monyToMonyId});
+                        break;
+                    case '2':
+                        this.props.form.setFieldsValue({
+                            pagePath:store.currentOperation.pagePath,
+                            pageClass:store.currentOperation.pageClass
+                        });
+                        break;
+                    case '3':
+                        //this.funMirrValue=store.currentOperation.function;
+                        //console.log(this.funMirrValue);
+                        break;
+                }
+            }
+
+        });
     };
 
 
     componentDidMount() {
         const store = this.props.rootStore.entityStore;
-        this.props.form.setFieldsValue({type:'1'});
+
         if (store.currentOperation) {
+            this.funMirrValue=store.currentOperation.function;
             this.props.form.setFieldsValue(
                 {
-                    ...store.currentOperation,
+                    name:store.currentOperation.name,
+                    icon:store.currentOperation.icon,
+                    type:store.currentOperation.type,
                 }
-
             );
+            this.typeSelect(store.currentOperation.type);
         }
 
     }
@@ -89,7 +120,15 @@ class OperationForm extends React.Component {
                         {getFieldDecorator('icon', {
 
                         })(
-                            <Input placeholder="图标"/>
+                            <Select>
+                                <Option key={null} value={''} style={{color: 'white'}}>&nbsp;</Option>
+                                {
+                                    iconType.map((i, index) =>
+                                        <Option key={index} value={i}><Icon type={i}/>&nbsp;&nbsp;
+                                            <span>{i}</span>
+                                        </Option>)
+                                }
+                            </Select>
                         )}
                     </FormItem>
                     <FormItem label="类型">
@@ -155,7 +194,6 @@ class OperationForm extends React.Component {
                                     <div>
                                         <div style={{marginBottom:'5px',marginTop:'10px'}}>执行函数</div>
                                         <CodeMirror
-                                            ref="editorFun"
                                             value={this.funMirrValue}
                                             options={
                                                 {
@@ -166,7 +204,6 @@ class OperationForm extends React.Component {
                                                 }
                                             }
                                             onChange={(editor, data, value) => {
-                                                console.log('onChange fun');
                                                 this.funMirrValue=value;
                                             }}
                                         />
@@ -187,5 +224,6 @@ class OperationForm extends React.Component {
 
     }
 }
+
 
 export default Form.create()(OperationForm);
