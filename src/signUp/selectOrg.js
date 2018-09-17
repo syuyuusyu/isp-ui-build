@@ -30,7 +30,7 @@ class SelectOrg extends React.Component{
     return data.map((item) => {
       if (item.children) {
         return (
-          <TreeNode title={item.name} key={item.id} dataRef={item}>
+          <TreeNode title={item.name} key={item.id} dataRef={item} >
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
@@ -49,7 +49,7 @@ class SelectOrg extends React.Component{
               checkedKeys={store.orgCheckedKeys.filter(d=>d)}
               /*checkStrictly={true}*/
               defaultCheckedKeys={store.orgCheckedKeys.filter(d=>d)}
-              onSelect={store.onSelect}
+
         >
           {this.renderTreeNodes(store.treeData)}
         </Tree>

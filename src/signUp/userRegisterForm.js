@@ -14,6 +14,9 @@ const crypto = require('crypto');
 @inject('rootStore')
 @observer
 class UserRegisterForm extends Component {
+  componentDidMount(){
+    this.props.rootStore.signUpStore.initNewNodeNames();
+  }
 
  /* checkUserUnique = async (rule, value, callback) => {
     if (!value) {
@@ -188,6 +191,9 @@ class UserRegisterForm extends Component {
         </Modal>
         <Form layout="horizontal" className="sign-content">
             <h2 className="sign-title">注册</h2>
+          <Row gutter={26}>
+            <Col span={10}>
+              <div className="col1">
             <FormItem label="登录名称" {...formItemLayout} >
               {
                 getFieldDecorator('userName', {
@@ -200,6 +206,10 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
+              </div>
+            </Col>
+            <Col span={10}>
+              <div className="col2">
             <FormItem label="用户名称" {...formItemLayout}>
               {
                 getFieldDecorator('nickName', {
@@ -211,6 +221,12 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={26}>
+            <Col span={10}>
+              <div className="col1">
             <FormItem label="密码" {...formItemLayout}>
               {getFieldDecorator('password', {
                 rules: [{
@@ -223,6 +239,10 @@ class UserRegisterForm extends Component {
                 <Input type="password" placeholder="请输入密码"/>
               )}
             </FormItem>
+              </div>
+            </Col>
+            <Col span={10}>
+              <div className="col2">
               <FormItem label="确认密码" {...formItemLayout}>
                 {getFieldDecorator('confirmPassword', {
                   rules: [{
@@ -235,6 +255,12 @@ class UserRegisterForm extends Component {
                   <Input type="password" placeholder="请输入确认密码" />
                 )}
               </FormItem>
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={26}>
+            <Col span={10}>
+              <div className="col1">
             <FormItem label="身份证编号" {...formItemLayout}>
               {
                 getFieldDecorator('IDnumber', {
@@ -248,6 +274,10 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
+              </div>
+            </Col>
+            <Col span={10}>
+              <div className="col2">
             <FormItem label="电话号码" {...formItemLayout}>
               {
                 getFieldDecorator('phone', {
@@ -261,6 +291,12 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={26}>
+            <Col span={10}>
+              <div className="col1">
             <FormItem label="邮箱" {...formItemLayout}>
               {
                 getFieldDecorator('email', {
@@ -274,8 +310,17 @@ class UserRegisterForm extends Component {
                 )
               }
             </FormItem>
+              </div>
+            </Col>
+          </Row>
           <div  className="sign-button02">
-            <Button onClick={this.props.rootStore.signUpStore.toggleOrgVisible}>选择所属机构</Button>
+            <Button onClick={this.props.rootStore.signUpStore.toggleOrgVisible}>选择所属机构</Button>：
+            <div className="orgName">{this.props.rootStore.signUpStore.newNodeNames.filter(d=>d).map(a=>{
+              return(
+                <p key={a}>{a}</p>
+              );
+            })}
+            </div>
           </div>
             <div className="sign-button">
                 <Button type="primary" htmlType="submit" onClick={this.save}>注册</Button>

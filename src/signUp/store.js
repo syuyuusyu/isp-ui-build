@@ -1,6 +1,7 @@
 import {configure,observable,action,runInAction,} from 'mobx';
 import {notification} from 'antd';
 import {baseUrl,get,post} from '../util';
+import React from "react";
 
 configure({ enforceActions: true });
 export class SignUpStore{
@@ -20,7 +21,17 @@ export class SignUpStore{
   @observable
   treeData=[];
 
+  @observable
+  nodeNames=[];
 
+  @observable
+  formVisible = false;
+
+  @observable
+  newNodeNames=[];
+
+  @observable
+  test='test';
 
   @action
   save=()=> {
@@ -68,14 +79,33 @@ export class SignUpStore{
 
 
   @action
-  onCheck=(checkedKeys)=>{
-    //this.orgCheckedKeys=checkedKeys.checked;
+  onCheck=(checkedKeys,info)=>{
+    this.nodeNames.length=0;
     this.orgCheckedKeys=checkedKeys;
+    let posArray=[];
+    let checkedNodesPositions=info.checkedNodesPositions;
+    for(let i of checkedNodesPositions){
+      if(!i.node.props.hasOwnProperty('children')){
+        posArray.push(i.pos)
+      }
+    }
+
+    for(let j of posArray){
+      let nodeName=[];
+      let temTreeData=this.treeData;
+      let pathArray=j.split('-');
+      for(let k=1;k<pathArray.length;k++){
+        nodeName.push(temTreeData[parseInt(pathArray[k])].name);
+        temTreeData=temTreeData[parseInt(pathArray[k])].children;
+      }
+      this.nodeNames.push(nodeName);
+    }
   };
 
   @action
   saveSelect=()=>{
     this.toggleOrgVisible();
+    this.renderOrg();
   };
 
   @action
@@ -94,8 +124,25 @@ export class SignUpStore{
       }
     }
     return r;
-  }
+  };
 
+  @action
+  renderOrg=()=>{
+    this.newNodeNames.length=0;
+    let nodeName;
+    if(this.nodeNames.length>0){
+      for(let i of this.nodeNames){
+        nodeName=i.join("/");
+        this.newNodeNames.push(nodeName);
+      }
+    }
+    //console.log("this.newNodeNames的值为:",this.newNodeNames.filter(d=>d));
+    }
+
+    @action
+  initNewNodeNames=()=>{
+    this.newNodeNames.length=0;
+  }
 }
 
 
