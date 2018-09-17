@@ -131,16 +131,24 @@ export class SpecialtyMetdataStore{
     @observable
     currentRoute=[];
 
+    @observable
+    loadError=true;
+
     metadataObj=JSON.parse(json);
 
     @action
     loadTree=async ()=>{
         this.loadingTree=true;
         let json=await post(`${baseUrl}/invoke/specialty_metdata_dir_api`,{});
-        runInAction(()=>{
-            this.treeData=json;
-            this.loadingTree=false;
-        });
+        if(json){
+            runInAction(()=>{
+                this.treeData=json;
+                this.loadingTree=false;
+                this.loadError=false;
+            });
+        }
+
+
     };
 
     @action

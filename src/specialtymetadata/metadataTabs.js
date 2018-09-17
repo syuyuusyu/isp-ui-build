@@ -71,6 +71,9 @@ class MetadataTabs extends Component{
 
 
     render(){
+        if(this.props.rootStore.specialtyMetdataStore.loadError){
+            return <div>调用超图接口失败....</div>
+        }
         return (
             <Layout style={{height: "100%"}}>
                 <Sider width={400}  style={{ background: '#fff',overflowY: 'auto', height: "100%" }}>

@@ -107,8 +107,6 @@ class CommonTable extends Component{
             }
         }
         if(op.type==='2'){
-            console.log('../'+op.pagePath,op.pageClass)
-            console.log(require('../' + op.pagePath)[op.pageClass]);
             return (
                 <Modal visible={store.operationVisible[op.id]}
                        key={op.id}

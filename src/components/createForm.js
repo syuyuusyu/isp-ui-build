@@ -136,10 +136,9 @@ class CreateForm extends React.Component {
 
         const store = this.props.rootStore.commonStore;
         const {getFieldDecorator,} = this.props.form;
+        console.log( col.text, col.required == '1' ? true : false)
         if (col.foreignKeyId) {
             return (
-
-
                     <FormItem key={col.id}
                               label={col.text ? col.text : col.columnName}>
                         {getFieldDecorator(col.columnName, {
@@ -296,7 +295,7 @@ class CreateForm extends React.Component {
                                         {getFieldDecorator(col.columnName, {
                                             rules: [{
                                                 message: '不能为空',
-                                                required: true
+                                                required: col.required == '1' ? true : false,
                                             }],
                                         })(
                                             this.createInput(col.columnType)
