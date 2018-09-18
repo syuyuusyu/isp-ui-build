@@ -17,6 +17,7 @@ const Option=Select.Option;
 class MonyToMonyTable extends Component {
 
     columns = [
+        {dataIndex: 'id', title: 'ID', width: 50,},
         {dataIndex: 'name', title: '关系名称', width: 120,},
         {
             dataIndex: 'firstTable', title: '表一名称', width: 120
