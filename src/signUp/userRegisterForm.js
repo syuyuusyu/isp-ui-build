@@ -181,7 +181,7 @@ class UserRegisterForm extends Component {
       <div className="sign">
         <Modal visible={store.orgVisible}
                width={600}
-               title="选择机构"
+               title="选择机构(请展开选择注册的用户所属机构)"
                footer={null}
                onCancel={store.toggleOrgVisible}
                maskClosable={false}
@@ -202,7 +202,7 @@ class UserRegisterForm extends Component {
                   ],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input placeholder="请输入账号"/>
+                  <Input className="signUpInput" placeholder="请输入账号"/>
                 )
               }
             </FormItem>
@@ -217,7 +217,7 @@ class UserRegisterForm extends Component {
                   ],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input placeholder="请输入用户名称"/>
+                  <Input className="signUpInput" placeholder="请输入用户名称"/>
                 )
               }
             </FormItem>
@@ -236,7 +236,7 @@ class UserRegisterForm extends Component {
                 }],
                 validateTrigger: 'onBlur'
               })(
-                <Input type="password" placeholder="请输入密码"/>
+                <Input className="signUpInput" type="password" placeholder="请输入密码"/>
               )}
             </FormItem>
               </div>
@@ -252,7 +252,7 @@ class UserRegisterForm extends Component {
                   }],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input type="password" placeholder="请输入确认密码" />
+                  <Input className="signUpInput" type="password" placeholder="请输入确认密码" />
                 )}
               </FormItem>
               </div>
@@ -270,7 +270,7 @@ class UserRegisterForm extends Component {
                   ],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input placeholder="请输入身份证编号(选填)"/>
+                  <Input className="signUpInput" placeholder="请输入身份证编号(选填)"/>
                 )
               }
             </FormItem>
@@ -287,7 +287,7 @@ class UserRegisterForm extends Component {
                   ],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input placeholder="请输入电话号码"/>
+                  <Input className="signUpInput" placeholder="请输入电话号码"/>
                 )
               }
             </FormItem>
@@ -306,7 +306,7 @@ class UserRegisterForm extends Component {
                   ],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input placeholder="请输入邮箱(选填)"/>
+                  <Input className="signUpInput" placeholder="请输入邮箱(选填)"/>
                 )
               }
             </FormItem>

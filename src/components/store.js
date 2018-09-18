@@ -157,7 +157,7 @@ export class CommonStore {
                     column.render = (value, record) => moment(value).format('YYYY-MM-DD HH:mm:ss');
                 }
                 if (c.render) {
-                    column.render = eval('(' + c.render + ')').callInstance({React, antd});
+                    column.render = eval('(' + c.render + ')').callInstance({React, antd,get});
                 }
                 if (c.dicGroupId) {
                     const currentDictionary = this.allDictionary.filter(d => d.groupId === c.dicGroupId);
