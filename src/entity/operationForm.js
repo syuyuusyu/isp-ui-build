@@ -16,13 +16,6 @@ import '../style.css';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-const iconType=["edit",'delete',"question","question-circle-o","question-circle",'play-circle','play-circle-o',"plus","plus-circle-o",
-    "plus-circle","pause","minus", "minus-circle-o",'profile',
-    "solution","info","info-circle-o","exclamation-circle-o","close","close-circle-o","check","check-circle-o","save",
-    "appstore-o","setting","folder","database","rocket","safety","dashboard","fork","cloud-o","undo",
-];
-
-
 @inject('rootStore')
 @observer
 class OperationForm extends React.Component {
@@ -33,7 +26,7 @@ class OperationForm extends React.Component {
 
     funMirrValue;
 
-    save = () => {
+    save =  () => {
         const store = this.props.rootStore.entityStore;
         this.props.form.validateFields(async (err, values) => {
             if (err) return;
@@ -56,7 +49,8 @@ class OperationForm extends React.Component {
 
         });
         store.toggleOperationFormVisible();
-        store.loadEntityOperations();
+        store.loadEntityOperations.defer()(1000);
+
     };
 
     typeSelect=(value)=>{
@@ -119,17 +113,7 @@ class OperationForm extends React.Component {
                     <FormItem label="图标">
                         {getFieldDecorator('icon', {
 
-                        })(
-                            <Select>
-                                <Option key={null} value={''} style={{color: 'white'}}>&nbsp;</Option>
-                                {
-                                    iconType.map((i, index) =>
-                                        <Option key={index} value={i}><Icon type={i}/>&nbsp;&nbsp;
-                                            <span>{i}</span>
-                                        </Option>)
-                                }
-                            </Select>
-                        )}
+                        })(<IconSelect nullAble/>)}
                     </FormItem>
                     <FormItem label="类型">
                         {getFieldDecorator('type', {

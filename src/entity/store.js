@@ -283,7 +283,6 @@ export class EntityStore {
     };
 
     showOperationTable=(record)=>action(()=>{
-        console.log(record);
         this.currentEntity=record;
         this.toggleOperationTableVisible();
     });

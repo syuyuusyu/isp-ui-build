@@ -146,7 +146,7 @@ class EntityTable extends Component {
                 <Drawer
                     title={store.currentEntity?store.currentEntity.entityName:''}
                     placement="right"
-                    width={800}
+                    width={1200}
                     zIndex={999}
                     closable={true}
                     maskClosable={false}

@@ -3,9 +3,6 @@ import {baseUrl,post} from '../util';
 import {EventEmitter} from 'events';
 import SysMsg from "./SysMsg";
 
-console.log(EventEmitter);
-
-
 
 configure({ enforceActions: true });
 

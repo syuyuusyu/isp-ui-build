@@ -4,7 +4,15 @@ import axios from 'axios';
 const toString=Object.prototype.toString;
 const isFunction=function(v){
     return toString.call(v)=="[object Function]";
-}
+};
+
+const isObj=function(v){
+    return toString.call(v)=="[object Object]";
+};
+
+const isArrsy=function(v){
+    return toString.call(v)=="[object Array]";
+};
 
 // Array.prototype.indexOf = Array.prototype.indexOf ? Array.prototype.indexOf
 //     : function(o, from)  {
@@ -60,6 +68,16 @@ Function.prototype.callInstance=function(obj){
     return function(){
         var arg=arguments;
         return method.apply(obj,arg);
+    }
+};
+
+Function.prototype.defer=function(){
+    var method=this;
+    var arg=arguments;
+    return function(time){
+        return new Promise((resolve)=>{
+            setTimeout(()=>resolve(method.apply(this,arg)),time);
+        });
     }
 };
 
@@ -131,7 +149,7 @@ export const log = (target, name, descriptor) => {
 export const isGov=/59.216.201.52/.test(window.location.href);
 
 //export const activitiUrl=isGov?'http://59.216.201.52:5002':'http://10.10.50.10:5002';
-export const activitiUrl='http://10.10.50.10:5002';
+export const activitiUrl='http://127.0.0.1:5002';
 
 export const baseUrl = 'http://127.0.0.1:7001';
 //export const baseUrl = isGov?'http://59.216.201.52:7001':'http://isp.yndk.cn:7001';
