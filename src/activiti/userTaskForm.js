@@ -59,6 +59,12 @@ class UserTaskForm extends React.Component {
                 //注销平台权限流程
                 nextJson = paltfromCancelProcess(store.selectedTask.name, values, store.formData.filter(d => d));
             }
+            if (processDefinitionKey.key === 'message') {
+                //获取其他平台推送的消息
+                nextJson = {
+                    isLast:true
+                };
+            }
 
 
             if (nextJson === 'default') {
@@ -67,11 +73,11 @@ class UserTaskForm extends React.Component {
                 });
                 return;
             }
-            ;
+
             if (!nextJson) {
                 return;
             }
-            ;
+
             nextJson.previousUser = JSON.parse(sessionStorage.getItem("user")).name;
 
             let submitResult = await post(`${activitiUrl}/userTask/submit/${store.selectedTask.id}`, nextJson);
@@ -181,9 +187,29 @@ class UserTaskForm extends React.Component {
     render() {
         const store = this.props.rootStore.activitiStore;
         const {getFieldDecorator,} = this.props.form;
+        let url='';
+        if(store.currentRoleSys.length>0){
+            console.log(store.currentRoleSys.find(c=>c.code==='s13'));
+            let s13=store.currentRoleSys.find(c=>c.code==='s13');
+            let path=s13.operations.find(o => o.type == 1).path;
+            if(s13.isGov==='1'){
+                url=`${s13.url}${path}?ispToken=${s13.token}`;
+            }else{
+                url=`${s13.govUrl}${path}?ispToken=${s13.token}`;
+            }
+        }
         return (
             <Form>
-                <div>{store.message}</div>
+                <div>
+                    {
+                        store.message
+                    }
+                </div>
+                {
+                    store.currentRoleSys.length>0?
+                        <div>请跳转专业库管系统进行相关操作<a target="_blank" href={url}>跳转</a></div>
+                        :''
+                }
                 {
                     store.formData.filter(d => d).map(data => {
                         switch (data.type) {

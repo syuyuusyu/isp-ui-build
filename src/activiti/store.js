@@ -262,7 +262,13 @@ export class ActivitiStore {
         runInAction(() => {
             this.selectedTask = record;
         });
+        //如果是获取消息,获取一个随机的ispToken
+        console.log(record);
+        if(record.name==='查看消息'){
+            this.getRandomToken();
+        }
         this.toggleUserTaskFormVisible();
+
     });
 
 
@@ -274,21 +280,38 @@ export class ActivitiStore {
     @action
     loadFormData = async () => {
         //let json = await get(`${activitiUrl}/form/form-data?taskId=${this.selectedTask.id}`);
-        let json=await get(`${activitiUrl}/userTask/variables/${this.selectedTask.id}/nextForm`)
+        let json=await get(`${activitiUrl}/userTask/variables/${this.selectedTask.id}/nextForm`);
+
         runInAction(()=>{
-            this.formData=json.data;
+            this.formData=json.data?json.data:[];
         })
     };
 
     @observable
     message='';
 
+    @observable
+    ispToken='';
+
+    @observable
+    currentRoleSys=[];
+
+    @action
+    getRandomToken=async ()=>{
+        //let {ispToken}=await get(`${baseUrl}/randomToken`);
+        let json=await get(`${baseUrl}/sys/currentRoleSys`);
+        runInAction(()=>{
+            //this.ispToken=ispToken;
+            this.currentRoleSys=json;
+        })
+    };
+
     @action
     loadMessage=async ()=>{
-        let json=await get(`${activitiUrl}/userTask/variables/${this.selectedTask.id}/message`)
+        let json=await get(`${activitiUrl}/userTask/variables/${this.selectedTask.id}/message`);
         runInAction(()=>{
-            this.message=json.data;
-        })
+            this.message=json.data?json.data:'';
+        });
     }
 
 

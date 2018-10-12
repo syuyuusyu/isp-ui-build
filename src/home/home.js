@@ -125,9 +125,7 @@ class Home extends Component {
   linkClick(e) {
     const href = e.currentTarget.getAttribute('data-href');
     window.open(href);
-    setTimeout(() => {
-      this.props.rootStore.treeStore.loadCurrentRoleSys();
-    }, 5000)
+    this.props.rootStore.treeStore.loadCurrentRoleSys.defer()(5000);
   };
   render() {
     const {

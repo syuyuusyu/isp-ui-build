@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Divider, Popconfirm, Table, Modal, Row, Col,Card,Spin} from 'antd';
+import { Divider, Popconfirm, Table, Modal, Row, Col,Card,Spin,Button} from 'antd';
 import {inject, observer} from 'mobx-react';
 import RoleButton from '../roleButton';
 import InvokeForm from './invokeForm';
@@ -91,7 +91,13 @@ class InvokeTable extends Component{
                     <Row gutter={24}>
                         <Col span={20}><span style={{fontSize: '16px'}}>当前平台:{store.currentSys.name}-url:{store.currentSys.url}</span></Col>
                         <Col span={4} style={{textAlign: 'right'}}>
-                            <RoleButton buttonId={22} onClick={this.props.rootStore.invokeOpStore.manuSynInterfaces(sysId)}/>
+                            {this.props.rootStore.invokeOpStore.currentSys.code == 's01' ?
+                                <Button icon="plus-circle-o" onClick={this.props.rootStore.invokeOpStore.showForm(null)}
+                                        size='default'>新增</Button>
+                                :
+                                <RoleButton buttonId={22}
+                                            onClick={this.props.rootStore.invokeOpStore.manuSynInterfaces(sysId)}/>
+                            }
                         </Col>
                     </Row>
                   <br/>
