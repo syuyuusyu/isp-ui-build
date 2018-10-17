@@ -142,17 +142,16 @@ export const log = (target, name, descriptor) => {
         console.log(`Calling ${name} with`, arguments);
         return oldValue.apply(null, arguments);
     };
-
     return descriptor;
 };
 
 export const isGov=/59.216.201.52/.test(window.location.href);
 
-//export const activitiUrl=isGov?'http://59.216.201.52:5002':'http://10.10.50.10:5002';
-export const activitiUrl='http://127.0.0.1:5002';
+export const activitiUrl=isGov?'http://59.216.201.52:5002':'http://10.10.50.10:5002';
+//export const activitiUrl='http://127.0.0.1:5002';
 
-export const baseUrl = 'http://127.0.0.1:7001';
-//export const baseUrl = isGov?'http://59.216.201.52:7001':'http://isp.yndk.cn:7001';
+//export const baseUrl = 'http://127.0.0.1:7001';
+export const baseUrl = isGov?'http://59.216.201.52:7001':'http://10.10.50.10:7001';
 
 
 export function request2(method, url, body) {

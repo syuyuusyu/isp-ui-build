@@ -38,8 +38,8 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
       </div>
     );
     linksLess.push(
-      <div key={102} className={`link qilinqu`} data-href={'http://10.10.50.39:8080/gds'} onClick={eClick}>
-        <span className="text">城市综合管理系统</span>
+      <div key={102} className={`link qilinqu`} data-href={'http://10.10.50.39:8080/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94'} onClick={eClick}>
+        <span className="text">城市综合管理PAD端</span>
       </div>
     );
   }
