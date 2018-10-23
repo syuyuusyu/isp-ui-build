@@ -191,12 +191,15 @@ class UserTaskForm extends React.Component {
         if(store.currentRoleSys.length>0){
             console.log(store.currentRoleSys.find(c=>c.code==='s13'));
             let s13=store.currentRoleSys.find(c=>c.code==='s13');
-            let path=s13.operations.find(o => o.type == 1).path;
-            if(s13.isGov==='1'){
-                url=`${s13.url}${path}?ispToken=${s13.token}`;
-            }else{
-                url=`${s13.govUrl}${path}?ispToken=${s13.token}`;
+            if(s13){
+                let path=s13.operations.find(o => o.type == 1).path;
+                if(s13.isGov==='1'){
+                    url=`${s13.url}${path}?ispToken=${s13.token}`;
+                }else{
+                    url=`${s13.govUrl}${path}?ispToken=${s13.token}`;
+                }
             }
+
         }
         return (
             <Form>
@@ -206,7 +209,7 @@ class UserTaskForm extends React.Component {
                     }
                 </div>
                 {
-                    store.currentRoleSys.length>0?
+                    store.currentRoleSys.length>0 && url ?
                         <div>请跳转专业库管系统进行相关操作<a target="_blank" href={url}>跳转</a></div>
                         :''
                 }
