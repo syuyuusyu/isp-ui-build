@@ -22,6 +22,10 @@ const colorGray = '#e8e8e8';
  * @returns {{linkNum: *, linksLess: Array, linksMore: Array}}
  */
 const getLinks = (isAdmin, currentRoleSys, eClick) => {
+    console.log(10);
+    console.log(isGov?
+        'http://59.216.201.50:8089/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94'
+        :'http://10.10.50.39:8080/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94');
   const length = currentRoleSys.length;
   const linkNum = isAdmin ? length + 1 : length;
   let linksLess = [];
@@ -38,7 +42,10 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
       </div>
     );
     linksLess.push(
-      <div key={102} className={`link qilinqu`} data-href={'http://10.10.50.39:8080/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94'} onClick={eClick}>
+      <div key={102} className={`link qilinqu`} data-href=
+          {isGov?
+              'http://59.216.201.50:8089/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94'
+              :'http://10.10.50.39:8080/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94'} onClick={eClick}>
         <span className="text">城市综合管理PAD端</span>
       </div>
     );
