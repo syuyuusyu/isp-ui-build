@@ -22,7 +22,6 @@ const colorGray = '#e8e8e8';
  * @returns {{linkNum: *, linksLess: Array, linksMore: Array}}
  */
 const getLinks = (isAdmin, currentRoleSys, eClick) => {
-    console.log(10);
     console.log(isGov?
         'http://59.216.201.50:8089/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94'
         :'http://10.10.50.39:8080/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94');
