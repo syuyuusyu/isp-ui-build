@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Divider, Popconfirm, Table, Modal, Row, Col,Card,Spin,Button} from 'antd';
+import {Divider, Popconfirm, Table, Modal, Row, Col, Card, Spin, Button} from 'antd';
 import {inject, observer} from 'mobx-react';
 import RoleButton from '../roleButton';
 import InvokeForm from './invokeForm';
@@ -9,7 +9,7 @@ import '../style.css';
 
 @inject('rootStore')
 @observer
-class InvokeTable extends Component{
+class InvokeTable extends Component {
 
     columns = [
         {dataIndex: 'name', title: '名称', width: 100,},
@@ -31,14 +31,15 @@ class InvokeTable extends Component{
                             <RoleButton buttonId={24}/>
                         </Popconfirm>
                         {
-                            this.props.rootStore.invokeOpStore.currentSys.code!=='s01'?
+                            this.props.rootStore.invokeOpStore.currentSys.code !== 's01' ?
                                 (
                                     <span>
                                         <Divider type="vertical"/>
-                                        <RoleButton buttonId={27} onClick={this.props.rootStore.invokeOpStore.showInvokePromiss(record)}/>
+                                        <RoleButton buttonId={27}
+                                                    onClick={this.props.rootStore.invokeOpStore.showInvokePromiss(record)}/>
                                     </span>
                                 )
-                                :''
+                                : ''
                         }
                     </span>
                 );
@@ -46,21 +47,27 @@ class InvokeTable extends Component{
         }
     ];
 
-    expandedRowRender=(record)=>(
-        <div className="box-code-card" style={{ background: '#ECECEC', padding: '1px' }}>
+    expandedRowRender = (record) => (
+        <div className="box-code-card" style={{background: '#ECECEC', padding: '1px'}}>
             <Row type="flex" justify="center" align="top" gutter={8}>
-                <Col span={8} >
-                    <Card  title="请求头示例" bordered={true}><pre>{format(record.head)}</pre></Card>
+                <Col span={8}>
+                    <Card title="请求头示例" bordered={true}>
+                        <pre>{format(record.head)}</pre>
+                    </Card>
                 </Col>
-                <Col span={8} >
-                    <Card  title="请求体示例" bordered={false}><pre>{format(record.body)}</pre></Card>
+                <Col span={8}>
+                    <Card title="请求体示例" bordered={false}>
+                        <pre>{format(record.body)}</pre>
+                    </Card>
                 </Col>
-                <Col span={8} >
-                    <Card  title="返回结果示例" bordered={false}><pre>{format(record.result)}</pre></Card>
+                <Col span={8}>
+                    <Card title="返回结果示例" bordered={false}>
+                        <pre>{format(record.result)}</pre>
+                    </Card>
                 </Col>
             </Row>
             <Row>
-                <Col >
+                <Col>
                     <Card title="说明" bordered={false}>{record.info}</Card>
                 </Col>
             </Row>
@@ -68,9 +75,9 @@ class InvokeTable extends Component{
     );
 
     async componentDidMount() {
-        let sysId=-1;
-        this.props.match.path.replace(/\/(\d+)$/,(w,p1)=>{
-            sysId=parseInt(p1,10);
+        let sysId = -1;
+        this.props.match.path.replace(/\/(\d+)$/, (w, p1) => {
+            sysId = parseInt(p1, 10);
         });
         await this.props.rootStore.invokeOpStore.loadCurrentSys(sysId);
         await this.props.rootStore.invokeOpStore.loadCurrentSysPath(sysId);
@@ -78,62 +85,65 @@ class InvokeTable extends Component{
         await this.props.rootStore.invokeOpStore.synInterfaces(sysId);
     }
 
-    render(){
-        const store=this.props.rootStore.invokeOpStore;
-      let sysId=-1;
-      this.props.match.path.replace(/\/(\d+)$/,(w,p1)=>{
-        sysId=parseInt(p1,10);
-      });
+    render() {
+        const store = this.props.rootStore.invokeOpStore;
+        let sysId = -1;
+        this.props.match.path.replace(/\/(\d+)$/, (w, p1) => {
+            sysId = parseInt(p1, 10);
+        });
         return (
             <div>
-              <Spin tip={store.loadingMessage} spinning={store.loading}>
-                <div>
-                    <Row gutter={24}>
-                        <Col span={20}><span style={{fontSize: '16px'}}>当前平台:{store.currentSys.name}-url:{store.currentSys.url}</span></Col>
-                        <Col span={4} style={{textAlign: 'right'}}>
-                            {this.props.rootStore.invokeOpStore.currentSys.code == 's01' ?
+                <Spin tip={store.loadingMessage} spinning={store.loading}>
+                    <div>
+                        <Row gutter={24}>
+                            <Col span={20}><span
+                                style={{fontSize: '16px'}}>当前平台:{store.currentSys.name}-url:{store.currentSys.url}</span></Col>
+                            <Col span={4} style={{textAlign: 'right'}}>
                                 <Button icon="plus-circle-o" onClick={this.props.rootStore.invokeOpStore.showForm(null)}
                                         size='default'>新增</Button>
-                                :
-                                <RoleButton buttonId={22}
-                                            onClick={this.props.rootStore.invokeOpStore.manuSynInterfaces(sysId)}/>
-                            }
-                        </Col>
-                    </Row>
-                  <br/>
-                </div>
-                <Modal visible={store.fromVisible}
-                       width={1200}
-                       title={`平台接口配置:${store.currentSys.name}-url:${store.currentSys.url}`}
-                       footer={null}
-                       onCancel={store.toggleFormVisible}
-                       maskClosable={false}
-                       destroyOnClose={true}
-                >
-                    <InvokeForm/>
-                </Modal>
-                <Modal visible={store.invokePromissFormVisible}
-                       width={700}
-                       title={`平台访问接口权限配置:${store.currentSys.name}`}
-                       footer={null}
-                       onCancel={store.toggleInvokePromissFormVisible}
-                       maskClosable={false}
-                       destroyOnClose={true}
-                >
-                    <InvokePromiss/>
-                </Modal>
-                <Table columns={this.columns}
-                       rowKey={record => record.id}
-                       dataSource={store.currentOperations.filter(d => d)}
-                       rowSelection={null}
-                       size="small"
-                       scroll={{y: 800,}}
-                       expandedRowRender={this.expandedRowRender}
-                    //pagination={this.state.pagination}
-                    //loading={this.state.loading}
-                    //onChange={this.handleTableChange}
-                />
-              </Spin>
+                                {
+                                    this.props.rootStore.invokeOpStore.currentSys.code != 's01' ?
+                                        <RoleButton buttonId={22}
+                                                    onClick={this.props.rootStore.invokeOpStore.manuSynInterfaces(sysId)}/>
+                                        :''
+                                }
+
+                            </Col>
+                        </Row>
+                        <br/>
+                    </div>
+                    <Modal visible={store.fromVisible}
+                           width={1200}
+                           title={`平台接口配置:${store.currentSys.name}-url:${store.currentSys.url}`}
+                           footer={null}
+                           onCancel={store.toggleFormVisible}
+                           maskClosable={false}
+                           destroyOnClose={true}
+                    >
+                        <InvokeForm/>
+                    </Modal>
+                    <Modal visible={store.invokePromissFormVisible}
+                           width={700}
+                           title={`平台访问接口权限配置:${store.currentSys.name}`}
+                           footer={null}
+                           onCancel={store.toggleInvokePromissFormVisible}
+                           maskClosable={false}
+                           destroyOnClose={true}
+                    >
+                        <InvokePromiss/>
+                    </Modal>
+                    <Table columns={this.columns}
+                           rowKey={record => record.id}
+                           dataSource={store.currentOperations.filter(d => d)}
+                           rowSelection={null}
+                           size="small"
+                           scroll={{y: 800,}}
+                           expandedRowRender={this.expandedRowRender}
+                        //pagination={this.state.pagination}
+                        //loading={this.state.loading}
+                        //onChange={this.handleTableChange}
+                    />
+                </Spin>
             </div>
         );
     }

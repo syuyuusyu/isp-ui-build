@@ -1,9 +1,12 @@
+import React from 'react';
 import {observable, configure,action,runInAction,} from 'mobx';
-import {baseUrl,post,get} from '../util';
-import {notification} from 'antd';
+import {baseUrl, post, get, convertGiga} from '../util';
+import {notification,Icon} from 'antd';
 import axios from 'axios';
 
 configure({ enforceActions: true });
+
+const CancelToken = axios.CancelToken;
 
 export class SwiftStore{
 
@@ -54,6 +57,10 @@ export class SwiftStore{
 
     @observable
     uploading=false;
+
+
+
+    cancel;
 
     scheduleToken=()=>{
         console.log('scheduleToken swift');
@@ -112,8 +119,11 @@ export class SwiftStore{
 
     };
 
-    refUpload=(instance)=>{
-        this.uploadRef=instance;
+    @observable
+    percent=0;
+
+    refSpin= (instance)=>{
+        this.spinRef=instance;
     };
 
     @action
@@ -178,16 +188,15 @@ export class SwiftStore{
     };
 
     @action
-    handleUpload=async ()=>{
+    handleUpload=()=>{
+        this.uploading=true;
+        this.upDownInfo='';
 
-        runInAction(()=>{
-            this.uploading=true;
-        });
         const formData = new FormData();
         this.fileList.filter(d=>d).forEach((file) => {
             formData.append('files[]', file);
         });
-        await axios({url:`${baseUrl}/swift/upload`,
+        axios({url:`${baseUrl}/swift/upload`,
             method:'POST',
             headers: {
                 //'Content-Type': 'multipart/form-data',//application/x-www-form-urlencoded
@@ -197,12 +206,26 @@ export class SwiftStore{
                 'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
             },
             timeout: 1000*1000*10,
-            data:formData
-        });
+            data:formData,
+            onUploadProgress:  ({loaded,total})=> {
+                let l=convertGiga(loaded);
+                let t=convertGiga(total);
+                runInAction(()=>{
+                    this.percent =parseInt( loaded/total * 100);
+                    this.upDownInfo = `共${t.number}${t.unit},已上传${l.number}${l.unit}`;
+                });
+            },
+            cancelToken: new CancelToken((c) =>{this.cancel = c;})
+        }).then(()=>{ this.uploadComplete()}).catch(()=>{ this.uploadComplete()});
 
-        runInAction(()=>{
-            this.uploading=false;
-        });
+
+    };
+
+    @action
+    uploadComplete = ()=>{
+        this.uploading=false;
+        this.percent = 0;
+        this.upDownInfo='';
         this.toggleFileFormVisible();
         this.loadRootDir();
     };
@@ -259,13 +282,25 @@ export class SwiftStore{
 
     });
 
+    @observable
+    isFileDowning = false;
+
     @action
-    download=(record)=>(async ()=>{
+    toggleDownInfoVisible=()=>{
+        this.isFileDowning=!this.isFileDowning;
+    };
+
+    @observable
+    upDownInfo='';
+
+    @action
+    download=(record)=>(()=>{
         runInAction(()=>{
             this.inDowning=true;
-            this.loadingtest='正在向服务器请求下载';
+            this.isFileDowning =true;
+            this.loadingtest='';
         });
-        let response=await axios({url:`${baseUrl}/swift/download`,
+        axios({url:`${baseUrl}/swift/download`,
             method:'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -274,20 +309,40 @@ export class SwiftStore{
             },
             data:JSON.stringify({...record,username:this.username}),
             timeout: 1000*1000*10,
-            responseType: 'blob'
-        });
-        let blob= response.data;
-        let a = document.createElement('a');
-        let url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
-        a.href = url;
-        a.download = record.filename;
-        runInAction(()=>{
-            this.inDowning=false;
-        });
-        a.click();
-        window.URL.revokeObjectURL(url);
+            responseType: 'blob',
+            onDownloadProgress:({loaded})=>{
+                let l=convertGiga(loaded);
+                let t=convertGiga(record.bytes);
+                runInAction(()=>{
+                    if(!axios.isCancel()){
+                        this.percent = parseInt( loaded/parseInt(record.bytes)*100);
+                        this.upDownInfo = `共${t.number}${t.unit},已下载${l.number}${l.unit}`;
+                    }
+
+                });
+            },
+            cancelToken: new CancelToken((c)=> {this.cancel = c;})
+        }).then(response=>{
+            let blob= response.data;
+            let a = document.createElement('a');
+            let url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
+            a.href = url;
+            a.download = record.filename;
+            this.downloadComplete();
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }).catch(()=>this.downloadComplete());
+
 
     });
+
+    @action
+    downloadComplete=()=>{
+        this.inDowning=false;
+        this.isFileDowning=false;
+        this.upDownInfo='';
+        this.percent=0;
+    };
 
     @action
     loadRootDir=async ()=>{
@@ -346,19 +401,5 @@ export class SwiftStore{
 }
 
 
-function sdsd(obj){
-    let result={};
-    for(let o of obj){
-        for(let key in o){
-            if( o[key].status && o[key].status===40101 ){
-                return { ok: false, msg: '无效Token！', status: 40101 };
-            }
-            key.replace(/data_monitor_(\w+)-\d+/,(w,p)=>{
-                result[p]=o[key]['page_data'];
-            }) ;
-        }
-    }
-    return result;
-}
 
 

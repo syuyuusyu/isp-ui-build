@@ -213,7 +213,7 @@ class ConfForm extends React.Component{
                                 {getFieldDecorator('next',{
                                     rules: [{ required: this.props.invokeType==='2'?true:false, message: '此项为必填项!!' }],
                                 })(
-                                    <Select  onChange={null}  mode="multiple">
+                                    <Select  onChange={null}  mode="multiple" optionFilterProp="children">
                                         {
                                             this.state.next.map((o,i)=><Option key={o.id}>{o.name}</Option>)
                                         }
