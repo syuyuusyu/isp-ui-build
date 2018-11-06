@@ -128,17 +128,20 @@ class SwiftTable extends React.Component {
                         <CreateForm/>
                     </Modal>
                     <Modal visible={store.fileFormVisible}
-                           width={400}
+                           width={500}
                            title={`上传文件 当前路径:${store.selectRow.name}`}
                            footer={[
-                               <Button key="cancel" icon="stop" onClick={
+                               <Popconfirm key="cancel" onConfirm={
                                    () => {
                                        if(store.cancel){
                                            store.cancel('sdsdsd');
+                                       }else{
+                                           store.uploadComplete();
                                        }
-                                       store.uploadComplete();
                                    }
-                               }>取消上传</Button>,
+                               } title="无法断点上传,确认取消?">
+                                   <Button key="cancel" icon="stop" >取消上传</Button>
+                               </Popconfirm>,
                                <Button key="upload"
                                        className="upload-demo-start"
                                        type="primary"
@@ -158,16 +161,17 @@ class SwiftTable extends React.Component {
                         <FileForm/>
                     </Modal>
                     <Modal visible={store.isFileDowning}
-                           width={300}
+                           width={500}
                            title={`下载中....`}
                            footer={[
-                               <Button key="download" icon="stop"
-                                   onClick={
+                               <Popconfirm key="cancel" onConfirm={
                                    () => {
                                        store.cancel('sdsdsd');
-                                       store.downloadComplete();
+                                       //store.downloadComplete();
                                    }
-                               }>取消下载</Button>,
+                               } title="无法断点下载,确认取消?">
+                                   <Button key="cancel" icon="stop" >取消下载</Button>
+                               </Popconfirm>
                            ]}
                            onCancel={null}
                            closable={false}
@@ -175,8 +179,10 @@ class SwiftTable extends React.Component {
                            destroyOnClose={true}
                            key="3"
                     >
-                        <Progress percent={store.percent}/>
-                        <span>{store.upDownInfo}</span>
+                        <div>
+                            <Progress percent={store.percent}/>
+                            <span>{store.upDownInfo}</span>
+                        </div>
                     </Modal>
                     {
                         store.isSelf ?

@@ -196,6 +196,7 @@ export class SwiftStore{
         this.fileList.filter(d=>d).forEach((file) => {
             formData.append('files[]', file);
         });
+        const startTime=new Date();
         axios({url:`${baseUrl}/swift/upload`,
             method:'POST',
             headers: {
@@ -208,11 +209,16 @@ export class SwiftStore{
             timeout: 1000*1000*10,
             data:formData,
             onUploadProgress:  ({loaded,total})=> {
+                const currentTime=new Date();
+                const duration=(currentTime-startTime)/1000;
                 let l=convertGiga(loaded);
                 let t=convertGiga(total);
+                const s = convertGiga(loaded/duration);
+                const usetime=`用时${(duration/60/60)>1?parseInt(duration/60/60)+'时':''}
+                    ${(duration/60)>1?parseInt(duration/60)+'分':''}${parseInt(duration%60)+'秒'}`;
                 runInAction(()=>{
                     this.percent =parseInt( loaded/total * 100);
-                    this.upDownInfo = `共${t.number}${t.unit},已上传${l.number}${l.unit}`;
+                    this.upDownInfo = `${usetime},共${t.number}${t.unit},已下载${l.number}${l.unit},${s.number}${s.unit}/S`;
                 });
             },
             cancelToken: new CancelToken((c) =>{this.cancel = c;})
@@ -300,6 +306,7 @@ export class SwiftStore{
             this.isFileDowning =true;
             this.loadingtest='';
         });
+        const startTime=new Date();
         axios({url:`${baseUrl}/swift/download`,
             method:'POST',
             headers: {
@@ -311,12 +318,17 @@ export class SwiftStore{
             timeout: 1000*1000*10,
             responseType: 'blob',
             onDownloadProgress:({loaded})=>{
-                let l=convertGiga(loaded);
-                let t=convertGiga(record.bytes);
+                const currentTime=new Date();
+                const duration=(currentTime-startTime)/1000;
+                const l=convertGiga(loaded);
+                const t=convertGiga(record.bytes);
+                const s = convertGiga(loaded/duration);
+                const usetime=`用时${(duration/60/60)>1?parseInt(duration/60/60)+'时':''}
+                    ${(duration/60)>1?parseInt(duration/60)+'分':''}${parseInt(duration%60)+'秒'}`;
                 runInAction(()=>{
                     if(!axios.isCancel()){
                         this.percent = parseInt( loaded/parseInt(record.bytes)*100);
-                        this.upDownInfo = `共${t.number}${t.unit},已下载${l.number}${l.unit}`;
+                        this.upDownInfo = `${usetime},共${t.number}${t.unit},已下载${l.number}${l.unit},${s.number}${s.unit}/S`;
                     }
 
                 });
@@ -399,7 +411,3 @@ export class SwiftStore{
 
 
 }
-
-
-
-
