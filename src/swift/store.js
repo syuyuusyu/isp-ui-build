@@ -373,7 +373,7 @@ export class SwiftStore{
             return;
         }
         let temps=[];
-        let mertix={}
+        let mertix={};
         let maxLength=0;
         for(let i=0;i<json.length;i++){
             let length=json[i].name.split('/').filter(d=>d).length;
@@ -387,8 +387,11 @@ export class SwiftStore{
         for(let i=1;i<=maxLength;i++){
             mertix[i]=mertix[i].concat(json.filter(d=>d.hierachy===i));
         }
+
+        this._getDirVolume(mertix,maxLength);
         temps=mertix[1];
         this._compoent(temps,mertix,1,maxLength);
+        //console.log(temps);
         runInAction(()=>{
             this.rootDir=temps?temps:[];
             this.inDowning=false;
@@ -408,6 +411,21 @@ export class SwiftStore{
         }
 
     };
+
+    _getDirVolume(mertix,currentHierachy){
+        if(currentHierachy>1){
+            for(let i=0;i<mertix[currentHierachy-1].length;i++){
+                let name = mertix[currentHierachy-1][i].name;
+                let arr= mertix[currentHierachy].filter(f=>f.name.indexOf(name)===0);
+                if(arr.length>0){
+                    mertix[currentHierachy-1][i].bytes = arr.map(d=>d.bytes).reduce((a,b)=>a+b);
+                }
+
+            }
+            currentHierachy--;
+            this._getDirVolume(mertix,currentHierachy);
+        }
+    }
 
 
 }
