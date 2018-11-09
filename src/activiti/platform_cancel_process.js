@@ -15,10 +15,14 @@ const applyVariable=(values,formData)=>{
     });
     msg=msg+'权限';
     if(applySystemCode.length===0){
-        notification.info({
-            message: '至少选择一个当前有权限的平台'
-        });
-        return false;
+        // notification.info({
+        //     message: '至少选择一个当前有权限的平台'
+        // });
+        //return false;
+        return {
+            applySystemCode:[],
+            isLast:true
+        };
     }
     return {
         message:msg,

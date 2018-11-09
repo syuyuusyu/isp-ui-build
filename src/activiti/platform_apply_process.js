@@ -15,10 +15,13 @@ const applyVariable=(values,formData)=>{
     });
     msg=msg+'访问权限';
     if(applySystemCode.length===0){
-        notification.info({
-            message: '至少选择一个当前没有权限的平台'
-        });
-        return false;
+        // notification.info({
+        //     message: '至少选择一个当前没有权限的平台'
+        // });
+        return {
+            applySystemCode:[],
+            isLast:true
+        };
     }
     return {
         message:msg,
