@@ -154,6 +154,9 @@ class UserTaskForm extends React.Component {
     };
 
     createCheck = (form, getFieldDecorator) => {
+        if(!form.editable){
+            return null;
+        }
         return (
             <Row key={form.key + ''}>
                 <Col span={14} style={{lineHeight: '39px'}}>{form.label + ':'}</Col>
