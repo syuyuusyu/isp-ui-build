@@ -1,6 +1,6 @@
 import React from 'react';
 import {observable, configure,action,runInAction,} from 'mobx';
-import {baseUrl, post, get, convertGiga} from '../util';
+import {baseUrl, post, get, convertGiga,activitiUrl} from '../util';
 import {notification,Icon} from 'antd';
 import axios from 'axios';
 
@@ -135,25 +135,7 @@ export class SwiftStore{
 
     };
 
-    @action
-    beforeUpload= (file) => {
-        if(file.size>1024*1024*1024*5){
-            notification.error({
-                message:'单个文件不能大于5G'
-            });
-            this.uploadRef.props.onRemove();
-            return false;
-        }
-        if((this.total+file.size)>1024*1024*1024*10 && this.isSelf){
-            notification.error({
-                message:'网盘总量为10G,无法上传该文件,请先清除不必要文件'
-            });
-            this.uploadRef.props.onRemove();
-            return false;
-        }
-        this.fileList=[...this.fileList,file];
-        return false;
-    };
+
 
     @action
     clearFileList=()=>{
@@ -185,6 +167,26 @@ export class SwiftStore{
         }
         this.toggleFormVisible();
         this.loadRootDir();
+    };
+
+    @action
+    beforeUpload= (file) => {
+        if(file.size>1024*1024*1024*20){
+            notification.error({
+                message:'单个文件不能大于20G'
+            });
+            this.uploadRef.props.onRemove();
+            return false;
+        }
+        if((this.total+file.size)>1024*1024*1024*10 && this.isSelf){
+            notification.error({
+                message:'网盘总量为10G,无法上传该文件,请先清除不必要文件'
+            });
+            this.uploadRef.props.onRemove();
+            return false;
+        }
+        this.fileList=[...this.fileList,file];
+        return false;
     };
 
     @action
@@ -344,9 +346,21 @@ export class SwiftStore{
             a.click();
             window.URL.revokeObjectURL(url);
         }).catch(()=>this.downloadComplete());
-
-
     });
+
+    @action
+    move=async (srcFold,destFold,fileName)=>{
+        runInAction(()=>{
+            this.inDowning=true;
+            this.loadingtest='正在移动文件...';
+        });
+        await get(`${activitiUrl}/swift/move`,{srcFold,destFold,fileName,containerName:this.username});
+        runInAction(()=>{
+            this.inDowning=false;
+            this.loadingtest='';
+        });
+        this.loadRootDir();
+    };
 
     @action
     downloadComplete=()=>{
@@ -389,13 +403,14 @@ export class SwiftStore{
         }
 
         this._getDirVolume(mertix,maxLength);
+        console.log(mertix);
         temps=mertix[1];
         this._compoent(temps,mertix,1,maxLength);
         //console.log(temps);
         runInAction(()=>{
             this.rootDir=temps?temps:[];
             this.inDowning=false;
-            this.total=json.length===0?0:json.filter(d=>d).map(d=>d.bytes).reduce((a,b)=>a+b)
+            this.total=mertix[1].length===0?0:mertix[1].filter(d=>d).map(d=>d.bytes).reduce((a,b)=>a+b)
         });
     };
 

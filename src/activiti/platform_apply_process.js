@@ -19,7 +19,7 @@ const applyVariable=(values,formData)=>{
         //     message: '至少选择一个当前没有权限的平台'
         // });
         return {
-            applySystemCode:[],
+            applySystemLength:applySystemCode.length,
             isLast:true
         };
     }
@@ -29,7 +29,8 @@ const applyVariable=(values,formData)=>{
             {"editable":true,"key":"message","label":"拒绝原因","type":"string","value":''},
             {"editable":true,"key":"approval","label":"是否同意","type":"switch","value":false},
             ],
-        applySystemCode:applySystemCode.join(',')
+        applySystemCode:applySystemCode.join(','),
+        applySystemLength:applySystemCode.length,
     }
 };
 

@@ -55,7 +55,9 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
         currentRoleSys[isAdmin ? i - 1 : i]['url']:
         currentRoleSys[isAdmin ? i - 1 : i][isGov?'govUrl':'url'];
     const usableOpe = operations.filter(o => o.type == 1);
-    const href = `${url}${usableOpe[0] ? usableOpe[0].path : ''}?ispToken=${token}`;
+    let base=`${url}${usableOpe[0] ? usableOpe[0].path : ''}`;
+    let _mack=base.indexOf('?') == -1 ? '?':'&';
+    const href = `${url}${usableOpe[0] ? usableOpe[0].path : ''}${_mack}ispToken=${token}`;
     const node = (
       <div key={i} className={`link ${icon}`} data-href={href} onClick={eClick}>
         <span className="text">{name}</span>

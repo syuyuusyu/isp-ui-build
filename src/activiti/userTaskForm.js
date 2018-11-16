@@ -212,7 +212,7 @@ class UserTaskForm extends React.Component {
                     }
                 </div>
                 {
-                    store.currentRoleSys.length>0 && url ?
+                    store.currentRoleSys.length>0 && url && store.selectedTask.name=='接收消息' ?
                         <div>请跳转专业库管系统进行相关操作<a target="_blank" href={url}>跳转</a></div>
                         :''
                 }

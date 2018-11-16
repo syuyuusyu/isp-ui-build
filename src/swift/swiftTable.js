@@ -5,6 +5,7 @@ import CreateForm from './createForm';
 import FileForm from './fileForm';
 import '../style.css';
 import {convertGiga} from "../util";
+import DargTable from './dargTable';
 
 const ButtonGroup = Button.Group;
 //const Option = Select.Option;
@@ -101,6 +102,10 @@ class SwiftTable extends React.Component {
 
     format = (p) => {
         return `${p}% `;
+    };
+
+    moveRow = (dragIndex, hoverIndex) => {
+        console.log(dragIndex, hoverIndex);
     };
 
     render() {
@@ -213,15 +218,16 @@ class SwiftTable extends React.Component {
                             </Row>
                     }
 
-                    <Table columns={this.columns}
-                           rowKey={record => record.name}
-                           dataSource={store.rootDir.filter(d => d)}
-                           rowSelection={null}
-                           size="small"
-                           scroll={{y: 800}}
-                           expandedRowRender={this.expandedRowRender}
-                           pagination={null}
-                    />
+                    {/*<Table columns={this.columns}*/}
+                           {/*rowKey={record => record.name}*/}
+                           {/*dataSource={store.rootDir.filter(d => d)}*/}
+                           {/*rowSelection={null}*/}
+                           {/*size="small"*/}
+                           {/*scroll={{y: 800}}*/}
+                           {/*// expandedRowRender={this.expandedRowRender}*/}
+                           {/*pagination={null}*/}
+                    {/*/>*/}
+                    <DargTable/>
                 </Spin>
             </div>
         );
