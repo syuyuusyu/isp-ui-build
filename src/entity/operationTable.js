@@ -37,6 +37,17 @@ class OperationTable extends Component {
                 }
             }
         },
+        {
+            dataIndex: 'location', title: '按钮位置', width: 100,
+            render:(text)=>{
+                switch (text){
+                    case '1':
+                        return '位于表头';
+                    case '2':
+                        return '位于每一行';
+                }
+            }
+        },
         {dataIndex: 'pagePath', title: '类所在目录', width: 220,},
         {dataIndex: 'pageClass', title: '页面类名', width: 120,},
         {

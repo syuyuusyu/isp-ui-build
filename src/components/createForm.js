@@ -115,6 +115,7 @@ class CreateForm extends React.Component {
                 }
             });
             console.log(store.treeSelectedObj);
+            values={...store.defaultQueryObj, ...values};
             console.log(values);
             let json = await post(`${baseUrl}/entity/saveEntity/${store.currentEntity.id}`, values);
             if (json.success) {

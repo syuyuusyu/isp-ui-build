@@ -137,10 +137,7 @@ class ColumnForm extends React.Component {
                         </Col>
                         <Col span={6}>
                             <FormItem label="编码">
-                                {getFieldDecorator('entityCode', {
-                                    rules: [{validator: this.checkUnique('entityCode'), message: '不能和现有字段重复',}],
-                                    validateTrigger: 'onBlur'
-                                })(
+                                {getFieldDecorator('entityCode')(
                                     <Input placeholder="编码"/>
                                 )}
                             </FormItem>

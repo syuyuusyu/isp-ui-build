@@ -88,6 +88,7 @@ class OperationForm extends React.Component {
                     name:store.currentOperation.name,
                     icon:store.currentOperation.icon,
                     type:store.currentOperation.type,
+                    loaction:store.currentOperation.loaction
                 }
             );
             this.typeSelect(store.currentOperation.type);
@@ -124,6 +125,17 @@ class OperationForm extends React.Component {
                                 <Option value={'1'}>关联关系</Option>
                                 <Option value={'2'}>自定义</Option>
                                 <Option value={'3'}>执行方法</Option>
+                            </Select>
+                        )}
+                    </FormItem>
+                    <FormItem label="按钮位置">
+                        {getFieldDecorator('location', {
+                            rules: [{required: true, message: '不能为空',}],
+                            validateTrigger: 'onBlur'
+                        })(
+                            <Select >
+                                <Option value={'1'}>位于表头</Option>
+                                <Option value={'2'}>位于每一行</Option>
                             </Select>
                         )}
                     </FormItem>

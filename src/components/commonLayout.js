@@ -32,14 +32,18 @@ class CommonLayout extends Component {
         console.log('componentWillMount',  this.props.match.path);
 
         const store = this.props.rootStore.commonStore;
-        let entityId=this.props.match.path.replace(/\/\w+\/(\d+)$/, (w, p1) => {
+        let entityId=this.props.match.path.replace(/\/\w+\/(\d+)\/?(?:\S)*/, (w, p1) => {
             return p1;
         });
         store.setEntityId(parseInt(entityId,10));
+
         try{
-            let obj=JSON.parse(this.props.defaultQueryObj);
+            let obj=JSON.parse(this.props.defaultQueryObj );
             store.setDefaultQueryObj(obj);
-        }catch (e){}
+        }catch (e){
+            let obj = Object.assign({}, this.props.defaultQueryObj);
+            store.setDefaultQueryObj(obj);
+        }
         await store.loadAllEntitys();
         await store.loadAllDictionary();
         await store.loadAllColumns();

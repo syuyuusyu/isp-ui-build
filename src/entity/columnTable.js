@@ -20,7 +20,7 @@ class ColumnTable extends Component {
     columns = [
 
         {dataIndex: 'columnIndex', title: '排序', width: 50,},
-        {dataIndex: 'code', title: '编码', width: 80,},
+        //{dataIndex: 'code', title: '编码', width: 80,},
         {dataIndex: 'columnType', title: '数据类型', width: 80,},
         {dataIndex: 'columnName', title: '列名', width: 100,},
         {dataIndex: 'text', title: '中文名', width: 100,},

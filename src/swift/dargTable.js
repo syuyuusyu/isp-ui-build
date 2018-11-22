@@ -17,10 +17,10 @@ function dragDirection(
 ) {
     const hoverMiddleY = (initialClientOffset.y - sourceClientOffset.y) / 2;
     const hoverClientY = clientOffset.y - sourceClientOffset.y;
-    if (dragIndex < hoverIndex && hoverClientY > hoverMiddleY) {
+    if (dragIndex.index < hoverIndex.index && hoverClientY > hoverMiddleY) {
         return 'downward';
     }
-    if (dragIndex > hoverIndex && hoverClientY < hoverMiddleY) {
+    if (dragIndex.index > hoverIndex.index && hoverClientY < hoverMiddleY) {
         return 'upward';
     }
 }
@@ -88,7 +88,18 @@ const rowTarget = {
             return
         }
 
-        if(hoverIndex.name.endsWith('/') || hoverIndex.hierachy ==1){
+        if(hoverIndex.hierachy == dragIndex.hierachy ){
+            if (!hoverIndex.name.endsWith('/')){
+                return
+            }
+        }
+        if(hoverIndex.hierachy+1 == dragIndex.hierachy ){
+            if(dragIndex.name.startsWith(hoverIndex.name)){
+                return
+            }
+        }
+
+        if(!dragIndex.name.endsWith('/') || hoverIndex.hierachy ==1){
             props.moveRow(dragIndex, hoverIndex);
         }else{
             message.warning('只能移动到文件夹!');

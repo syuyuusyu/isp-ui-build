@@ -29,6 +29,9 @@ export class HomeStore {
     @observable
     slicePics = null;
 
+    @observable
+    smapslicePics=null;
+
     @action
     loadCMData = async (isAdmin) => {
         let json = await post(`${baseUrl}/invoke/cloud_monitor`);
@@ -80,6 +83,25 @@ export class HomeStore {
         if (json) {
             runInAction(() => {
                 this.slicePics = json.list
+            })
+        }else{
+            runInAction(() => {
+                this.slicePics = null;
+            })
+        }
+    };
+
+    @action
+    loadSmapSlicePics = async () => {
+        //超图地图服务
+        let json = await post(`${baseUrl}/invoke/services_rjson_api`);
+        if (json) {
+            runInAction(() => {
+                this.smapslicePics = json.list
+            })
+        }else{
+            runInAction(() => {
+                this.smapslicePics = null;
             })
         }
     };

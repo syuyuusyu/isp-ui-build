@@ -147,7 +147,7 @@ export class CommonStore {
 
         runInAction(() => {
 
-            this.columns = json.filter(c => c.hidden != '1' && c.columnType !== 'text').map(c => {
+            this.columns = json.filter(c => c.hidden != '1' && c.columnType !== 'text').sort((a,b)=>a.columnIndex-b.columnIndex).map(c => {
                 const column = {
                     dataIndex: c.columnName,
                     title: c.text ? c.text : c.columnName,
@@ -180,7 +180,7 @@ export class CommonStore {
                     return (
                         <span>
                             {
-                                this.operations.filter(d => d)
+                                this.operations.filter(d => d).filter(d=>d.location=='2')
                                     .map(m => {
                                         if (m.type === '3') {
                                             return (

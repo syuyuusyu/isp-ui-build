@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Row, Col, Input, Button, Select, notification,AutoComplete,Breadcrumb,DatePicker} from 'antd';
+import {Form, Row, Col, Input, Button, Select, notification,AutoComplete,Breadcrumb,DatePicker,Popconfirm, Divider} from 'antd';
 import {inject, observer} from 'mobx-react';
 import {baseUrl, get, post} from "../util";
 import moment from 'moment';
@@ -31,9 +31,7 @@ class QueryForm extends React.Component {
 
     componentWillMount() {
         this.setState({});
-        console.log(this.state);
         const store = this.props.rootStore.commonStore;
-        console.log(store.currentEntity);
         const queryFieldIds=store.currentEntity.queryField?store.currentEntity.queryField.split(','):[];
         this.queryColumn=queryFieldIds.map(id=>store.allColumns.find(_=>_.id===parseInt(id)));
         this.setCandidate();
@@ -206,6 +204,28 @@ class QueryForm extends React.Component {
 
                         </Col>
                         <Col span={6} style={{textAlign: 'right'}}>
+                            {
+                                store.operations.filter(d => d && d.location=='1')
+                                    .map(m => {
+                                        if (m.type === '3') {
+                                            return (
+
+                                                    <Popconfirm onConfirm={store.execFun(store, m.function)}
+                                                                title={`确认${m.name}?`}>
+                                                        <Button icon={m.icon} onClick={null}
+                                                                >{m.name}</Button>
+                                                    </Popconfirm>
+
+                                            );
+                                        }
+                                        return (
+
+                                                <Button icon={m.icon} onClick={this.showOperationForm(record, m.id)}
+                                                        >{m.name}</Button>
+
+                                        );
+                                    })
+                            }
                             {
                                 store.currentEntity.queryField?
                                     <Button icon="search" onClick={this.query}>查询</Button>
