@@ -95,7 +95,7 @@ export class CloudStore {
   };
 
   scheduleToken = () => {
-    get(`${baseUrl}/invoke/cloudToken`);
+    //get(`${baseUrl}/invoke/cloudToken`);
   };
 
   @action

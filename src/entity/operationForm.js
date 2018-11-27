@@ -88,7 +88,7 @@ class OperationForm extends React.Component {
                     name:store.currentOperation.name,
                     icon:store.currentOperation.icon,
                     type:store.currentOperation.type,
-                    loaction:store.currentOperation.loaction
+                    location:store.currentOperation.location
                 }
             );
             this.typeSelect(store.currentOperation.type);

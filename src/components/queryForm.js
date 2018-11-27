@@ -206,14 +206,12 @@ class QueryForm extends React.Component {
                         <Col span={6} style={{textAlign: 'right'}}>
                             {
                                 store.operations.filter(d => d && d.location=='1')
-                                    .map(m => {
+                                    .map((m,index) => {
                                         if (m.type === '3') {
                                             return (
-
-                                                    <Popconfirm onConfirm={store.execFun(store, m.function)}
+                                                    <Popconfirm key={index} onConfirm={store.execFun(store, m.function)}
                                                                 title={`确认${m.name}?`}>
-                                                        <Button icon={m.icon} onClick={null}
-                                                                >{m.name}</Button>
+                                                        <Button icon={m.icon} onClick={null}>{m.name}</Button>
                                                     </Popconfirm>
 
                                             );
