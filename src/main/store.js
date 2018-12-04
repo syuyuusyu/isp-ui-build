@@ -41,7 +41,7 @@ export class TreeStore{
     loadMenuTree=async()=>{
         let json=await get(`${baseUrl}/menu/menuTree`);
         runInAction(()=>{
-          this.menuTreeData=json;
+           this.menuTreeData=json;
             this.currentRoleMenu=[];
         });
         this.initMenuTreeData(json);
@@ -211,4 +211,3 @@ const getPathById= (id, catalog, callback) =>{
 };
 
 
-export class RouterStore{}

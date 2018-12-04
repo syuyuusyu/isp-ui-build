@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {inject, observer} from 'mobx-react';
-import {Popover} from 'antd';
+import {Popover,notification} from 'antd';
 import ReactEchartsCore from 'echarts-for-react/lib/core';
 import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/pie';
@@ -10,6 +10,7 @@ import Gallery from '../components/Gallery';
 import {getPieOption, getSingleBarOption} from './tools';
 import './index.less';
 import {convertGigaFormat, baseUrl, isGov} from '../util';
+//import Stomp  from 'stompjs';
 
 const colorIndex = ['#2deb7d', '#4c96df', '#f8c32f', '#ff294c', '#8e3ef2'];
 const colorGray = '#e8e8e8';
@@ -131,6 +132,31 @@ class Home extends Component {
             width: this.blockCSize.width - marginInner * 2,
             height: this.blockCSize.height - blockTitleHeight - marginInner * 2
         };
+
+        // if(this.isAdmin){
+        //     //let ws = new WebSocket('ws://127.0.0.1:15674/ws');
+        //     let ws = new WebSocket('ws://10.10.50.10:15674/ws');
+        //     let client = Stomp.over(ws);
+        //
+        //     var on_connect = function() {
+        //         var sub = client.subscribe('loginMessage', function(message) {
+        //             console.log(message);
+        //             let body=JSON.parse(message.body);
+        //             let msg=body.type==1?'登录':'退出';
+        //             notification.info({
+        //                 message:`${body.name}${msg}`
+        //             })
+        //
+        //         });
+        //     };
+        //     var on_error =  function() {
+        //         console.log('error');
+        //     };
+        //     //client.connect('guest', 'guest', on_connect, on_error, '/');
+        //     client.connect('admin', '123456', on_connect, on_error, '/');
+        // }
+
+
     }
 
     linkClick(e) {

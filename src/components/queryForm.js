@@ -167,6 +167,7 @@ class QueryForm extends React.Component {
                         return <Col span={8} key={index} style={{paddingLeft: '5px'}}>
                             {
                                 row.map(col=>{
+                                    console.log(col);
                                     return this.createItem(col);
                                 })
                             }

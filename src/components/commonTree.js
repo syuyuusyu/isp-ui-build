@@ -16,29 +16,29 @@ class CommonTree extends Component{
     componentWillMount(){
         const store=this.props.rootStore.commonStore;
         store.initTree();
-        this.nameField=store.currentParentEntity.nameField;
-        this.idField=store.currentParentEntity.idField;
 
     }
 
     renderTreeNodes = (data) => {
+        const store=this.props.rootStore.commonStore;
         return data.map((item) => {
-            const title=item[this.nameField];
+            const title=item[store.currentParentEntity.nameField];
             if (item.children) {
                 return (
-                    <TreeNode title={title} key={item[this.idField]} dataRef={item}>
+                    <TreeNode title={title} key={item[store.currentParentEntity.idField]} dataRef={item}>
                         {this.renderTreeNodes(item.children)}
                     </TreeNode>
                 );
             }
-            return <TreeNode title={title} key={item[this.idField]} dataRef={item} isLeaf={item.is_leaf?(item.is_leaf==='1'?true:false):false}   />;
+            return <TreeNode title={title} key={item[store.currentParentEntity.idField]} dataRef={item} isLeaf={item.is_leaf?(item.is_leaf==='1'?true:false):false}   />;
         });
     };
 
     render(){
         const store=this.props.rootStore.commonStore;
         return (
-            <Tree loadData={store.onLoadTreeData} onSelect={store.treeSelect}
+            <Tree loadData={store.onLoadTreeData}
+                  onSelect={store.treeSelect}
             >
                 {this.renderTreeNodes(store.treeData)}
             </Tree>

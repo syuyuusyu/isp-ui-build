@@ -129,6 +129,9 @@ class CreateForm extends React.Component {
             }
             store.toggleCreateFormVisible();
             store.queryTable();
+            if(store.hasParent && store.currentNode){
+                store.onLoadTreeData(store.currentNode);
+            }
 
         });
     };
@@ -242,7 +245,7 @@ class CreateForm extends React.Component {
     createItems = () => {
         const store = this.props.rootStore.commonStore;
         const idMatrix = [[], []];
-        this.columns.filter(c => c.columnType !== 'text').forEach((col, index) => {
+        this.columns.filter(c => store.currentEntity.idField!=c.columnName && store.currentEntity.pidField!=c.columnName && c.columnType !== 'text').forEach((col, index) => {
             idMatrix[index % 2].push(col);
         });
         return (
@@ -307,6 +310,7 @@ class CreateForm extends React.Component {
                         )
                     }
                     <Row>
+                        <Col span={18} style={{textAlign: 'left'}}></Col>
                         <Col span={6} style={{textAlign: 'right'}}>
                             <Button type="reload" onClick={null}>重置</Button>
                             <Button icon="save" onClick={this.save}>保存</Button>
