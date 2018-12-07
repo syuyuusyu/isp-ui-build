@@ -103,6 +103,7 @@ class Home extends Component {
                     </div>
                 </div>
                 <div className="home-content">
+                  <div className="float-box">
                     <div className="block left" style={blockASize}>
                       <div className="title">云管理平台概况</div>
                       <div className="pies-box">
@@ -129,13 +130,14 @@ class Home extends Component {
                         style={barSize}
                       />
                     </div>
-                    <div className="block left bottom" style={blockCSize}>
-                      <div className="title">切片服务</div>
-                      {slicePics ?
-                        <Gallery size={gallerySize} pictures={slicePics} duration={4000}  />
-                        : ''
-                      }
-                    </div>
+                  </div>
+                  <div className="block bottom" style={blockCSize}>
+                    <div className="title">切片服务</div>
+                    {slicePics ?
+                      <Gallery size={gallerySize} pictures={slicePics} duration={4000}  />
+                      : ''
+                    }
+                  </div>
                 </div>
             </div>
         );

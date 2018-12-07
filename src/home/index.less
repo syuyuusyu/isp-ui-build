@@ -12,20 +12,30 @@
       font-size: 0;
       clear: both;
     }
-    .block{
-      position: relative;
-      background-color: #fff;
-      border-radius: 4px;
-      float: left;
-      padding: 16px;
+    .float-box{
+      .left{
+        float: left;
+      }
+      .right{
+        float: right;
+      }
       &:after{
         content: '';
         display: block;
         font-size: 0;
         clear: both;
       }
-      &.right{
-        margin-left: 16px;
+    }
+    .block{
+      position: relative;
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 16px;
+      &:after{
+        content: '';
+        display: block;
+        font-size: 0;
+        clear: both;
       }
       &.bottom{
         margin-top: 16px;
