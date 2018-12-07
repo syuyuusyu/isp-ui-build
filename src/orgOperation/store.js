@@ -1,7 +1,7 @@
 import {observable, configure,action,runInAction,} from 'mobx';
-import {notification} from 'antd';
-import {baseUrl,get,del,post} from '../util';
-import {message, Modal} from "antd/lib/index";
+import {notification,message, Modal} from 'antd';
+import {baseUrl,get,del,post,} from '../util';
+
 
 configure({ enforceActions: true });
 
@@ -96,6 +96,7 @@ export class OrgStore{
   @action
   initRoot=async ()=>{
     let json=await get(`${baseUrl}/org/orgMenu/0`);
+    //console.log("json的值为:",json);
     //let json=await response.json();
     runInAction(()=>{
       this.treeData=json;

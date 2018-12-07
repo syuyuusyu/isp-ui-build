@@ -60,10 +60,12 @@ class OpForm extends React.Component{
 
                         })(
                             <Select>
-                                <Option  value={1}>登录</Option>
-                                <Option  value={2}>退出</Option>
-                                <Option  value={5}>推送用户信息</Option>
-                                <Option  value={6}>注销平台用户</Option>
+                                <Option  value={'1'}>登录</Option>
+                                <Option  value={'2'}>退出</Option>
+                                <Option  value={'5'}>推送用户信息</Option>
+                                <Option  value={'6'}>注销平台用户</Option>
+                                <Option  value={'7'}>服务资源目录</Option>
+                                <Option  value={'8'}>系统元数据</Option>
                             </Select>
                         )}
                     </FormItem>

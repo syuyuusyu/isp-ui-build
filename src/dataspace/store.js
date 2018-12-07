@@ -1,6 +1,6 @@
 import {observable, configure, action, runInAction,} from 'mobx';
 import {baseUrl, get, post} from '../util';
-import {notification} from 'antd';
+import {Modal, notification} from 'antd';
 
 configure({enforceActions: true});
 
@@ -58,6 +58,7 @@ export class DataSpaceStore {
   };
 
   showForm = () => {
+      console.log(1111);
     /*if(!this.selectedAccId){
         notification.error({
             message:'请先选择数据库实列'});
@@ -103,7 +104,7 @@ export class DataSpaceStore {
         this.loading = true;
         this.loadingtest = '获取表空间列表...'
       });
-      //遍历数据库实例dataAcc.result(数组),根据实例id获取用户列表
+      //遍历数据库实例dataAcc.result(数组),根据实例id获取表空间列表
       for(let i of this.dataAcc.result){
         let json = await post(`${baseUrl}/invoke/data_space_list`, {id: i.id});
         if(json===undefined){
@@ -150,7 +151,8 @@ export class DataSpaceStore {
   @action
   afterClose=()=>{
     this.formDisplay='none';
-  }
+    this.autoextensibleDisplay='none';
+  };
 
   @action
   loadDataSpace = async (id) => {
@@ -199,23 +201,17 @@ export class DataSpaceStore {
       maxbytes:values.maxbytes,
       next_byte:values.next_byte
     });
-    console.log("json的值为:",json);
     if (json.success) {
       notification.info({
         message: '新建成功'
       });
-    } else {
-      notification.error({
-        message: '新建失败'
-      });
+    } else{
+      Modal.error({title: '新建失败',content:`失败信息为：${json.message}`})
     }
     this.toggleFormVisible();
     this.loadDataSpace(this.selectedAccId);
     runInAction(() => {
       this.loading = false;
-
     });
   };
-
-
 }

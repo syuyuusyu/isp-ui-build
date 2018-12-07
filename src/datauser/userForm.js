@@ -32,6 +32,40 @@ class UserForm extends React.Component{
 
     };
 
+     checkUserName=(rule, value, callback)=>{
+       const store=this.props.rootStore.dataUserStore;
+       const instanceName=this.getInstanceName();
+       let boolean=false;
+       if (!value) {
+         callback();
+       }
+       //判断在选择的实例下是否已经有输入的用户名
+       for(let i of store.allDataUsers){
+        if(i.instanceName===instanceName&&i.username===value){
+          boolean=true;
+          break;
+        }
+       }
+       if(boolean===true){
+         callback(`"${instanceName}"实例下已经有"${value}"用户名`);
+       }else{
+         callback();
+       }
+     };
+
+  getInstanceName=()=>{
+    const store=this.props.rootStore.dataUserStore;
+    //根据选择的数据库实例的id查询出该实例的名称
+    let instanceName;
+    for(let i of store.dataAcc.result){
+      if(i.id===store.selectedAccId){
+        instanceName=i.name;
+        break;
+      }
+    }
+    return instanceName;
+  };
+
     render(){
       const store = this.props.rootStore.dataUserStore;
         const { getFieldDecorator, } = this.props.form;
@@ -51,7 +85,9 @@ class UserForm extends React.Component{
                         <Row>
                             <FormItem label="用户名">
                                 {getFieldDecorator('name',{
-                                    rules: [{ required: true, message: '必填' }],
+                                    rules: [{ required: true, message: '必填' },
+                                      {validator: this.checkUserName}],
+                                  validateTrigger: 'onBlur'
                                 })(
                                     <Input  placeholder='输入用户名'/>
                                 )}

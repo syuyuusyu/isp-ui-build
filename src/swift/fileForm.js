@@ -1,5 +1,5 @@
 import React from 'react';
-import {  Button ,Upload,Icon} from 'antd';
+import {  Button ,Upload,Icon,Progress} from 'antd';
 import {inject,observer} from 'mobx-react';
 //import {baseUrl,post} from '../util';
 
@@ -26,20 +26,15 @@ class FileForm extends React.Component{
         const store=this.props.rootStore.swiftStore;
         return (
             <div>
-                <Upload ref={store.refUpload} action='' beforeUpload={store.beforeUpload} onRemove={store.onRemove}>
+                <Upload ref={store.refUpload} action='' beforeUpload={store.beforeUpload} onRemove={store.onRemove} multiple={true}>
                     <Button>
                         <Icon type="upload" /> Select File
                     </Button>
                 </Upload>
-                <Button
-                    className="upload-demo-start"
-                    type="primary"
-                    onClick={store.handleUpload}
-                    disabled={store.fileList.filter(d=>d).length === 0}
-                    loading={store.uploading}
-                >
-                    {store.uploading ? '上传中' : '点击上传' }
-                </Button>
+                {
+                    store.uploading ?  <Progress percent={store.percent} /> : ''
+                }
+                <span>{store.upDownInfo}</span>
             </div>
         );
     }

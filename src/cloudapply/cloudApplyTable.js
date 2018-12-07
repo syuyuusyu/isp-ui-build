@@ -16,9 +16,9 @@ class CloudApplyTable extends React.Component{
     timeoutid=0;
 
     componentDidMount(){
-        //this.props.rootStore.cloudStore.scheduleToken();
-        //this.props.rootStore.cloudStore.loadServerInfo();
-
+        this.props.rootStore.cloudStore.scheduleToken();
+        this.props.rootStore.cloudStore.loadServerInfo();
+        this.props.rootStore.cloudStore.getS02urlLoginInfo();
         // this.timeoutid=setInterval(
         //     this.props.rootStore.cloudStore.loadServerInfo,
         //     1000*60
@@ -63,8 +63,15 @@ class CloudApplyTable extends React.Component{
             }
 
         },
-
-
+      {title:'获取登录信息',width:200,
+        render:()=>{
+        return(
+          <div>
+            <Button  onClick={this.props.rootStore.cloudStore.skipCloud} >跳转云平台</Button>
+          </div>
+        );
+        }
+      },
     ];
 
     render(){
@@ -73,7 +80,7 @@ class CloudApplyTable extends React.Component{
         return (<div>
             <Spin indicator={antIcon} tip={store.loadingtest} spinning={store.loading}>
                 <Modal visible={store.formVisible}
-                       width={400}
+                       width={1000}
                        title={`新建云机`}
                        footer={null}
                        onCancel={store.toggleFormVisible}
@@ -85,12 +92,12 @@ class CloudApplyTable extends React.Component{
                 <Row gutter={2} className="table-head-row">
 
                     <Col span={4} style={{ textAlign: 'right' }} className="col-button">
-                      <Icon type="profile" />&nbsp;&nbsp; <Link to="/applyCloud">新建云机</Link>
-                            {/*<Button onClick={store.toggleFormVisible} icon="plus-circle-o">新建云机</Button>*/}
+                      {/*<Icon type="profile" />&nbsp;&nbsp; <Link to="/applyCloud">新建云机</Link>*/}
+                            <Button onClick={store.toggleFormVisible} icon="plus-circle-o">新建云机</Button>
                     </Col>
 
                 </Row>
-           {/* <Table columns={this.columns}
+            <Table columns={this.columns}
                    rowKey={record => record.id}
                    dataSource={store.serverInfo.filter(d=>d)}
                    rowSelection={null}
@@ -100,7 +107,7 @@ class CloudApplyTable extends React.Component{
                 //pagination={this.state.pagination}
                 //loading={this.state.loading}
                 //onChange={this.handleTableChange}
-            />*/}
+            />
             </Spin>
         </div>);
     }

@@ -40,6 +40,8 @@ class Login extends React.Component {
                     sessionStorage.setItem('access-token', json.token);
                     sessionStorage.setItem('currentUserName', json.user.name);
                     sessionStorage.setItem('user', JSON.stringify(json.user));
+                    sessionStorage.setItem('roles',JSON.stringify(json.roles));
+                    this.props.rootStore.authorityStore.toggleAlertMessageVisible();
                     await Promise.all([
                         this.props.rootStore.authorityStore.loadAllbuttons(),
                         this.props.rootStore.treeStore.initRoot(),
@@ -47,6 +49,7 @@ class Login extends React.Component {
                         this.props.rootStore.activitiStore.loadCurrentTask()
                     ]);
                     this.store.taggreLogin();
+                    //setTimeout(()=>{;},5000);
                     break;
                 case '2':
                     notification.warning({

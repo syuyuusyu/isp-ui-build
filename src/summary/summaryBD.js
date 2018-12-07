@@ -22,7 +22,7 @@ class SummaryBD extends Component{
     const autoRefresh = () => {
       this.timerAutoRefresh = setTimeout(() => {
         autoRefresh();
-      }, 15000);
+      }, 1000*60*10);
       this.props.rootStore.summaryStoreBD.initSummaryData();
     };
     autoRefresh();

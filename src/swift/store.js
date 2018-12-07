@@ -1,9 +1,12 @@
+import React from 'react';
 import {observable, configure,action,runInAction,} from 'mobx';
-import {baseUrl,post,get} from '../util';
-import {notification} from 'antd';
+import {baseUrl, post, get, convertGiga,activitiUrl} from '../util';
+import {notification,Icon} from 'antd';
 import axios from 'axios';
 
 configure({ enforceActions: true });
+
+const CancelToken = axios.CancelToken;
 
 export class SwiftStore{
 
@@ -14,6 +17,10 @@ export class SwiftStore{
     tenG=10737418240;
 
     uploadRef;
+
+    username;
+
+    isSelf=true;
 
     @observable
     hasContainer=false;
@@ -51,6 +58,10 @@ export class SwiftStore{
     @observable
     uploading=false;
 
+
+
+    cancel;
+
     scheduleToken=()=>{
         console.log('scheduleToken swift');
         get(`${baseUrl}/swift/swiftToken`);
@@ -70,7 +81,7 @@ export class SwiftStore{
             notification.error({
                 message:'云平台权限认证失败,请尝试刷新页面或联系管理员'});
         }else{
-            if(json.filter(d=>d.name===JSON.parse(sessionStorage.getItem("user")).user_name).length===1){
+            if(json.filter(d=>d.name===this.username).length===1){
                 runInAction(() => {
                     this.hasContainer = true;
                 });
@@ -90,7 +101,7 @@ export class SwiftStore{
             this.loadingtest='正在开通网盘...';
         });
         let json=await post(`${baseUrl}/swift/createContainer`,{
-            username:JSON.parse(sessionStorage.getItem("user")).user_name
+            username:this.username
         });
         runInAction(()=>{
             this.inDowning=false;
@@ -108,8 +119,11 @@ export class SwiftStore{
 
     };
 
-    refUpload=(instance)=>{
-        this.uploadRef=instance;
+    @observable
+    percent=0;
+
+    refSpin= (instance)=>{
+        this.spinRef=instance;
     };
 
     @action
@@ -121,25 +135,7 @@ export class SwiftStore{
 
     };
 
-    @action
-    beforeUpload= (file) => {
-        if(file.size>1024*1024*1024){
-            notification.error({
-                message:'单个文件不能大于1G'
-            });
-            this.uploadRef.props.props.onRemove();
-            return false;
-        }
-        if((this.total+file.size)>1024*1024*1024*10){
-            notification.error({
-                message:'网盘总量为10G,无法上传该文件,请先清除不必要文件'
-            });
-            this.uploadRef.props.props.onRemove();
-            return false;
-        }
-        this.fileList=[...this.fileList,file];
-        return false;
-    };
+
 
     @action
     clearFileList=()=>{
@@ -153,7 +149,7 @@ export class SwiftStore{
         });
         const {folderName}=values;
         const filePath=this.selectRow.name;
-        const username=JSON.parse(sessionStorage.getItem("user")).user_name;
+        const username=this.username;
         let json=await post(`${baseUrl}/swift/createFolder`,{
             filePath:filePath+folderName,username
         });
@@ -174,30 +170,70 @@ export class SwiftStore{
     };
 
     @action
-    handleUpload=async ()=>{
+    beforeUpload= (file) => {
+        if(file.size>1024*1024*1024*20){
+            notification.error({
+                message:'单个文件不能大于20G'
+            });
+            this.uploadRef.props.onRemove();
+            return false;
+        }
+        if((this.total+file.size)>1024*1024*1024*10 && this.isSelf){
+            notification.error({
+                message:'网盘总量为10G,无法上传该文件,请先清除不必要文件'
+            });
+            this.uploadRef.props.onRemove();
+            return false;
+        }
+        this.fileList=[...this.fileList,file];
+        return false;
+    };
 
-        runInAction(()=>{
-            this.uploading=true;
-        });
+    @action
+    handleUpload=()=>{
+        this.uploading=true;
+        this.upDownInfo='';
+
         const formData = new FormData();
         this.fileList.filter(d=>d).forEach((file) => {
             formData.append('files[]', file);
         });
-        await axios({url:`${baseUrl}/swift/upload`,
+        const startTime=new Date();
+        axios({url:`${baseUrl}/swift/upload`,
             method:'POST',
             headers: {
                 //'Content-Type': 'multipart/form-data',//application/x-www-form-urlencoded
-                'User-Name':JSON.parse(sessionStorage.getItem("user")).user_name,
+                'User-Name':this.username,
                 'Folder-Path':this.selectRow.name.split('/').map(p=>encodeURI(p)).join('/'),
                 //'filename': encodeURI(file.name),
                 'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
             },
-            data:formData
-        });
+            timeout: 1000*1000*10,
+            data:formData,
+            onUploadProgress:  ({loaded,total})=> {
+                const currentTime=new Date();
+                const duration=(currentTime-startTime)/1000;
+                let l=convertGiga(loaded);
+                let t=convertGiga(total);
+                const s = convertGiga(loaded/duration);
+                const usetime=`用时${(duration/60/60)>1?parseInt(duration/60/60)+'时':''}
+                    ${(duration/60)>1?parseInt(duration/60)+'分':''}${parseInt(duration%60)+'秒'}`;
+                runInAction(()=>{
+                    this.percent =parseInt( loaded/total * 100);
+                    this.upDownInfo = `${usetime},共${t.number}${t.unit},已下载${l.number}${l.unit},${s.number}${s.unit}/S`;
+                });
+            },
+            cancelToken: new CancelToken((c) =>{this.cancel = c;})
+        }).then(()=>{ this.uploadComplete()}).catch(()=>{ this.uploadComplete()});
 
-        runInAction(()=>{
-            this.uploading=false;
-        });
+
+    };
+
+    @action
+    uploadComplete = ()=>{
+        this.uploading=false;
+        this.percent = 0;
+        this.upDownInfo='';
         this.toggleFileFormVisible();
         this.loadRootDir();
     };
@@ -235,7 +271,7 @@ export class SwiftStore{
             this.inDowning=true;
             this.loadingtest='正在向服务器请求删除';
         });
-        const username=JSON.parse(sessionStorage.getItem("user")).user_name;
+        const username=this.username;
         let json=await post(`${baseUrl}/swift/delete`,{
             filePath:record.name,username
         });
@@ -254,62 +290,85 @@ export class SwiftStore{
 
     });
 
+    @observable
+    isFileDowning = false;
+
     @action
-    download2=(record)=>(async ()=>{
+    toggleDownInfoVisible=()=>{
+        this.isFileDowning=!this.isFileDowning;
+    };
+
+    @observable
+    upDownInfo='';
+
+    @action
+    download=(record)=>(()=>{
         runInAction(()=>{
             this.inDowning=true;
-            this.loadingtest='正在向服务器请求下载';
+            this.isFileDowning =true;
+            this.loadingtest='';
         });
-        let response=await fetch(`${baseUrl}/swift/download`,{
+        const startTime=new Date();
+        axios({url:`${baseUrl}/swift/download`,
             method:'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
             },
-            body:JSON.stringify({...record,username:JSON.parse(sessionStorage.getItem("user")).user_name})
-        });
-        //console.log(response);
-        let blob=await response.blob();
-        let a = document.createElement('a');
-        let url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
-        a.href = url;
-        a.download = record.filename;
-        runInAction(()=>{
-            this.inDowning=false;
-        });
-        a.click();
-        window.URL.revokeObjectURL(url);
+            data:JSON.stringify({...record,username:this.username}),
+            timeout: 1000*1000*10,
+            responseType: 'blob',
+            onDownloadProgress:({loaded})=>{
+                const currentTime=new Date();
+                const duration=(currentTime-startTime)/1000;
+                const l=convertGiga(loaded);
+                const t=convertGiga(record.bytes);
+                const s = convertGiga(loaded/duration);
+                const usetime=`用时${(duration/60/60)>1?parseInt(duration/60/60)+'时':''}
+                    ${(duration/60)>1?parseInt(duration/60)+'分':''}${parseInt(duration%60)+'秒'}`;
+                runInAction(()=>{
+                    if(!axios.isCancel()){
+                        this.percent = parseInt( loaded/parseInt(record.bytes)*100);
+                        this.upDownInfo = `${usetime},共${t.number}${t.unit},已下载${l.number}${l.unit},${s.number}${s.unit}/S`;
+                    }
+
+                });
+            },
+            cancelToken: new CancelToken((c)=> {this.cancel = c;})
+        }).then(response=>{
+            let blob= response.data;
+            let a = document.createElement('a');
+            let url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
+            a.href = url;
+            a.download = record.filename;
+            this.downloadComplete();
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }).catch(()=>this.downloadComplete());
     });
 
     @action
-    download=(record)=>(async ()=>{
+    move=async (srcFold,destFold,fileName)=>{
         runInAction(()=>{
             this.inDowning=true;
-            this.loadingtest='正在向服务器请求下载';
+            this.loadingtest='正在移动文件...';
         });
-        let response=await axios({url:`${baseUrl}/swift/download`,
-            method:'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Access-Token': sessionStorage.getItem('access-token') || '' // 从sessionStorage中获取access token
-            },
-            data:JSON.stringify({...record,username:JSON.parse(sessionStorage.getItem("user")).user_name}),
-            responseType: 'blob'
-        });
-        let blob= response.data;
-        let a = document.createElement('a');
-        let url = window.URL.createObjectURL(blob);   // 获取 blob 本地文件连接 (blob 为纯二进制对象，不能够直接保存到磁盘上)
-        a.href = url;
-        a.download = record.filename;
+        await get(`${activitiUrl}/swift/move`,{srcFold,destFold,fileName,containerName:this.username});
         runInAction(()=>{
             this.inDowning=false;
+            this.loadingtest='';
         });
-        a.click();
-        window.URL.revokeObjectURL(url);
+        this.loadRootDir();
+    };
 
-    });
+    @action
+    downloadComplete=()=>{
+        this.inDowning=false;
+        this.isFileDowning=false;
+        this.upDownInfo='';
+        this.percent=0;
+    };
 
     @action
     loadRootDir=async ()=>{
@@ -317,8 +376,7 @@ export class SwiftStore{
             this.inDowning=true;
             this.loadingtest='请求网盘信息...';
         });
-        let json=await get(`${baseUrl}/swift/getObject/${JSON.parse(sessionStorage.getItem("user")).user_name}`);
-        console.log(json);
+        let json=await get(`${baseUrl}/swift/getObject/${this.username}`);
         if(json.status){
             notification.error({
                 message:'云平台权限认证失败,请尝试刷新页面或联系管理员',
@@ -329,7 +387,7 @@ export class SwiftStore{
             return;
         }
         let temps=[];
-        let mertix={}
+        let mertix={};
         let maxLength=0;
         for(let i=0;i<json.length;i++){
             let length=json[i].name.split('/').filter(d=>d).length;
@@ -344,13 +402,15 @@ export class SwiftStore{
             mertix[i]=mertix[i].concat(json.filter(d=>d.hierachy===i));
         }
 
+        this._getDirVolume(mertix,maxLength);
+        console.log(mertix);
         temps=mertix[1];
-        console.log(temps);
         this._compoent(temps,mertix,1,maxLength);
+        //console.log(temps);
         runInAction(()=>{
             this.rootDir=temps?temps:[];
             this.inDowning=false;
-            this.total=json.length===0?0:json.filter(d=>d).map(d=>d.bytes).reduce((a,b)=>a+b)
+            this.total=mertix[1].length===0?0:mertix[1].filter(d=>d).map(d=>d.bytes).reduce((a,b)=>a+b)
         });
     };
 
@@ -367,23 +427,20 @@ export class SwiftStore{
 
     };
 
+    _getDirVolume(mertix,currentHierachy){
+        if(currentHierachy>1){
+            for(let i=0;i<mertix[currentHierachy-1].length;i++){
+                let name = mertix[currentHierachy-1][i].name;
+                let arr= mertix[currentHierachy].filter(f=>f.name.indexOf(name)===0);
+                if(arr.length>0){
+                    mertix[currentHierachy-1][i].bytes = arr.map(d=>d.bytes).reduce((a,b)=>a+b);
+                }
 
-}
-
-
-function sdsd(obj){
-    let result={};
-    for(let o of obj){
-        for(let key in o){
-            if( o[key].status && o[key].status===40101 ){
-                return { ok: false, msg: '无效Token！', status: 40101 };
             }
-            key.replace(/data_monitor_(\w+)-\d+/,(w,p)=>{
-                result[p]=o[key]['page_data'];
-            }) ;
+            currentHierachy--;
+            this._getDirVolume(mertix,currentHierachy);
         }
     }
-    return result;
+
+
 }
-
-

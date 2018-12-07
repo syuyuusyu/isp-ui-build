@@ -51,7 +51,7 @@ const getPieOption = (sourceData, colors) => {
  * @param colors{array} 颜色组
  * @returns echarts的option
  */
-const getSingleBarOption = (sourceData, colors) => {
+const getSingleBarOption = (sourceData, colors,showAxis=false) => {
     let data = [];
     sourceData.forEach(({name, value}, index) => {
         data.push({
@@ -63,11 +63,11 @@ const getSingleBarOption = (sourceData, colors) => {
         backgroundColor: '#fff',
         xAxis: {
             type: 'category',
-            axisLine: {show: false},
-            axisTick: {show: false},
+            axisLine: {show: showAxis},
+            axisTick: {show: showAxis},
         },
         yAxis: {
-            show: false,
+            show: showAxis,
         },
         grid: {
             top: 'center',
@@ -79,7 +79,7 @@ const getSingleBarOption = (sourceData, colors) => {
             {
                 name: '统计图',
                 type: 'bar',
-                barMaxWidth: 32,
+                barMaxWidth: 56,
                 markLine: {
                     label: {show: false},
                 },

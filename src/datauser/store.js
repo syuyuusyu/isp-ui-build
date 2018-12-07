@@ -111,6 +111,7 @@ export class DataUserStore {
                 j.instanceName=i.name;
                 runInAction(()=>{this.allDataUsers.push(j);})
               }
+              console.log("this.allDataUsers的值为:",this.allDataUsers);
             }
             else{
               notification.error({

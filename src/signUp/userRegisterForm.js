@@ -1,8 +1,10 @@
 import React,{Component} from 'react';
-import { Form, Row, Col, Input, Button ,Select, Modal,notification} from 'antd';
+import { Form, Row, Col, Input, Button ,Select, Modal,notification,Cascader} from 'antd';
 import {baseUrl, get,post} from "../util";
 import {inject, observer} from "mobx-react";
 import {Link} from 'react-router-dom';
+import SelectOrg from './selectOrg';
+
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -12,6 +14,9 @@ const crypto = require('crypto');
 @inject('rootStore')
 @observer
 class UserRegisterForm extends Component {
+  componentDidMount(){
+    this.props.rootStore.signUpStore.initNewNodeNames();
+  }
 
  /* checkUserUnique = async (rule, value, callback) => {
     if (!value) {
@@ -53,7 +58,7 @@ class UserRegisterForm extends Component {
       callback("身份证号码不合规");
     }
     //区位码校验
-    // 出生年月日校验  前正则限制起始年份为1900;
+    // 出生年月日校验，限制起始年份为1900;
     const year = value.substr(6,4);//身份证年
     const month = value.substr(10,2);//身份证月
     const date = value.substr(12,2);//身份证日
@@ -74,7 +79,7 @@ class UserRegisterForm extends Component {
     if(id_array[17].toUpperCase() != checkCode[sum%11].toUpperCase()){
       callback("身份证校验码不合规");
     }else(callback());
-  }
+  };
 
   checkPhoneUnique = async (rule, value, callback) => {
     if (!value) {
@@ -87,7 +92,7 @@ class UserRegisterForm extends Component {
     } else {
       callback(new Error())
     }
-  }
+  };
 
   checkEmailUnique = async (rule, value, callback) => {
     if (!value) {
@@ -109,7 +114,7 @@ class UserRegisterForm extends Component {
       form.validateFields(['confirm'], { force: true });
     }
     callback();
-  }
+  };
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && value !== form.getFieldValue('password')) {
@@ -117,23 +122,32 @@ class UserRegisterForm extends Component {
     } else {
       callback();
     }
-  }
+  };
   save=()=> {
+    const store=this.props.rootStore.signUpStore;
     this.props.form.validateFields(async (err, values) => {
       if(err) return;
-      //console.log("values的值为:",values);
-      //对输入的密码和确认密码就行加密
+
+      if(store.orgCheckedKeys.length===0){
+        notification.error({
+          message:'请选择所属机构'
+        })
+        return
+      }
+
+      //对输入的密码和确认密码进行加密
       const randomNumber=Math.random().toString().substr(2,10);
       const hmac = crypto.createHmac('sha256', randomNumber);
       values.password= hmac.update(values.password).digest('hex');
       values.confirmPassword= hmac.update(values.confirmPassword).digest('hex');
       values.randomNumber=randomNumber;
+      values.orgCheckedKeys=store.orgCheckedKeys;
 
       let json=await post(`${baseUrl}/userRegister/save`,values);
      if(json.success==='账号已经存在'){
        notification.error({
          message:'账号已经存在！'
-       })
+       });
        this.reset();
      }else if(json.success){
         Modal.success({
@@ -162,22 +176,40 @@ class UserRegisterForm extends Component {
       labelCol: { span: 7 },
       wrapperCol: { span: 14},
     };
+    const store=this.props.rootStore.signUpStore;
     return (
       <div className="sign">
+        <Modal visible={store.orgVisible}
+               width={600}
+               title="选择机构(请展开选择注册的用户所属机构)"
+               footer={null}
+               onCancel={store.toggleOrgVisible}
+               maskClosable={false}
+               destroyOnClose={true}
+        >
+          <SelectOrg/>
+        </Modal>
         <Form layout="horizontal" className="sign-content">
             <h2 className="sign-title">注册</h2>
-            <FormItem label="账号" {...formItemLayout} >
+          <Row gutter={26}>
+            <Col span={10}>
+              <div className="col1">
+            <FormItem label="登录名称" {...formItemLayout} >
               {
                 getFieldDecorator('userName', {
-                  rules: [{required: true, message: '账号不能为空'},
-                    {pattern:'^[a-zA-Z0-9_]{1,}$',message:'账号只能包含字母数字下划线'},
+                  rules: [{required: true, message: '登录名称不能为空'},
+                    {pattern:'^[a-zA-Z0-9_]{1,}$',message:'登录名称只能包含字母数字下划线'},
                   ],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input placeholder="请输入账号"/>
+                  <Input className="signUpInput" placeholder="请输入账号"/>
                 )
               }
             </FormItem>
+              </div>
+            </Col>
+            <Col span={10}>
+              <div className="col2">
             <FormItem label="用户名称" {...formItemLayout}>
               {
                 getFieldDecorator('nickName', {
@@ -185,10 +217,16 @@ class UserRegisterForm extends Component {
                   ],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input placeholder="请输入用户名称"/>
+                  <Input className="signUpInput" placeholder="请输入用户名称"/>
                 )
               }
             </FormItem>
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={26}>
+            <Col span={10}>
+              <div className="col1">
             <FormItem label="密码" {...formItemLayout}>
               {getFieldDecorator('password', {
                 rules: [{
@@ -198,9 +236,13 @@ class UserRegisterForm extends Component {
                 }],
                 validateTrigger: 'onBlur'
               })(
-                <Input type="password" placeholder="请输入密码"/>
+                <Input className="signUpInput" type="password" placeholder="请输入密码"/>
               )}
             </FormItem>
+              </div>
+            </Col>
+            <Col span={10}>
+              <div className="col2">
               <FormItem label="确认密码" {...formItemLayout}>
                 {getFieldDecorator('confirmPassword', {
                   rules: [{
@@ -210,9 +252,15 @@ class UserRegisterForm extends Component {
                   }],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input type="password" placeholder="请输入确认密码" />
+                  <Input className="signUpInput" type="password" placeholder="请输入确认密码" />
                 )}
               </FormItem>
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={26}>
+            <Col span={10}>
+              <div className="col1">
             <FormItem label="身份证编号" {...formItemLayout}>
               {
                 getFieldDecorator('IDnumber', {
@@ -222,10 +270,14 @@ class UserRegisterForm extends Component {
                   ],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input placeholder="请输入身份证编号(选填)"/>
+                  <Input className="signUpInput" placeholder="请输入身份证编号(选填)"/>
                 )
               }
             </FormItem>
+              </div>
+            </Col>
+            <Col span={10}>
+              <div className="col2">
             <FormItem label="电话号码" {...formItemLayout}>
               {
                 getFieldDecorator('phone', {
@@ -235,10 +287,16 @@ class UserRegisterForm extends Component {
                   ],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input placeholder="请输入电话号码"/>
+                  <Input className="signUpInput" placeholder="请输入电话号码"/>
                 )
               }
             </FormItem>
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={26}>
+            <Col span={10}>
+              <div className="col1">
             <FormItem label="邮箱" {...formItemLayout}>
               {
                 getFieldDecorator('email', {
@@ -248,10 +306,22 @@ class UserRegisterForm extends Component {
                   ],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input placeholder="请输入邮箱(选填)"/>
+                  <Input className="signUpInput" placeholder="请输入邮箱(选填)"/>
                 )
               }
             </FormItem>
+              </div>
+            </Col>
+          </Row>
+          <div  className="sign-button02">
+            <Button onClick={this.props.rootStore.signUpStore.toggleOrgVisible}>选择所属机构</Button>：
+            <div className="orgName">{this.props.rootStore.signUpStore.newNodeNames.filter(d=>d).map(a=>{
+              return(
+                <p key={a}>{a}</p>
+              );
+            })}
+            </div>
+          </div>
             <div className="sign-button">
                 <Button type="primary" htmlType="submit" onClick={this.save}>注册</Button>
                 <Button className="sign-button01" onClick={this.reset}>重置</Button>

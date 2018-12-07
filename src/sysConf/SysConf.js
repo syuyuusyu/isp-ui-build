@@ -12,7 +12,17 @@ class SysConf extends React.Component{
     columns=[
         {dataIndex:'code',title:'系统编码',width:50},
         {dataIndex:'name',title:'系统名称',width:100},
+        {dataIndex:'isGov',title:'政务网是否可以访问',width:100,
+            render:(text)=>{
+                if(text==='1'){
+                    return '是';
+                }else{
+                    return '否';
+                }
+            }
+        },
         {dataIndex:'url',title:'URL',width:200},
+        {dataIndex:'govUrl',title:'政务网URL',width:200},
         {
             title:'操作',
             width:200,

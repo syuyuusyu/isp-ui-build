@@ -132,7 +132,15 @@ export class InterfacesLogStory{
     runInAction(() => {
       this.allInterfacesLog = json;
       this.logTotal=json.length;
-    })
+    });
+    if(json.length>=0){
+      notification.success({
+        message:'查询成功'})
+    }else{
+      notification.error({
+        message:'后台错误，请联系管理员'
+      })
+    }
   };
 
   @action

@@ -36,7 +36,6 @@ export default class AuthorityStore {
     this.loginVisible = !this.loginVisible;
   };
 
-  @action
   loadAllbuttons = async () => {
     const json = await get(`${baseUrl}/btn/allButtons`);
     const allButtons = {};
@@ -50,5 +49,13 @@ export default class AuthorityStore {
   toggleRegFormVisible=()=>{
     this.regFormVisible=!this.regFormVisible;
   };
+
+  @observable
+  alertMessageVisible=false;
+
+  @action
+  toggleAlertMessageVisible=()=>{
+      this.alertMessageVisible=!this.alertMessageVisible;
+  }
 
 }

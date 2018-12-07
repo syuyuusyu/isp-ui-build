@@ -3,8 +3,8 @@ import {notification, Button, Popconfirm, Alert} from 'antd';
 import {baseUrl, get, post} from '../util';
 import React from 'react';
 import RoleButton from '../roleButton';
-import {Divider,} from 'antd';
-import {Modal} from "antd/lib/index";
+import {Divider,Modal} from 'antd';
+
 
 configure({enforceActions: true});
 
@@ -28,6 +28,12 @@ export class UserRoleStore {
 
   @observable
   users = [];
+
+  @observable
+  usersBack=[];
+
+  @observable
+  usersBack1=[];
 
   @observable
   userType = '1';
@@ -57,6 +63,17 @@ export class UserRoleStore {
         return  newOrgNameArray;
       }
     },
+    {dataIndex: 'update_date', title: '创建时间',sorter:(a,b)=>Date.parse(b.update_date)-Date.parse(a.update_date), width: 100,render:(operateDate)=>{
+        const logDate=new Date(operateDate);
+        const Y=logDate.getFullYear()+'-';
+        const M=(logDate.getMonth()+1 < 10 ? '0'+(logDate.getMonth()+1) : logDate.getMonth()+1) + '-';
+        const D=(logDate.getDate()<10? '0'+(logDate.getDate()):logDate.getDate())+' ';
+        const h=(logDate.getHours()<10? '0'+(logDate.getHours()):logDate.getHours())+':';
+        const m=(logDate.getMinutes()<10? '0'+(logDate.getMinutes()):logDate.getMinutes())+':';
+        const s=(logDate.getSeconds()<10? '0'+(logDate.getSeconds()):logDate.getSeconds());
+        const date=Y+M+D+h+m+s;
+        return date;
+      }},
     {
       title: '操作',
       width: 200,
@@ -80,6 +97,9 @@ export class UserRoleStore {
     }
   ];
 
+  @observable
+  selectUser='';
+
   @action
   loadUserRoleConfRoles = async () => {
     //userRoleConfRoles
@@ -88,7 +108,6 @@ export class UserRoleStore {
     runInAction(() => {
       this.userRoleConfRoles = json;
     });
-    console.log("loadUserRoleConfRoles中userRoleConfRoles的值为:",this.userRoleConfRoles.filter(d=>d));
   };
 
 
@@ -97,6 +116,9 @@ export class UserRoleStore {
     let json = await get(`${baseUrl}/user/allUsers`);
     runInAction(() => {
       this.users = json;
+      this.usersBack=json;
+      this.usersBack.unshift({id:null,entityId:null,system_id:null,org_id:null,type:null,user_name:null,passwd:null,name:null,ID_number:null,phone:null,email:null,organization_id:null,organization_name:null,salt:null,update_date:null,create_by:null,update_by:null,create_time:null,update_time:null,stateflag:null})
+      this.usersBack1=this.usersBack;
     });
   };
 
@@ -106,7 +128,6 @@ export class UserRoleStore {
     runInAction(() => {
       this.targetKeys = json.map(r => r.id);
     });
-    console.log("loadCurrentUserRole中targetKeys的值为:",this.targetKeys.filter(d=>d));
   };
 
 
@@ -125,6 +146,7 @@ export class UserRoleStore {
   @action
   handleChange = (nextTargetKeys, direction, moveKeys) => {
     console.log('handleChange');
+    console.log(nextTargetKeys);
     this.targetKeys = nextTargetKeys;
 
   };
@@ -189,11 +211,31 @@ export class UserRoleStore {
         message: '后台错误，请联系管理员',
       })
     }
-  })
+  });
 
   @action
   afterClose=()=>{
     this.selectedKeys=[];
-  }
+  };
+
+  @action
+  setSelectUser=(selectUser)=>{
+    this.selectUser=selectUser
+  };
+
+  @action
+  onSearch=(value)=>{
+    let regExp = new RegExp('.*'+value+'.*','i');
+    this.usersBack=this.usersBack.filter(a=>regExp.test(a.name))
+  };
+
+  @action
+  queryUser=async()=>{
+    let json=await  post(`${baseUrl}/user/queryUser`,{selectUser:this.selectUser});
+    runInAction(()=>{
+      this.users=json;
+      this.usersBack=this.usersBack1;
+    })
+  };
 
 }
