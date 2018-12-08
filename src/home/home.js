@@ -188,6 +188,7 @@ class Home extends Component {
                     }
                 </div>
                 <div className="home-content">
+                  <div className="float-box">
                     <div className="block left" style={blockASize}>
                         <div className="title">云管理平台概况</div>
                         <div className="pies-box">
@@ -219,20 +220,21 @@ class Home extends Component {
                             style={barSize}
                         />
                     </div>
-                    <div className="block left bottom" style={blockCSize}>
-                        <div className="title">超图地图服务</div>
-                        {smapslicePics ?
-                            <Gallery size={gallerySize} pictures={smapslicePics.filter(d => d)} duration={4000}/>
-                            : <div>获取信息失败!!</div>
-                        }
-                    </div>
-                    <div className="block left bottom" style={blockCSize}>
-                        <div className="title">中地地图服务</div>
-                        {slicePics ?
-                            <Gallery size={gallerySize} pictures={slicePics.filter(d => d)} duration={4000}/>
-                            : <div>获取信息失败!!</div>
-                        }
-                    </div>
+                  </div>
+                  <div className="block bottom" style={blockCSize}>
+                      <div className="title">超图地图服务</div>
+                      {smapslicePics ?
+                          <Gallery size={gallerySize} pictures={smapslicePics.filter(d => d)} duration={4000}/>
+                          : <div>获取信息失败!!</div>
+                      }
+                  </div>
+                  <div className="block bottom" style={blockCSize}>
+                      <div className="title">中地地图服务</div>
+                      {slicePics ?
+                          <Gallery size={gallerySize} pictures={slicePics.filter(d => d)} duration={4000}/>
+                          : <div>获取信息失败!!</div>
+                      }
+                  </div>
                 </div>
             </div>
         );
