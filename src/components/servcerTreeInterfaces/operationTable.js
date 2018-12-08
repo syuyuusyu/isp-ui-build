@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { notification} from 'antd';
 import '../../style.css';
 
-const CommonLayOut=require('../../components')['CommonLayOut'];
 
 
 
