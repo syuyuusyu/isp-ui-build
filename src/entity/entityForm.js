@@ -13,6 +13,7 @@ const Option = Select.Option;
 class EntityForm extends React.Component {
 
     state={
+        queryType:'1',
         parentEntityIdSeleted:false,
         parentEntityIdSeletedMsg:'',
         pidFieldColumns:(function(_this){
@@ -65,10 +66,17 @@ class EntityForm extends React.Component {
         const store = this.props.rootStore.entityStore;
         this.props.form.validateFields(async (err, values) => {
             if (err) return;
+            let queryField;
+            if(values.queryType=='1'){
+                queryField=values.queryField.length>0?values.queryField.join(','):null
+            }else{
+                queryField=values.queryField
+            }
+            delete values.queryType;
             let json = await post(`${baseUrl}/entity/saveConfig/entity/id`, {
                 ...values,
                 id: store.currentEntity ? store.currentEntity.id : null,
-                queryField:values.queryField.length>0?values.queryField.join(','):null
+                queryField:queryField
             });
             if (json.success) {
                 notification.info({
@@ -89,25 +97,47 @@ class EntityForm extends React.Component {
         console.log(value);
     };
 
+    queryTypeChange=(value)=>{
+        console.log('queryTypeChange');
+        this.setState({queryType:value});
+        let queryField=value=='0'?'':[];
+        this.props.form.setFieldsValue(
+            {
+                queryField:queryField
+            }
+        );
+    };
+
     componentDidMount() {
         const store = this.props.rootStore.entityStore;
         store.loadFilterTableNames();
         if(store.isFormUpdate){
             store.loadColumns();
         }
-
+        let queryField;
+        let queryType;
         if (store.currentEntity) {
+            if(/^((?:\/?\w+)+)\/(\w+)$/.test(store.currentEntity.queryField)){
+                queryField=store.currentEntity.queryField;
+                this.setState({queryType:'0'});
+                queryType='0';
+            }else{
+                queryField=store.currentEntity.queryField?store.currentEntity.queryField.split(',').map(c=>parseInt(c)):[];
+                queryType='1';
+            }
             this.props.form.setFieldsValue(
                 {
                     ...store.currentEntity,
-                    queryField:store.currentEntity.queryField?store.currentEntity.queryField.split(',').map(c=>parseInt(c)):[]
+                    queryField:queryField,
+                    queryType:queryType
                 }
 
             );
         }else{
             this.props.form.setFieldsValue(
                 {
-                    queryField:[]
+                    queryField:this.state.queryType=='1'?[]:'',
+                    queryType:this.state.queryType
                 }
 
             );
@@ -181,20 +211,47 @@ class EntityForm extends React.Component {
                                 <Input placeholder="保存当前实体后完成字段配置才能进行该项配置" disabled={true}/>
                         )}
                     </FormItem>
-                    <FormItem label="查询字段">
-                        {getFieldDecorator('queryField')(
-                            store.isFormUpdate?
-                                <Select mode="multiple" onChange={this.queryFieldChange}>
-                                    {
-                                        store.currentColumns.filter(d => d).map(o =>
-                                            <Option key={o.id} value={o.id}>{o.text?o.columnName+'-'+o.text:o.columnName}</Option>)
-                                    }
-                                </Select>
-                                :
-                                <Input placeholder="保存当前实体后完成字段配置才能进行该项配置" disabled={true}/>
+                    <FormItem label="查询方式">
+                        {getFieldDecorator('queryType',{
 
+                        })(
+                            <Select  onSelect={this.queryTypeChange}>
+                                <Option value={'1'}>按字段查询</Option>
+                                <Option value={'0'}>自定义查询表单</Option>
+                            </Select>
                         )}
+
                     </FormItem>
+                    {
+                        this.state.queryType=='1'?
+                            <FormItem label="查询字段">
+                                {getFieldDecorator('queryField')(
+                                    store.isFormUpdate?
+                                        <Select mode="multiple" onChange={this.queryFieldChange}>
+                                            {
+                                                store.currentColumns.filter(d => d).map(o =>
+                                                    <Option key={o.id} value={o.id}>{o.text?o.columnName+'-'+o.text:o.columnName}</Option>)
+                                            }
+                                        </Select>
+                                        :
+                                        <Input placeholder="保存当前实体后完成字段配置才能进行该项配置" disabled={true}/>
+
+                                )}
+                            </FormItem>
+                            :
+                            <FormItem label="自定义表单路径">
+                                {getFieldDecorator('queryField')(
+                                    store.isFormUpdate?
+                                        <Input placeholder="输入自定义表单文件代码路径" />
+                                        :
+                                        <Input placeholder="保存当前实体后完成字段配置才能进行该项配置" disabled={true}/>
+
+                                )}
+                            </FormItem>
+
+
+                    }
+
                     <FormItem label="ID字段">
                         {getFieldDecorator('idField',{
                             rules: [{required: true, message: '不能为空',}],

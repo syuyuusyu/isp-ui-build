@@ -45,7 +45,6 @@ class CreateForm extends React.Component {
         this.columns = store.allColumns.filter(c => c.entityId === store.currentEntity.id && c.hidden !== '1');
         this.textColumns = this.columns.filter(c => c.columnType === 'text');
         this.setCandidate();
-
     }
 
     setCandidate=()=>{

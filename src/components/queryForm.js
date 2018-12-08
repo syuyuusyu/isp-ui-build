@@ -167,7 +167,6 @@ class QueryForm extends React.Component {
                         return <Col span={8} key={index} style={{paddingLeft: '5px'}}>
                             {
                                 row.map(col=>{
-                                    console.log(col);
                                     return this.createItem(col);
                                 })
                             }
@@ -218,7 +217,6 @@ class QueryForm extends React.Component {
                                             );
                                         }
                                         return (
-
                                                 <Button icon={m.icon} onClick={this.showOperationForm(record, m.id)}
                                                         >{m.name}</Button>
 

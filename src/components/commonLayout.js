@@ -32,9 +32,11 @@ class CommonLayout extends Component {
         console.log('componentWillMount',  this.props.match.path);
 
         const store = this.props.rootStore.commonStore;
-        let entityId=this.props.match.path.replace(/\/\w+\/(\d+)\/?(?:\S)*/, (w, p1) => {
-            return p1;
-        });
+        let entityId=this.props.entityId?
+            this.props.entityId:
+            this.props.match.path.replace(/\/\w+\/(\d+)\/?(?:\S)*/, (w, p1) => {
+                return p1;
+            });
         store.setEntityId(parseInt(entityId,10));
 
         try{
@@ -59,11 +61,30 @@ class CommonLayout extends Component {
 
     }
 
+
+    createQyeryForm = () => {
+        const store = this.props.rootStore.commonStore;
+        if (!store.currentEntity.queryField || /^\d/.test(store.currentEntity.queryField)) {
+            return <EnhancedQueryFrom wrappedComponentRef={(form) => {store.refQueryForm(form ? form.wrappedInstance : null)}}/>
+        } else {
+            const op = {};
+            if (store.currentEntity.queryField) {
+                console.log(store.currentEntity.queryField);
+                store.currentEntity.queryField.replace(/^((?:\/?\w+)+)\/(\w+)$/, (w, p1, p2) => {
+                    op.pagePath = p1, op.pageClass = p2;
+                });
+            }
+            console.log(op.pagePath,op.pageClass);
+            return React.createElement(require('../'+op.pagePath)[op.pageClass]);
+        }
+    };
+
     render() {
         const store = this.props.rootStore.commonStore;
         if(!store.shouldRender){
             return <div></div>
         }
+
         return (
             <Layout style={{height: "100%"}}>
                 {
@@ -77,8 +98,10 @@ class CommonLayout extends Component {
                 <Content style={{height: "100%"}}>
                     <Layout style={{height: "100%"}}>
                         <Content style={{height: "100%"}}>
-                            <EnhancedQueryFrom  commonStore={store} wrappedComponentRef={(form)=>{store.refQueryForm(form?form.wrappedInstance:null)}}/>
-                            <CommonTable style={{height: "100%"}} commonStore={store}/>
+                            {
+                                this.createQyeryForm()
+                            }
+                            <CommonTable style={{height: "100%"}} commonStore={store} canSelectRows={this.props.canSelectRows}/>
                         </Content>
                     </Layout>
                 </Content>

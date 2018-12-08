@@ -98,6 +98,14 @@ export class CommonStore {
     //--------------------
 
     @observable
+    selectedRowKeys=[];
+
+    @action
+    onSelectRows=(selectedRowKeys)=>{
+        this.selectedRowKeys=selectedRowKeys;
+    };
+
+    @observable
     operationVisible = {};
 
     currentTableRow = {};
@@ -177,6 +185,7 @@ export class CommonStore {
             this.columns.push({
                 title: '操作',
                 width: 200,
+                align:'center',
                 render: (text, record) => {
                     return (
                         <span>
