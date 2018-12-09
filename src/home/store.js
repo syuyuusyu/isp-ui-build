@@ -1,4 +1,4 @@
-import {observable, action, runInAction, configure} from 'mobx';
+import {observable, action, runInAction, configure, computed} from 'mobx';
 import {baseUrl, get, post} from '../util';
 import {notification} from 'antd';
 
@@ -26,11 +26,6 @@ export class HomeStore {
         {type: 'CPU', unit: '个', values: [0, 0]},
     ];
 
-    @observable
-    slicePics = null;
-
-    @observable
-    smapslicePics=null;
 
     @action
     loadCMData = async (isAdmin) => {
@@ -75,35 +70,57 @@ export class HomeStore {
         }
     };
 
+
+    slicePics = null;
+
+    smapslicePics = null;
+
+    @observable
+    actityTable = 0;
+
+    setActityTable = (v) => action(() => {
+        this.actityTable = v
+    });
+
+
+
     @action
     loadSlicePics = async () => {
         //替换成中地发布的接口
         //let json = await get(`${baseUrl}/screen/picture`);
         let json = await post(`${baseUrl}/invoke/zdServiceInfo_api`);
         if (json) {
-            runInAction(() => {
+            runInAction(()=>{
                 this.slicePics = json.list
-            })
-        }else{
-            runInAction(() => {
+            });
+
+        } else {
+            runInAction(()=>{
                 this.slicePics = null;
-            })
+            });
+
+
         }
+        this.setActityTable(1);
     };
+
 
     @action
     loadSmapSlicePics = async () => {
         //超图地图服务
         let json = await post(`${baseUrl}/invoke/services_rjson_api`);
         if (json) {
-            runInAction(() => {
+            runInAction(()=>{
                 this.smapslicePics = json.list
-            })
-        }else{
-            runInAction(() => {
+            });
+
+        } else {
+            runInAction(()=>{
                 this.smapslicePics = null;
-            })
+            });
+
         }
+        this.setActityTable(0);
     };
 
 

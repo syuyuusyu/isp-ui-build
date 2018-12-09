@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {inject, observer} from 'mobx-react';
-import {Popover,notification} from 'antd';
+import {Popover, notification} from 'antd';
 import ReactEchartsCore from 'echarts-for-react/lib/core';
 import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/pie';
@@ -31,16 +31,16 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
     let linksLess = [];
     let linksMore = [];
     if (isAdmin) {
-        linksLess.push(
-            <div key={100} className={`link qilinqu`} data-href={'http://10.10.50.37:8088'} onClick={eClick}>
-                <span className="text">北衙矿车计量管理系统</span>
-            </div>
-        );
-        linksLess.push(
-            <div key={101} className={`link qilinqu`} data-href={`${baseUrl}/map`} onClick={eClick}>
-                <span className="text">地图服务示范应用</span>
-            </div>
-        );
+        // linksLess.push(
+        //     <div key={100} className={`link qilinqu`} data-href={'http://10.10.50.37:8088'} onClick={eClick}>
+        //         <span className="text">北衙矿车计量管理系统</span>
+        //     </div>
+        // );
+        // linksLess.push(
+        //     <div key={101} className={`link qilinqu`} data-href={`${baseUrl}/map`} onClick={eClick}>
+        //         <span className="text">地图服务示范应用</span>
+        //     </div>
+        // );
         linksLess.push(
             <div key={102} className={`link qilinqu`} data-href=
                 {isGov ?
@@ -108,7 +108,7 @@ class Home extends Component {
         /* A块尺寸 */
         this.blockASize = {
             width: !hasScrollBar ? Math.floor((winWidth - marginOut * 3) / 2) : Math.floor((winWidth - marginOut * 3 - scrollBarWidth) / 2),
-            height: blockHeight
+            height: blockHeight-16
         };
         /* B块尺寸 */
         this.blockBSize = this.blockASize;
@@ -165,6 +165,24 @@ class Home extends Component {
         this.props.rootStore.treeStore.loadCurrentRoleSys.defer()(5000);
     };
 
+
+
+    createGallery=()=>{
+        const {slicePics, smapslicePics,actityTable} = this.props.rootStore.homeStore;
+        if ((actityTable === 0 && !smapslicePics) || (actityTable === 1 && !slicePics)){
+            return <div>获取信息失败!!</div>
+        }
+        if(actityTable === 0){
+            return  <Gallery key={'supermap'} size={this.gallerySize} pictures={smapslicePics.filter(d=>d)} duration={4000}/>
+        }else{
+            return  <Gallery key={'zd'} size={this.gallerySize} pictures={slicePics.filter(d=>d)} duration={4000}/>
+        }
+
+
+    };
+
+
+
     render() {
         const {
             isAdmin, mainHeight, linksHeight, blockASize, blockBSize, blockCSize, pieSize, barSize, gallerySize
@@ -173,7 +191,7 @@ class Home extends Component {
         const {currentRoleSys} = this.props.rootStore.treeStore;
         const {linkNum, linksLess, linksMore} = getLinks(isAdmin, currentRoleSys, this.linkClick.bind(this));
         /* 可视化数据 */
-        const {dataCM, dataBD, slicePics,smapslicePics} = this.props.rootStore.homeStore;
+        const {dataCM, dataBD, slicePics, smapslicePics,actityTable,setActityTable,pics} = this.props.rootStore.homeStore;
         return (
             <div id="homePage" style={{height: mainHeight}}>
                 <div id="linksBox" style={{height: linksHeight}}>
@@ -188,53 +206,73 @@ class Home extends Component {
                     }
                 </div>
                 <div className="home-content">
-                  <div className="float-box">
-                    <div className="block left" style={blockASize}>
-                        <div className="title">云管理平台概况</div>
-                        <div className="pies-box">
-                            {dataCM[0].values ? dataCM.map((item, index) => (
-                                <div className="pie-container" key={index}>
-                                    <ReactEchartsCore
-                                        echarts={echarts}
-                                        option={getPieOption({
-                                            total: item.values[0],
-                                            used: item.values[1]
-                                        }, [colorIndex[index], colorGray])}
-                                        style={pieSize}
-                                    />
-                                    <div className="pie-info">
-                                        <div className="name">{item.type}</div>
-                                        <div
-                                            className="num">{item.values[1]}{item.unit}&nbsp;(共{item.values[0]}{item.unit})
+                    <div className="float-box">
+                        <div className="block left" style={blockASize}>
+                            <div className="title">云管理平台概况</div>
+                            <div className="pies-box">
+                                {dataCM[0].values ? dataCM.map((item, index) => (
+                                    <div className="pie-container" key={index}>
+                                        <ReactEchartsCore
+                                            echarts={echarts}
+                                            option={getPieOption({
+                                                total: item.values[0],
+                                                used: item.values[1]
+                                            }, [colorIndex[index], colorGray])}
+                                            style={pieSize}
+                                        />
+                                        <div className="pie-info">
+                                            <div className="name">{item.type}</div>
+                                            <div
+                                                className="num">{item.values[1]}{item.unit}&nbsp;(共{item.values[0]}{item.unit})
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            )) : ''}
+                                )) : ''}
+                            </div>
+                        </div>
+                        <div className="block right" style={blockBSize}>
+                            <div className="title">大数据平台概况</div>
+                            <ReactEchartsCore
+                                echarts={echarts}
+                                option={getSingleBarOption(dataBD, colorIndex)}
+                                style={barSize}
+                            />
                         </div>
                     </div>
-                    <div className="block right" style={blockBSize}>
-                        <div className="title">大数据平台概况</div>
-                        <ReactEchartsCore
-                            echarts={echarts}
-                            option={getSingleBarOption(dataBD, colorIndex)}
-                            style={barSize}
-                        />
+
+                    <div className="block bottom" style={{...blockCSize,paddingTop:0}}>
+                        <div className="block tab-box" style={blockASize}>
+                            <div className="tab-title" style={{height:'30px',lineHeight:'30px',marginBottom:'10px',marginTop:'-10px'}}>
+                                <div className={`title${actityTable === 0 ? ' active' : ''}`}
+                                     onClick={setActityTable(0)}>
+                                    超图地图服务
+                                </div>
+                                <div className={`title${actityTable === 1 ? ' active' : ''}`}
+                                     onClick={setActityTable(1)}>中地地图服务
+                                </div>
+                            </div>
+                            <div className="tab-content">
+                                {this.createGallery()}
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div className="block bottom" style={blockCSize}>
-                      <div className="title">超图地图服务</div>
-                      {smapslicePics ?
-                          <Gallery size={gallerySize} pictures={smapslicePics.filter(d => d)} duration={4000}/>
-                          : <div>获取信息失败!!</div>
-                      }
-                  </div>
-                  <div className="block bottom" style={blockCSize}>
-                      <div className="title">中地地图服务</div>
-                      {slicePics ?
-                          <Gallery size={gallerySize} pictures={slicePics.filter(d => d)} duration={4000}/>
-                          : <div>获取信息失败!!</div>
-                      }
-                  </div>
+
+                    {/*<div className="block bottom" style={blockCSize}>*/}
+                    {/*<div className="title">超图地图服务</div>*/}
+                    {/*{smapslicePics ?*/}
+                    {/*<Gallery size={gallerySize} pictures={smapslicePics.filter(d => d)} duration={4000}/>*/}
+                    {/*: <div>获取信息失败!!</div>*/}
+                    {/*}*/}
+                    {/*</div>*/}
+                    {/*<div className="block bottom" style={blockCSize}>*/}
+                    {/*<div className="title">中地地图服务</div>*/}
+                    {/*{slicePics ?*/}
+                    {/*<Gallery size={gallerySize} pictures={slicePics.filter(d => d)} duration={4000}/>*/}
+                    {/*: <div>获取信息失败!!</div>*/}
+                    {/*}*/}
+                    {/*</div>*/}
+
+
                 </div>
             </div>
         );

@@ -82,14 +82,10 @@ class SummaryCM extends Component{
 
         <div className="block tab-box" style={blockASize}>
           <div className="tab-title">
-            <div
-              className={`title${currentActiveTable === 0 ? ' active' : ''}`}
-              onClick={() => this.props.rootStore.summaryStoreCM.toggleTable(0)}
-            >个人资源</div>
-            <div
-              className={`title${currentActiveTable === 1 ? ' active' : ''}`}
-              onClick={() => this.props.rootStore.summaryStoreCM.toggleTable(1)}
-            >云区总资源</div>
+            <div className={`title${currentActiveTable === 0 ? ' active' : ''}`}
+                 onClick={() => this.props.rootStore.summaryStoreCM.toggleTable(0)}>个人资源</div>
+            <div className={`title${currentActiveTable === 1 ? ' active' : ''}`}
+              onClick={() => this.props.rootStore.summaryStoreCM.toggleTable(1)}>云区总资源</div>
           </div>
           <div className="tab-content">
             {sourceDataShow.map((item, index) => {
