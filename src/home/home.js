@@ -206,7 +206,7 @@ class Home extends Component {
                     }
                 </div>
                 <div className="home-content">
-                    <div className="float-box">
+                    <div className="float-box" style={{ width: blockCSize.width }}>
                         <div className="block left" style={blockASize}>
                             <div className="title">云管理平台概况</div>
                             <div className="pies-box">
