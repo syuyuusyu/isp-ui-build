@@ -184,7 +184,16 @@ export class CommonStore {
             });
             this.columns.push({
                 title: '操作',
-                width: 200,
+                width: (()=>{
+                    let width=0;
+                    if(this.currentEntity.editAble == '1') width=140;
+                    this.operations.filter(d => d).filter(d=>d.location=='2').forEach(m=>{
+                        width+=30;
+                        if(m.icon) width+=20;
+                        width+= 10*m.name.length;
+                    });
+                    return width;
+                })(),
                 align:'center',
                 render: (text, record) => {
                     return (

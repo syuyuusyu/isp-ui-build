@@ -110,7 +110,7 @@ class CommonTable extends Component{
             return (
                 <Modal visible={store.operationVisible[op.id]}
                        key={op.id}
-                       width={400}
+                       width={900}
                        title={op.name}
                        footer={null}
                        onCancel={store.toggleOperationVisible(op.id)}
