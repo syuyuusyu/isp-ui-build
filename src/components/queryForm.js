@@ -43,12 +43,24 @@ class QueryForm extends React.Component {
         this.queryColumn.forEach(async col=>{
             this.state[col.columnName]=[];
             this.state[`filter${col.columnName}`]=[];
-            let json=await post(`${baseUrl}/entity/queryCandidate/${col.id}`,{...store.treeSelectedObj,...store.defaultQueryObj});
+            let candidateObj={};
+            for(let key in this.state){
+                if(key.startsWith('candidate')){
+                    let newk=key.replace(/^candidate(\w+)$/,(w,p)=>p);
+                    candidateObj[newk]=this.state[key];
+                }
+            }
+            let json=await post(`${baseUrl}/entity/queryCandidate/${col.id}`,{...candidateObj,...store.treeSelectedObj,...store.defaultQueryObj});
             json.unshift({value:null,text:null});
             this.setState({[col.columnName]:json});
             this.setState({[`filter${col.columnName}`]:json});
         });
     };
+
+    onSelect=(colunmName)=>((value)=>{
+        this.setState({[`candidate${colunmName}`]:value});
+        this.setCandidate();
+    });
 
 
 
@@ -95,7 +107,7 @@ class QueryForm extends React.Component {
 
                         }],
                     })(
-                        <Select>
+                        <Select onSelect={this.onSelect(col.columnName)}>
                             <Option key={null} value={''} style={{color: 'white'}}>&nbsp;</Option>
                             {
                                 store.allDictionary
@@ -135,6 +147,7 @@ class QueryForm extends React.Component {
                 {getFieldDecorator(col.columnName, {})(
                     <AutoComplete
                         onSearch={this.handleSearch(col.columnName)}
+                        onSelect={this.onSelect(col.columnName)}
                         dataSource={this.state[`filter${col.columnName}`].map(_ => {
                             if (_.value)
                                 return <Option key={_.value} value={_.value + ''}>{_.text}</Option>

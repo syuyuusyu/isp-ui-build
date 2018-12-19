@@ -290,7 +290,12 @@ class EntityForm extends React.Component {
                             </Select>
                         )}
                     </FormItem>
-
+                    <FormItem label="表单长度">
+                        {getFieldDecorator('tableLength',{
+                        })(
+                            <InputNumber style={{width:'100%'}}/>
+                        )}
+                    </FormItem>
 
                     <Row>
                         <Col span={24} style={{textAlign: 'right'}}>

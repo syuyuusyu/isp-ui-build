@@ -186,7 +186,7 @@ export class CommonStore {
                 title: '操作',
                 width: (()=>{
                     let width=0;
-                    if(this.currentEntity.editAble == '1') width=140;
+                    if(this.currentEntity.editAble == '1') width=150;
                     this.operations.filter(d => d).filter(d=>d.location=='2').forEach(m=>{
                         width+=30;
                         if(m.icon) width+=20;
@@ -247,7 +247,7 @@ export class CommonStore {
     };
 
     execFun = (record, fn) => (() => {
-        let fun = eval('(' + fn + ')').callInstance({notification, baseUrl, get, post});
+        let fun = eval('(' + fn + ')').callInstance({notification, baseUrl, get, post,store:this});
         fun(record);
     });
 

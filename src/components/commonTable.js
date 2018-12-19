@@ -126,6 +126,7 @@ class CommonTable extends Component{
 
     render(){
         const store=this.props.rootStore.commonStore;
+        const xscroll=store.currentEntity.tableLength?store.currentEntity.tableLength:store.hasParent?1080:1340;
         return (
             <div style={{height: "100%"}}>
                 <Modal visible={store.createFormVisible}
@@ -147,7 +148,7 @@ class CommonTable extends Component{
                        dataSource={store.tableRows.filter(d => d)}
                        rowSelection={this.props.canSelectRows?{selectedRowKeys:store.selectedRowKeys,onChange:store.onSelectRows}:null}
                        size="small"
-                       scroll={{y: 800,x:store.hasParent?1080:1340}}
+                       scroll={{y: 800,x:xscroll}}
                        pagination={store.pagination}
                        loading={store.loading}
                        expandedRowRender={store.allColumns.filter(c=>c.entityId===store.currentEntity.id && c.columnType==='text').length>0?
