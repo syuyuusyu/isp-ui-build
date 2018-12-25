@@ -133,6 +133,8 @@ class Home extends Component {
             height: this.blockCSize.height - blockTitleHeight - marginInner * 2
         };
 
+        //需要引入两个包 "net": "^1.0.2","stompjs": "^2.3.3"
+        //import Stomp  from 'stompjs';
         // if(this.isAdmin){
         //     //let ws = new WebSocket('ws://127.0.0.1:15674/ws');
         //     let ws = new WebSocket('ws://10.10.50.10:15674/ws');
@@ -140,8 +142,9 @@ class Home extends Component {
         //
         //     var on_connect = function() {
         //         var sub = client.subscribe('loginMessage', function(message) {
-        //             console.log(message);
+        //             //这里是收到消息的回调函数
         //             let body=JSON.parse(message.body);
+        //             //body包含两个信息,type:'1 登录':'0 退出',name:用户名
         //             let msg=body.type==1?'登录':'退出';
         //             notification.info({
         //                 message:`${body.name}${msg}`

@@ -15,6 +15,7 @@ class RelevantTree extends React.Component{
 
     componentDidMount(){
         const store=this.props.rootStore.commonStore;
+        store.relevantEntity=this.props.relevantEntity;
         this.nameField=store.relevantEntity.nameField;
         this.idField=store.relevantEntity.idField;
         this.initRoot();

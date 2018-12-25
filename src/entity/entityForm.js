@@ -68,15 +68,17 @@ class EntityForm extends React.Component {
             if (err) return;
             let queryField;
             if(values.queryType=='1'){
-                queryField=values.queryField.length>0?values.queryField.join(','):null
+                queryField=values.queryField.length>0?values.queryField.join(','):null;
             }else{
-                queryField=values.queryField
+                queryField=values.queryField;
             }
+            let orderField=values.orderField.length>0?values.orderField.join(','):null;
             delete values.queryType;
             let json = await post(`${baseUrl}/entity/saveConfig/entity/id`, {
                 ...values,
                 id: store.currentEntity ? store.currentEntity.id : null,
-                queryField:queryField
+                queryField:queryField,
+                orderField:orderField
             });
             if (json.success) {
                 notification.info({
@@ -296,7 +298,20 @@ class EntityForm extends React.Component {
                             <InputNumber style={{width:'100%'}}/>
                         )}
                     </FormItem>
+                    <FormItem label="排序字段">
+                        {getFieldDecorator('orderField')(
+                            store.isFormUpdate?
+                                <Select mode="multiple" >
+                                    {
+                                        store.currentColumns.filter(d => d).map(o =>
+                                            <Option key={o.id} value={o.columnName}>{o.text?o.columnName+'-'+o.text:o.columnName}</Option>)
+                                    }
+                                </Select>
+                                :
+                                <Input placeholder="保存当前实体后完成字段配置才能进行该项配置" disabled={true}/>
 
+                        )}
+                    </FormItem>
                     <Row>
                         <Col span={24} style={{textAlign: 'right'}}>
                             <Button icon="save" onClick={this.save}>保存</Button>

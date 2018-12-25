@@ -347,7 +347,6 @@ export class CommonStore {
 
     @action
     onLoadTreeData = async (treeNode) => {
-        console.log('onLoadTreeData');
         if(!this.currentNode){
            this.currentNode=treeNode;
         }

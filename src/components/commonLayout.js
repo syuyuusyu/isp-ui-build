@@ -79,6 +79,16 @@ class CommonLayout extends Component {
         }
     };
 
+    state = {
+        collapsed: false,
+    };
+
+    toggle = () => {
+        this.setState({
+            collapsed: !this.state.collapsed,
+        });
+    }
+
     render() {
         const store = this.props.rootStore.commonStore;
         if(!store.shouldRender){
@@ -89,19 +99,27 @@ class CommonLayout extends Component {
             <Layout style={{height: "100%"}}>
                 {
                     store.hasParent ?
-                        <Sider width={300}  style={{ background: '#fff',overflowY: 'auto', height: "100%" }}>
+                        <Sider width={300}
+                               style={{ background: '#fff',overflowY: 'auto', height: "100%" }}
+                               trigger={null}
+                               collapsible
+                               collapsed={this.state.collapsed}
+                        >
                             <CommonTree commonStore={store}/>
                         </Sider>
                         :
                         ''
                 }
-                <Content style={{height: "100%"}}>
-                    <Layout style={{height: "100%"}}>
-                        <Content style={{height: "100%"}}>
+                <Content >
+                    <Layout>
+                        <Header style={{ background: '#fff', padding: 5,height:'auto'}}>
                             {
                                 this.createQyeryForm()
                             }
-                            <CommonTable style={{height: "100%"}} commonStore={store} canSelectRows={this.props.canSelectRows}/>
+                        </Header>
+                        <Content >
+
+                            <CommonTable  commonStore={store} canSelectRows={this.props.canSelectRows}/>
                         </Content>
                     </Layout>
                 </Content>

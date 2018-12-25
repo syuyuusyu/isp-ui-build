@@ -74,7 +74,7 @@ class CommonTable extends Component{
                 relevantEntity=store.allEntitys.find(e=>e.tableName===monyTomony.firstTable);
             }
             if(relevantEntity){
-                store.relevantEntity=relevantEntity;
+                //store.relevantEntity=relevantEntity;
                 if(!relevantEntity.parentEntityId){
                     return (
                         <Modal visible={store.operationVisible[op.id]}
@@ -86,10 +86,10 @@ class CommonTable extends Component{
                                maskClosable={false}
                                destroyOnClose={true}
                         >
-                            <CommonTransfer monyTomony={monyTomony} operationId={op.id}/>
+                            <CommonTransfer monyTomony={monyTomony} operationId={op.id} relevantEntity={relevantEntity}/>
                         </Modal>
                     );
-                }else if(store.relevantEntity.id===relevantEntity.parentEntityId){
+                }else if(relevantEntity.id===relevantEntity.parentEntityId){
                     return (
                         <Modal visible={store.operationVisible[op.id]}
                                key={op.id}
@@ -99,8 +99,9 @@ class CommonTable extends Component{
                                onCancel={store.toggleOperationVisible(op.id)}
                                maskClosable={false}
                                destroyOnClose={true}
+
                         >
-                            <RelevantTree monyTomony={monyTomony} operationId={op.id}/>
+                            <RelevantTree monyTomony={monyTomony} operationId={op.id} relevantEntity={relevantEntity}/>
                         </Modal>
                     );
                 }

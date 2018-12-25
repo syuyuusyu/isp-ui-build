@@ -14,6 +14,8 @@ class CommonTransfer extends React.Component{
     };
 
     componentDidMount(){
+        const store=this.props.rootStore.commonStore;
+        store.relevantEntity=this.props.relevantEntity;
         this.load();
     }
 
@@ -71,6 +73,9 @@ class CommonTransfer extends React.Component{
 
     render(){
         const store=this.props.rootStore.commonStore;
+        if(!store.relevantEntity){
+            return <div></div>
+        }
         return (
             <div>
                 <Transfer
