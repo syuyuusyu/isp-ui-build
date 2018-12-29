@@ -73,8 +73,35 @@ class CommonTransfer extends React.Component{
 
     render(){
         const store=this.props.rootStore.commonStore;
+
         if(!store.relevantEntity){
             return <div></div>
+        }
+        //TODO 死代码,憨的一逼
+        if(store.relevantEntity.id==1000){
+            return (
+                <div>
+                    <Transfer
+                        dataSource={this.state.targetRecords.map(d=>({key:d[store.relevantEntity.idField],title:d[store.relevantEntity.nameField],name:d['user_name']}))}
+                        showSearch
+                        listStyle={{width: 400, height: 310,}}
+                        titles={[`所有${store.relevantEntity.entityName}`, `${store.currentEntity.entityName}关联${store.relevantEntity.entityName}`]}
+                        targetKeys={this.state.targetKeys}
+                        selectedKeys={this.state.selectedKeys}
+                        onChange={this.handleChange}
+                        onSelectChange={this.handleSelectChange}
+                        onScroll={this.handleScroll}
+                        render={item =>`${item.title} -> ${item.name}`}
+                    />
+                    <Row>
+                        <Col span={24} style={{ textAlign: 'right' }}>
+                            <Button icon="save" onClick={this.save}>保存</Button>
+                            <Button icon="reload" onClick={this.handleReset}>重置</Button>
+
+                        </Col>
+                    </Row>
+                </div>
+            );
         }
         return (
             <div>
@@ -88,7 +115,7 @@ class CommonTransfer extends React.Component{
                     onChange={this.handleChange}
                     onSelectChange={this.handleSelectChange}
                     onScroll={this.handleScroll}
-                    render={item => `${item.title}`}
+                    render={item =>`${item.title}`}
                 />
                 <Row>
                     <Col span={24} style={{ textAlign: 'right' }}>

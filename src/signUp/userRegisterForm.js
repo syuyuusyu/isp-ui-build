@@ -131,7 +131,7 @@ class UserRegisterForm extends Component {
       if(store.orgCheckedKeys.length===0){
         notification.error({
           message:'请选择所属机构'
-        })
+        });
         return
       }
 
@@ -176,6 +176,29 @@ class UserRegisterForm extends Component {
       labelCol: { span: 7 },
       wrapperCol: { span: 14},
     };
+      const options = [{
+          value: 'zhejiang',
+          label: 'Zhejiang',
+          children: [{
+              value: 'hangzhou',
+              label: 'Hangzhou',
+              children: [{
+                  value: 'xihu',
+                  label: 'West Lake',
+              }],
+          }],
+      }, {
+          value: 'jiangsu',
+          label: 'Jiangsu',
+          children: [{
+              value: 'nanjing',
+              label: 'Nanjing',
+              children: [{
+                  value: 'zhonghuamen',
+                  label: 'Zhong Hua Men',
+              }],
+          }],
+      }];
     const store=this.props.rootStore.signUpStore;
     return (
       <div className="sign">
@@ -315,9 +338,9 @@ class UserRegisterForm extends Component {
           </Row>
           <div  className="sign-button02">
             <Button onClick={this.props.rootStore.signUpStore.toggleOrgVisible}>选择所属机构</Button>：
-            <div className="orgName">{this.props.rootStore.signUpStore.newNodeNames.filter(d=>d).map(a=>{
+            <div className="orgName">{this.props.rootStore.signUpStore.newNodeNames.filter(d=>d).map((a,i)=>{
               return(
-                <p key={a}>{a}</p>
+                <p key={i}>{a}</p>
               );
             })}
             </div>

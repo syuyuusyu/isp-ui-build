@@ -41,9 +41,11 @@ class CommonLayout extends Component {
 
         try{
             let obj=JSON.parse(this.props.defaultQueryObj );
+            console.log('defaultQueryObj',obj);
             store.setDefaultQueryObj(obj);
         }catch (e){
             let obj = Object.assign({}, this.props.defaultQueryObj);
+            console.log('defaultQueryObj',obj);
             store.setDefaultQueryObj(obj);
         }
         await store.loadAllEntitys();
@@ -58,6 +60,7 @@ class CommonLayout extends Component {
 
     componentWillUnmount(){
         console.log('componentWillUnmount',  this.props.match.path);
+        this.props.rootStore.commonStore.clean();
 
     }
 

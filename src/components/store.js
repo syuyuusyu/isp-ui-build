@@ -425,5 +425,13 @@ export class CommonStore {
     relevantEntity;
 
 
+    @action
+    clean(){
+        this.queryObj = {};
+        //this.defaultQueryObj = {};
+        this.columns=[];
+        this.allColumns=[];
+        this.shouldRender=false;
+    }
 }
 

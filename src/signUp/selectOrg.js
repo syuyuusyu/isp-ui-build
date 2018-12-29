@@ -8,7 +8,6 @@ const TreeNode = Tree.TreeNode;
 class SelectOrg extends React.Component{
   componentDidMount(){
     this.props.rootStore.signUpStore.initRoot();
-    this.props.rootStore.signUpStore.initOrgCheckedKeys();
   }
 
   /*renderTreeNodes = (data) => {
@@ -47,7 +46,7 @@ class SelectOrg extends React.Component{
         <Tree checkable
               onCheck={store.onCheck}
               checkedKeys={store.orgCheckedKeys.filter(d=>d)}
-              /*checkStrictly={true}*/
+              checkStrictly={true}
               defaultCheckedKeys={store.orgCheckedKeys.filter(d=>d)}
 
         >
