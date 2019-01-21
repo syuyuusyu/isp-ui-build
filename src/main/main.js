@@ -234,10 +234,6 @@ class Main extends Component {
                        maskClosable={false}
                        destroyOnClose={true}
                 >
-                    <div>
-                        欢迎各位使用综合集成平台,由于平台刚刚投入使用,难免存在各种bug,
-                        如果大家在使用中发现各种问题,请把问题截图和对应的说明发送到邮箱syuyuusyu@gmail.com,我们会尽快处理,谢谢大家!
-                    </div>
                 </Modal>
             </div>
         );

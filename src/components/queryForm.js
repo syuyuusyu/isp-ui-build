@@ -59,10 +59,14 @@ class QueryForm extends React.Component {
 
     }
 
-    setCandidate=()=>{
+    setCandidate=(colunmName)=>{
         const store = this.props.rootStore.commonStore;
         this.queryColumn.forEach(async col=>{
+            if(colunmName==col.id){
+                return;
+            }
             if(col.type=='field'){
+                console.log('-------',col,'----------');
                 this.state[col.columnName]=[];
                 if(col.foreignKeyId){
                     let fcol=store.allColumns.find(d=>d.id==col.foreignKeyId);
@@ -76,10 +80,15 @@ class QueryForm extends React.Component {
                 let candidateObj={};
                 for(let key in this.state){
                     if(key.startsWith('candidate')){
-                        let newk=key.replace(/^candidate(\w+)$/,(w,p)=>p);
+                        let newk=key.replace(/^candidate(\S+)$/,(w,p)=>p);
                         candidateObj[newk]=this.state[key];
                     }
                 }
+
+                console.log(this.state);
+                console.log('candidateObj',candidateObj);
+                console.log('treeSelectedObj',store.treeSelectedObj);
+                console.log('defaultQueryObj',store.defaultQueryObj);
                 let json=await post(`${baseUrl}/entity/queryCandidate/${col.id}`,{...candidateObj,...store.treeSelectedObj,...store.defaultQueryObj});
                 json.unshift({value:null,text:null});
                 this.setState({[col.columnName]:json});
@@ -117,8 +126,11 @@ class QueryForm extends React.Component {
     };
 
     onSelect=(colunmName)=>((value)=>{
-        this.setState({[`candidate${colunmName}`]:value});
-        this.setCandidate();
+        this.setState(
+            {[`candidate${colunmName}`]:value},
+            ()=>this.setCandidate(colunmName)
+        );
+
     });
 
 
@@ -171,6 +183,13 @@ class QueryForm extends React.Component {
             });
             store.queryObj={...values,start:0,pageSize:store.pagination.pageSize,page:1};
             store.queryTable();
+            for(let key in this.state){
+                if(key.startsWith('candidate')){
+                    delete this.state[key];
+                }
+            }
+            this.setCandidate();
+
         });
     };
 
@@ -201,6 +220,7 @@ class QueryForm extends React.Component {
                             options={this.state[tarEntity.tableName]}
                             loadData={this.loadData(tarEntity,tarEntity.tableName)}
                             changeOnSelect
+                            placeholder=""
                         />
                     )}
                 </FormItem>
@@ -212,10 +232,10 @@ class QueryForm extends React.Component {
                     {getFieldDecorator(`mm_${tarEntity.id}_${tarEntity.mm.id}`, {})(
                         <AutoComplete
                             onSearch={this.handleSearch(tarEntity.tableName)}
-                            onSelect={this.onSelect(tarEntity.tableName)}
+                            //onSelect={this.onSelect(tarEntity.tableName)}
                             dataSource={this.state[`filter${tarEntity.tableName}`].map(_ => {
                                 if (_.value)
-                                    return <Option key={_.value} value={_.value + ''}>{_.text}</Option>
+                                    return <Option style={{whiteSpace:'normal',wordWrap:'break-word',wordBreak:'break-all'}} key={_.value} value={_.value + ''}>{_.text}</Option>
                                 else
                                     return <Option key={null} value={''} style={{color: 'white'}}>&nbsp;</Option>
                             })}
@@ -231,7 +251,6 @@ class QueryForm extends React.Component {
     createItem=(col)=>{
         const store = this.props.rootStore.commonStore;
         const {getFieldDecorator,} = this.props.form;
-
         if(col.dicGroupId){
             return (
                 <FormItem style={{marginBottom: '5px'}} key={col.id}
@@ -243,7 +262,7 @@ class QueryForm extends React.Component {
 
                         }],
                     })(
-                        <Select onSelect={this.onSelect(col.columnName)}>
+                        <Select onSelect={this.onSelect(col.id)} >
                             <Option key={null} value={''} style={{color: 'white'}}>&nbsp;</Option>
                             {
                                 store.allDictionary
@@ -290,6 +309,7 @@ class QueryForm extends React.Component {
                                 options={this.state[entity.tableName]}
                                 loadData={this.loadData(entity,entity.tableName)}
                                 changeOnSelect
+                                placeholder=""
                             />
                         )}
                     </FormItem>
@@ -303,12 +323,12 @@ class QueryForm extends React.Component {
                 {getFieldDecorator(col.columnName, {})(
                     <AutoComplete
                         onSearch={this.handleSearch(col.columnName)}
-                        onSelect={this.onSelect(col.columnName)}
-                        dataSource={this.state[`filter${col.columnName}`].map(_ => {
+                        onSelect={this.onSelect(col.id)}
+                        dataSource={this.state[`filter${col.columnName}`].map((_,index)=> {
                             if (_.value)
-                                return <Option key={_.value} value={_.value + ''}>{_.text}</Option>
+                                return <Option style={{whiteSpace:'normal',wordWrap:'break-word',wordBreak:'break-all'}} key={index} value={_.value + ''}>{_.text}</Option>
                             else
-                                return <Option key={null} value={''} style={{color: 'white'}}>&nbsp;</Option>
+                                return <Option key={index+Math.random()} value={''} style={{color: 'white'}}>&nbsp;</Option>
                         })}
                     >
                         <Input/>

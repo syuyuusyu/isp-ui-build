@@ -41,11 +41,9 @@ class CommonLayout extends Component {
 
         try{
             let obj=JSON.parse(this.props.defaultQueryObj );
-            console.log('defaultQueryObj',obj);
             store.setDefaultQueryObj(obj);
         }catch (e){
             let obj = Object.assign({}, this.props.defaultQueryObj);
-            console.log('defaultQueryObj',obj);
             store.setDefaultQueryObj(obj);
         }
         await store.loadAllEntitys();
@@ -98,6 +96,7 @@ class CommonLayout extends Component {
             return <div></div>
         }
 
+
         return (
             <Layout style={{height: "100%"}}>
                 {
@@ -113,8 +112,8 @@ class CommonLayout extends Component {
                         :
                         ''
                 }
-                <Content >
-                    <Layout>
+                <Content  style={{height: "100%"}} >
+                    <Layout  style={{height: "100%"}}>
                         <Header style={{ background: '#fff', padding: 5,height:'auto'}}>
                             {
                                 this.createQyeryForm()

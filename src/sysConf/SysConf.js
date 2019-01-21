@@ -83,7 +83,7 @@ class SysConf extends React.Component{
                        dataSource={store.allSystem.filter(d=>d)}
                        rowSelection={null}
                        size="small"
-                       scroll={{ y: 800 }}
+                       scroll={{ y: 800 ,}}
                     //expandedRowRender={this.expandedRowRender}
                     //pagination={this.state.pagination}
                     //loading={this.state.loading}

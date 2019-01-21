@@ -304,7 +304,6 @@ class InvkeGrid extends React.Component{
                        expandedRowRender={this.expandedRowRender}
                     pagination={this.state.pagination}
                        loading={this.state.loading}
-                       onChange={this.handleTableChange}
                 />
             </div>
         );

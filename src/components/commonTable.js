@@ -29,14 +29,19 @@ class CommonTable extends Component{
         this.textColumns=store.allColumns.filter(c=>c.entityId===store.currentEntity.id && c.hidden!=='1')
             .filter(c=>c.columnType==='text');
         this.textColumnsLen=this.textColumns.length;
-        if(this.textColumnsLen===1){
-            this.matrix=[[]];
-        }else if(this.textColumnsLen>1){
-            this.matrix=[[],[]];
-        }
+        this.matrix=[];
         this.textColumns.forEach((col,index)=>{
-            this.matrix[index%(this.textColumnsLen>1?2:1)].push(col);
+            switch (index%2){
+                case 0:
+                    this.matrix.push([col]);
+                    break;
+                case 1:
+                    this.matrix[Math.floor(index/2)].push(col);
+
+            }
         });
+        console.log(this.matrix);
+
     }
 
     componentDidMount(){
@@ -47,17 +52,25 @@ class CommonTable extends Component{
     expandedRowRender=(record)=>(
         <div className="box-code-card" style={{ background: '#ECECEC', padding: '1px' }}>
             {
-                this.matrix.map((row,index)=>
-                    <Row type="flex" justify="center" align="top" gutter={8} key={index}>
-                        {
-                            row.map(col=>
-                                <Col span={this.textColumnsLen>1?12:24} key={col.id}>
-                                    <Card  title={col.text?col.columnName+'-'+col.text:col.columnName}
-                                           bordered={false}><pre>{format(record[col.columnName])}</pre></Card>
-                                </Col>
-                            )
-                        }
-                    </Row>
+                this.matrix.map((row,index)=> {
+                    return (
+                        <Row type="flex" justify="center" align="top" gutter={8} key={index}>
+                            {
+                                row.map(col => {
+                                    return (
+                                        <Col span={row.length==2? 12 : 24} key={col.id}>
+                                            <Card title={col.text ? col.columnName + '-' + col.text : col.columnName}
+                                                  bordered={false}>
+                                                <pre>{format(record[col.columnName])}</pre>
+                                            </Card>
+                                        </Col>
+                                    );
+                                    }
+                                )
+                            }
+                        </Row>
+                    );
+                    }
                 )
             }
         </div>
@@ -129,7 +142,7 @@ class CommonTable extends Component{
         const store=this.props.rootStore.commonStore;
         const xscroll=store.currentEntity.tableLength?store.currentEntity.tableLength:store.hasParent?1080:1340;
         return (
-            <div style={{height: "100%"}}>
+            <div >
                 <Modal visible={store.createFormVisible}
                        width={800}
                        title="新建"
@@ -143,7 +156,7 @@ class CommonTable extends Component{
                 {
                     store.operations.filter(o=>o.type!=='3').map(o=>this.createOperationPage(o))
                 }
-                <Table style={{height: "100%"}}
+                <Table
                        columns={store.columns.filter(d=>d)}
                        rowKey={record => record[store.currentEntity.idField]}
                        dataSource={store.tableRows.filter(d => d)}

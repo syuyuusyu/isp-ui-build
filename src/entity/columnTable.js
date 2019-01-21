@@ -18,7 +18,7 @@ const Option=Select.Option;
 class ColumnTable extends Component {
 
     columns = [
-
+        {dataIndex: 'id', title: 'ID', width: 50,},
         {dataIndex: 'columnIndex', title: '排序', width: 50,},
         //{dataIndex: 'code', title: '编码', width: 80,},
         {dataIndex: 'columnType', title: '数据类型', width: 80,},

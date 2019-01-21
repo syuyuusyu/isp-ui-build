@@ -26,7 +26,7 @@ class FileForm extends React.Component{
         const store=this.props.rootStore.swiftStore;
         return (
             <div>
-                <Upload ref={store.refUpload} action='' beforeUpload={store.beforeUpload} onRemove={store.onRemove} multiple={true}>
+                <Upload  ref={store.refUpload} action='' beforeUpload={store.beforeUpload} onRemove={store.onRemove} multiple={true}>
                     <Button>
                         <Icon type="upload" /> Select File
                     </Button>
