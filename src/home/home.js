@@ -23,26 +23,11 @@ const colorGray = "#e8e8e8";
  * @returns {{linkNum: *, linksLess: Array, linksMore: Array}}
  */
 const getLinks = (isAdmin, currentRoleSys, eClick) => {
-  console.log(
-    isGov
-      ? "http://59.216.201.50:8089/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94"
-      : "http://10.10.50.39:8080/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94"
-  );
   const length = currentRoleSys.length;
   const linkNum = isAdmin ? length + 1 : length;
   let linksLess = [];
   let linksMore = [];
-  if (isAdmin) {
-    // linksLess.push(
-    //     <div key={100} className={`link qilinqu`} data-href={'http://10.10.50.37:8088'} onClick={eClick}>
-    //         <span className="text">北衙矿车计量管理系统</span>
-    //     </div>
-    // );
-    // linksLess.push(
-    //     <div key={101} className={`link qilinqu`} data-href={`${baseUrl}/map`} onClick={eClick}>
-    //         <span className="text">地图服务示范应用</span>
-    //     </div>
-    // );
+  if (true) {
     linksLess.push(
       <div
         key={100}
@@ -53,6 +38,16 @@ const getLinks = (isAdmin, currentRoleSys, eClick) => {
         <span className="text">智能化信息提取系统</span>
       </div>
     );
+      linksLess.push(
+          <div
+              key={101}
+              className={`link qilinqu`}
+              data-href={"http://10.10.50.56:8080/lqptserver/app/index.html"}
+              onClick={eClick}
+          >
+              <span className="text">云南省两区综合管理平台</span>
+          </div>
+      );
     linksLess.push(
       <div
         key={102}
