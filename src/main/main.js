@@ -195,7 +195,7 @@ class Main extends Component {
                             })
                     }
                 </Switch>
-                <footer>© 云南省地质矿产勘查开发局</footer>
+                {/* <footer>© 云南省地质矿产勘查开发局</footer> */}
                 <Modal visible={this.props.rootStore.notificationStore.applyPlatformVisible}
                        width={600}
                        title={`申请平台访问权限`}
