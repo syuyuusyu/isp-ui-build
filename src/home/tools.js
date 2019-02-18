@@ -26,7 +26,7 @@ const getPieOption = (sourceData, colors) => {
     title: {
       left: 'center',
       top: 'center',
-      text: sourceData.total === 0 ? '100%' : `${Math.round((sourceData.used / sourceData.total) * 100)}%`,
+      text: sourceData.total === 0 ? '0%' : `${Math.round((sourceData.used / sourceData.total) * 100)}%`,
       textStyle: {
         color: '#333',
         fontSize: 14,
