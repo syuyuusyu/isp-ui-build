@@ -87,7 +87,7 @@ export class ActivitiStore {
         runInAction(() => {
             this.modeles = json.data;
         });
-    }
+    };
 
     deleteMdel = (id) => (async () => {
         let json = await del(`${activitiUrl}/repository/models/${id}`);

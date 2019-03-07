@@ -52,6 +52,7 @@ class ModelConf extends React.Component {
 
     render() {
         const store = this.props.rootStore.activitiStore;
+        console.log(1111);
         return (
             <div>
                 <Row gutter={8} className="table-head-row">
@@ -75,7 +76,6 @@ class ModelConf extends React.Component {
                        rowSelection={null}
                        size="small"
                        scroll={{y: 800}}
-                       pagination={null}
                 />
             </div>
         );

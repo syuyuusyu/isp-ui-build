@@ -44,8 +44,9 @@ const getLinks = (isAdmin=true, currentRoleSys, eClick) => {
                 key={101}
                 className={`link qilinqu`}
                 data-href={isGov?
-                    "http://10.10.50.56:8080/lqptserver/app/index.html"
-                    :"http://59.216.201.50:8081/lqptserver/app/index.html"}
+                    "http://59.216.201.50:8081/lqptserver/app/index.html"
+                    :"http://10.10.50.56:8080/lqptserver/app/index.html"
+                    }
                 onClick={eClick}
             >
                 <span className="text">云南省两区综合管理平台</span>

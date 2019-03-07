@@ -159,7 +159,6 @@ constructor(){
                        size="small"
                        scroll={{ y: 800 }}
                        expandedRowRender={this.expandedRowRender}
-                       pagination={null}
                     //pagination={this.state.pagination}
                     //loading={this.state.loading}
                     //onChange={this.handleTableChange}

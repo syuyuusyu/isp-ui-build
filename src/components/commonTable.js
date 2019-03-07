@@ -145,6 +145,7 @@ class CommonTable extends Component{
             <div >
                 <Modal visible={store.createFormVisible}
                        width={800}
+                       //mask={false}
                        title="新建"
                        footer={null}
                        onCancel={store.toggleCreateFormVisible}

@@ -19,15 +19,15 @@ class ProcessConf extends React.Component {
 
 
     columns=[
-        {dataIndex: 'id', title: 'ID', width: 120},
-        {dataIndex: 'name', title: '名称', width: 100},
-        {dataIndex: 'key', title: '标识', width: 80},
-        {dataIndex: 'deploymentId',title:'部署ID',width:50},
-        {dataIndex: 'version', title: '版本号', width: 50},
-        {dataIndex: 'deploymentUrl', title: '部署URL', width: 150},
+        {dataIndex: 'id', title: 'ID',align:'center', width: 120},
+        {dataIndex: 'name', title: '名称',align:'center',  width: 100},
+        {dataIndex: 'key', title: '标识',align:'center',  width: 80},
+        {dataIndex: 'deploymentId',title:'部署ID',align:'center', width:50},
+        {dataIndex: 'version', title: '版本号',align:'center',  width: 50},
+        {dataIndex: 'deploymentUrl', title: '部署URL',align:'center',  width: 150},
         // {dataIndex: 'resource', title: '流程XML', width: 150},
         // {dataIndex: 'diagramResource', title: '流程图片', width: 150},
-        {dataIndex: 'suspended', title: '状态', width: 50,
+        {dataIndex: 'suspended', title: '状态',align:'center',  width: 50,
             render:(text)=>{
                 return text?'暂停':'激活';
             }
@@ -36,6 +36,7 @@ class ProcessConf extends React.Component {
         {
             title: '操作',
             width: 400,
+            align:'center',
             render: (text, record) => {
                 return (
                     <span>
@@ -89,7 +90,6 @@ class ProcessConf extends React.Component {
                        rowSelection={null}
                        size="small"
                        scroll={{y: 800}}
-                       pagination={null}
                 />
             </div>
         );

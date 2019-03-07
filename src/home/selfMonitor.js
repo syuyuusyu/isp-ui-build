@@ -44,7 +44,7 @@ class SelfMonitor extends React.Component{
                     <Table columns={this.columns}
                            rowKey={record => record.id}
                            dataSource={store.selfMonitor.filter(d=>d)}
-                           rowSelection={null}
+                           //rowSelection={null}
                            size="small"
                            scroll={{ y: 800 }}
                         //expandedRowRender={this.expandedRowRender}

@@ -136,6 +136,7 @@ class EntityForm extends React.Component {
                     queryType: queryType,
                     orderField: store.currentEntity.orderField ? store.currentEntity.orderField : [],
                     mmQueryField: store.currentEntity.mmQueryField ? store.currentEntity.mmQueryField : [],
+                    fuzzyQueryField: store.currentEntity.fuzzyQueryField ? store.currentEntity.fuzzyQueryField.split(',').map(c => parseInt(c)) : [],
                 }
             );
         } else {
@@ -232,6 +233,20 @@ class EntityForm extends React.Component {
                             <div>
                                 <FormItem label="查询字段">
                                     {getFieldDecorator('queryField')(
+                                        store.isFormUpdate ?
+                                            <Select mode="multiple" onChange={this.queryFieldChange}>
+                                                {
+                                                    store.currentColumns.filter(d => d).map(o =>
+                                                        <Option key={o.id}
+                                                                value={o.id}>{o.text ? o.columnName + '-' + o.text : o.columnName}</Option>)
+                                                }
+                                            </Select>
+                                            :
+                                            <Input placeholder="保存当前实体后完成字段配置才能进行该项配置" disabled={true}/>
+                                    )}
+                                </FormItem>
+                                <FormItem label="模糊查询字段">
+                                    {getFieldDecorator('fuzzyQueryField')(
                                         store.isFormUpdate ?
                                             <Select mode="multiple" onChange={this.queryFieldChange}>
                                                 {

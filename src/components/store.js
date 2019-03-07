@@ -160,7 +160,7 @@ export class CommonStore {
                     dataIndex: c.columnName,
                     title: c.text ? c.text : c.columnName,
                     width: c.width ? c.width : 100,
-                    align:'center'
+
                 };
                 if (c.columnType === 'timestamp') {
                     column.render = (value, record) => moment(value).format('YYYY-MM-DD HH:mm:ss');
