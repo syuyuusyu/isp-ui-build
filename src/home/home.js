@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {inject, observer} from "mobx-react";
-import {Popover, notification} from "antd";
+import {Popover, notification,Tooltip} from "antd";
 import ReactEchartsCore from "echarts-for-react/lib/core";
 import echarts from "echarts/lib/echarts";
 import "echarts/lib/chart/pie";
@@ -24,11 +24,64 @@ const colorGray = "#e8e8e8";
  */
 const getLinks = (isAdmin=true, currentRoleSys, eClick) => {
     const length = currentRoleSys.length;
-    const linkNum = isAdmin ? length + 1 : length;
-    //const linkNum =  length;
+    //const linkNum = isAdmin ? length + 1 : length;
+    const linkNum =  length+3;
     let linksLess = [];
     let linksMore = [];
-    if (true) {
+    const isOut = linkNum>=6;
+
+    for (let i = 0; i < length; i++) {
+        const {name, icon, token, operations} = currentRoleSys[i];
+        const url =
+            currentRoleSys[i]["isGov"] === "0"
+                ? currentRoleSys[i]["url"]
+                : currentRoleSys[i][isGov ? "govUrl" : "url"];
+        const usableOpe = operations.filter(o => o.type == 1);
+        let base = `${url}${usableOpe[0] ? usableOpe[0].path : ""}`;
+        let _mack = base.indexOf("?") == -1 ? "?" : "&";
+        const href = `${url}${
+            usableOpe[0] ? usableOpe[0].path : ""
+            }${_mack}ispToken=${token}`;
+
+        let displayName=name.split('');
+        let blankArr = [];
+        if(isOut) {
+            let inserIndex, deletlength, addstr = '', blanklength = 0;
+            if (displayName.length > 5) {
+                if (displayName.length == 7) {
+                    inserIndex = 6, deletlength = 1, addstr = '.';
+                }
+                inserIndex = 6, deletlength = displayName.length - 6, addstr = '..';
+            } else {
+                blanklength = 8 - displayName.length;
+                inserIndex = 0, deletlength = 0
+            }
+
+            for (let j = 0; j < blanklength; j++) {
+                blankArr.push(<span key={j}>&nbsp;</span>);
+            }
+            displayName.splice(inserIndex, deletlength, addstr);
+        }
+        const node = (
+            <div key={i} className={`link ${icon}`} data-href={href} onClick={eClick}>
+                <Tooltip title={name}>
+                    <span className="text">{blankArr.map(_=>_)}{displayName.join('')}</span>
+                </Tooltip>
+            </div>
+        );
+        if (i < 6)  {
+            linksLess.push(node);
+        } else {
+            const node2 = (
+                <div key={i} className={`link ${icon}`} data-href={href} onClick={eClick}>
+                        <span className="text">{name}</span>
+                </div>
+            );
+            linksMore.push(node2);
+        }
+    }
+
+    if(linksLess.length<6){
         linksLess.push(
             <div
                 key={100}
@@ -36,9 +89,27 @@ const getLinks = (isAdmin=true, currentRoleSys, eClick) => {
                 data-href={"http://10.10.50.15:8088/acp"}
                 onClick={eClick}
             >
-                <span className="text">智能化信息提取系统</span>
+                {
+                    isOut?
+                        <Tooltip title="智能化信息提取系统">
+                            <span className="text">智能化信息提..</span>
+                        </Tooltip>
+                        :
+                        <span className="text">智能化信息提取系统</span>
+                }
+
             </div>
         );
+    }
+    else{
+        linksMore.push(
+            <div key={100} className={`link qilinqu`} data-href={"http://10.10.50.15:8088/acp"} onClick={eClick}>
+                <span className="text">智能化信息提取系统</span>
+            </div>
+        )
+    }
+
+    if(linksLess.length<6){
         linksLess.push(
             <div
                 key={101}
@@ -46,12 +117,36 @@ const getLinks = (isAdmin=true, currentRoleSys, eClick) => {
                 data-href={isGov?
                     "http://59.216.201.50:8081/lqptserver/app/index.html"
                     :"http://10.10.50.56:8080/lqptserver/app/index.html"
-                    }
+                }
                 onClick={eClick}
             >
-                <span className="text">云南省两区综合管理平台</span>
+                {
+                    isOut?
+                        <Tooltip title="云南省两区综合管理平台">
+                            <span className="text">云南省两区综..</span>
+                        </Tooltip>
+                        :
+                        <span className="text">云南省两区综合管理平台</span>
+                }
+
             </div>
         );
+    }
+    else{
+        linksMore.push(
+            <div key={101}
+                 className={`link qilinqu`}
+                 data-href={isGov?
+                     "http://59.216.201.50:8081/lqptserver/app/index.html"
+                     :"http://10.10.50.56:8080/lqptserver/app/index.html"
+                 }
+                 onClick={eClick}>
+                <span className="text">云南省两区综合管理平台</span>
+            </div>
+        )
+    }
+
+    if(linksLess.length<6){
         linksLess.push(
             <div
                 key={102}
@@ -63,35 +158,38 @@ const getLinks = (isAdmin=true, currentRoleSys, eClick) => {
                 }
                 onClick={eClick}
             >
+                {
+                    isOut?
+                        <Tooltip title="城市综合管理PAD端">
+                            <span className="text">城市综合管理..</span>
+                        </Tooltip>
+                        :
+                        <span className="text">城市综合管理PAD端</span>
+                }
+
+            </div>
+        );
+    }
+    else{
+        linksMore.push(
+            <div key={101}
+                 className={`link qilinqu`}
+                 data-href={
+                     isGov
+                         ? "http://59.216.201.50:8089/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94"
+                         : "http://10.10.50.39:8080/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94"
+                 }
+                 onClick={eClick}>
                 <span className="text">城市综合管理PAD端</span>
             </div>
-        );
+        )
     }
-    for (let i = isAdmin ? 1 : 0; i < linkNum; i++) {
-        const {name, icon, token, operations} = currentRoleSys[
-            isAdmin ? i - 1 : i
-            ];
-        const url =
-            currentRoleSys[isAdmin ? i - 1 : i]["isGov"] === "0"
-                ? currentRoleSys[isAdmin ? i - 1 : i]["url"]
-                : currentRoleSys[isAdmin ? i - 1 : i][isGov ? "govUrl" : "url"];
-        const usableOpe = operations.filter(o => o.type == 1);
-        let base = `${url}${usableOpe[0] ? usableOpe[0].path : ""}`;
-        let _mack = base.indexOf("?") == -1 ? "?" : "&";
-        const href = `${url}${
-            usableOpe[0] ? usableOpe[0].path : ""
-            }${_mack}ispToken=${token}`;
-        const node = (
-            <div key={i} className={`link ${icon}`} data-href={href} onClick={eClick}>
-                <span className="text">{name}</span>
-            </div>
-        );
-        if ((linkNum > 5 && i < 4) || linkNum < 6) {
-            linksLess.push(node);
-        } else {
-            linksMore.push(node);
-        }
-    }
+
+
+
+
+
+
     return {
         linkNum,
         linksLess,
