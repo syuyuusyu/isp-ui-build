@@ -226,15 +226,6 @@ class Main extends Component {
                 >
                     <UserTaskTable/>
                 </Modal>
-                <Modal visible={this.props.rootStore.authorityStore.alertMessageVisible}
-                       width={700}
-                       title={`welcome`}
-                       footer={null}
-                       onCancel={this.props.rootStore.authorityStore.toggleAlertMessageVisible}
-                       maskClosable={false}
-                       destroyOnClose={true}
-                >
-                </Modal>
             </div>
         );
     }

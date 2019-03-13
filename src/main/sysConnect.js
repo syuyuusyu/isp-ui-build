@@ -41,7 +41,6 @@ class SysConnect extends React.Component{
                     }
                 </div>
                 <div>
-
                     {
                         !this.props.rootStore.notificationStore.systemAccess.filter(d=>d).length>0?'':
                             (this.props.rootStore.notificationStore.systemAccess.filter(d=>d.id===2)[0].count>0?
