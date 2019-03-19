@@ -1,6 +1,7 @@
 import {observable, action, runInAction, configure, computed} from 'mobx';
-import {baseUrl, get, post} from '../util';
+import {baseUrl, get, post,isGov} from '../util';
 import {notification} from 'antd';
+
 
 configure({enforceActions: true});
 
@@ -91,7 +92,13 @@ export class HomeStore {
         let json = await post(`${baseUrl}/invoke/zdServiceInfo_api`);
         if (json) {
             runInAction(()=>{
-                this.slicePics = json.list
+                this.slicePics = json.list.map(arr=>{
+                    if(isGov){
+                        arr[0]=arr[0].replace('10.10.50.5','59.216.201.50');
+                        arr[2]=arr[2].replace('10.10.50.5','59.216.201.50');
+                    }
+                    return arr;
+                })
             });
 
         } else {
@@ -111,6 +118,13 @@ export class HomeStore {
         let json = await post(`${baseUrl}/invoke/services_rjson_api`);
         if (json) {
             runInAction(()=>{
+                this.smapslicePics = json.list.map(arr=>{
+                    if(isGov){
+                        arr[0]=arr[0].replace('10.10.50.21:8090','59.216.201.50:3087');
+                        arr[2]=arr[2].replace('10.10.50.21:8090','59.216.201.50:3087');
+                    }
+                    return arr;
+                });
                 this.smapslicePics = json.list
             });
 

@@ -389,29 +389,31 @@ class Home extends Component {
                             <div className="title">云管理平台概况</div>
                             <div className="pies-box">
                                 {dataCM[0].values
-                                    ? dataCM.map((item, index) => (
-                                        <div className="pie-container" key={index}>
-                                            <ReactEchartsCore
-                                                echarts={echarts}
-                                                option={getPieOption(
-                                                    {
-                                                        total: item.values[0],
-                                                        used: item.values[1]
-                                                    },
-                                                    [colorIndex[index], colorGray]
-                                                )}
-                                                style={pieSize}
-                                            />
-                                            <div className="pie-info">
-                                                <div className="name">{item.type}</div>
-                                                <div className="num">
-                                                    {item.values[1]}
-                                                    {item.unit}&nbsp;(共{item.values[0]}
-                                                    {item.unit})
+                                    ? dataCM.map((item, index) =>{
+                                        return (
+                                            <div className="pie-container" key={index}>
+                                                <ReactEchartsCore
+                                                    echarts={echarts}
+                                                    option={getPieOption(
+                                                        {
+                                                            total: item.values[0],
+                                                            used: item.values[1]
+                                                        },
+                                                        [colorIndex[index], colorGray]
+                                                    )}
+                                                    style={pieSize}
+                                                />
+                                                <div className="pie-info">
+                                                    <div className="name">{item.type}</div>
+                                                    <div className="num">
+                                                        {item.values[1]}
+                                                        {item.unit}&nbsp;(共{item.values[0]}
+                                                        {item.unit})
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))
+                                        )
+                                    })
                                     : ""}
                             </div>
                         </div>

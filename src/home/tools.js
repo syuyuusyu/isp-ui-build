@@ -5,6 +5,7 @@
  * @returns echarts的option
  */
 const getPieOption = (sourceData, colors) => {
+    console.log(sourceData);
   let data = [
     {
       name: '已用',

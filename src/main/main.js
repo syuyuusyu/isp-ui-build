@@ -216,25 +216,6 @@ class Main extends Component {
                 {/*>*/}
                 {/*<MessageTable />*/}
                 {/*</Modal>*/}
-                <Modal visible={this.props.rootStore.activitiStore.userTaskTableVisible}
-                       width={1000}
-                       title={`待办事项`}
-                       footer={null}
-                       onCancel={this.props.rootStore.activitiStore.toggleUserTaskTableVisible}
-                       maskClosable={false}
-                       destroyOnClose={true}
-                >
-                    <UserTaskTable/>
-                </Modal>
-                <Modal visible={this.props.rootStore.authorityStore.alertMessageVisible}
-                       width={700}
-                       title={`welcome`}
-                       footer={null}
-                       onCancel={this.props.rootStore.authorityStore.toggleAlertMessageVisible}
-                       maskClosable={false}
-                       destroyOnClose={true}
-                >
-                </Modal>
             </div>
         );
     }

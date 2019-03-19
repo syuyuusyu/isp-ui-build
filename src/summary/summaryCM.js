@@ -88,6 +88,7 @@ class SummaryCM extends Component{
               onClick={() => this.props.rootStore.summaryStoreCM.toggleTable(1)}>云区总资源</div>
           </div>
           <div className="tab-content">
+              <div className="pies-box">
             {sourceDataShow.map((item, index) => {
               return (
                 <div className="pie-container" key={index}>
@@ -103,6 +104,7 @@ class SummaryCM extends Component{
                 </div>
               )
             })}
+              </div>
           </div>
         </div>
 
