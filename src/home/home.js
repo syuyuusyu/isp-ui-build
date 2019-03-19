@@ -50,13 +50,13 @@ const getLinks = (isAdmin=true, currentRoleSys, eClick) => {
             if (displayName.length > 5) {
                 if (displayName.length == 7) {
                     inserIndex = 6, deletlength = 1, addstr = '.';
+                }else{
+                    inserIndex = 6, deletlength = displayName.length - 6, addstr = '..';
                 }
-                inserIndex = 6, deletlength = displayName.length - 6, addstr = '..';
             } else {
                 blanklength = 8 - displayName.length;
                 inserIndex = 0, deletlength = 0
             }
-
             for (let j = 0; j < blanklength; j++) {
                 blankArr.push(<span key={j}>&nbsp;</span>);
             }
@@ -184,10 +184,6 @@ const getLinks = (isAdmin=true, currentRoleSys, eClick) => {
             </div>
         )
     }
-
-
-
-
 
 
     return {
