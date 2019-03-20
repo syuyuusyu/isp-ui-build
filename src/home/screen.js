@@ -8,7 +8,11 @@ class Screen extends React.Component{
         let port= this.props.match.path.replace(/\/\w+\/(\d+)\/?(?:\S)*/, (w, p1) => {
                 return p1;
             });
-        window.open(`http://10.10.50.10:${port}`);
+        if(port==3001){
+            window.open(`http://10.10.50.14:${port}`);
+        }else{
+            window.open(`http://10.10.50.10:${port}`);
+        }
         window.history.back(-1);
     }
 

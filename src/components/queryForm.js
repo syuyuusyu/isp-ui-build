@@ -463,4 +463,3 @@ class QueryForm extends React.Component {
 }
 
 export default QueryForm;
-
