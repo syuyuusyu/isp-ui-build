@@ -72,15 +72,17 @@ class EntityForm extends React.Component {
             } else {
                 queryField = values.queryField;
             }
-            let orderField = values.orderField.length > 0 ? values.orderField.join(',') : null;
-            let mmQueryField= values.mmQueryField.length > 0 ? values.mmQueryField.join(',') : null;
+            let orderField = values.orderField && values.orderField.length > 0 ? values.orderField.join(',') : null;
+            let mmQueryField= values.mmQueryField && values.mmQueryField.length > 0 ? values.mmQueryField.join(',') : null;
+            let fuzzyQueryField = values.fuzzyQueryField && values.fuzzyQueryField.length > 0 ? values.fuzzyQueryField.join(',') : null;
             delete values.queryType;
             let json = await post(`${baseUrl}/entity/saveConfig/entity/id`, {
                 ...values,
                 id: store.currentEntity ? store.currentEntity.id : null,
                 queryField: queryField,
                 orderField: orderField,
-                mmQueryField:mmQueryField
+                mmQueryField:mmQueryField,
+                fuzzyQueryField:fuzzyQueryField
             });
             if (json.success) {
                 notification.info({

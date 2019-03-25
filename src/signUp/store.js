@@ -1,6 +1,6 @@
 import {configure, observable, action, runInAction,} from 'mobx';
 import {notification} from 'antd';
-import {baseUrl, get, post,getPathById} from '../util';
+import {baseUrl, get, post,getPathById,isGov} from '../util';
 import React from "react";
 
 configure({enforceActions: true});
@@ -66,21 +66,19 @@ export class SignUpStore {
 
     @action
     initRoot = async () => {
-        let json = await get(`${baseUrl}/userRegister/getOrg`);
-        console.log(json);
+        let json = await get(`${baseUrl}/userRegister/getOrg/${isGov?3:2}`);
         //将取回来机构数据转为树转结构的数据
         let newData = this.toTreeData(json, 'id', 'parent_id', 'children');
         runInAction(() => {
             this.treeData = newData;
         });
-        console.log( Object.create(this.treeData));
     };
 
 
 
     @action
     onCheck = (checkedKeys, info) => {
-        console.log(checkedKeys);
+        checkedKeys.checked=[checkedKeys.checked.pop()];
         this.nodeNames.length = 0;
         this.orgCheckedKeys = checkedKeys.checked;
         this.newNodeNames=[];
