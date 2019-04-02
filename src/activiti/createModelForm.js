@@ -37,21 +37,21 @@ class CreateModelForm extends React.Component{
                                 {getFieldDecorator('name',{
                                     rules: [{ required: true, message: '必填' }],
                                 })(
-                                    <Input placeholder='输入虚拟机名称'/>
+                                    <Input placeholder=''/>
                                 )}
                             </FormItem>
                             <FormItem label="标识">
                                 {getFieldDecorator('key',{
                                     rules: [{ required: true, message: '必填' }],
                                 })(
-                                    <Input placeholder='输入虚拟机名称'/>
+                                    <Input placeholder=''/>
                                 )}
                             </FormItem>
                             <FormItem label="描述">
                                 {getFieldDecorator('description',{
                                     rules: [{ required: true, message: '必填' }],
                                 })(
-                                    <Input placeholder='输入虚拟机名称'/>
+                                    <Input placeholder=''/>
                                 )}
                             </FormItem>
                         </Row>

@@ -30,6 +30,7 @@ export class ActivitiStore {
     };
 
     startProcess = (key) => (async () => {
+        console.log(key);
         let json = await get(`${activitiUrl}/repository/process-definitions`);
         let process = json.data.filter(p => p.key === key && !p.suspended)[0];
         if (!process) {

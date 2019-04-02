@@ -59,6 +59,13 @@ class UserTaskForm extends React.Component {
                 //注销平台权限流程
                 nextJson = paltfromCancelProcess(store.selectedTask.name, values, store.formData.filter(d => d));
             }
+            if (processDefinitionKey.key === 'platform_modify') {
+                //修改用户信息
+                nextJson = {
+                    isLast:true
+                };
+            }
+
             if (processDefinitionKey.key === 'message') {
                 //获取其他平台推送的消息
                 nextJson = {
@@ -96,7 +103,6 @@ class UserTaskForm extends React.Component {
 
         })
     };
-
 
     handleReset = () => {
         this.props.form.resetFields();
@@ -208,7 +214,7 @@ class UserTaskForm extends React.Component {
             <Form>
                 <div>
                     {
-                        store.message
+                        store.message.split(";").map(m=><div>{m}</div>)
                     }
                 </div>
                 {
