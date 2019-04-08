@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {inject, observer} from "mobx-react";
-import {Popover, notification,Tooltip} from "antd";
+import {Popover, notification,Tooltip,Icon,Drawer,List, Avatar} from "antd";
 import ReactEchartsCore from "echarts-for-react/lib/core";
 import echarts from "echarts/lib/echarts";
 import "echarts/lib/chart/pie";
@@ -270,6 +270,11 @@ class Home extends Component {
             height: this.blockCSize.height - blockTitleHeight - marginInner * 2
         };
 
+        this.state={
+            supermapVisible:false,
+            zdVisible:false,
+        }
+
         //需要引入两个包 "net": "^1.0.2","stompjs": "^2.3.3"
         //import Stomp  from 'stompjs';
         // if(this.isAdmin){
@@ -441,19 +446,63 @@ class Home extends Component {
                                     className={`title${actityTable === 0 ? " active" : ""}`}
                                     onClick={setActityTable(0)}
                                 >
-                                    超图地图服务
+                                    <span>地理类地图服务</span>
+                                    <Icon onClick={()=>{this.setState({supermapVisible:true})}} style={{float:'right',marginRight:'10px',marginTop:'10px'}} type="info-circle" />
                                 </div>
                                 <div
                                     className={`title${actityTable === 1 ? " active" : ""}`}
                                     onClick={setActityTable(1)}
                                 >
-                                    中地地图服务
+                                    <span>地质类地图服务</span>
+                                    <Icon onClick={()=>{this.setState({zdVisible:true})}} style={{float:'right',marginRight:'10px',marginTop:'10px'}} type="info-circle" />
                                 </div>
                             </div>
                             <div className="tab-content">{this.createGallery()}</div>
                         </div>
                     </div>
                 </div>
+                <Drawer
+                    title="地理类地图服务"
+                    placement="right"
+                    width={400}
+                    closable={false}
+                    onClose={()=>{this.setState({supermapVisible:false})}}
+                    visible={this.state.supermapVisible}
+                >
+                    <List
+                        itemLayout="horizontal"
+                        dataSource={smapslicePics?smapslicePics.filter(d=>d):[[0,1,2]]}
+                        renderItem={item => (
+                            <List.Item>
+                                <List.Item.Meta
+                                    avatar={<Avatar src={item[0]} />}
+                                    title={<a href={item[2]} target="_blank"> {item[1]}</a>}
+                                />
+                            </List.Item>
+                        )}
+                    />
+                </Drawer>
+                <Drawer
+                    title="地质类地图服务"
+                    placement="right"
+                    width={400}
+                    closable={false}
+                    onClose={()=>{this.setState({zdVisible:false})}}
+                    visible={this.state.zdVisible}
+                >
+                    <List
+                        itemLayout="horizontal"
+                        dataSource={slicePics?slicePics.filter(d=>d):[[0,1,2]]}
+                        renderItem={item => (
+                            <List.Item>
+                                <List.Item.Meta
+                                    avatar={<Avatar src={item[0]} />}
+                                    title={<a href={item[2]} target="_blank"> {item[1]}</a>}
+                                />
+                            </List.Item>
+                        )}
+                    />
+                </Drawer>
             </div>
         );
     }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-    Popover, Modal, Badge, Icon, Input
+    Popover, Modal, Badge, Icon, Input,Tooltip
 } from 'antd';
 import {Link} from 'react-router-dom';
 import {inject, observer} from 'mobx-react';
@@ -115,9 +115,11 @@ class Main extends Component {
                         <Popover placement="bottom" trigger="hover" content={userOperations}>
                             <div id="userBox">
                                 <Icon type="user"/>
+                                <Tooltip placement="leftBottom"  title={sessionStorage.getItem('currentUserName')}>
                                 <span
                                     className="name">&nbsp;&nbsp;{sessionStorage.getItem('currentUserName')}&nbsp;</span>
                                 <Icon type="down" style={{fontSize: '12px'}}/>
+                                </Tooltip>
                             </div>
                         </Popover>
                         {/*<Badge id="messageBox" dot={true} count={this.props.rootStore.notificationStore.messages.filter(d => d).length}>*/}
