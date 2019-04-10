@@ -65,7 +65,7 @@ class MessageTable extends React.Component{
                    rowSelection={null}
                    size="small"
                    scroll={{ y: 800 }}
-                   pagination={null}
+                   //pagination={null}
             />
         </div>);
     }

@@ -103,7 +103,7 @@ class CloudApplyTable extends React.Component{
                    rowSelection={null}
                    size="small"
                    scroll={{ y: 800 }}
-                   pagination={null}
+                   //pagination={null}
                 //pagination={this.state.pagination}
                 //loading={this.state.loading}
                 //onChange={this.handleTableChange}
