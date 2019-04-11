@@ -139,6 +139,18 @@ export class CommonStore {
         this.defaultQueryObj = o;
     };
 
+    get moreInfo(){
+        return this.allColumns.filter(c=>c.entityId===this.currentEntity.id && c.columnType==='text').length>0;
+    }
+
+    get hasOperation(){
+        return this.operations.filter(d => d).filter(d=>d.location=='2').length>0;
+    }
+
+    get editAble(){
+        return this.currentEntity.editAble == '1';
+    }
+
     @observable
     pagination = {
         current: 1,
@@ -148,6 +160,48 @@ export class CommonStore {
         showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
         onChange: this.pageChange
     };
+
+    @observable
+    infoArr=[];
+
+    @observable
+    infoVisible=false;
+
+    @action
+    infoClose=()=>{
+        this.infoVisible=false;
+    };
+
+    showInfo =(reccord)=>(()=>{
+
+        runInAction(()=>{
+            this.infoArr=this.columns.filter(d=>d && d.title!='操作').map(c=>{
+               return {
+                   title:c.title,
+                   value:(()=>{
+                       if(c.dicGroupId){
+                           const currentDictionary = this.allDictionary.filter(d => d.groupId === c.dicGroupId);
+                           let value=reccord[c.dataIndex];
+                           return currentDictionary.filter(d => d.value === value).length === 1 ?
+                               currentDictionary.filter(d => d.value === value)[0].text : value;
+                       }
+                       return c.foreginName?reccord[c.foreginName]:reccord[c.dataIndex]
+                   })(),
+                   type:'string'
+               }
+            });
+            this.allColumns.filter(c=>c.entityId===this.currentEntity.id && c.hidden!=='1')
+                .filter(c=>c.columnType==='text').forEach(c=>{
+                  this.infoArr.push({
+                      title:c.text,
+                      value:reccord[c.columnName],
+                      type:'text'
+                  })
+            });
+            this.infoVisible=true;
+
+        });
+    });
 
     @action
     loadColumns = async () => {
@@ -159,8 +213,8 @@ export class CommonStore {
                 const column = {
                     dataIndex: c.columnName,
                     title: c.text ? c.text : c.columnName,
-                    width: c.width ? c.width : 100,
-
+                    width: c.width ? c.width : 0,
+                    align:'center',
                 };
                 if (c.columnType === 'timestamp') {
                     column.render = (value, record) => moment(value).format('YYYY-MM-DD HH:mm:ss');
@@ -170,6 +224,7 @@ export class CommonStore {
                 }
                 if (c.dicGroupId) {
                     const currentDictionary = this.allDictionary.filter(d => d.groupId === c.dicGroupId);
+                    column.dicGroupId=c.dicGroupId;
                     column.render = (value, record) => {
                         return currentDictionary.filter(d => d.value === value).length === 1 ?
                             currentDictionary.filter(d => d.value === value)[0].text : value;
@@ -178,6 +233,7 @@ export class CommonStore {
                 if (c.foreignKeyId) {
                     const foreginNameCol = this.allColumns.find(_ => _.id === c.foreignKeyNameId);
                     const foreginEntityCode = this.allEntitys.find(_ => _.id === foreginNameCol.entityId).entityCode;
+                    column.foreginName=`${foreginEntityCode}_${foreginNameCol.columnName}`;
                     column.render = (value, record) => record[`${foreginEntityCode}_${foreginNameCol.columnName}`];
                 }
                 return column;
@@ -186,45 +242,51 @@ export class CommonStore {
                 title: '操作',
                 width: (()=>{
                     let width=0;
-                    if(this.currentEntity.editAble == '1') width=150;
+                    if(this.editAble) width=170;
+                    if(this.moreInfo) width+=100;
                     this.operations.filter(d => d).filter(d=>d.location=='2').forEach(m=>{
                         width+=30;
                         if(m.icon) width+=20;
-                        width+= 10*m.name.length;
+                        width+= 20*m.name.length;
                     });
                     return width;
                 })(),
                 align:'center',
+                fixed: 'right',
                 render: (text, record) => {
                     return (
                         <span>
+                            {this.moreInfo?<Button icon={'eye'} onClick={this.showInfo(record)}
+                                                   size='small'>查看</Button>:''}
                             {
                                 this.operations.filter(d => d).filter(d=>d.location=='2')
-                                    .map(m => {
+                                    .map((m,index) => {
                                         if (m.type === '3') {
                                             return (
                                                 <span key={m.id}>
+                                                    {index>0 || this.moreInfo?<Divider type="vertical"/>:''}
                                                     <Popconfirm onConfirm={this.execFun(record, m.function)}
                                                                 title={`确认${m.name}?`}>
                                                         <Button icon={m.icon} onClick={null}
                                                                 size='small'>{m.name}</Button>
                                                     </Popconfirm>
-                                                    <Divider type="vertical"/>
                                                 </span>
                                             );
                                         }
                                         return (
                                             <span key={m.id}>
+                                                {index>0 || this.moreInfo?<Divider type="vertical"/>:''}
                                                 <Button icon={m.icon} onClick={this.showOperationForm(record, m.id)}
                                                         size='small'>{m.name}</Button>
-                                                <Divider type="vertical"/>
                                             </span>
                                         );
                                     })
                             }
+
                             {
-                                this.currentEntity.editAble == '1' ? (
+                                this.editAble ? (
                                         <span>
+                                            { this.hasOperation || this.moreInfo?<Divider type="vertical"/>:''}
                                     <Button icon="edit" onClick={this.showCreateForm(record, true)}
                                             size='small'>修改</Button>
                                         <Divider type="vertical"/>
