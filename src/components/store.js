@@ -136,6 +136,19 @@ export class CommonStore {
     defaultQueryObj = {};
 
     setDefaultQueryObj = (o) => {
+        console.log(o);
+        for(let key in o){
+            if(o[key].startsWith('$')){
+                let str=o[key].replace('$','');
+                let arr=str.split('.');
+                let data=JSON.parse( sessionStorage.getItem(arr[0]));
+
+                for(let i=1;i<arr.length;i++){
+                    data=data[arr[i]];
+                }
+                o[key]=data;
+            }
+        }
         this.defaultQueryObj = o;
     };
 
@@ -238,71 +251,74 @@ export class CommonStore {
                 }
                 return column;
             });
-            this.columns.push({
-                title: '操作',
-                width: (()=>{
-                    let width=0;
-                    if(this.editAble) width=170;
-                    if(this.moreInfo) width+=100;
-                    this.operations.filter(d => d).filter(d=>d.location=='2').forEach(m=>{
-                        width+=30;
-                        if(m.icon) width+=20;
-                        width+= 20*m.name.length;
-                    });
-                    return width;
-                })(),
-                align:'center',
-                fixed: 'right',
-                render: (text, record) => {
-                    return (
-                        <span>
+            if(this.moreInfo || this.hasOperation || this.editAble){
+                this.columns.push({
+                    title: '操作',
+                    width: (()=>{
+                        let width=0;
+                        if(this.editAble) width=170;
+                        if(this.moreInfo) width+=100;
+                        this.operations.filter(d => d).filter(d=>d.location=='2').forEach(m=>{
+                            width+=30;
+                            if(m.icon) width+=20;
+                            width+= 20*m.name.length;
+                        });
+                        return width;
+                    })(),
+                    align:'center',
+                    fixed: 'right',
+                    render: (text, record) => {
+                        return (
+                            <span>
                             {this.moreInfo?<Button icon={'eye'} onClick={this.showInfo(record)}
                                                    size='small'>查看</Button>:''}
-                            {
-                                this.operations.filter(d => d).filter(d=>d.location=='2')
-                                    .map((m,index) => {
-                                        if (m.type === '3') {
-                                            return (
-                                                <span key={m.id}>
+                                {
+                                    this.operations.filter(d => d).filter(d=>d.location=='2')
+                                        .map((m,index) => {
+                                            if (m.type === '3') {
+                                                return (
+                                                    <span key={m.id}>
                                                     {index>0 || this.moreInfo?<Divider type="vertical"/>:''}
-                                                    <Popconfirm onConfirm={this.execFun(record, m.function)}
-                                                                title={`确认${m.name}?`}>
+                                                        <Popconfirm onConfirm={this.execFun(record, m.function)}
+                                                                    title={`确认${m.name}?`}>
                                                         <Button icon={m.icon} onClick={null}
                                                                 size='small'>{m.name}</Button>
                                                     </Popconfirm>
                                                 </span>
-                                            );
-                                        }
-                                        return (
-                                            <span key={m.id}>
+                                                );
+                                            }
+                                            return (
+                                                <span key={m.id}>
                                                 {index>0 || this.moreInfo?<Divider type="vertical"/>:''}
-                                                <Button icon={m.icon} onClick={this.showOperationForm(record, m.id)}
-                                                        size='small'>{m.name}</Button>
+                                                    <Button icon={m.icon} onClick={this.showOperationForm(record, m.id)}
+                                                            size='small'>{m.name}</Button>
                                             </span>
-                                        );
-                                    })
-                            }
+                                            );
+                                        })
+                                }
 
-                            {
-                                this.editAble ? (
-                                        <span>
+                                {
+                                    this.editAble ? (
+                                            <span>
                                             { this.hasOperation || this.moreInfo?<Divider type="vertical"/>:''}
-                                    <Button icon="edit" onClick={this.showCreateForm(record, true)}
-                                            size='small'>修改</Button>
+                                                <Button icon="edit" onClick={this.showCreateForm(record, true)}
+                                                        size='small'>修改</Button>
                                         <Divider type="vertical"/>
                                         <Popconfirm onConfirm={this.deleteRow(record[this.currentEntity.idField])}
                                                     title="确认删除?">
                                         <Button icon="delete" onClick={null} size='small'>删除</Button>
                                     </Popconfirm>
                                     </span>)
-                                    :
-                                    ''
-                            }
+                                        :
+                                        ''
+                                }
 
                         </span>
-                    )
-                }
-            });
+                        )
+                    }
+                });
+            }
+
 
 
         });

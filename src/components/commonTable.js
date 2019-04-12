@@ -25,7 +25,6 @@ class CommonTable extends Component{
     componentWillMount(){
         const store=this.props.rootStore.commonStore;
         store.loadColumns();
-        //this.entityColumns=store.allColumns.filter(c=>c.entityId===store.currentEntity.id && c.hidden!=='1');
         this.textColumns=store.allColumns.filter(c=>c.entityId===store.currentEntity.id && c.hidden!=='1')
             .filter(c=>c.columnType==='text');
         this.textColumnsLen=this.textColumns.length;
