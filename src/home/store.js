@@ -162,6 +162,22 @@ export class HomeStore {
             this.isLoadingMonitor = false;
         });
     };
+
+    //直接访问系统列表
+    @observable
+    directSystems=[];
+
+    loaddirectSystems = async ()=>{
+        let json=await post(`${baseUrl}/entity/query/1002`,{accessType:'0'});
+        runInAction(()=>{
+            this.directSystems=json.data;
+            for(let i=0;i<this.directSystems.length;i++){
+                let operations=[{type:1,path:''}];
+                this.directSystems[i].operations=operations;
+            }
+        });
+
+    };
 }
 
 

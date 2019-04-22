@@ -10,9 +10,10 @@ import RoleSysConf from './roleSysConf';
 class SysConf extends React.Component{
 
     columns=[
-        {dataIndex:'code',title:'系统编码',width:50},
+        {dataIndex:'code',title:'系统编码',width:80},
         {dataIndex:'name',title:'系统名称',width:100},
-        {dataIndex:'isGov',title:'政务网是否可以访问',width:100,
+        {dataIndex:'icon',title:'图标',width:100},
+        {dataIndex:'isGov',title:'政务网是否可以访问',width:150,
             render:(text)=>{
                 if(text==='1'){
                     return '是';
@@ -21,8 +22,36 @@ class SysConf extends React.Component{
                 }
             }
         },
-        {dataIndex:'url',title:'URL',width:200},
-        {dataIndex:'govUrl',title:'政务网URL',width:200},
+        {dataIndex:'accessType',title:'访问类型',width:100,
+            render:(text)=>{
+                if(text==='1'){
+                    return '单点登录';
+                }else if(text=='0'){
+                    return '直接访问';
+                }else{
+                    return '其他';
+                }
+            }
+        },
+        {
+            dataIndex:'url',
+            title:'URL',
+            width:200,
+            render: (text, record) => (
+                <div style={{ wordWrap: 'break-word', wordBreak: 'break-all' }}>
+                    {text}
+                </div>
+            )
+        },
+        {
+            dataIndex:'govUrl',
+            title:'政务网URL',
+            render: (text, record) => (
+                <div style={{ wordWrap: 'break-word', wordBreak: 'break-all' }}>
+                    {text}
+                </div>
+            )
+        },
         {
             title:'操作',
             width:200,
@@ -81,9 +110,8 @@ class SysConf extends React.Component{
                 <Table columns={this.columns}
                        rowKey={record => record.id}
                        dataSource={store.allSystem.filter(d=>d)}
-                       rowSelection={null}
                        size="small"
-                       scroll={{ y: 800 ,}}
+                       //scroll={{ y: 600,}}
                     //expandedRowRender={this.expandedRowRender}
                     //pagination={this.state.pagination}
                     //loading={this.state.loading}

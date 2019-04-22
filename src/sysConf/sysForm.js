@@ -19,6 +19,8 @@ class SysForm extends React.Component{
                 url:store.currentSys.url,
                 isGov:store.currentSys.isGov,
                 govUrl:store.currentSys.govUrl,
+                accessType:store.currentSys.accessType,
+                icon:store.currentSys.icon,
             });
         }
     }
@@ -73,6 +75,13 @@ class SysForm extends React.Component{
                     <Input placeholder="输入系统名称"  />
                 )}
             </FormItem>
+            <FormItem label="图标">
+                {getFieldDecorator('icon',{
+                    rules: [{ required: false, message: '此项为必填项!!' }],
+                })(
+                    <Input placeholder="输入图标" />
+                )}
+            </FormItem>
             <FormItem label='政务网是否可以访问该系统'>
                 {getFieldDecorator('isGov',{
                     rules: [{ required: true, message: '此项为必填项!!' }],
@@ -81,6 +90,18 @@ class SysForm extends React.Component{
                     <Select>
                         <Option value={'1'} >是</Option>
                         <Option value={'0'} >否</Option>
+                    </Select>
+                )}
+            </FormItem>
+            <FormItem label='访问类型'>
+                {getFieldDecorator('accessType',{
+                    rules: [{ required: true, message: '此项为必填项!!' }],
+                    validateTrigger:'onBlur'
+                })(
+                    <Select>
+                        <Option value={'1'} >单点登录</Option>
+                        <Option value={'0'} >直接访问</Option>
+                        <Option value={'2'} >其他</Option>
                     </Select>
                 )}
             </FormItem>

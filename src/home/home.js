@@ -23,6 +23,7 @@ const colorGray = "#e8e8e8";
  * @returns {{linkNum: *, linksLess: Array, linksMore: Array}}
  */
 const getLinks = (isAdmin=true, currentRoleSys, eClick) => {
+    console.log(currentRoleSys);
     const length = currentRoleSys.length;
     //const linkNum = isAdmin ? length + 1 : length;
     const linkNum =  length+3;
@@ -31,7 +32,7 @@ const getLinks = (isAdmin=true, currentRoleSys, eClick) => {
     const isOut = linkNum>=6;
 
     for (let i = 0; i < length; i++) {
-        const {name, icon, token, operations} = currentRoleSys[i];
+        const {name, icon,accessType, token, operations} = currentRoleSys[i];
         const url =
             currentRoleSys[i]["isGov"] === "0"
                 ? currentRoleSys[i]["url"]
@@ -39,9 +40,14 @@ const getLinks = (isAdmin=true, currentRoleSys, eClick) => {
         const usableOpe = operations.filter(o => o.type == 1);
         let base = `${url}${usableOpe[0] ? usableOpe[0].path : ""}`;
         let _mack = base.indexOf("?") == -1 ? "?" : "&";
-        const href = `${url}${
-            usableOpe[0] ? usableOpe[0].path : ""
-            }${_mack}ispToken=${token}`;
+        let href='';
+        if(accessType=='0'){
+            href=url;
+        }else{
+            href = `${url}${
+                usableOpe[0] ? usableOpe[0].path : ""
+                }${_mack}ispToken=${token}`;
+        }
 
         let displayName=name.split('');
         let blankArr = [];
@@ -81,109 +87,109 @@ const getLinks = (isAdmin=true, currentRoleSys, eClick) => {
         }
     }
 
-    if(linksLess.length<6){
-        linksLess.push(
-            <div
-                key={100}
-                className={`link qilinqu`}
-                data-href={"http://10.10.50.15:8088/acp"}
-                onClick={eClick}
-            >
-                {
-                    isOut?
-                        <Tooltip title="智能化信息提取系统">
-                            <span className="text">智能化信息提..</span>
-                        </Tooltip>
-                        :
-                        <span className="text">智能化信息提取系统</span>
-                }
-
-            </div>
-        );
-    }
-    else{
-        linksMore.push(
-            <div key={100} className={`link qilinqu`} data-href={"http://10.10.50.15:8088/acp"} onClick={eClick}>
-                <span className="text">智能化信息提取系统</span>
-            </div>
-        )
-    }
-
-    if(linksLess.length<6){
-        linksLess.push(
-            <div
-                key={101}
-                className={`link qilinqu`}
-                data-href={isGov?
-                    "http://59.216.201.50:8081/lqptserver/app/index.html"
-                    :"http://10.10.50.56:8080/lqptserver/app/index.html"
-                }
-                onClick={eClick}
-            >
-                {
-                    isOut?
-                        <Tooltip title="云南省两区综合管理平台">
-                            <span className="text">云南省两区综..</span>
-                        </Tooltip>
-                        :
-                        <span className="text">云南省两区综合管理平台</span>
-                }
-
-            </div>
-        );
-    }
-    else{
-        linksMore.push(
-            <div key={101}
-                 className={`link qilinqu`}
-                 data-href={isGov?
-                     "http://59.216.201.50:8081/lqptserver/app/index.html"
-                     :"http://10.10.50.56:8080/lqptserver/app/index.html"
-                 }
-                 onClick={eClick}>
-                <span className="text">云南省两区综合管理平台</span>
-            </div>
-        )
-    }
-
-    if(linksLess.length<6){
-        linksLess.push(
-            <div
-                key={102}
-                className={`link qilinqu`}
-                data-href={
-                    isGov
-                        ? "http://59.216.201.50:8089/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94"
-                        : "http://10.10.50.39:8080/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94"
-                }
-                onClick={eClick}
-            >
-                {
-                    isOut?
-                        <Tooltip title="城市综合管理PAD端">
-                            <span className="text">城市综合管理..</span>
-                        </Tooltip>
-                        :
-                        <span className="text">城市综合管理PAD端</span>
-                }
-
-            </div>
-        );
-    }
-    else{
-        linksMore.push(
-            <div key={101}
-                 className={`link qilinqu`}
-                 data-href={
-                     isGov
-                         ? "http://59.216.201.50:8089/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94"
-                         : "http://10.10.50.39:8080/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94"
-                 }
-                 onClick={eClick}>
-                <span className="text">城市综合管理PAD端</span>
-            </div>
-        )
-    }
+    // if(linksLess.length<6){
+    //     linksLess.push(
+    //         <div
+    //             key={100}
+    //             className={`link qilinqu`}
+    //             data-href={"http://10.10.50.15:8088/acp"}
+    //             onClick={eClick}
+    //         >
+    //             {
+    //                 isOut?
+    //                     <Tooltip title="智能化信息提取系统">
+    //                         <span className="text">智能化信息提..</span>
+    //                     </Tooltip>
+    //                     :
+    //                     <span className="text">智能化信息提取系统</span>
+    //             }
+    //
+    //         </div>
+    //     );
+    // }
+    // else{
+    //     linksMore.push(
+    //         <div key={100} className={`link qilinqu`} data-href={"http://10.10.50.15:8088/acp"} onClick={eClick}>
+    //             <span className="text">智能化信息提取系统</span>
+    //         </div>
+    //     )
+    // }
+    //
+    // if(linksLess.length<6){
+    //     linksLess.push(
+    //         <div
+    //             key={101}
+    //             className={`link qilinqu`}
+    //             data-href={isGov?
+    //                 "http://59.216.201.50:8081/lqptserver/app/index.html"
+    //                 :"http://10.10.50.56:8080/lqptserver/app/index.html"
+    //             }
+    //             onClick={eClick}
+    //         >
+    //             {
+    //                 isOut?
+    //                     <Tooltip title="云南省两区综合管理平台">
+    //                         <span className="text">云南省两区综..</span>
+    //                     </Tooltip>
+    //                     :
+    //                     <span className="text">云南省两区综合管理平台</span>
+    //             }
+    //
+    //         </div>
+    //     );
+    // }
+    // else{
+    //     linksMore.push(
+    //         <div key={101}
+    //              className={`link qilinqu`}
+    //              data-href={isGov?
+    //                  "http://59.216.201.50:8081/lqptserver/app/index.html"
+    //                  :"http://10.10.50.56:8080/lqptserver/app/index.html"
+    //              }
+    //              onClick={eClick}>
+    //             <span className="text">云南省两区综合管理平台</span>
+    //         </div>
+    //     )
+    // }
+    //
+    // if(linksLess.length<6){
+    //     linksLess.push(
+    //         <div
+    //             key={102}
+    //             className={`link qilinqu`}
+    //             data-href={
+    //                 isGov
+    //                     ? "http://59.216.201.50:8089/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94"
+    //                     : "http://10.10.50.39:8080/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94"
+    //             }
+    //             onClick={eClick}
+    //         >
+    //             {
+    //                 isOut?
+    //                     <Tooltip title="城市综合管理PAD端">
+    //                         <span className="text">城市综合管理..</span>
+    //                     </Tooltip>
+    //                     :
+    //                     <span className="text">城市综合管理PAD端</span>
+    //             }
+    //
+    //         </div>
+    //     );
+    // }
+    // else{
+    //     linksMore.push(
+    //         <div key={101}
+    //              className={`link qilinqu`}
+    //              data-href={
+    //                  isGov
+    //                      ? "http://59.216.201.50:8089/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94"
+    //                      : "http://10.10.50.39:8080/gds/ol4/template/monitor/monitor.html?ztid=a22f0eec-a538-4d7d-b17c-7750366dea94"
+    //              }
+    //              onClick={eClick}>
+    //             <span className="text">城市综合管理PAD端</span>
+    //         </div>
+    //     )
+    // }
 
 
     return {
@@ -205,6 +211,10 @@ class Home extends Component {
         this.props.rootStore.homeStore.loadBDData();
         this.props.rootStore.homeStore.loadSlicePics();
         this.props.rootStore.homeStore.loadSmapSlicePics();
+        let roles = JSON.parse(sessionStorage.getItem("roles"));
+        if(roles.find(r=>r.code=='directAccessSystem')){
+            this.props.rootStore.homeStore.loaddirectSystems();
+        }
 
         const {
             winWidth,
@@ -353,13 +363,6 @@ class Home extends Component {
             barSize,
             gallerySize
         } = this;
-        /* 外链入口 */
-        const {currentRoleSys} = this.props.rootStore.treeStore;
-        const {linkNum, linksLess, linksMore} = getLinks(
-            true,
-            currentRoleSys,
-            this.linkClick.bind(this)
-        );
         /* 可视化数据 */
         const {
             dataCM,
@@ -368,8 +371,17 @@ class Home extends Component {
             smapslicePics,
             actityTable,
             setActityTable,
-            pics
+            pics,
+            directSystems,
         } = this.props.rootStore.homeStore;
+        /* 外链入口 */
+        const {currentRoleSys} = this.props.rootStore.treeStore;
+        const {linkNum, linksLess, linksMore} = getLinks(
+            true,
+            currentRoleSys.concat(directSystems.filter(d=>d)),
+            this.linkClick.bind(this)
+        );
+
         return (
             <div id="homePage" style={{height: mainHeight}}>
                 <div id="linksBox" style={{height: linksHeight}}>

@@ -1,7 +1,7 @@
 import React from 'react';
-import {Table,Row,Col,Card,Modal,Divider,notification,Popconfirm,AutoComplete,Input,Icon,Dropdown,Menu,Button} from 'antd';
+import {Table,Row,Col,Card,Modal,Divider,notification,Popconfirm,AutoComplete,Input,Icon,Dropdown,Menu,Button,List,Drawer} from 'antd';
 import ConfFrom from './ConfForm';
-import {baseUrl,del,post,get} from '../util';
+import {baseUrl, del, post, get, format} from '../util';
 import RoleButton from '../roleButton';
 import '../style.css';
 const Option = AutoComplete.Option;
@@ -34,11 +34,14 @@ class InvkeGrid extends React.Component{
         saveAvailable:false,
         groupnames:[],
         selectgroupname:'',
-        filtergroupname:[]
+        filtergroupname:[],
+        currentRecord:[],
+        infoVisible:false
     };
+
     columns = [
-        {dataIndex:'id',title:'ID',width:30},
-        {dataIndex:'invokeType',title:'调用类型',width:70,
+        {dataIndex:'id',title:'ID',width:50},
+        {dataIndex:'invokeType',title:'调用类型',width:90,
             render: (text, record) => {
                 switch (text){
                     case '1':
@@ -51,24 +54,25 @@ class InvkeGrid extends React.Component{
             }
         },
         {
-            dataIndex:'name',title:'名称',width:100,
-            filters:[
-                //{text:'invoke',value:'invoke'},
-            ],
-            onFilter: (value, record) => record.name.includes(value),
+            dataIndex:'name',title:'名称',width:170,
         },
-        {dataIndex:'groupName',title:'组名称',width:100},
-        {dataIndex:'descrption',title:'描述',width:180},
-        {dataIndex:'method',title:'请求方法',width:40},
-        {dataIndex:'url',title:'URL',width:200},
+        {dataIndex:'groupName',title:'组名称',width:170},
+        {dataIndex:'descrption',title:'描述',width:200},
+        {dataIndex:'method',title:'请求方法',width:90},
+        {dataIndex:'url',title:'URL'},
         {
             title: '操作',
-            width: 190,
+            align:'center',
+            width: 350,
+            fixed: 'right',
             render: (text, record) => {
                 return (
                     <span>
 
                         {/*<RoleButton onClick={this.edit(record,true)} buttonId={8}/>*/}
+
+                        <Button icon={'eye'} onClick={this.showInfo(record)} size='small'>查看</Button>
+                         <Divider type="vertical"/>
                         <Button icon="play-circle-o" onClick={this.edit(record,true)} size='small'>测试</Button>
                         <Divider type="vertical"/>
                         {/*<RoleButton onClick={this.edit(record)} buttonId={6}/>*/}
@@ -89,6 +93,7 @@ class InvkeGrid extends React.Component{
     componentDidMount(){
         this.loadData(1,0,this.state.pagination.pageSize);
     }
+
 
 
     expandedRowRender=(record)=>(
@@ -146,6 +151,12 @@ class InvkeGrid extends React.Component{
     };
     selecGrouptName=(e)=>{
         this.setState({selectgroupname:e.target.value});
+    };
+
+
+
+    closeInfo=()=>{
+        this.setState({infoVisible:false});
     };
 
     loadData=async (page, start, limit,invokeName=this.state.selectInvokeName,groupName=this.state.selectgroupname)=>{
@@ -214,6 +225,54 @@ class InvkeGrid extends React.Component{
             })
         }
         this.loadData();
+    });
+
+    showInfo=(record)=>(()=>{
+        let list=[];
+        list.push({
+            name:'ID',
+            value:record.id
+        });
+        list.push({
+            name:'调用类型',
+            value:record.invokeType=='1'?'调用配置':'可调用接口'
+        });
+        list.push({
+            name:'名称',
+            value:record.name
+        });
+        list.push({
+            name:'组名称',
+            value:record.groupName
+        });
+        list.push({
+            name:'描述',
+            value:record.descrption
+        });
+        list.push({
+            name:'请求方法',
+            value:record.method
+        });
+        list.push({
+            name:'url',
+            value:record.url
+        });
+        list.push({
+            name:'请求头',
+            value:record.head,
+            type:'text'
+        });
+        list.push({
+            name:'请求体',
+            value:record.body,
+            type:'text'
+        });
+        list.push({
+            name:'解析函数',
+            value:record.parseFun,
+            type:'text'
+        });
+        this.setState({currentRecord:list,infoVisible:true});
     });
 
 
@@ -295,13 +354,38 @@ class InvkeGrid extends React.Component{
                 >
                     <ConfFrom invokeType='2' saveAvailable={this.state.saveAvailable} data={this.state.selectedRow} reloadTable={this.loadData} close={()=>this.setState({invokeFormvisibele:false})}/>
                 </Modal>
+                <Drawer
+                    placement="left"
+                    width={600}
+                    closable={false}
+                    onClose={this.closeInfo}
+                    visible={this.state.infoVisible}
+                >
+                    <List
+                        itemLayout="horizontal"
+                        dataSource={this.state.currentRecord}
+                        renderItem={item => (
+                            <List.Item>
+                                <List.Item.Meta
+                                    title={item.name}
+                                    description={
+                                        item.type=='text'?
+                                            <pre>{format(item.value)}</pre>
+                                            :
+                                            item.value
+                                    }
+                                />
+                            </List.Item>
+                        )}
+                    />
+                </Drawer>
                 <Table columns={this.columns}
                        rowKey={record => record.id}
                        dataSource={this.state.dataSource}
                        rowSelection={null}
                        size="small"
-                       scroll={{ y: 800 }}
-                       expandedRowRender={this.expandedRowRender}
+                       scroll={{ y: 900, x: 'max-content'}}
+                       //expandedRowRender={this.expandedRowRender}
                     pagination={this.state.pagination}
                        loading={this.state.loading}
                 />
