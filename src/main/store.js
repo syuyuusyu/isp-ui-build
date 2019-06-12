@@ -117,7 +117,7 @@ export class TreeStore{
         clone.forEach(data=>{
           getPathById(e.key,data,(result)=>{
             runInAction(()=>{
-                //console.log(result);
+                console.log(result);
               this.currentRoute=result;
             });
           })

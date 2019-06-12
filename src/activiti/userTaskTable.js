@@ -17,6 +17,7 @@ class UserTaskTable extends Component {
             dataIndex: 'name', title: '待办事项', width: 200
         },
         {dataIndex: 'owner', title: '申请人', width: 200,},
+        {dataIndex: 'ownerOrg', title: '申请人所在部门', width: 200,},
         {
             dataIndex: 'createTime', title: '创建时间', width: 200,
             render:text=>dateFtt('yyyy年MM月dd日 hh:mm:ss',new Date(text))

@@ -23,7 +23,6 @@ const colorGray = "#e8e8e8";
  * @returns {{linkNum: *, linksLess: Array, linksMore: Array}}
  */
 const getLinks = (isAdmin=true, currentRoleSys, eClick) => {
-    console.log(currentRoleSys);
     const length = currentRoleSys.length;
     //const linkNum = isAdmin ? length + 1 : length;
     const linkNum =  length+3;

@@ -72,9 +72,6 @@ export class HomeStore {
     };
 
 
-    slicePics = null;
-
-    smapslicePics = null;
 
     @observable
     actityTable = 0;
@@ -83,7 +80,11 @@ export class HomeStore {
         this.actityTable = v
     });
 
+    @observable
+    slicePics = null;
 
+    @observable
+    smapslicePics = null;
 
     @action
     loadSlicePics = async () => {
@@ -125,7 +126,7 @@ export class HomeStore {
                     }
                     return arr;
                 });
-                this.smapslicePics = json.list
+                //this.smapslicePics = json.list
             });
 
         } else {

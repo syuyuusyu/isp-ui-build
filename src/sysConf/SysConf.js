@@ -4,6 +4,7 @@ import {inject,observer} from 'mobx-react';
 import RoleButton from '../roleButton';
 import SysForm from './sysForm';
 import RoleSysConf from './roleSysConf';
+import "../home/index.less";
 
 @inject('rootStore')
 @observer
@@ -12,7 +13,7 @@ class SysConf extends React.Component{
     columns=[
         {dataIndex:'code',title:'系统编码',width:80},
         {dataIndex:'name',title:'系统名称',width:100},
-        {dataIndex:'icon',title:'图标',width:100},
+        {dataIndex:'icon',title:'图标',width:100,},
         {dataIndex:'isGov',title:'政务网是否可以访问',width:150,
             render:(text)=>{
                 if(text==='1'){

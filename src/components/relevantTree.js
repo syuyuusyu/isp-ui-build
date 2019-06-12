@@ -8,12 +8,19 @@ const TreeNode = Tree.TreeNode;
 @observer
 class RelevantTree extends React.Component{
 
+
+
     state={
         treeData:[],
         checkedKeys:[]
     };
 
+
+
     componentDidMount(){
+        console.log(this.props.relevantEntity);
+        console.log(this.props.monyTomony);
+        console.log(this.props.operationId);
         const store=this.props.rootStore.commonStore;
         store.relevantEntity=this.props.relevantEntity;
         this.nameField=store.relevantEntity.nameField;
