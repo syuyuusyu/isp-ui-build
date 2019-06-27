@@ -4,7 +4,7 @@ import {activitiUrl, get, post, del, baseUrl} from '../util';
 import axios from 'axios';
 
 
-configure({enforceActions: true});
+configure({ enforceActions: 'observed' });
 
 notification.config({
     placement: 'topLeft',

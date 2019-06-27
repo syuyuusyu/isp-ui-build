@@ -3,7 +3,7 @@ import {baseUrl,post,getPathById} from '../util';
 import {notification} from 'antd';
 
 
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 const json=`
 {

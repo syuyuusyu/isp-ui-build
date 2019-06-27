@@ -2,7 +2,7 @@ import {observable, configure, action,} from 'mobx';
 //import {notification} from 'antd';
 import {baseUrl, get} from '../util';
 
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 export default class AuthorityStore {
 
@@ -27,7 +27,8 @@ export default class AuthorityStore {
   logout = async () => {
     get(`${baseUrl}/logout`);
     sessionStorage.clear();
-    this.taggreLogin();
+    window.history.go('/login');
+    //this.taggreLogin();
   };
 
 

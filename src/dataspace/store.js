@@ -2,7 +2,7 @@ import {observable, configure, action, runInAction,} from 'mobx';
 import {baseUrl, get, post} from '../util';
 import {Modal, notification} from 'antd';
 
-configure({enforceActions: true});
+configure({ enforceActions: 'observed' });
 
 
 export class DataSpaceStore {

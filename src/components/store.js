@@ -7,7 +7,7 @@ import { get, post, del, baseUrl, evil, getPathById} from '../util';
 
 const antd = require('antd');
 
-configure({enforceActions: true});
+configure({ enforceActions: 'observed' });
 
 export class CommonStore {
 
@@ -170,7 +170,7 @@ export class CommonStore {
         total: 0,
         size: 'small',
         pageSize: 10,
-        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+        showTotal: (total, range) => `第${range[0]}-${range[1]}条,共${total}条`,
         onChange: this.pageChange
     };
 
@@ -512,4 +512,6 @@ export class CommonStore {
         this.shouldRender=false;
     }
 }
+
+
 

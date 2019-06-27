@@ -211,7 +211,9 @@ class Home extends Component {
         this.props.rootStore.homeStore.loadSlicePics();
         this.props.rootStore.homeStore.loadSmapSlicePics();
         let roles = JSON.parse(sessionStorage.getItem("roles"));
+        console.log(roles);
         if(roles.find(r=>r.code=='directAccessSystem')){
+            console.log('sdsdsdsd');
             this.props.rootStore.homeStore.loaddirectSystems();
         }
 
@@ -374,7 +376,10 @@ class Home extends Component {
             directSystems,
         } = this.props.rootStore.homeStore;
         /* 外链入口 */
+
         const {currentRoleSys} = this.props.rootStore.treeStore;
+        console.log(currentRoleSys.filter(d=>d));
+        console.log(directSystems.filter(d=>d));
         const {linkNum, linksLess, linksMore} = getLinks(
             true,
             currentRoleSys.concat(directSystems.filter(d=>d)),

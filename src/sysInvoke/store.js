@@ -3,7 +3,7 @@ import {notification} from 'antd';
 import {baseUrl, get, del, post} from '../util';
 
 
-configure({enforceActions: true});
+configure({ enforceActions: 'observed' });
 
 export class InvokeOpStore {
 

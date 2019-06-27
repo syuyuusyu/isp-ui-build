@@ -2,7 +2,7 @@ import {observable, configure, action, runInAction} from 'mobx';
 import {notification} from 'antd';
 import {baseUrl, get, post,del} from '../util';
 
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 export default class NotificationSotre {
 

@@ -53,7 +53,7 @@ const commonConfig = {
             use: [{
                 loader: 'babel-loader?cacheDirectory=true',
                 options: {
-                    plugins: [['import', {libraryName: 'antd', libraryDirectory: 'es', style: true}]]
+                    plugins: [["import", { "libraryName": "antd", "style": "css"}, "ant"],]
                 }
             }],
         }, {

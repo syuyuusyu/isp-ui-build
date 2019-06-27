@@ -3,7 +3,7 @@ import {baseUrl, get, post} from '../util';
 import {notification,message, Modal} from 'antd';
 
 
-configure({enforceActions: true});
+configure({ enforceActions: 'observed' });
 
 
 export class CloudStore {

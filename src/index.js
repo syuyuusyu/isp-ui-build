@@ -3,14 +3,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import { Provider } from 'mobx-react';
-import createHistory from 'history/createBrowserHistory';
+import {createBrowserHistory} from 'history';
 import { Main } from './main';
 import registerServiceWorker from './registerServiceWorker';
 import RootStore from './rootStore';
 import './index.less';
 
 
-const history = createHistory();
+const history = createBrowserHistory();
 // const div = document.createElement('div');
 // document.body.appendChild(div);
 

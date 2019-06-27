@@ -3,7 +3,7 @@ import {notification,message, Modal} from 'antd';
 import {baseUrl, get, del, post} from '../util';
 
 
-configure({enforceActions: true});
+configure({ enforceActions: 'observed' });
 
 export class MenuManageStore {
   @observable

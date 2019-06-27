@@ -3,7 +3,7 @@ import {message,notification} from 'antd';
 import {baseUrl,get,del} from '../util';
 
 
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 export class SysOperationStore{
 

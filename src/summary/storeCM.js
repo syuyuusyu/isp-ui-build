@@ -2,7 +2,7 @@ import {observable, action, runInAction, configure} from 'mobx';
 import {Message} from 'antd';
 import {baseUrl, get, post} from '../util';
 
-configure({enforceActions: true});
+configure({ enforceActions: 'observed' });
 
 export default class SummaryStoreCM {
     constructor(rootStore) {

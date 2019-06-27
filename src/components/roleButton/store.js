@@ -3,7 +3,7 @@ import {notification,Divider,Popconfirm,} from 'antd';
 import {baseUrl, get, del, post} from '../../util';
 import React from 'react';
 
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 export class RelevantRoleButtonStore{
     constructor(rootStore){

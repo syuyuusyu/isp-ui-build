@@ -3,7 +3,7 @@ import {baseUrl, get, post,isGov} from '../util';
 import {notification} from 'antd';
 
 
-configure({enforceActions: true});
+configure({ enforceActions: 'observed' });
 
 export class HomeStore {
     constructor(rootStore) {
@@ -169,6 +169,7 @@ export class HomeStore {
     directSystems=[];
 
     loaddirectSystems = async ()=>{
+        console.log('loaddirectSystems!!!!!!!');
         let json=await post(`${baseUrl}/entity/query/1002`,{accessType:'0'});
         runInAction(()=>{
             this.directSystems=json.data;

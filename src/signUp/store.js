@@ -3,7 +3,7 @@ import {notification} from 'antd';
 import {baseUrl, get, post,getPathById,isGov} from '../util';
 import React from "react";
 
-configure({enforceActions: true});
+configure({ enforceActions: 'observed' });
 
 export class SignUpStore {
     constructor(rootStore) {

@@ -6,7 +6,7 @@ import RoleButton from '../roleButton';
 import {Divider,Modal} from 'antd';
 
 
-configure({enforceActions: true});
+configure({ enforceActions: 'observed' });
 
 export class UserRoleStore {
 

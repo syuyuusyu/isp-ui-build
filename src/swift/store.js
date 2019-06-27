@@ -4,7 +4,7 @@ import {baseUrl, post, get, convertGiga,activitiUrl} from '../util';
 import {notification,Icon} from 'antd';
 import axios from 'axios';
 
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 const CancelToken = axios.CancelToken;
 

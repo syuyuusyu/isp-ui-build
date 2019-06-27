@@ -266,6 +266,9 @@ class CreateForm extends React.Component {
 
     };
 
+    handleReset = () => {
+        this.props.form.resetFields();
+    };
 
     render() {
         const store = this.props.rootStore.commonStore;
@@ -311,7 +314,7 @@ class CreateForm extends React.Component {
                     <Row>
                         <Col span={18} style={{textAlign: 'left'}}></Col>
                         <Col span={6} style={{textAlign: 'right'}}>
-                            <Button type="reload" onClick={null}>重置</Button>
+                            <Button type="reload" onClick={this.handleReset}>重置</Button>
                             <Button icon="save" onClick={this.save}>保存</Button>
                         </Col>
                     </Row>

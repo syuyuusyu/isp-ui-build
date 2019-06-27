@@ -5,7 +5,7 @@ import {configure} from 'mobx';
 import {Link,} from 'react-router-dom';
 const TreeNode = Tree.TreeNode;
 
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 @inject('rootStore')
 @observer

@@ -4,7 +4,7 @@ import {EventEmitter} from 'events';
 import SysMsg from "./SysMsg";
 
 
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 export default class DashBoardStore{
 

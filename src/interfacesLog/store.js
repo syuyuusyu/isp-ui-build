@@ -4,7 +4,7 @@ import {baseUrl,get,post} from '../util';
 import {message} from "antd/lib/index";
 //import {configure} from "mobx/lib/mobx";
 
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 export class InterfacesLogStory{
   constructor(rootStore){

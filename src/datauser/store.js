@@ -1,7 +1,7 @@
 import {observable, configure,action,runInAction,} from 'mobx';
 import {baseUrl, get, post} from '../util';
 import {notification} from 'antd';
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 
 export class DataUserStore {

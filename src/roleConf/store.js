@@ -4,7 +4,7 @@ import {baseUrl, get, del, post} from '../util';
 import RoleButton from '../roleButton';
 import React from 'react';
 
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 export class RoleStore{
 

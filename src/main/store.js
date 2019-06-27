@@ -1,7 +1,7 @@
 import {observable, configure,action,runInAction,computed} from 'mobx';
 import {baseUrl,get} from '../util';
 
-configure({ enforceActions: true });
+configure({ enforceActions: 'observed' });
 
 export class TreeStore{
 
