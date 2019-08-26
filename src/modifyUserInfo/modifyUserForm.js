@@ -7,6 +7,8 @@ import {Link} from 'react-router-dom';
 const FormItem = Form.Item;
 const crypto = require('crypto');
 
+const pwdpatten= /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Z]{1,})(?=.*[a-z]{1,}).*$/;
+
 @inject('rootStore')
 @observer
 class ModifyUserForm extends Component {
@@ -213,6 +215,8 @@ class ModifyUserForm extends Component {
                                             {getFieldDecorator('newPassword', {
                                                 rules: [{
                                                     validator: this.validateToNextPassword,
+                                                },{
+                                                    pattern:pwdpatten,message:'需要包含大小写字母和数字'
                                                 }],
                                                 initialValue: '',
                                                 validateTrigger: 'onBlur'

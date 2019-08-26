@@ -378,8 +378,6 @@ class Home extends Component {
         /* 外链入口 */
 
         const {currentRoleSys} = this.props.rootStore.treeStore;
-        console.log(currentRoleSys.filter(d=>d));
-        console.log(directSystems.filter(d=>d));
         const {linkNum, linksLess, linksMore} = getLinks(
             true,
             currentRoleSys.concat(directSystems.filter(d=>d)),

@@ -132,6 +132,11 @@ class QueryForm extends React.Component {
     };
 
     onSelect=(colunmName)=>((value)=>{
+
+        if(colunmName==1036){
+            const store = this.props.rootStore.commonStore;
+            store.selectedSystem=value;
+        }
         this.setState(
             {[`candidate${colunmName}`]:value},
             ()=>this.setCandidate(colunmName)

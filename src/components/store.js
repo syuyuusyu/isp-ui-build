@@ -3,11 +3,11 @@ import {observable, configure, action, runInAction, computed, autorun, when} fro
 import {Icon, notification, Button, Divider, Popconfirm} from 'antd';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import { get, post, del, baseUrl, evil, getPathById} from '../util';
+import {get, post, del, baseUrl, evil, getPathById} from '../util';
 
 const antd = require('antd');
 
-configure({ enforceActions: 'observed' });
+configure({enforceActions: 'observed'});
 
 export class CommonStore {
 
@@ -98,11 +98,11 @@ export class CommonStore {
     //--------------------
 
     @observable
-    selectedRowKeys=[];
+    selectedRowKeys = [];
 
     @action
-    onSelectRows=(selectedRowKeys)=>{
-        this.selectedRowKeys=selectedRowKeys;
+    onSelectRows = (selectedRowKeys) => {
+        this.selectedRowKeys = selectedRowKeys;
     };
 
     @observable
@@ -137,30 +137,30 @@ export class CommonStore {
 
     setDefaultQueryObj = (o) => {
         console.log(o);
-        for(let key in o){
-            if(o[key].startsWith('$')){
-                let str=o[key].replace('$','');
-                let arr=str.split('.');
-                let data=JSON.parse( sessionStorage.getItem(arr[0]));
+        for (let key in o) {
+            if (o[key].startsWith('$')) {
+                let str = o[key].replace('$', '');
+                let arr = str.split('.');
+                let data = JSON.parse(sessionStorage.getItem(arr[0]));
 
-                for(let i=1;i<arr.length;i++){
-                    data=data[arr[i]];
+                for (let i = 1; i < arr.length; i++) {
+                    data = data[arr[i]];
                 }
-                o[key]=data;
+                o[key] = data;
             }
         }
         this.defaultQueryObj = o;
     };
 
-    get moreInfo(){
-        return this.allColumns.filter(c=>c.entityId===this.currentEntity.id && c.columnType==='text').length>0;
+    get moreInfo() {
+        return this.allColumns.filter(c => c.entityId === this.currentEntity.id && c.columnType === 'text').length > 0;
     }
 
-    get hasOperation(){
-        return this.operations.filter(d => d).filter(d=>d.location=='2').length>0;
+    get hasOperation() {
+        return this.operations.filter(d => d).filter(d => d.location == '2').length > 0;
     }
 
-    get editAble(){
+    get editAble() {
         return this.currentEntity.editAble == '1';
     }
 
@@ -175,43 +175,52 @@ export class CommonStore {
     };
 
     @observable
-    infoArr=[];
+    infoArr = [];
 
     @observable
-    infoVisible=false;
+    infoVisible = false;
 
     @action
-    infoClose=()=>{
-        this.infoVisible=false;
+    infoClose = () => {
+        this.infoVisible = false;
     };
 
-    showInfo =(reccord)=>(()=>{
+    showInfo = (reccord) => (() => {
 
-        runInAction(()=>{
-            this.infoArr=this.columns.filter(d=>d && d.title!='操作').map(c=>{
-               return {
-                   title:c.title,
-                   value:(()=>{
-                       if(c.dicGroupId){
-                           const currentDictionary = this.allDictionary.filter(d => d.groupId === c.dicGroupId);
-                           let value=reccord[c.dataIndex];
-                           return currentDictionary.filter(d => d.value === value).length === 1 ?
-                               currentDictionary.filter(d => d.value === value)[0].text : value;
-                       }
-                       return c.foreginName?reccord[c.foreginName]:reccord[c.dataIndex]
-                   })(),
-                   type:'string'
-               }
+        runInAction(() => {
+            this.infoArr = this.columns.filter(d => d && d.title != '操作').map(c => {
+                return {
+                    title: c.title,
+                    value: (() => {
+                        if (c.dicGroupId) {
+                            const currentDictionary = this.allDictionary.filter(d => d.groupId === c.dicGroupId);
+                            let value = reccord[c.dataIndex];
+                            return currentDictionary.filter(d => d.value === value).length === 1 ?
+                                currentDictionary.filter(d => d.value === value)[0].text : value;
+                        }
+                        return c.foreginName ? reccord[c.foreginName] : reccord[c.dataIndex]
+                    })(),
+                    type: 'string'
+                }
             });
-            this.allColumns.filter(c=>c.entityId===this.currentEntity.id && c.hidden!=='1')
-                .filter(c=>c.columnType==='text').forEach(c=>{
-                  this.infoArr.push({
-                      title:c.text,
-                      value:reccord[c.columnName],
-                      type:'text'
-                  })
+            this.allColumns.filter(c => c.entityId === this.currentEntity.id && c.hidden !== '1')
+                .filter(c => c.columnType === 'text').forEach(c => {
+                if (c.id == 1072) {
+                    //处理目录完整资源路径URL
+                    this.infoArr.push({
+                        title: c.text,
+                        value: encodeURI(reccord[c.columnName]),
+                        type: 'text'
+                    });
+                    return;
+                }
+                this.infoArr.push({
+                    title: c.text,
+                    value: reccord[c.columnName],
+                    type: 'text'
+                })
             });
-            this.infoVisible=true;
+            this.infoVisible = true;
 
         });
     });
@@ -222,22 +231,22 @@ export class CommonStore {
 
         runInAction(() => {
 
-            this.columns = json.filter(c =>c.hidden!='1' && c.columnType !== 'text').sort((a,b)=>a.columnIndex-b.columnIndex).map(c => {
+            this.columns = json.filter(c => c.hidden != '1' && c.columnType !== 'text').sort((a, b) => a.columnIndex - b.columnIndex).map(c => {
                 const column = {
                     dataIndex: c.columnName,
                     title: c.text ? c.text : c.columnName,
                     width: c.width ? c.width : 0,
-                    align:'center',
+                    align: 'center',
                 };
                 if (c.columnType === 'timestamp') {
                     column.render = (value, record) => moment(value).format('YYYY-MM-DD HH:mm:ss');
                 }
                 if (c.render) {
-                    column.render = eval('(' + c.render + ')').callInstance({React, antd,get});
+                    column.render = eval('(' + c.render + ')').callInstance({React, antd, get, encodeURI});
                 }
                 if (c.dicGroupId) {
                     const currentDictionary = this.allDictionary.filter(d => d.groupId === c.dicGroupId);
-                    column.dicGroupId=c.dicGroupId;
+                    column.dicGroupId = c.dicGroupId;
                     column.render = (value, record) => {
                         return currentDictionary.filter(d => d.value === value).length === 1 ?
                             currentDictionary.filter(d => d.value === value)[0].text : value;
@@ -246,39 +255,39 @@ export class CommonStore {
                 if (c.foreignKeyId) {
                     const foreginNameCol = this.allColumns.find(_ => _.id === c.foreignKeyNameId);
                     const foreginEntityCode = this.allEntitys.find(_ => _.id === foreginNameCol.entityId).entityCode;
-                    column.foreginName=`${foreginEntityCode}_${foreginNameCol.columnName}`;
+                    column.foreginName = `${foreginEntityCode}_${foreginNameCol.columnName}`;
                     column.render = (value, record) => record[`${foreginEntityCode}_${foreginNameCol.columnName}`];
                 }
                 return column;
             });
-            if(this.moreInfo || this.hasOperation || this.editAble){
+            if (this.moreInfo || this.hasOperation || this.editAble) {
                 this.columns.push({
                     title: '操作',
-                    width: (()=>{
-                        let width=0;
-                        if(this.editAble) width=170;
-                        if(this.moreInfo) width+=100;
-                        this.operations.filter(d => d).filter(d=>d.location=='2').forEach(m=>{
-                            width+=30;
-                            if(m.icon) width+=20;
-                            width+= 20*m.name.length;
+                    width: (() => {
+                        let width = 0;
+                        if (this.editAble) width = 170;
+                        if (this.moreInfo) width += 100;
+                        this.operations.filter(d => d).filter(d => d.location == '2').forEach(m => {
+                            width += 30;
+                            if (m.icon) width += 20;
+                            width += 20 * m.name.length;
                         });
                         return width;
                     })(),
-                    align:'center',
+                    align: 'center',
                     fixed: 'right',
                     render: (text, record) => {
                         return (
                             <span>
-                            {this.moreInfo?<Button icon={'eye'} onClick={this.showInfo(record)}
-                                                   size='small'>查看</Button>:''}
+                            {this.moreInfo ? <Button icon={'eye'} onClick={this.showInfo(record)}
+                                                     size='small'>查看</Button> : ''}
                                 {
-                                    this.operations.filter(d => d).filter(d=>d.location=='2')
-                                        .map((m,index) => {
+                                    this.operations.filter(d => d).filter(d => d.location == '2')
+                                        .map((m, index) => {
                                             if (m.type === '3') {
                                                 return (
                                                     <span key={m.id}>
-                                                    {index>0 || this.moreInfo?<Divider type="vertical"/>:''}
+                                                    {index > 0 || this.moreInfo ? <Divider type="vertical"/> : ''}
                                                         <Popconfirm onConfirm={this.execFun(record, m.function)}
                                                                     title={`确认${m.name}?`}>
                                                         <Button icon={m.icon} onClick={null}
@@ -289,7 +298,7 @@ export class CommonStore {
                                             }
                                             return (
                                                 <span key={m.id}>
-                                                {index>0 || this.moreInfo?<Divider type="vertical"/>:''}
+                                                {index > 0 || this.moreInfo ? <Divider type="vertical"/> : ''}
                                                     <Button icon={m.icon} onClick={this.showOperationForm(record, m.id)}
                                                             size='small'>{m.name}</Button>
                                             </span>
@@ -300,7 +309,7 @@ export class CommonStore {
                                 {
                                     this.editAble ? (
                                             <span>
-                                            { this.hasOperation || this.moreInfo?<Divider type="vertical"/>:''}
+                                            {this.hasOperation || this.moreInfo ? <Divider type="vertical"/> : ''}
                                                 <Button icon="edit" onClick={this.showCreateForm(record, true)}
                                                         size='small'>修改</Button>
                                         <Divider type="vertical"/>
@@ -320,12 +329,11 @@ export class CommonStore {
             }
 
 
-
         });
     };
 
     execFun = (record, fn) => (() => {
-        let fun = eval('(' + fn + ')').callInstance({notification, baseUrl, get, post,store:this});
+        let fun = eval('(' + fn + ')').callInstance({notification, baseUrl, get, post, store: this});
         fun(record);
     });
 
@@ -340,7 +348,7 @@ export class CommonStore {
                 message: '删除失败'
             });
         }
-        if(this.hasParent || this.currentNode){
+        if (this.hasParent || this.currentNode) {
             this.onLoadTreeData(this.currentNode);
         }
         this.queryTable();
@@ -406,7 +414,7 @@ export class CommonStore {
             [this.currentParentEntity.idField]: topParentRecord[this.currentParentEntity.idField]
         });
         runInAction(() => {
-            this.expandedKeys=[topParentRecord[this.currentParentEntity.idField]+''];
+            this.expandedKeys = [topParentRecord[this.currentParentEntity.idField] + ''];
             this.selectedTreeId = json.data[0][this.currentParentEntity.idField];
             this.treeData = json.data;
             this.setCurrentRoute(topParentRecord[this.currentParentEntity.idField]);
@@ -425,8 +433,8 @@ export class CommonStore {
 
     @action
     onLoadTreeData = async (treeNode) => {
-        if(!this.currentNode){
-           this.currentNode=treeNode;
+        if (!this.currentNode) {
+            this.currentNode = treeNode;
         }
         const parentId = treeNode.props.dataRef[this.currentParentEntity.idField];
         let json = await post(`${baseUrl}/entity/query/${this.currentParentEntity.parentEntityId}`, {
@@ -459,7 +467,7 @@ export class CommonStore {
     @action
     treeSelect = (selectedKeys, e) => {
         console.log('treeSelect');
-        this.currentNode= e.node;
+        this.currentNode = e.node;
         let id = e.node.props.dataRef[this.currentParentEntity.idField];
         this.selectedTreeId = id;
         this.setCurrentRoute(id);
@@ -476,7 +484,6 @@ export class CommonStore {
     createFormVisible = false;
 
     isFormUpdate = false;
-
 
 
     @action
@@ -502,14 +509,17 @@ export class CommonStore {
     //---------------------------
     relevantEntity;
 
+    //服务目录页面选中系统
+    selectedSystem;
+
 
     @action
-    clean(){
+    clean() {
         this.queryObj = {};
         //this.defaultQueryObj = {};
-        this.columns=[];
-        this.allColumns=[];
-        this.shouldRender=false;
+        this.columns = [];
+        this.allColumns = [];
+        this.shouldRender = false;
     }
 }
 

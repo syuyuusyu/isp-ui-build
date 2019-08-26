@@ -10,6 +10,7 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 
 const crypto = require('crypto');
+const pwdpatten= /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Z]{1,})(?=.*[a-z]{1,}).*$/;
 
 @inject('rootStore')
 @observer
@@ -176,29 +177,7 @@ class UserRegisterForm extends Component {
       labelCol: { span: 7 },
       wrapperCol: { span: 14},
     };
-      const options = [{
-          value: 'zhejiang',
-          label: 'Zhejiang',
-          children: [{
-              value: 'hangzhou',
-              label: 'Hangzhou',
-              children: [{
-                  value: 'xihu',
-                  label: 'West Lake',
-              }],
-          }],
-      }, {
-          value: 'jiangsu',
-          label: 'Jiangsu',
-          children: [{
-              value: 'nanjing',
-              label: 'Nanjing',
-              children: [{
-                  value: 'zhonghuamen',
-                  label: 'Zhong Hua Men',
-              }],
-          }],
-      }];
+
     const store=this.props.rootStore.signUpStore;
     return (
       <div className="sign">
@@ -221,7 +200,7 @@ class UserRegisterForm extends Component {
               {
                 getFieldDecorator('userName', {
                   rules: [{required: true, message: '登录名称不能为空'},
-                    {pattern:'^[a-zA-Z0-9_]{1,}$',message:'登录名称只能包含字母数字下划线'},
+                    {pattern:'^[a-zA-Z0-9_]{1,20}$',message:'登录名称只能包含字母数字下划线,最多20个字符'},
                   ],
                   validateTrigger: 'onBlur'
                 })(
@@ -256,6 +235,8 @@ class UserRegisterForm extends Component {
                   required: true, message: '密码不能为空',
                 }, {
                   validator: this.validateToNextPassword,
+                },{
+                    pattern:pwdpatten,message:'需要包含大小写字母和数字'
                 }],
                 validateTrigger: 'onBlur'
               })(

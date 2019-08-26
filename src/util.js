@@ -146,13 +146,20 @@ export const log = (target, name, descriptor) => {
 };
 
 export const isGov=/59.216.201.52/.test(window.location.href);
+export const isUrl=/isp.yndk.cn/.test(window.location.href);
 
-export const activitiUrl=isGov?'http://59.216.201.52:5002':'http://10.10.50.10:5002';
-//export const activitiUrl='http://192.168.0.106:5002';
+console.log(encodeURI);
 
-export const baseUrl = 'http://127.0.0.1:7001';
+if(!isUrl){
+    //window.location.href='https://isp.yndk.cn';
+}
+
+//export const activitiUrl=isGov?'https://59.216.201.52:5002':'https://isp.yndk.cn:5002';
+export const activitiUrl='https://127.0.0.1:5001';
+
+//export const baseUrl = 'http://127.0.0.1:7001';
 //export const baseUrl = 'http://192.168.0.106:7001';
-//export const baseUrl = isGov?'http://59.216.201.52:7001':'http://isp.yndk.cn:7001';
+export const baseUrl = isGov?'http://59.216.201.52:7001':'https://isp.yndk.cn:7001';
 
 
 export function request2(method, url, body) {
