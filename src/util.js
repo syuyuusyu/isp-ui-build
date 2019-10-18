@@ -148,14 +148,14 @@ export const log = (target, name, descriptor) => {
 export const isGov=/59.216.201.52/.test(window.location.href);
 export const isUrl=/isp.yndk.cn/.test(window.location.href);
 
-console.log(encodeURI);
+
 
 if(!isUrl){
     //window.location.href='https://isp.yndk.cn';
 }
 
-//export const activitiUrl=isGov?'https://59.216.201.52:5002':'https://isp.yndk.cn:5002';
-export const activitiUrl='https://127.0.0.1:5001';
+export const activitiUrl=isGov?'https://59.216.201.52:5002':'https://isp.yndk.cn:5002';
+//export const activitiUrl='https://127.0.0.1:5001';
 
 //export const baseUrl = 'http://127.0.0.1:7001';
 //export const baseUrl = 'http://192.168.0.106:7001';

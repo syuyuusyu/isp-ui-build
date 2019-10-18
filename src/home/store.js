@@ -97,6 +97,9 @@ export class HomeStore {
                     if(isGov){
                         arr[0]=arr[0].replace('10.10.50.5','59.216.201.50');
                         arr[2]=arr[2].replace('10.10.50.5','59.216.201.50');
+
+                        arr[0]=arr[0].replace('zondyun.yndk.cn','59.216.201.50');
+                        arr[2]=arr[2].replace('zondyun.yndk.cn','59.216.201.50');
                     }
                     return arr;
                 })

@@ -42,6 +42,7 @@ class Gallery extends Component {
         this.setState({ needTransform: true })
       }, duration);
     }
+    this.isAdmin = "admin" === JSON.parse(sessionStorage.getItem("user")).user_name;
     this.sliderBox.current.addEventListener('transitionend', this.transformFinished, false);
   }
   componentWillUnmount () {
@@ -92,10 +93,12 @@ class Gallery extends Component {
       <div className="gallery-container" style={size}>
         <div ref={this.sliderBox} className="slider-box" style={sliderBoxStyle}>
           {picturesShowing.map((pic, index) => (
+              pic?
             <div key={index} className="img-box" style={{ width: imgWidth, height: size.height, marginLeft: spaceBetween, marginRight: spaceBetween }}>
-              <img src={pic[0]} alt="" style={{ width: size.height - 40 }} onClick={()=>{window.open(pic[2])}} />
+              <img src={pic[0]} alt="" style={{ width: size.height - 40 }} onClick={()=>{ if(this.isAdmin) window.open(pic[2])}} />
               <span className="name">{pic[1]}</span>
             </div>
+                  :''
           ))}
         </div>
       </div>

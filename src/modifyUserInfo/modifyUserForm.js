@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Row, Col, Input, Button, Select, Modal, notification} from 'antd';
+import {Form, Row, Col, Input, Button, Select, Modal, notification,Breadcrumb} from 'antd';
 import {baseUrl, get, post} from "../util";
 import {inject, observer} from "mobx-react";
 import {Link} from 'react-router-dom';
@@ -145,6 +145,11 @@ class ModifyUserForm extends Component {
         })
     };
 
+    componentDidMount() {
+        const modifyUserStore= this.props.rootStore.modifyUserStore;
+        modifyUserStore.getOrg()
+    }
+
     render() {
         {
             const {getFieldDecorator} = this.props.form;
@@ -154,13 +159,25 @@ class ModifyUserForm extends Component {
             };
             const treeStore = this.props.rootStore.treeStore;
             const {winWidth, winHeight, headerHeight, menuHeight, footerHeight} = treeStore;
+            const modifyUserStore= this.props.rootStore.modifyUserStore;
             return (
                 <div className="user-inform"
                      style={{width: winWidth - 32, height: winHeight - headerHeight - menuHeight - footerHeight - 16}}>
                     <Form>
                         <br/>
                         <Row>
+
                             <Col span={14} offset={5}>
+                                <Row>
+                                    <Breadcrumb style={{margin: '10px 8px'}}>
+                                        <Breadcrumb.Item>所属机构:</Breadcrumb.Item>
+                                        {
+                                            modifyUserStore.orgRoute
+                                                .filter(d => d).map(r => <Breadcrumb.Item
+                                                key={r.id}>{r.text}</Breadcrumb.Item>)
+                                        }
+                                    </Breadcrumb>
+                                </Row>
                                 <Row gutter={60}>
                                     <Col span={12}>
                                         <FormItem label='个人账号（不可修改）' className="inform-user">

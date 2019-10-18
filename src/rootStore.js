@@ -31,6 +31,7 @@ import {SpecialtyMetdataStore} from "./specialtymetadata";
 import {EntityStore} from './entity';
 import {CommonStore} from "./components";
 import {RelevantRoleButtonStore} from './components/roleButton';
+import {ModifyUserStore} from './modifyUserInfo'
 
 
 export default class RootStore {
@@ -77,6 +78,7 @@ export default class RootStore {
         this.entityStore=new EntityStore(this);
         this.commonStore=new CommonStore(this);
         this.relevantRoleButtonStore=new RelevantRoleButtonStore(this);
+        this.modifyUserStore=new ModifyUserStore(this);
 
 
     }

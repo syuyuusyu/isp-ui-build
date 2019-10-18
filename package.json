@@ -83,6 +83,7 @@
     "dev-build": "webpack --mode=development --config webpack.config.dev.js",
     "start": "webpack-dev-server --config ./webpack/webpack.config.prod.js --display-modules",
     "dev-start": "webpack-dev-server --config ./webpack/webpack.config.dev.js --display-modules",
-    "build": "webpack --mode=production --config ./webpack/webpack.config.prod.js --display-modules --sort-modules-by size --progress"
+    "build": "webpack --mode=production --config ./webpack/webpack.config.prod.js --display-modules --sort-modules-by size --progress",
+    "server": "node server.js"
   }
 }

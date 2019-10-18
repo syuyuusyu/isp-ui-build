@@ -139,7 +139,7 @@ export class SpecialtyMetdataStore{
     @action
     loadTree=async ()=>{
         this.loadingTree=true;
-        let json=await post(`${baseUrl}/invoke/specialty_metdata_dir_api`,{});
+        let json=await post(`${baseUrl}/invoke/map_specialty_metdata_dir_api`,{});
         if(json){
             runInAction(()=>{
                 this.treeData=json;
@@ -164,7 +164,7 @@ export class SpecialtyMetdataStore{
         if(e.node.props.dataRef['LX']==='1'){
             this.isLoading=true;
             try{
-                let json=await post(`${baseUrl}/invoke/specialty_metdata_api`,{id:e.node.props.dataRef.ID});
+                let json=await post(`${baseUrl}/invoke/map_specialty_metdata_api`,{id:e.node.props.dataRef.ID});
                 runInAction(()=>{
                     this.currentMetdata=json;
                     this.isLoading=false;

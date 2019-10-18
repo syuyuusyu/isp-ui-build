@@ -248,14 +248,17 @@ export class ActivitiStore {
         for(let i=0;i<json.length;i++){
             if(json[i].name=='审批申请平台权限' || json[i].name=='审批注销平台权限'){
                 let [user] = await post(`${baseUrl}/user/queryUser`,{selectUser:json[i].owner});
-                let org=await post(`${baseUrl}/interfaces`,
-                    {
-                        method:"user_org",
-                        username:user.user_name
-                    });
-                if(org.status && org.status=='801'){
-                    json[i].ownerOrg=org.respdata.organization.name
+                if(user){
+                    let org=await post(`${baseUrl}/interfaces`,
+                        {
+                            method:"user_org",
+                            username:user.user_name
+                        });
+                    if(org.status && org.status=='801'){
+                        json[i].ownerOrg=org.respdata.organization.name
+                    }
                 }
+
             }
 
 

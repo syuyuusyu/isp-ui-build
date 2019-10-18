@@ -78,13 +78,24 @@ const getLinks = (isAdmin=true, currentRoleSys, eClick) => {
             linksLess.push(node);
         } else {
             const node2 = (
-                <div key={i} className={`link ${icon}`} data-href={href} onClick={eClick}>
+                <div order={name} key={i} className={`link ${icon}`} data-href={href} onClick={eClick}>
                         <span className="text">{name}</span>
                 </div>
             );
             linksMore.push(node2);
         }
     }
+    linksMore.sort((a,b)=>{
+        var nameA = a.props.order.toUpperCase(); // ignore upper and lowercase
+        var nameB = b.props.order.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+            return -1;
+        }
+        if (nameA > nameB) {
+            return 1;
+        }
+        return 0;
+    });
 
     // if(linksLess.length<6){
     //     linksLess.push(
@@ -461,14 +472,24 @@ class Home extends Component {
                                     onClick={setActityTable(0)}
                                 >
                                     <span>地理类地图服务</span>
-                                    <Icon onClick={()=>{this.setState({supermapVisible:true})}} style={{float:'right',marginRight:'10px',marginTop:'10px'}} type="info-circle" />
+                                    {
+                                        this.isAdmin?
+                                            <Icon onClick={()=>{this.setState({supermapVisible:true})}} style={{float:'right',marginRight:'10px',marginTop:'10px'}} type="info-circle" />
+                                            :''
+                                    }
+
                                 </div>
                                 <div
                                     className={`title${actityTable === 1 ? " active" : ""}`}
                                     onClick={setActityTable(1)}
                                 >
                                     <span>地质类地图服务</span>
-                                    <Icon onClick={()=>{this.setState({zdVisible:true})}} style={{float:'right',marginRight:'10px',marginTop:'10px'}} type="info-circle" />
+                                    {
+                                        this.isAdmin?
+                                            <Icon onClick={()=>{this.setState({zdVisible:true})}} style={{float:'right',marginRight:'10px',marginTop:'10px'}} type="info-circle" />
+                                            :''
+                                    }
+
                                 </div>
                             </div>
                             <div className="tab-content">{this.createGallery()}</div>
