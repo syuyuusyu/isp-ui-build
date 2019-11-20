@@ -76,7 +76,7 @@ class SpecialtyMetadata extends Component{
                            rowSelection={null}
                            size="small"
                            scroll={{ y: 800 ,}}
-                        expandedRowRender={this.expandedRowRender}
+                           expandedRowRender={this.expandedRowRender}
                         //pagination={this.state.pagination}
                         //loading={this.state.loading}
                         //onChange={this.handleTableChange}

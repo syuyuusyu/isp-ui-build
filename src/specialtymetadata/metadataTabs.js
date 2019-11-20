@@ -78,7 +78,9 @@ class MetadataTabs extends Component{
             <Layout style={{height: "100%"}}>
                 <Sider width={400}  style={{ background: '#fff',overflowY: 'auto', height: "100%" }}>
                     <Spin indicator={antIcon} tip='获取资源树...' spinning={this.props.rootStore.specialtyMetdataStore.loadingTree}>
-                        <Tree  onSelect={this.props.rootStore.specialtyMetdataStore.treeSelect}>
+                        <Tree  onSelect={this.props.rootStore.specialtyMetdataStore.treeSelect}
+                               autoExpandParent={false}
+                        >
                             {this.renderTreeNodes(this.props.rootStore.specialtyMetdataStore.treeData)}
                         </Tree>
                     </Spin>

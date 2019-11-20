@@ -95,15 +95,6 @@ const json=`
         "SJZLXX":"数据质量信息",
         "XXBS":"标识信息"
         
-    },
-    "tabName": {
-        "FFXX":"分发信息",
-        "NRXX":"内容信息",
-        "YSJ":"元数据信息",
-        "KJCZXTXX":"空间参照系统信息",
-        "SJZLXX":"数据质量信息",
-        "XXBS":"标识信息"
-        
     }
 }
 `;

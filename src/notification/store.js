@@ -1,5 +1,5 @@
 import {observable, configure, action, runInAction} from 'mobx';
-import {notification} from 'antd';
+import {notification,message} from 'antd';
 import {baseUrl, get, post,del} from '../util';
 
 configure({ enforceActions: 'observed' });
@@ -25,6 +25,17 @@ export default class NotificationSotre {
 
     @observable
     messages = [];
+
+
+
+    loadNotification = async()=>{
+        let json = await get(`${baseUrl}/sys/notification`);
+        json.forEach(note=>{
+            message.success(note.content,20);
+     });
+
+
+    };
 
 
     @action

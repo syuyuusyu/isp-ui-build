@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-    Popover, Modal, Badge, Icon, Input,Tooltip
+    Popover, Modal, Badge, Icon, Input,Tooltip,message
 } from 'antd';
 import {Link} from 'react-router-dom';
 import {inject, observer} from 'mobx-react';
@@ -46,6 +46,7 @@ class Main extends Component {
             });
         };
         window.addEventListener('resize', this.winResize, false);
+
     }
 
     componentWillUnmount() {
@@ -188,7 +189,9 @@ class Main extends Component {
                                                 width: winWidth - 32,
                                                 height: winHeight - headerHeight - menuHeight - footerHeight - 16
                                             }}>
-                                                <Route component={require('../' + m.page_path)[m.page_class]}/>
+                                                {/*<Route component={require('../' + m.page_path)[m.page_class]}/>*/}
+                                                <PropsRoute component={require('../' + m.page_path)[m.page_class]}
+                                                            defaultQueryObj={m.defaultQueryObj} />
                                             </div>
                                         )}
                                     />

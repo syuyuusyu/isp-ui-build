@@ -200,11 +200,11 @@ class UserRegisterForm extends Component {
               {
                 getFieldDecorator('userName', {
                   rules: [{required: true, message: '登录名称不能为空'},
-                    {pattern:'^[a-zA-Z0-9_]{1,20}$',message:'登录名称只能包含字母数字下划线,最多20个字符'},
+                    {pattern:'^[a-zA-Z0-9_]{1,20}$',message:'个人姓名拼音全拼'},
                   ],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input className="signUpInput" placeholder="请输入账号"/>
+                  <Input className="signUpInput" placeholder="个人姓名拼音全拼"/>
                 )
               }
             </FormItem>
@@ -219,7 +219,7 @@ class UserRegisterForm extends Component {
                   ],
                   validateTrigger: 'onBlur'
                 })(
-                  <Input className="signUpInput" placeholder="请输入用户名称"/>
+                  <Input className="signUpInput" placeholder="个人姓名中文汉字"/>
                 )
               }
             </FormItem>

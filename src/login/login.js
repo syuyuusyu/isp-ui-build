@@ -46,6 +46,7 @@ class Login extends React.Component {
                         this.props.rootStore.authorityStore.loadAllbuttons(),
                         this.props.rootStore.treeStore.initRoot(),
                         this.props.rootStore.notificationStore.loadSystemAccess(),
+                        this.props.rootStore.notificationStore.loadNotification(),
                         this.props.rootStore.activitiStore.loadCurrentTask()
                     ]);
                     this.store.taggreLogin();

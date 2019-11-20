@@ -19,10 +19,12 @@ class CommonTransfer extends React.Component{
         this.load();
     }
 
+
     load=async ()=>{
         const store=this.props.rootStore.commonStore;
+        let body = store.relevantEntity.deleteFlagField?{[store.relevantEntity.deleteFlagField]:1}:{};
         let targetRecords=await post(`${baseUrl}/entity/query/${store.relevantEntity.id}`,
-            store.relevantEntity.deleteFlagField?{[store.relevantEntity.deleteFlagField]:1}:null);
+            {...body,...store.defaultQueryObj});
         let url=
             `${baseUrl}/entity/queryRelevant/${store.currentEntity.id}/${this.props.monyTomony.id}/${store.currentTableRow[store.currentEntity.idField]}`;
         let targetKeys= await get(url);

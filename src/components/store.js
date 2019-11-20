@@ -321,6 +321,24 @@ export class CommonStore {
                                         :
                                         ''
                                 }
+                                {
+                                    this.entityId == 1000 && record.sysCount === 0 ?
+                                        (
+                                            <span>
+                                                    {this.hasOperation || this.moreInfo ?
+                                                        <Divider type="vertical"/> : ''}
+                                                <Button icon="edit" onClick={this.showCreateForm(record, true)}
+                                                        size='small'>修改</Button>
+                                                <Divider type="vertical"/>
+                                                <Popconfirm
+                                                    onConfirm={this.deleteRow(record[this.currentEntity.idField])}
+                                                    title="确认删除?">
+                                                <Button icon="delete" onClick={null} size='small'>删除</Button>
+                                            </Popconfirm>
+                                            </span>
+                                        )
+                                        : ''
+                                }
 
                         </span>
                         )

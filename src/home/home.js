@@ -224,7 +224,6 @@ class Home extends Component {
         let roles = JSON.parse(sessionStorage.getItem("roles"));
         console.log(roles);
         if(roles.find(r=>r.code=='directAccessSystem')){
-            console.log('sdsdsdsd');
             this.props.rootStore.homeStore.loaddirectSystems();
         }
 
@@ -412,7 +411,7 @@ class Home extends Component {
                 <div className="home-content">
                     <div className="float-box" style={{width: blockCSize.width}}>
                         <div className="block left" style={blockASize}>
-                            <div className="title">云管理平台概况</div>
+                            <div className="title">{isAdmin?'云管理平台概况':sessionStorage.getItem('currentUserName')+'的云管理平台概况'}</div>
                             <div className="pies-box">
                                 {dataCM[0].values
                                     ? dataCM.map((item, index) =>{
@@ -444,7 +443,7 @@ class Home extends Component {
                             </div>
                         </div>
                         <div className="block right" style={blockBSize}>
-                            <div className="title">大数据平台概况</div>
+                            <div className="title">{isAdmin?'大数据平台概况':sessionStorage.getItem('currentUserName')+'的大数据平台概况'}</div>
                             <ReactEchartsCore
                                 echarts={echarts}
                                 option={getSingleBarOption(dataBD, colorIndex)}
